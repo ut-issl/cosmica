@@ -158,3 +158,35 @@ jobs:
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         repository-url: https://test.pypi.org/legacy/
+
+  deploy-docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs:
+    - create-tag
+    - publish-to-pypi
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        version: ${{ env.UV_VERSION }}
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version-file: .python-version
+
+    - name: Set up Git
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git fetch --prune --unshallow
+
+    - name: Install the project
+      run: uv sync --no-dev --group docs
+
+    - name: Deploy docs
+      run: uv run -- mike deploy --push --update-aliases ${{ needs.create-tag.outputs.version }} latest

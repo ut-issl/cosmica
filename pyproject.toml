@@ -10,9 +10,12 @@ authors = [
 ]
 requires-python = ">=3.13"
 dependencies = ["typing-extensions>=4.14.0"]
+classifiers = ["Development Status :: 2 - Pre-Alpha"]
 
-# [project.scripts]
-# package-name-goes-here = "package_name_goes_here:main"
+[project.urls]
+Documentation = "https://www.space.t.u-tokyo.ac.jp/cosmica/"
+Repository = "https://github.com/ut-issl/cosmica"
+Issues = "https://github.com/ut-issl/cosmica/issues"
 
 [build-system]
 requires = ["uv_build>=0.8.0,<0.9"]

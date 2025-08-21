@@ -1,16 +1,18 @@
 [project]
-name = "package-name-goes-here"
-version = "0.1.0"
-description = "Add your description here"
+name = "cosmica"
+version = "0"
+description = "COnstellation Satellite siMulator for optIcal CommunicAtion"
 readme = "README.md"
 authors = [
     { name = "Shunichiro Nomura", email = "nomura@space.t.u-tokyo.ac.jp" },
+    { name = "Vinícius Nery", email = "viniciusfnery@space.t.u-tokyo.ac.jp" },
+    { name = "Kazuki Takashima", email = "takashima@space.t.u-tokyo.ac.jp" },
 ]
 requires-python = ">=3.13"
 dependencies = ["typing-extensions>=4.14.0"]
 
-[project.scripts]
-package-name-goes-here = "package_name_goes_here:main"
+# [project.scripts]
+# package-name-goes-here = "package_name_goes_here:main"
 
 [build-system]
 requires = ["uv_build>=0.8.0,<0.9"]

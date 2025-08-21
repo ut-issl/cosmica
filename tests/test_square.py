@@ -1,6 +1,6 @@
 import pytest
 
-from package_name_goes_here import square
+from cosmica import square
 
 
 @pytest.mark.parametrize(

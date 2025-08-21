@@ -24,6 +24,7 @@ dev = [
     { include-group = "ruff" },
     { include-group = "typing" },
     { include-group = "test" },
+    { include-group = "docs" },
 ]
 ruff = ["ruff>=0.11.13"]
 typing = [
@@ -31,6 +32,16 @@ typing = [
     { include-group = "test" }, # For type checking test code
 ]
 test = ["pytest>=8.4.1", "coverage>=7.8.2"]
+docs = [
+    "mkdocs-material>=9.6.16",
+    "mkdocstrings[python]>=0.30.0",
+    "mkdocs-gen-files>=0.5.0",
+    "mkdocs-literate-nav>=0.6.2",
+    "mkdocs-section-index>=0.3.10",
+    "mike>=2.1.3",
+    "griffe-typingdoc>=0.2.8",
+    "black>=25.1.0",
+]
 
 [tool.pytest.ini_options]
 addopts = "-ra --verbose --verbose --capture=no --strict-markers --color=yes --log-cli-level=INFO"

@@ -30,14 +30,28 @@ typing = [
     "mypy>=1.16.1",
     { include-group = "test" }, # For type checking test code
 ]
-test = [
-    "pytest>=8.4.1",
-    # "coverage>=7.8.2", # If you use coverage
-]
+test = ["pytest>=8.4.1", "coverage>=7.8.2"]
 
 [tool.pytest.ini_options]
 addopts = "-ra --verbose --verbose --capture=no --strict-markers --color=yes --log-cli-level=INFO"
 testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["src/cosmica"]
+
+[tool.coverage.report]
+exclude_also = [
+    'def __repr__',
+    'if self.debug:',
+    'if settings.DEBUG',
+    'raise AssertionError',
+    'raise NotImplementedError',
+    'if 0:',
+    'if __name__ == .__main__.:',
+    'if TYPE_CHECKING:',
+    'class .*\bProtocol\):',
+    '@(abc\.)?abstractmethod',
+]
 
 [tool.mypy]
 strict = true

@@ -1,6 +1,6 @@
 [project]
 name = "cosmica"
-version = "0"
+version = "0.0.1.dev1"
 description = "COnstellation Satellite siMulator for optIcal CommunicAtion"
 readme = "README.md"
 authors = [

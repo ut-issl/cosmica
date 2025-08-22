@@ -1,5 +1,5 @@
 site_name: COSMICA Documentation
-site_url: https://cosmica.ut-issl.com/
+site_url: https://www.space.t.u-tokyo.ac.jp/cosmica/
 theme:
   name: material
   icon:
@@ -77,6 +77,6 @@ markdown_extensions:
 #       - Setting up development environment: developers/setup.md
 #       - Development rules and tips: developers/tips.md
 #       - Releasing COSMICA: developers/releasing.md
-# extra:
-#   version:
-#     provider: mike
+extra:
+  version:
+    provider: mike

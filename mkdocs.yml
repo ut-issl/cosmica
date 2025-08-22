@@ -77,6 +77,6 @@ markdown_extensions:
 #       - Setting up development environment: developers/setup.md
 #       - Development rules and tips: developers/tips.md
 #       - Releasing COSMICA: developers/releasing.md
-# extra:
-#   version:
-#     provider: mike
+extra:
+  version:
+    provider: mike

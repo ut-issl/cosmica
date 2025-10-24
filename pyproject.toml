@@ -4,6 +4,8 @@ version = "0.3.0"
 description = "COnstellation Satellite siMulator for optIcal CommunicAtion"
 readme = "README.md"
 requires-python = ">=3.12"
+license = "MIT OR Apache-2.0"
+license-files = ["LICENSE-APACHE", "LICENSE-MIT"]
 authors = [
   { name = "Shunichiro Nomura", email = "nomura@space.t.u-tokyo.ac.jp" },
   { name = "Vinícius Nery", email = "viniciusfnery@space.t.u-tokyo.ac.jp" },

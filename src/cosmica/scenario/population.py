@@ -19,16 +19,14 @@ def _load_numpy_array_from_assets_dir(filename: str) -> npt.NDArray[np.floating]
         return np.load(f)
 
 
-def get_population_data() -> (
-    Annotated[
-        npt.NDArray[np.floating],
-        Doc(
-            "Global population count data with shape (180, 360)."
-            " The rows are latitude (+90 deg to -90 deg) and the columns are longitude (-180 deg to +180 deg)."
-            " The data is based on the Global Human Settlement Layer (GHSL) population grid data (GHS-POP) for 2025.",
-        ),
-    ]
-):
+def get_population_data() -> Annotated[
+    npt.NDArray[np.floating],
+    Doc(
+        "Global population count data with shape (180, 360)."
+        " The rows are latitude (+90 deg to -90 deg) and the columns are longitude (-180 deg to +180 deg)."
+        " The data is based on the Global Human Settlement Layer (GHSL) population grid data (GHS-POP) for 2025.",
+    ),
+]:
     """Get population data."""
     return _load_numpy_array_from_assets_dir("aggregated_population_data.npy")
 

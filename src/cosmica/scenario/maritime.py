@@ -21,15 +21,13 @@ def _load_numpy_array_from_assets_dir(filename: str) -> npt.NDArray[np.floating]
         return np.load(f)
 
 
-def get_ais_density_data() -> (
-    Annotated[
-        npt.NDArray[np.floating],
-        Doc(
-            "AIS density data [seconds/m2] in Oct 2023 as a NumPy array with shape (180, 359)."
-            " The rows are latitude (+90 deg to -90 deg) and the columns are longitude (-179.5 deg to +179.5 deg).",
-        ),
-    ]
-):
+def get_ais_density_data() -> Annotated[
+    npt.NDArray[np.floating],
+    Doc(
+        "AIS density data [seconds/m2] in Oct 2023 as a NumPy array with shape (180, 359)."
+        " The rows are latitude (+90 deg to -90 deg) and the columns are longitude (-179.5 deg to +179.5 deg).",
+    ),
+]:
     """Get AIS density data."""
     # Conversion [hours/km2] -> [seconds/m2]
     return _load_numpy_array_from_assets_dir("maritime_20231001_non-loitering.npy") * 3600 / 1e6

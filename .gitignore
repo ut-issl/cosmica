@@ -192,3 +192,18 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+.DS_Store
+.pickle_cache/
+
+# VS Code files
+/tmp/devcontainers*
+
+/requirements.txt
+
+# Coverage
+/coverage/*
+!/coverage/badge.svg
+
+# import-linter
+.import_linter_cache/

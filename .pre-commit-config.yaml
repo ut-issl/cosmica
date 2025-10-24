@@ -18,6 +18,8 @@ repos:
       - id: check-yaml
       - id: check-json
       - id: check-added-large-files
+        args: ["--maxkb=1000", "--enforce-all"]
+        exclude: "cosmica/visualization/assets/ne_50m_admin_0_countries_lakes.shp"
       - id: check-merge-conflict
       - id: check-symlinks
       - id: mixed-line-ending
@@ -31,6 +33,7 @@ repos:
 
   - repo: https://github.com/astral-sh/uv-pre-commit
     # uv version.
-    rev: 0.9.4
+    rev: 0.9.5
     hooks:
+      # Update the uv lockfile
       - id: uv-lock

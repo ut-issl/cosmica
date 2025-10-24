@@ -1,0 +1,7 @@
+epoch = 2023-01-01T00:00:00.000Z
+
+satellites = [
+    { id = 129, plane_id = 7, sma_m = 7378137, inc_deg = 60, raan_deg = 120, phase_at_epoch_deg = 150, orbit_type = 'circular' },
+    { id = 150, plane_id = 8, sma_m = 7378137, inc_deg = 60, raan_deg = 140, phase_at_epoch_deg = 169, orbit_type = 'circular' },
+    { id = 171, plane_id = 9, sma_m = 7378137, inc_deg = 60, raan_deg = 160, phase_at_epoch_deg = 188, orbit_type = 'circular' },
+]

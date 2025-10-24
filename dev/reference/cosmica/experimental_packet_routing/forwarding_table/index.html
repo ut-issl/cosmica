@@ -8,26 +8,28 @@
       
       
       
-        <link rel="canonical" href="https://www.space.t.u-tokyo.ac.jp/cosmica/dev/">
+        <link rel="canonical" href="https://www.space.t.u-tokyo.ac.jp/cosmica/dev/reference/cosmica/experimental_packet_routing/forwarding_table/">
       
       
+        <link rel="prev" href="../dtos/">
       
-        <link rel="next" href="reference/cosmica/">
+      
+        <link rel="next" href="../forwarding_table_time_list/">
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
     
     
       
-        <title>COSMICA Documentation</title>
+        <title>forwarding_table - COSMICA Documentation</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.84d31ad4.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.84d31ad4.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -46,9 +48,9 @@
       
     
     
-      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -74,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#constellation-satellite-simulator-for-optical-communication-cosmica" class="md-skip">
+        <a href="#cosmica.experimental_packet_routing.forwarding_table" class="md-skip">
           Skip to content
         </a>
       
@@ -94,7 +96,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="COSMICA Documentation" class="md-header__button md-logo" aria-label="COSMICA Documentation" data-md-component="logo">
+    <a href="../../../.." title="COSMICA Documentation" class="md-header__button md-logo" aria-label="COSMICA Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m11.62 1 5.66 5.67-2.12 2.12-2.12-2.12-1.42 1.42 2.33 2.32-1.16 1.17.45.46a2.5 2.5 0 0 1 2.83.5l-3.53 3.53a2.5 2.5 0 0 1-.5-2.83l-.46-.45-1.17 1.16-2.32-2.33-1.42 1.42 2.12 2.12-2.12 2.12L1 11.62 3.14 9.5l2.12 2.12 1.41-1.41-2.83-2.83c-.78-.78-.78-2.05 0-2.83l.71-.71c.78-.78 2.05-.78 2.83 0l2.83 2.83 1.41-1.41L9.5 3.14zM18 14a4 4 0 0 1-4 4v-2a2 2 0 0 0 2-2zm4 0a8 8 0 0 1-8 8v-2a6 6 0 0 0 6-6z"/></svg>
@@ -114,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              forwarding_table
             
           </span>
         </div>
@@ -227,11 +229,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="." class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
         
   
   
@@ -248,11 +248,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="reference/cosmica/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
           
   
   
@@ -272,7 +274,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="developers/setup/" class="md-tabs__link">
+        <a href="../../../../developers/setup/" class="md-tabs__link">
           
   
   
@@ -312,7 +314,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="COSMICA Documentation" class="md-nav__button md-logo" aria-label="COSMICA Documentation" data-md-component="logo">
+    <a href="../../../.." title="COSMICA Documentation" class="md-nav__button md-logo" aria-label="COSMICA Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m11.62 1 5.66 5.67-2.12 2.12-2.12-2.12-1.42 1.42 2.33 2.32-1.16 1.17.45.46a2.5 2.5 0 0 1 2.83.5l-3.53 3.53a2.5 2.5 0 0 1-.5-2.83l-.46-.45-1.17 1.16-2.32-2.33-1.42 1.42 2.12 2.12-2.12 2.12L1 11.62 3.14 9.5l2.12 2.12 1.41-1.41-2.83-2.83c-.78-.78-.78-2.05 0-2.83l.71-.71c.78-.78 2.05-.78 2.83 0l2.83 2.83 1.41-1.41L9.5 3.14zM18 14a4 4 0 0 1-4 4v-2a2 2 0 0 0 2-2zm4 0a8 8 0 0 1-8 8v-2a6 6 0 0 0 6-6z"/></svg>
@@ -339,32 +341,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Home
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
         
   
   
@@ -375,92 +355,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      Usage
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Usage">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      Examples
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#getting-started" class="md-nav__link">
-    <span class="md-ellipsis">
-      Getting started
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Getting started">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    <span class="md-ellipsis">
-      Prerequisites
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Installation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      Structure
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -469,24 +363,29 @@
       
   
   
+    
   
   
+  
     
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   
@@ -499,7 +398,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             API Reference
@@ -510,6 +409,8 @@
                 
   
   
+    
+  
   
   
     
@@ -520,15 +421,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/cosmica/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   
@@ -547,7 +448,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_1">
             <span class="md-nav__icon md-icon"></span>
             cosmica
@@ -576,7 +477,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/cosmica/cli/" class="md-nav__link ">
+            <a href="../../cli/" class="md-nav__link ">
               
   
   
@@ -609,7 +510,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/cli/main/" class="md-nav__link">
+      <a href="../../cli/main/" class="md-nav__link">
         
   
   
@@ -632,7 +533,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/cli/plot/" class="md-nav__link">
+      <a href="../../cli/plot/" class="md-nav__link">
         
   
   
@@ -678,7 +579,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/cosmica/comm_link/" class="md-nav__link ">
+            <a href="../../comm_link/" class="md-nav__link ">
               
   
   
@@ -711,7 +612,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/comm_link/base/" class="md-nav__link">
+      <a href="../../comm_link/base/" class="md-nav__link">
         
   
   
@@ -734,7 +635,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/comm_link/coordinator/" class="md-nav__link">
+      <a href="../../comm_link/coordinator/" class="md-nav__link">
         
   
   
@@ -757,7 +658,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/comm_link/gateway_to_gateway/" class="md-nav__link">
+      <a href="../../comm_link/gateway_to_gateway/" class="md-nav__link">
         
   
   
@@ -780,7 +681,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/comm_link/gateway_to_internet/" class="md-nav__link">
+      <a href="../../comm_link/gateway_to_internet/" class="md-nav__link">
         
   
   
@@ -803,7 +704,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/comm_link/geometric/" class="md-nav__link">
+      <a href="../../comm_link/geometric/" class="md-nav__link">
         
   
   
@@ -826,7 +727,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/comm_link/rate_distance_calculator/" class="md-nav__link">
+      <a href="../../comm_link/rate_distance_calculator/" class="md-nav__link">
         
   
   
@@ -849,7 +750,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/comm_link/sat_to_ground/" class="md-nav__link">
+      <a href="../../comm_link/sat_to_ground/" class="md-nav__link">
         
   
   
@@ -872,7 +773,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/comm_link/sat_to_sat/" class="md-nav__link">
+      <a href="../../comm_link/sat_to_sat/" class="md-nav__link">
         
   
   
@@ -895,7 +796,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/comm_link/uncertainty/" class="md-nav__link">
+      <a href="../../comm_link/uncertainty/" class="md-nav__link">
         
   
   
@@ -941,7 +842,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/cosmica/dtos/" class="md-nav__link ">
+            <a href="../../dtos/" class="md-nav__link ">
               
   
   
@@ -974,7 +875,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/dtos/dynamics_data/" class="md-nav__link">
+      <a href="../../dtos/dynamics_data/" class="md-nav__link">
         
   
   
@@ -1020,7 +921,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/cosmica/dynamics/" class="md-nav__link ">
+            <a href="../../dynamics/" class="md-nav__link ">
               
   
   
@@ -1053,7 +954,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/dynamics/constellation/" class="md-nav__link">
+      <a href="../../dynamics/constellation/" class="md-nav__link">
         
   
   
@@ -1076,7 +977,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/dynamics/orbit/" class="md-nav__link">
+      <a href="../../dynamics/orbit/" class="md-nav__link">
         
   
   
@@ -1099,7 +1000,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/dynamics/plotting/" class="md-nav__link">
+      <a href="../../dynamics/plotting/" class="md-nav__link">
         
   
   
@@ -1122,7 +1023,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/dynamics/sun_dynamics/" class="md-nav__link">
+      <a href="../../dynamics/sun_dynamics/" class="md-nav__link">
         
   
   
@@ -1150,6 +1051,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1160,15 +1063,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_5" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/cosmica/experimental_packet_routing/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -1187,7 +1090,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_1_5">
             <span class="md-nav__icon md-icon"></span>
             experimental_packet_routing
@@ -1201,7 +1104,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/experimental_packet_routing/calc_forwarding_table_from_graph/" class="md-nav__link">
+      <a href="../calc_forwarding_table_from_graph/" class="md-nav__link">
         
   
   
@@ -1224,7 +1127,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/experimental_packet_routing/case_definitions/" class="md-nav__link">
+      <a href="../case_definitions/" class="md-nav__link">
         
   
   
@@ -1247,7 +1150,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/experimental_packet_routing/comm_data/" class="md-nav__link">
+      <a href="../comm_data/" class="md-nav__link">
         
   
   
@@ -1270,7 +1173,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/experimental_packet_routing/dtos/" class="md-nav__link">
+      <a href="../dtos/" class="md-nav__link">
         
   
   
@@ -1290,10 +1193,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="reference/cosmica/experimental_packet_routing/forwarding_table/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    forwarding_table
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1304,6 +1227,141 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-module"></code>&nbsp;forwarding_table
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" forwarding_table">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.__all__" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;__all__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTable" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;ForwardingTable
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" ForwardingTable">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTable.entries" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;entries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTable.find_entry" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;find_entry
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTable.remove_entry" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;remove_entry
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTable.update_entry" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;update_entry
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTableInformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;ForwardingTableInformation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" ForwardingTableInformation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTableInformation.cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;cost
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTableInformation.destination" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;destination
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTableInformation.next_node" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;next_node
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1316,7 +1374,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/experimental_packet_routing/forwarding_table_time_list/" class="md-nav__link">
+      <a href="../forwarding_table_time_list/" class="md-nav__link">
         
   
   
@@ -1339,7 +1397,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/experimental_packet_routing/lsa_case_definition/" class="md-nav__link">
+      <a href="../lsa_case_definition/" class="md-nav__link">
         
   
   
@@ -1362,7 +1420,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/experimental_packet_routing/node_knowledge/" class="md-nav__link">
+      <a href="../node_knowledge/" class="md-nav__link">
         
   
   
@@ -1385,7 +1443,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/experimental_packet_routing/routing_result_visualizer/" class="md-nav__link">
+      <a href="../routing_result_visualizer/" class="md-nav__link">
         
   
   
@@ -1408,7 +1466,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/experimental_packet_routing/simulator/" class="md-nav__link">
+      <a href="../simulator/" class="md-nav__link">
         
   
   
@@ -1431,7 +1489,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/experimental_packet_routing/space_time_graph/" class="md-nav__link">
+      <a href="../space_time_graph/" class="md-nav__link">
         
   
   
@@ -1454,7 +1512,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/experimental_packet_routing/use_node_knowledge/" class="md-nav__link">
+      <a href="../use_node_knowledge/" class="md-nav__link">
         
   
   
@@ -1477,7 +1535,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/experimental_packet_routing/utility/" class="md-nav__link">
+      <a href="../utility/" class="md-nav__link">
         
   
   
@@ -1523,7 +1581,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/cosmica/models/" class="md-nav__link ">
+            <a href="../../models/" class="md-nav__link ">
               
   
   
@@ -1556,7 +1614,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/models/constellation/" class="md-nav__link">
+      <a href="../../models/constellation/" class="md-nav__link">
         
   
   
@@ -1579,7 +1637,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/models/demand/" class="md-nav__link">
+      <a href="../../models/demand/" class="md-nav__link">
         
   
   
@@ -1602,7 +1660,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/models/gateway/" class="md-nav__link">
+      <a href="../../models/gateway/" class="md-nav__link">
         
   
   
@@ -1625,7 +1683,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/models/internet/" class="md-nav__link">
+      <a href="../../models/internet/" class="md-nav__link">
         
   
   
@@ -1648,7 +1706,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/models/node/" class="md-nav__link">
+      <a href="../../models/node/" class="md-nav__link">
         
   
   
@@ -1671,7 +1729,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/models/orbit/" class="md-nav__link">
+      <a href="../../models/orbit/" class="md-nav__link">
         
   
   
@@ -1694,7 +1752,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/models/satellite/" class="md-nav__link">
+      <a href="../../models/satellite/" class="md-nav__link">
         
   
   
@@ -1717,7 +1775,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/models/scenario/" class="md-nav__link">
+      <a href="../../models/scenario/" class="md-nav__link">
         
   
   
@@ -1740,7 +1798,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/models/terminal/" class="md-nav__link">
+      <a href="../../models/terminal/" class="md-nav__link">
         
   
   
@@ -1763,7 +1821,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/models/user/" class="md-nav__link">
+      <a href="../../models/user/" class="md-nav__link">
         
   
   
@@ -1809,7 +1867,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/cosmica/scenario/" class="md-nav__link ">
+            <a href="../../scenario/" class="md-nav__link ">
               
   
   
@@ -1842,7 +1900,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/scenario/maritime/" class="md-nav__link">
+      <a href="../../scenario/maritime/" class="md-nav__link">
         
   
   
@@ -1865,7 +1923,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/scenario/population/" class="md-nav__link">
+      <a href="../../scenario/population/" class="md-nav__link">
         
   
   
@@ -1911,7 +1969,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/cosmica/topology/" class="md-nav__link ">
+            <a href="../../topology/" class="md-nav__link ">
               
   
   
@@ -1944,7 +2002,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/topology/gateway_to_gateway/" class="md-nav__link">
+      <a href="../../topology/gateway_to_gateway/" class="md-nav__link">
         
   
   
@@ -1967,7 +2025,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/topology/gateway_to_internet/" class="md-nav__link">
+      <a href="../../topology/gateway_to_internet/" class="md-nav__link">
         
   
   
@@ -1990,7 +2048,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/topology/ground_to_constellation/" class="md-nav__link">
+      <a href="../../topology/ground_to_constellation/" class="md-nav__link">
         
   
   
@@ -2013,7 +2071,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/topology/intra_constellation/" class="md-nav__link">
+      <a href="../../topology/intra_constellation/" class="md-nav__link">
         
   
   
@@ -2036,7 +2094,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/topology/usersatellite_gateway_to_constellation/" class="md-nav__link">
+      <a href="../../topology/usersatellite_gateway_to_constellation/" class="md-nav__link">
         
   
   
@@ -2059,7 +2117,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/topology/usersatellite_to_constellation/" class="md-nav__link">
+      <a href="../../topology/usersatellite_to_constellation/" class="md-nav__link">
         
   
   
@@ -2105,7 +2163,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/cosmica/utils/" class="md-nav__link ">
+            <a href="../../utils/" class="md-nav__link ">
               
   
   
@@ -2138,7 +2196,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/utils/constants/" class="md-nav__link">
+      <a href="../../utils/constants/" class="md-nav__link">
         
   
   
@@ -2161,7 +2219,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/utils/coordinates/" class="md-nav__link">
+      <a href="../../utils/coordinates/" class="md-nav__link">
         
   
   
@@ -2184,7 +2242,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/utils/gauss_beam/" class="md-nav__link">
+      <a href="../../utils/gauss_beam/" class="md-nav__link">
         
   
   
@@ -2207,7 +2265,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/utils/vector/" class="md-nav__link">
+      <a href="../../utils/vector/" class="md-nav__link">
         
   
   
@@ -2253,7 +2311,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/cosmica/visualization/" class="md-nav__link ">
+            <a href="../../visualization/" class="md-nav__link ">
               
   
   
@@ -2286,7 +2344,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/visualization/equirectangular/" class="md-nav__link">
+      <a href="../../visualization/equirectangular/" class="md-nav__link">
         
   
   
@@ -2309,7 +2367,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cosmica/visualization/utils/" class="md-nav__link">
+      <a href="../../visualization/utils/" class="md-nav__link">
         
   
   
@@ -2396,7 +2454,7 @@
   
   
     <li class="md-nav__item">
-      <a href="developers/setup/" class="md-nav__link">
+      <a href="../../../../developers/setup/" class="md-nav__link">
         
   
   
@@ -2419,7 +2477,7 @@
   
   
     <li class="md-nav__item">
-      <a href="developers/tips/" class="md-nav__link">
+      <a href="../../../../developers/tips/" class="md-nav__link">
         
   
   
@@ -2442,7 +2500,7 @@
   
   
     <li class="md-nav__item">
-      <a href="developers/releasing/" class="md-nav__link">
+      <a href="../../../../developers/releasing/" class="md-nav__link">
         
   
   
@@ -2482,8 +2540,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -2492,19 +2548,65 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table" class="md-nav__link">
     <span class="md-ellipsis">
-      Usage
+      <code class="doc-symbol doc-symbol-toc doc-symbol-module"></code>&nbsp;forwarding_table
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Usage">
+    <nav class="md-nav" aria-label=" forwarding_table">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.__all__" class="md-nav__link">
     <span class="md-ellipsis">
-      Examples
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;__all__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTable" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;ForwardingTable
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" ForwardingTable">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTable.entries" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;entries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTable.find_entry" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;find_entry
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTable.remove_entry" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;remove_entry
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTable.update_entry" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;update_entry
     </span>
   </a>
   
@@ -2514,30 +2616,39 @@
     </nav>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#getting-started" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTableInformation" class="md-nav__link">
     <span class="md-ellipsis">
-      Getting started
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;ForwardingTableInformation
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Getting started">
+    <nav class="md-nav" aria-label=" ForwardingTableInformation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTableInformation.cost" class="md-nav__link">
     <span class="md-ellipsis">
-      Prerequisites
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;cost
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTableInformation.destination" class="md-nav__link">
     <span class="md-ellipsis">
-      Installation
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;destination
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTableInformation.next_node" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;next_node
     </span>
   </a>
   
@@ -2547,13 +2658,9 @@
     </nav>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      Structure
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2572,27 +2679,452 @@
                   
 
 
+  
+  
 
-<h1 id="constellation-satellite-simulator-for-optical-communication-cosmica">🛰️ COnstellation Satellite siMulator for optIcal CommunicAtion (COSMICA)</h1>
-<p><img alt="Test Status" src="https://github.com/ut-issl/cosmica/workflows/test/badge.svg" /></p>
-<p>COSMICA is a Python package for simulating optical communication satellite constellations. It is modular and extensible so that users can conduct various optical communication satellite constellation analyses. See <a href="https://www.space.t.u-tokyo.ac.jp/cosmica/">COSMICA documentation</a> for more details.</p>
-<h2 id="usage">Usage</h2>
-<h3 id="examples">Examples</h3>
-<ul>
-<li>See <code>examples</code> directory for how to use COSMICA in analyses.</li>
-</ul>
-<h2 id="getting-started">Getting started</h2>
-<h3 id="prerequisites">Prerequisites</h3>
-<ul>
-<li>Python 3.12 or higher</li>
-</ul>
-<h3 id="installation">Installation</h3>
-<p>If you use pip, install COSMICA by running:</p>
-<pre><code class="language-bash">pip install cosmica
-</code></pre>
-<h2 id="structure">Structure</h2>
-<p>The diagram below shows the structure of the simulator. Each green box is a Python submodule.</p>
-<p><img alt="COSMICA structure" src="assets/cosmica_structure.drawio.svg" /></p>
+
+  <h1>forwarding_table</h1>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="cosmica.experimental_packet_routing.forwarding_table" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">cosmica.experimental_packet_routing.forwarding_table</span>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="cosmica.experimental_packet_routing.forwarding_table.__all__" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">__all__</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ForwardingTable&#39;</span><span class="p">,</span> <span class="s1">&#39;ForwardingTableInformation&#39;</span><span class="p">]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="cosmica.experimental_packet_routing.forwarding_table.ForwardingTable" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">ForwardingTable</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">ForwardingTable</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">entries</span><span class="p">:</span> <span class="n"><span title="dict">dict</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            Node
+
+
+  
+      dataclass
+   (cosmica.models.node.Node)" href="../../models/node/#cosmica.models.node.Node">Node</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="            ForwardingTableInformation
+
+
+  
+      dataclass
+   (cosmica.experimental_packet_routing.forwarding_table.ForwardingTableInformation)" href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTableInformation">ForwardingTableInformation</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><span title="dict">dict</span></span><span class="p">()</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="cosmica.experimental_packet_routing.forwarding_table.ForwardingTable.entries" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">entries</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">entries</span><span class="p">:</span> <span class="n"><span title="dict">dict</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            Node
+
+
+  
+      dataclass
+   (cosmica.models.node.Node)" href="../../models/node/#cosmica.models.node.Node">Node</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="            ForwardingTableInformation
+
+
+  
+      dataclass
+   (cosmica.experimental_packet_routing.forwarding_table.ForwardingTableInformation)" href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTableInformation">ForwardingTableInformation</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><span title="dataclasses.field">field</span></span><span class="p">(</span>
+    <span class="n"><span title="dataclasses.field(default_factory)">default_factory</span></span><span class="o">=</span><span class="n"><span title="dict">dict</span></span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="cosmica.experimental_packet_routing.forwarding_table.ForwardingTable.find_entry" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">find_entry</span>
+
+
+</h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">find_entry</span><span class="p">(</span>
+    <span class="n">destination</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Node
+
+
+  
+      dataclass
+   (cosmica.models.node.Node)" href="../../models/node/#cosmica.models.node.Node">Node</a></span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            ForwardingTableInformation
+
+
+  
+      dataclass
+   (cosmica.experimental_packet_routing.forwarding_table.ForwardingTableInformation)" href="#cosmica.experimental_packet_routing.forwarding_table.ForwardingTableInformation">ForwardingTableInformation</a></span> <span class="o">|</span> <span class="kc">None</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+            <details class="quote">
+              <summary>Source code in <code>src/cosmica/experimental_packet_routing/forwarding_table.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">find_entry</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">destination</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForwardingTableInformation</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="cosmica.experimental_packet_routing.forwarding_table.ForwardingTable.remove_entry" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">remove_entry</span>
+
+
+</h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">remove_entry</span><span class="p">(</span><span class="n">destination</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Node
+
+
+  
+      dataclass
+   (cosmica.models.node.Node)" href="../../models/node/#cosmica.models.node.Node">Node</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+            <details class="quote">
+              <summary>Source code in <code>src/cosmica/experimental_packet_routing/forwarding_table.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">remove_entry</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">destination</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">destination</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">:</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="n">destination</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="cosmica.experimental_packet_routing.forwarding_table.ForwardingTable.update_entry" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">update_entry</span>
+
+
+</h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">update_entry</span><span class="p">(</span>
+    <span class="n">destination</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Node
+
+
+  
+      dataclass
+   (cosmica.models.node.Node)" href="../../models/node/#cosmica.models.node.Node">Node</a></span><span class="p">,</span> <span class="n">next_node</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Node
+
+
+  
+      dataclass
+   (cosmica.models.node.Node)" href="../../models/node/#cosmica.models.node.Node">Node</a></span><span class="p">,</span> <span class="n">cost</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+            <details class="quote">
+              <summary>Source code in <code>src/cosmica/experimental_packet_routing/forwarding_table.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">update_entry</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">destination</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+    <span class="n">next_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+    <span class="n">cost</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">destination</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">:</span>
+        <span class="n">entry</span><span class="p">:</span> <span class="n">ForwardingTableInformation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="n">destination</span><span class="p">]</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">next_node</span> <span class="o">=</span> <span class="n">next_node</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="n">cost</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="n">destination</span><span class="p">]</span> <span class="o">=</span> <span class="n">ForwardingTableInformation</span><span class="p">(</span>
+            <span class="n">destination</span><span class="o">=</span><span class="n">destination</span><span class="p">,</span>
+            <span class="n">next_node</span><span class="o">=</span><span class="n">next_node</span><span class="p">,</span>
+            <span class="n">cost</span><span class="o">=</span><span class="n">cost</span><span class="p">,</span>
+        <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="cosmica.experimental_packet_routing.forwarding_table.ForwardingTableInformation" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">ForwardingTableInformation</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">ForwardingTableInformation</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span> <span class="n">destination</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Node
+
+
+  
+      dataclass
+   (cosmica.models.node.Node)" href="../../models/node/#cosmica.models.node.Node">Node</a></span><span class="p">,</span> <span class="n">next_node</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Node
+
+
+  
+      dataclass
+   (cosmica.models.node.Node)" href="../../models/node/#cosmica.models.node.Node">Node</a></span><span class="p">,</span> <span class="n">cost</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="cosmica.experimental_packet_routing.forwarding_table.ForwardingTableInformation.cost" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">cost</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">cost</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="cosmica.experimental_packet_routing.forwarding_table.ForwardingTableInformation.destination" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">destination</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">destination</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Node
+
+
+  
+      dataclass
+   (cosmica.models.node.Node)" href="../../models/node/#cosmica.models.node.Node">Node</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="cosmica.experimental_packet_routing.forwarding_table.ForwardingTableInformation.next_node" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">next_node</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">next_node</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Node
+
+
+  
+      dataclass
+   (cosmica.models.node.Node)" href="../../models/node/#cosmica.models.node.Node">Node</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
 
 
 
@@ -2641,10 +3173,10 @@
     
     
       
-      <script id="__config" type="application/json">{"base": ".", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky"], "search": "assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky"], "search": "../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="assets/javascripts/bundle.f55a23d4.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
     
   </body>

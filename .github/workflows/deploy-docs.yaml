@@ -27,19 +27,19 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version-file: .python-version
-
-      - name: Install the project
-        run: uv sync --no-dev --group docs
 
       - name: Set up Git
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git fetch --prune --unshallow
+
+      - name: Install the project
+        run: uv sync --no-dev --group docs
 
       - name: Update the docs
         run: uv run -- mike deploy --push dev

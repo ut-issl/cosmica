@@ -19,7 +19,6 @@ concurrency:
 
 jobs:
   ruff:
-    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -40,7 +39,6 @@ jobs:
         run: uv run -- ruff check
 
   mypy:
-    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -61,8 +59,28 @@ jobs:
       - name: Run mypy
         run: uv run -- mypy .
 
+  import-linter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: ${{ env.UV_VERSION }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: .python-version
+
+      - name: Install the project
+        run: uv sync --dev
+
+      - name: Run import-linter
+        run: uv run -- lint-imports
+
   pytest:
-    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
 
     steps:
@@ -105,7 +123,8 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
 
-      - uses: actions/setup-python@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
         with:
           python-version-file: .python-version
 
@@ -116,9 +135,8 @@ jobs:
         run: uv run -- mkdocs build
 
   collect:
-    if: github.event.pull_request.draft == false
-    needs: [ruff, mypy, pytest]
+    needs: [ruff, mypy, import-linter, build-docs, pytest]
     runs-on: ubuntu-latest
     steps:
-    - name: Collect results
-      run: echo "All checks passed!"
+      - name: Collect results
+        run: echo "All checks passed!"

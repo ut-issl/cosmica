@@ -27,6 +27,7 @@ class Demand[T: Hashable](ABC):
 
     id: T
 
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     @classmethod
     @abstractmethod
     @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
@@ -45,6 +46,7 @@ class ConstantCommunicationDemand(Demand[_T]):
     distribution: Literal["uniform", "poisson"]
     transmission_rate: float
 
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     @classmethod
     @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     def parse_demand_item(cls, item: Mapping[str, Any]) -> Self:
@@ -75,6 +77,7 @@ class TemporaryCommunicationDemand(Demand[_T]):
     ) -> np.bool:
         return self.start_time <= current_time < self.end_time
 
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     @classmethod
     @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     def parse_demand_item(cls, item: Mapping[str, Any]) -> Self:
@@ -106,6 +109,7 @@ class OneTimeCommunicationDemand(Demand[_T]):
     generation_time: np.datetime64
     deadline: np.datetime64
 
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     @classmethod
     @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     def parse_demand_item(cls, item: Mapping[str, Any]) -> Self:
@@ -126,6 +130,7 @@ _DEMAND_TYPES: dict[str, type[Demand]] = {
 }
 
 
+@deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
 def parse_demand_item(item: Mapping[str, Any]) -> Demand:
     """Parse a demand item."""
     demand_type = item["type"]

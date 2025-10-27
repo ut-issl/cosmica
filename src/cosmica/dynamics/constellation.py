@@ -99,6 +99,7 @@ class MultiOrbitalPlaneConstellation[TOrbit: SatelliteOrbit](SatelliteConstellat
 
         epoch = np.datetime64(toml_data["epoch"].astimezone(tz=UTC).replace(tzinfo=None))
 
+        @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
         def parse_satellite_item(
             item: dict[str, Any],
         ) -> tuple[ConstellationSatellite[MOPCSatelliteKey], TOrbit]:

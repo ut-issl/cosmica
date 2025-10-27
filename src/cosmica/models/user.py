@@ -27,6 +27,7 @@ class User(Node[_T], ABC):
     id: _T
     terminals: list[CommunicationTerminal] = field(default_factory=list)
 
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     @classmethod
     @abstractmethod
     @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
@@ -46,6 +47,7 @@ class StationaryOnGroundUser(User[_T]):
     minimum_elevation: float = field(compare=False)
     terminals: list[CommunicationTerminal] = field(default_factory=list, compare=False)
 
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     @classmethod
     @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     def parse_user_item(cls, item: Mapping[str, Any]) -> Self:
@@ -61,6 +63,7 @@ class StationaryOnGroundUser(User[_T]):
 _USER_TYPES: dict[str, type[User]] = {cls.class_name(): cls for cls in (StationaryOnGroundUser,)}
 
 
+@deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
 def parse_user_item(item: Mapping[str, Any]) -> User:
     """Parse a user item."""
     user_type = item["type"]

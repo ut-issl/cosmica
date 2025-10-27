@@ -40,6 +40,7 @@ class Gateway(Node[_T]):
             toml_data = tomllib.load(f)
         return list(map(cls.parse_gateway_item, toml_data["gateways"]))
 
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     @classmethod
     @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     def parse_gateway_item(cls, item: MutableMapping[str, Any]) -> Self:
@@ -72,6 +73,7 @@ class GatewayOGS(Node[_T]):
             toml_data = tomllib.load(f)
         return list(map(cls.parse_gateway_item, toml_data["gateways"]))
 
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     @classmethod
     @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     def parse_gateway_item(cls, item: MutableMapping[str, Any]) -> Self:

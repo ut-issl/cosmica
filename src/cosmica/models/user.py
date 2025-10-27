@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any, Self, TypeVar
 
 import numpy as np
+from typing_extensions import deprecated
 
 from .node import Node
 from .terminal import CommunicationTerminal
@@ -28,6 +29,7 @@ class User(Node[_T], ABC):
 
     @classmethod
     @abstractmethod
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     def parse_user_item(cls, item: Mapping[str, Any]) -> Self:
         """Parse a user item."""
         ...
@@ -45,6 +47,7 @@ class StationaryOnGroundUser(User[_T]):
     terminals: list[CommunicationTerminal] = field(default_factory=list, compare=False)
 
     @classmethod
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     def parse_user_item(cls, item: Mapping[str, Any]) -> Self:
         return cls(
             id=item["id"],
@@ -64,6 +67,7 @@ def parse_user_item(item: Mapping[str, Any]) -> User:
     return _USER_TYPES[user_type].parse_user_item(item)
 
 
+@deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
 def load_users_from_toml_file(toml_file_path: str | Path) -> list[User]:
     """Load users from a TOML file."""
     toml_file_path = Path(toml_file_path)

@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, NamedTuple
 
 import numpy as np
+from typing_extensions import deprecated
 
 if TYPE_CHECKING:
     import numpy.typing as npt
@@ -90,6 +91,7 @@ class MultiOrbitalPlaneConstellation[TOrbit: SatelliteOrbit](SatelliteConstellat
         return len(self.plane_id_to_satellites[self.plane_ids[0]])
 
     @classmethod
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     def from_toml_file(cls, toml_file_path: Path | str) -> MultiOrbitalPlaneConstellation:
         toml_file_path = Path(toml_file_path)
         with toml_file_path.open("rb") as f:

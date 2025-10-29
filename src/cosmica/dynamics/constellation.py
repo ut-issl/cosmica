@@ -89,38 +89,3 @@ class MultiOrbitalPlaneConstellation[TOrbit: SatelliteOrbit](SatelliteConstellat
             msg = "Not all planes have the same number of satellites."
             raise ValueError(msg)
         return len(self.plane_id_to_satellites[self.plane_ids[0]])
-
-    @classmethod
-    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
-    def from_toml_file(cls, toml_file_path: Path | str) -> MultiOrbitalPlaneConstellation:
-        toml_file_path = Path(toml_file_path)
-        with toml_file_path.open("rb") as f:
-            toml_data = tomllib.load(f)
-
-        epoch = np.datetime64(toml_data["epoch"].astimezone(tz=UTC).replace(tzinfo=None))
-
-        @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
-        def parse_satellite_item(
-            item: dict[str, Any],
-        ) -> tuple[ConstellationSatellite[MOPCSatelliteKey], TOrbit]:
-            plane_id = item.pop("plane_id")
-            satellite_id = item.pop("id")
-
-            # Convert degrees to radians
-            item["semi_major_axis"] = item.pop("sma_m")
-            item["inclination"] = np.radians(item.pop("inc_deg"))
-            item["raan"] = np.radians(item.pop("raan_deg"))
-            item["phase_at_epoch"] = np.radians(item.pop("phase_at_epoch_deg"))
-            item["epoch"] = epoch
-
-            orbit_type = item.pop("orbit_type")
-            return ConstellationSatellite(  # type: ignore[return-value]
-                id=MOPCSatelliteKey(plane_id, satellite_id),
-            ), make_satellite_orbit(
-                orbit_type=orbit_type,
-                **item,
-            )
-
-        satellite_orbits = dict(map(parse_satellite_item, toml_data["satellites"]))
-
-        return cls(satellite_orbits)

@@ -68,6 +68,9 @@ docs = [
   "mkdocstrings[python]>=0.30.0",
 ]
 examples = ["marimo>=0.15.0"]
+license = [
+  "pip-licenses>=5.5.0",
+]
 lint = ["deptry>=0.23.1", "import-linter>=2.4", { include-group = "ruff" }]
 # Define the dedicated dependency group for ruff so we can use it in the CI.
 ruff = ["ruff>=0.12.9"]
@@ -160,6 +163,9 @@ module = [
   "sgp4.*",
 ]
 ignore_missing_imports = true
+
+[tool.pip-licenses]
+allow-only = "MIT License;BSD License;Apache 2.0;Python Software Foundation License;PSF-2.0;ISC License (ISCL);Apache Software License;The Unlicense (Unlicense);MIT;BSD-3-Clause;Mozilla Public License 2.0 (MPL 2.0);MIT OR Apache-2.0;MIT-CMU"
 
 [tool.pytest.ini_options]
 addopts = "-ra --verbose --verbose --capture=no --strict-markers --color=yes --log-cli-level=INFO"

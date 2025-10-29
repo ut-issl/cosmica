@@ -44,9 +44,6 @@ Documentation = "https://www.space.t.u-tokyo.ac.jp/cosmica/"
 Issues = "https://github.com/ut-issl/cosmica/issues"
 Repository = "https://github.com/ut-issl/cosmica"
 
-[project.scripts]
-cosmica = "cosmica.cli.main:app"
-
 [dependency-groups]
 dev = [
   "pre-commit>=4.3.0",

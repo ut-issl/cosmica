@@ -20,7 +20,7 @@ def _version_callback(value: bool) -> None:  # noqa: FBT001
 
 @app.callback()
 def main(
-    version: Annotated[
+    _version: Annotated[
         bool | None,
         typer.Option("--version", help="Show version information", is_eager=True, callback=_version_callback),
     ] = None,

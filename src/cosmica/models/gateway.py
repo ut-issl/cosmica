@@ -5,19 +5,9 @@ __all__ = [
     "GatewayOGS",
 ]
 
-import tomllib
 from collections.abc import Hashable
 from dataclasses import dataclass, field
-from pathlib import Path
-from typing import TYPE_CHECKING, Any, Self, override
-
-from typing_extensions import deprecated
-
-if TYPE_CHECKING:
-    from collections.abc import MutableMapping
-
-
-import numpy as np
+from typing import override
 
 from .node import Node
 

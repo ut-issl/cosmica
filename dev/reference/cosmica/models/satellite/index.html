@@ -3123,7 +3123,7 @@
 
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">ConstellationSatellite</span><span class="p">(</span>
-    <span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite._T">_T</span></span><span class="p">,</span> <span class="n">orbit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            SatelliteOrbitModel (cosmica.models.orbit.SatelliteOrbitModel)" href="../orbit/#cosmica.models.orbit.SatelliteOrbitModel">SatelliteOrbitModel</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.ConstellationSatellite[T]">T</span></span><span class="p">,</span> <span class="n">orbit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            SatelliteOrbitModel (cosmica.models.orbit.SatelliteOrbitModel)" href="../orbit/#cosmica.models.orbit.SatelliteOrbitModel">SatelliteOrbitModel</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -3134,7 +3134,7 @@
 
   
       dataclass
-   (cosmica.models.satellite.Satellite)" href="#cosmica.models.satellite.Satellite">Satellite</a>[<span title="cosmica.models.satellite._T">_T</span>]</code></p>
+   (cosmica.models.satellite.Satellite)" href="#cosmica.models.satellite.Satellite">Satellite</a>[<span title="cosmica.models.satellite.ConstellationSatellite[T]">T</span>]</code></p>
 
 
 
@@ -3197,7 +3197,7 @@
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.ConstellationSatellite[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3277,9 +3277,11 @@
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/satellite.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;CSAT&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -3319,7 +3321,7 @@
 
   
       dataclass
-   (cosmica.models.node.Node)" href="../node/#cosmica.models.node.Node">Node</a>[<span title="cosmica.models.satellite._T">_T</span>]</code>, <code><span title="abc.ABC">ABC</span></code></p>
+   (cosmica.models.node.Node)" href="../node/#cosmica.models.node.Node">Node</a>[<span title="cosmica.models.satellite.Satellite[T]">T</span>]</code>, <code><span title="abc.ABC">ABC</span></code></p>
 
 
 
@@ -3484,8 +3486,8 @@
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">SatelliteTerminal</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite._T">_T</span></span><span class="p">,</span>
-    <span class="n">terminal_id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite._T">_T</span></span><span class="p">,</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.SatelliteTerminal[T]">T</span></span><span class="p">,</span>
+    <span class="n">terminal_id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.SatelliteTerminal[T]">T</span></span><span class="p">,</span>
     <span class="n">azimuth_min</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">azimuth_max</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">elevation_min</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
@@ -3501,7 +3503,7 @@
 
   
       dataclass
-   (cosmica.models.satellite.Satellite)" href="#cosmica.models.satellite.Satellite">Satellite</a>[<span title="cosmica.models.satellite._T">_T</span>]</code></p>
+   (cosmica.models.satellite.Satellite)" href="#cosmica.models.satellite.Satellite">Satellite</a>[<span title="cosmica.models.satellite.SatelliteTerminal[T]">T</span>]</code></p>
 
 
 
@@ -3674,7 +3676,7 @@
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.SatelliteTerminal[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3701,7 +3703,7 @@
 
   
       dataclass
-   (cosmica.models.terminal.OpticalCommunicationTerminal)" href="../terminal/#cosmica.models.terminal.OpticalCommunicationTerminal">OpticalCommunicationTerminal</a></span>
+   (cosmica.models.terminal.OpticalCommunicationTerminal)" href="../terminal/#cosmica.models.terminal.OpticalCommunicationTerminal">OpticalCommunicationTerminal</a></span><span class="p">[</span><span class="n"><span title="cosmica.models.satellite.SatelliteTerminal[T]">T</span></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3723,7 +3725,7 @@
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">terminal_id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">terminal_id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.SatelliteTerminal[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3823,7 +3825,7 @@
   </span>
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">UserSatellite</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite._T">_T</span></span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">UserSatellite</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.UserSatellite[T]">T</span></span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3833,7 +3835,7 @@
 
   
       dataclass
-   (cosmica.models.satellite.Satellite)" href="#cosmica.models.satellite.Satellite">Satellite</a>[<span title="cosmica.models.satellite._T">_T</span>]</code></p>
+   (cosmica.models.satellite.Satellite)" href="#cosmica.models.satellite.Satellite">Satellite</a>[<span title="cosmica.models.satellite.UserSatellite[T]">T</span>]</code></p>
 
 
 
@@ -3896,7 +3898,7 @@
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.UserSatellite[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3953,9 +3955,11 @@
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/satellite.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">38</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">37</span>
+<span class="normal">38</span>
 <span class="normal">39</span>
 <span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;USAT&quot;</span>
 </code></pre></div></td></tr></table></div>

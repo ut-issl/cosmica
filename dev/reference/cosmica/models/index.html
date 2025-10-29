@@ -4312,7 +4312,7 @@
   </span>
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">CommunicationTerminal</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal._T">_T</span></span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">CommunicationTerminal</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal.CommunicationTerminal[T]">T</span></span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -4322,7 +4322,7 @@
 
   
       dataclass
-   (cosmica.models.node.Node)" href="node/#cosmica.models.node.Node">Node</a>[<span title="cosmica.models.terminal._T">_T</span>]</code></p>
+   (cosmica.models.node.Node)" href="node/#cosmica.models.node.Node">Node</a>[<span title="cosmica.models.terminal.CommunicationTerminal[T]">T</span>]</code></p>
 
 
 
@@ -4385,7 +4385,7 @@
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal.CommunicationTerminal[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -4442,9 +4442,11 @@
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/terminal.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;CT&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -4476,7 +4478,7 @@
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">ConstantCommunicationDemand</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.demand._T">_T</span></span><span class="p">,</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.demand.ConstantCommunicationDemand[T]">T</span></span><span class="p">,</span>
     <span class="n">source</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            NodeGID
 
 
@@ -4501,7 +4503,7 @@
 
   
       dataclass
-   (cosmica.models.demand.Demand)" href="demand/#cosmica.models.demand.Demand">Demand</a>[<span title="cosmica.models.demand._T">_T</span>]</code></p>
+   (cosmica.models.demand.Demand)" href="demand/#cosmica.models.demand.Demand">Demand</a>[<span title="cosmica.models.demand.ConstantCommunicationDemand[T]">T</span>]</code></p>
 
 
         <p>Constant communication demand model.</p>
@@ -4586,7 +4588,7 @@
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.demand._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.demand.ConstantCommunicationDemand[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -4667,16 +4669,16 @@
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/demand.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">48</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
 <span class="normal">49</span>
 <span class="normal">50</span>
 <span class="normal">51</span>
 <span class="normal">52</span>
 <span class="normal">53</span>
 <span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;Construction of objects from TOML files is deprecated and will be removed in future versions.&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_demand_item</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
     <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
@@ -4714,7 +4716,7 @@
 
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">ConstellationSatellite</span><span class="p">(</span>
-    <span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite._T">_T</span></span><span class="p">,</span> <span class="n">orbit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            SatelliteOrbitModel (cosmica.models.orbit.SatelliteOrbitModel)" href="orbit/#cosmica.models.orbit.SatelliteOrbitModel">SatelliteOrbitModel</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.ConstellationSatellite[T]">T</span></span><span class="p">,</span> <span class="n">orbit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            SatelliteOrbitModel (cosmica.models.orbit.SatelliteOrbitModel)" href="orbit/#cosmica.models.orbit.SatelliteOrbitModel">SatelliteOrbitModel</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -4725,7 +4727,7 @@
 
   
       dataclass
-   (cosmica.models.satellite.Satellite)" href="satellite/#cosmica.models.satellite.Satellite">Satellite</a>[<span title="cosmica.models.satellite._T">_T</span>]</code></p>
+   (cosmica.models.satellite.Satellite)" href="satellite/#cosmica.models.satellite.Satellite">Satellite</a>[<span title="cosmica.models.satellite.ConstellationSatellite[T]">T</span>]</code></p>
 
 
 
@@ -4788,7 +4790,7 @@
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.ConstellationSatellite[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -4868,9 +4870,11 @@
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/satellite.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;CSAT&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -4976,12 +4980,12 @@
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/demand.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">30</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">33</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@abstractmethod</span>
 <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;Construction of objects from TOML files is deprecated and will be removed in future versions.&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_demand_item</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
@@ -5311,7 +5315,7 @@
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">Gateway</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.gateway._T">_T</span></span><span class="p">,</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.gateway.Gateway[T]">T</span></span><span class="p">,</span>
     <span class="n">latitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">longitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">minimum_elevation</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
@@ -5327,7 +5331,7 @@
 
   
       dataclass
-   (cosmica.models.node.Node)" href="node/#cosmica.models.node.Node">Node</a>[<span title="cosmica.models.gateway._T">_T</span>]</code></p>
+   (cosmica.models.node.Node)" href="node/#cosmica.models.node.Node">Node</a>[<span title="cosmica.models.gateway.Gateway[T]">T</span>]</code></p>
 
 
 
@@ -5413,7 +5417,7 @@
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.gateway._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.gateway.Gateway[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -5562,9 +5566,11 @@
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/gateway.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;GW&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -5593,13 +5599,13 @@
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/gateway.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">35</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
 <span class="normal">36</span>
 <span class="normal">37</span>
 <span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;Construction of objects from TOML files is deprecated and will be removed in future versions.&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">from_toml_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">toml_file_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Self</span><span class="p">]:</span>
     <span class="n">toml_file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">toml_file_path</span><span class="p">)</span>
@@ -5632,13 +5638,13 @@
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/gateway.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">43</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
 <span class="normal">44</span>
 <span class="normal">45</span>
 <span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;Construction of objects from TOML files is deprecated and will be removed in future versions.&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_gateway_item</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
     <span class="n">item</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;lat_deg&quot;</span><span class="p">))</span>
@@ -5674,7 +5680,7 @@
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">GatewayOGS</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.gateway._T">_T</span></span><span class="p">,</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.gateway.GatewayOGS[T]">T</span></span><span class="p">,</span>
     <span class="n">latitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">longitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">minimum_elevation</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
@@ -5692,7 +5698,7 @@
 
   
       dataclass
-   (cosmica.models.node.Node)" href="node/#cosmica.models.node.Node">Node</a>[<span title="cosmica.models.gateway._T">_T</span>]</code></p>
+   (cosmica.models.node.Node)" href="node/#cosmica.models.node.Node">Node</a>[<span title="cosmica.models.gateway.GatewayOGS[T]">T</span>]</code></p>
 
 
 
@@ -5801,7 +5807,7 @@
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.gateway._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.gateway.GatewayOGS[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -5973,9 +5979,11 @@
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/gateway.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">86</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">85</span>
+<span class="normal">86</span>
 <span class="normal">87</span>
 <span class="normal">88</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;GW_OGS&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -6004,13 +6012,13 @@
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/gateway.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">67</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">66</span>
+<span class="normal">67</span>
 <span class="normal">68</span>
 <span class="normal">69</span>
 <span class="normal">70</span>
 <span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">72</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;Construction of objects from TOML files is deprecated and will be removed in future versions.&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">from_toml_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">toml_file_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Self</span><span class="p">]:</span>
     <span class="n">toml_file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">toml_file_path</span><span class="p">)</span>
@@ -6043,7 +6051,8 @@
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/gateway.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">75</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">74</span>
+<span class="normal">75</span>
 <span class="normal">76</span>
 <span class="normal">77</span>
 <span class="normal">78</span>
@@ -6051,8 +6060,7 @@
 <span class="normal">80</span>
 <span class="normal">81</span>
 <span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">83</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;Construction of objects from TOML files is deprecated and will be removed in future versions.&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_gateway_item</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
     <span class="n">item</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;lat_deg&quot;</span><span class="p">))</span>
@@ -6221,7 +6229,7 @@
   </span>
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">Internet</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.internet._T">_T</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">Internet</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.internet.Internet[T]">T</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6231,7 +6239,7 @@
 
   
       dataclass
-   (cosmica.models.node.Node)" href="node/#cosmica.models.node.Node">Node</a>[<span title="cosmica.models.internet._T">_T</span> | None]</code></p>
+   (cosmica.models.node.Node)" href="node/#cosmica.models.node.Node">Node</a>[<span title="cosmica.models.internet.Internet[T]">T</span> | None]</code></p>
 
 
         <p>The Internet node.</p>
@@ -6297,7 +6305,7 @@
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.internet._T">_T</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.internet.Internet[T]">T</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6354,9 +6362,11 @@
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/internet.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;Internet&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -6556,7 +6566,7 @@
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">OneTimeCommunicationDemand</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.demand._T">_T</span></span><span class="p">,</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.demand.OneTimeCommunicationDemand[T]">T</span></span><span class="p">,</span>
     <span class="n">source</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            NodeGID
 
 
@@ -6582,7 +6592,7 @@
 
   
       dataclass
-   (cosmica.models.demand.Demand)" href="demand/#cosmica.models.demand.Demand">Demand</a>[<span title="cosmica.models.demand._T">_T</span>]</code></p>
+   (cosmica.models.demand.Demand)" href="demand/#cosmica.models.demand.Demand">Demand</a>[<span title="cosmica.models.demand.OneTimeCommunicationDemand[T]">T</span>]</code></p>
 
 
         <p>One-time communication demand model.</p>
@@ -6715,7 +6725,7 @@ data transfer should be completed is also given.</p>
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.demand._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.demand.OneTimeCommunicationDemand[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6774,7 +6784,9 @@ data transfer should be completed is also given.</p>
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/demand.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
 <span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
@@ -6782,9 +6794,7 @@ data transfer should be completed is also given.</p>
 <span class="normal">114</span>
 <span class="normal">115</span>
 <span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">117</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;Construction of objects from TOML files is deprecated and will be removed in future versions.&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_demand_item</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
     <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
@@ -6824,7 +6834,7 @@ data transfer should be completed is also given.</p>
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">OpticalCommunicationTerminal</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal._T">_T</span></span><span class="p">,</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal.CommunicationTerminal[T]">T</span></span><span class="p">,</span>
     <span class="n">azimuth_min</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">azimuth_max</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">elevation_min</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
@@ -6840,7 +6850,7 @@ data transfer should be completed is also given.</p>
 
   
       dataclass
-   (cosmica.models.terminal.CommunicationTerminal)" href="terminal/#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a>[<span title="cosmica.models.terminal._T">_T</span>]</code></p>
+   (cosmica.models.terminal.CommunicationTerminal)" href="terminal/#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a>[<span title="cosmica.models.terminal.OpticalCommunicationTerminal[T]">T</span>]</code></p>
 
 
 
@@ -7013,7 +7023,7 @@ data transfer should be completed is also given.</p>
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal.CommunicationTerminal[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -7070,9 +7080,11 @@ data transfer should be completed is also given.</p>
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/terminal.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">33</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">32</span>
+<span class="normal">33</span>
 <span class="normal">34</span>
 <span class="normal">35</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;OCT&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -7102,7 +7114,7 @@ data transfer should be completed is also given.</p>
   </span>
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">RFCommunicationTerminal</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal._T">_T</span></span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">RFCommunicationTerminal</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal.CommunicationTerminal[T]">T</span></span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -7112,7 +7124,7 @@ data transfer should be completed is also given.</p>
 
   
       dataclass
-   (cosmica.models.terminal.CommunicationTerminal)" href="terminal/#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a>[<span title="cosmica.models.terminal._T">_T</span>]</code></p>
+   (cosmica.models.terminal.CommunicationTerminal)" href="terminal/#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a>[<span title="cosmica.models.terminal.RFCommunicationTerminal[T]">T</span>]</code></p>
 
 
 
@@ -7175,7 +7187,7 @@ data transfer should be completed is also given.</p>
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal.CommunicationTerminal[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -7232,9 +7244,11 @@ data transfer should be completed is also given.</p>
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/terminal.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;RFCT&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -7274,7 +7288,7 @@ data transfer should be completed is also given.</p>
 
   
       dataclass
-   (cosmica.models.node.Node)" href="node/#cosmica.models.node.Node">Node</a>[<span title="cosmica.models.satellite._T">_T</span>]</code>, <code><span title="abc.ABC">ABC</span></code></p>
+   (cosmica.models.node.Node)" href="node/#cosmica.models.node.Node">Node</a>[<span title="cosmica.models.satellite.Satellite[T]">T</span>]</code>, <code><span title="abc.ABC">ABC</span></code></p>
 
 
 
@@ -7439,8 +7453,8 @@ data transfer should be completed is also given.</p>
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">SatelliteTerminal</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite._T">_T</span></span><span class="p">,</span>
-    <span class="n">terminal_id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite._T">_T</span></span><span class="p">,</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.SatelliteTerminal[T]">T</span></span><span class="p">,</span>
+    <span class="n">terminal_id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.SatelliteTerminal[T]">T</span></span><span class="p">,</span>
     <span class="n">azimuth_min</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">azimuth_max</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">elevation_min</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
@@ -7456,7 +7470,7 @@ data transfer should be completed is also given.</p>
 
   
       dataclass
-   (cosmica.models.satellite.Satellite)" href="satellite/#cosmica.models.satellite.Satellite">Satellite</a>[<span title="cosmica.models.satellite._T">_T</span>]</code></p>
+   (cosmica.models.satellite.Satellite)" href="satellite/#cosmica.models.satellite.Satellite">Satellite</a>[<span title="cosmica.models.satellite.SatelliteTerminal[T]">T</span>]</code></p>
 
 
 
@@ -7629,7 +7643,7 @@ data transfer should be completed is also given.</p>
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.SatelliteTerminal[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -7656,7 +7670,7 @@ data transfer should be completed is also given.</p>
 
   
       dataclass
-   (cosmica.models.terminal.OpticalCommunicationTerminal)" href="terminal/#cosmica.models.terminal.OpticalCommunicationTerminal">OpticalCommunicationTerminal</a></span>
+   (cosmica.models.terminal.OpticalCommunicationTerminal)" href="terminal/#cosmica.models.terminal.OpticalCommunicationTerminal">OpticalCommunicationTerminal</a></span><span class="p">[</span><span class="n"><span title="cosmica.models.satellite.SatelliteTerminal[T]">T</span></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -7678,7 +7692,7 @@ data transfer should be completed is also given.</p>
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">terminal_id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">terminal_id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.SatelliteTerminal[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -7984,13 +7998,15 @@ data transfer should be completed is also given.</p>
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">StationaryOnGroundUser</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.user._T">_T</span></span><span class="p">,</span>
-    <span class="n">terminals</span><span class="p">:</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            CommunicationTerminal
+    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.user.StationaryOnGroundUser[T]">T</span></span><span class="p">,</span>
+    <span class="n">terminals</span><span class="p">:</span> <span class="n"><span title="list">list</span></span><span class="p">[</span>
+        <span class="n"><a class="autorefs autorefs-internal" title="            CommunicationTerminal
 
 
   
       dataclass
-   (cosmica.models.terminal.CommunicationTerminal)" href="terminal/#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><span title="list">list</span></span><span class="p">(),</span>
+   (cosmica.models.terminal.CommunicationTerminal)" href="terminal/#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a></span><span class="p">[</span><span class="n"><span title="collections.abc.Hashable">Hashable</span></span><span class="p">]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n"><span title="list">list</span></span><span class="p">(),</span>
     <span class="n">latitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">longitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">altitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
@@ -8005,7 +8021,7 @@ data transfer should be completed is also given.</p>
 
   
       dataclass
-   (cosmica.models.user.User)" href="user/#cosmica.models.user.User">User</a>[<span title="cosmica.models.user._T">_T</span>]</code></p>
+   (cosmica.models.user.User)" href="user/#cosmica.models.user.User">User</a>[<span title="cosmica.models.user.StationaryOnGroundUser[T]">T</span>]</code></p>
 
 
         <p>Model for a stationary user on the ground.</p>
@@ -8093,7 +8109,7 @@ data transfer should be completed is also given.</p>
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.user._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.user.StationaryOnGroundUser[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -8190,7 +8206,7 @@ data transfer should be completed is also given.</p>
 
   
       dataclass
-   (cosmica.models.terminal.CommunicationTerminal)" href="terminal/#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><span title="dataclasses.field">field</span></span><span class="p">(</span>
+   (cosmica.models.terminal.CommunicationTerminal)" href="terminal/#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a></span><span class="p">[</span><span class="n"><span title="collections.abc.Hashable">Hashable</span></span><span class="p">]]</span> <span class="o">=</span> <span class="n"><span title="dataclasses.field">field</span></span><span class="p">(</span>
     <span class="n"><span title="dataclasses.field(default_factory)">default_factory</span></span><span class="o">=</span><span class="n"><span title="list">list</span></span><span class="p">,</span> <span class="n"><span title="dataclasses.field(compare)">compare</span></span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -8291,16 +8307,16 @@ data transfer should be completed is also given.</p>
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/user.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">49</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
 <span class="normal">50</span>
 <span class="normal">51</span>
 <span class="normal">52</span>
 <span class="normal">53</span>
 <span class="normal">54</span>
 <span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">56</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;Construction of objects from TOML files is deprecated and will be removed in future versions.&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_user_item</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
     <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
@@ -8339,13 +8355,15 @@ data transfer should be completed is also given.</p>
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">User</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.user._T">_T</span></span><span class="p">,</span>
-    <span class="n">terminals</span><span class="p">:</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            CommunicationTerminal
+    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.user.User[T]">T</span></span><span class="p">,</span>
+    <span class="n">terminals</span><span class="p">:</span> <span class="n"><span title="list">list</span></span><span class="p">[</span>
+        <span class="n"><a class="autorefs autorefs-internal" title="            CommunicationTerminal
 
 
   
       dataclass
-   (cosmica.models.terminal.CommunicationTerminal)" href="terminal/#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><span title="list">list</span></span><span class="p">()</span>
+   (cosmica.models.terminal.CommunicationTerminal)" href="terminal/#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a></span><span class="p">[</span><span class="n"><span title="collections.abc.Hashable">Hashable</span></span><span class="p">]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n"><span title="list">list</span></span><span class="p">()</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -8356,7 +8374,7 @@ data transfer should be completed is also given.</p>
 
   
       dataclass
-   (cosmica.models.node.Node)" href="node/#cosmica.models.node.Node">Node</a>[<span title="cosmica.models.user._T">_T</span>]</code>, <code><span title="abc.ABC">ABC</span></code></p>
+   (cosmica.models.node.Node)" href="node/#cosmica.models.node.Node">Node</a>[<span title="cosmica.models.user.User[T]">T</span>]</code>, <code><span title="abc.ABC">ABC</span></code></p>
 
 
         <p>Base model for a user.</p>
@@ -8421,7 +8439,7 @@ data transfer should be completed is also given.</p>
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.user._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.user.User[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -8449,7 +8467,7 @@ data transfer should be completed is also given.</p>
 
   
       dataclass
-   (cosmica.models.terminal.CommunicationTerminal)" href="terminal/#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><span title="dataclasses.field">field</span></span><span class="p">(</span>
+   (cosmica.models.terminal.CommunicationTerminal)" href="terminal/#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a></span><span class="p">[</span><span class="n"><span title="collections.abc.Hashable">Hashable</span></span><span class="p">]]</span> <span class="o">=</span> <span class="n"><span title="dataclasses.field">field</span></span><span class="p">(</span>
     <span class="n"><span title="dataclasses.field(default_factory)">default_factory</span></span><span class="o">=</span><span class="n"><span title="list">list</span></span>
 <span class="p">)</span>
 </code></pre></div>
@@ -8553,12 +8571,12 @@ data transfer should be completed is also given.</p>
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/user.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">30</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">33</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@abstractmethod</span>
 <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;Construction of objects from TOML files is deprecated and will be removed in future versions.&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_user_item</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
@@ -8593,7 +8611,7 @@ data transfer should be completed is also given.</p>
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">UserOpticalCommunicationTerminal</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal._T">_T</span></span><span class="p">,</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal.CommunicationTerminal[T]">T</span></span><span class="p">,</span>
     <span class="n">azimuth_min</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">azimuth_max</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">elevation_min</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
@@ -8609,7 +8627,7 @@ data transfer should be completed is also given.</p>
 
   
       dataclass
-   (cosmica.models.terminal.OpticalCommunicationTerminal)" href="terminal/#cosmica.models.terminal.OpticalCommunicationTerminal">OpticalCommunicationTerminal</a>[<span title="cosmica.models.terminal._T">_T</span>]</code></p>
+   (cosmica.models.terminal.OpticalCommunicationTerminal)" href="terminal/#cosmica.models.terminal.OpticalCommunicationTerminal">OpticalCommunicationTerminal</a>[<span title="cosmica.models.terminal.UserOpticalCommunicationTerminal[T]">T</span>]</code></p>
 
 
 
@@ -8782,7 +8800,7 @@ data transfer should be completed is also given.</p>
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal.CommunicationTerminal[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -8841,7 +8859,9 @@ data transfer should be completed is also given.</p>
               <summary>Source code in <code>src/cosmica/models/terminal.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
 <span class="normal">41</span>
-<span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">42</span>
+<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;UOCT&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -8871,7 +8891,7 @@ data transfer should be completed is also given.</p>
   </span>
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">UserSatellite</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite._T">_T</span></span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">UserSatellite</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.UserSatellite[T]">T</span></span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -8881,7 +8901,7 @@ data transfer should be completed is also given.</p>
 
   
       dataclass
-   (cosmica.models.satellite.Satellite)" href="satellite/#cosmica.models.satellite.Satellite">Satellite</a>[<span title="cosmica.models.satellite._T">_T</span>]</code></p>
+   (cosmica.models.satellite.Satellite)" href="satellite/#cosmica.models.satellite.Satellite">Satellite</a>[<span title="cosmica.models.satellite.UserSatellite[T]">T</span>]</code></p>
 
 
 
@@ -8944,7 +8964,7 @@ data transfer should be completed is also given.</p>
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.UserSatellite[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -9001,9 +9021,11 @@ data transfer should be completed is also given.</p>
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/satellite.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">38</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">37</span>
+<span class="normal">38</span>
 <span class="normal">39</span>
 <span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;USAT&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -9036,7 +9058,7 @@ data transfer should be completed is also given.</p>
 
   
       dataclass
-   (cosmica.models.demand.Demand)" href="demand/#cosmica.models.demand.Demand">Demand</a></span><span class="p">]</span>
+   (cosmica.models.demand.Demand)" href="demand/#cosmica.models.demand.Demand">Demand</a></span><span class="p">[</span><span class="n"><span title="collections.abc.Hashable">Hashable</span></span><span class="p">]]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -9046,14 +9068,14 @@ data transfer should be completed is also given.</p>
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/demand.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">136</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
 <span class="normal">137</span>
 <span class="normal">138</span>
 <span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;Construction of objects from TOML files is deprecated and will be removed in future versions.&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">load_demands_from_toml_file</span><span class="p">(</span><span class="n">toml_file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Demand</span><span class="p">]:</span>
+<span class="normal">140</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;Construction of objects from TOML files is deprecated and will be removed in future versions.&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_demands_from_toml_file</span><span class="p">(</span><span class="n">toml_file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Demand</span><span class="p">[</span><span class="n">Hashable</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load demands from a TOML file.&quot;&quot;&quot;</span>
     <span class="n">toml_file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">toml_file_path</span><span class="p">)</span>
     <span class="k">with</span> <span class="n">toml_file_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -9080,7 +9102,7 @@ data transfer should be completed is also given.</p>
 
   
       dataclass
-   (cosmica.models.user.User)" href="user/#cosmica.models.user.User">User</a></span><span class="p">]</span>
+   (cosmica.models.user.User)" href="user/#cosmica.models.user.User">User</a></span><span class="p">[</span><span class="n"><span title="collections.abc.Hashable">Hashable</span></span><span class="p">]]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -9090,14 +9112,14 @@ data transfer should be completed is also given.</p>
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/user.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">71</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
 <span class="normal">72</span>
 <span class="normal">73</span>
 <span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;Construction of objects from TOML files is deprecated and will be removed in future versions.&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">load_users_from_toml_file</span><span class="p">(</span><span class="n">toml_file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">User</span><span class="p">]:</span>
+<span class="normal">75</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;Construction of objects from TOML files is deprecated and will be removed in future versions.&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_users_from_toml_file</span><span class="p">(</span><span class="n">toml_file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">User</span><span class="p">[</span><span class="n">Hashable</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load users from a TOML file.&quot;&quot;&quot;</span>
     <span class="n">toml_file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">toml_file_path</span><span class="p">)</span>
     <span class="k">with</span> <span class="n">toml_file_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>

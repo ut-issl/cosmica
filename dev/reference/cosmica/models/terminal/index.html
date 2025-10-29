@@ -3158,7 +3158,7 @@
   </span>
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">CommunicationTerminal</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal._T">_T</span></span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">CommunicationTerminal</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal.CommunicationTerminal[T]">T</span></span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3168,7 +3168,7 @@
 
   
       dataclass
-   (cosmica.models.node.Node)" href="../node/#cosmica.models.node.Node">Node</a>[<span title="cosmica.models.terminal._T">_T</span>]</code></p>
+   (cosmica.models.node.Node)" href="../node/#cosmica.models.node.Node">Node</a>[<span title="cosmica.models.terminal.CommunicationTerminal[T]">T</span>]</code></p>
 
 
 
@@ -3231,7 +3231,7 @@
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal.CommunicationTerminal[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3288,9 +3288,11 @@
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/terminal.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;CT&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -3322,7 +3324,7 @@
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">OpticalCommunicationTerminal</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal._T">_T</span></span><span class="p">,</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal.CommunicationTerminal[T]">T</span></span><span class="p">,</span>
     <span class="n">azimuth_min</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">azimuth_max</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">elevation_min</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
@@ -3338,7 +3340,7 @@
 
   
       dataclass
-   (cosmica.models.terminal.CommunicationTerminal)" href="#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a>[<span title="cosmica.models.terminal._T">_T</span>]</code></p>
+   (cosmica.models.terminal.CommunicationTerminal)" href="#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a>[<span title="cosmica.models.terminal.OpticalCommunicationTerminal[T]">T</span>]</code></p>
 
 
 
@@ -3511,7 +3513,7 @@
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal.CommunicationTerminal[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3568,9 +3570,11 @@
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/terminal.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">33</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">32</span>
+<span class="normal">33</span>
 <span class="normal">34</span>
 <span class="normal">35</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;OCT&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -3600,7 +3604,7 @@
   </span>
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">RFCommunicationTerminal</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal._T">_T</span></span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">RFCommunicationTerminal</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal.CommunicationTerminal[T]">T</span></span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3610,7 +3614,7 @@
 
   
       dataclass
-   (cosmica.models.terminal.CommunicationTerminal)" href="#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a>[<span title="cosmica.models.terminal._T">_T</span>]</code></p>
+   (cosmica.models.terminal.CommunicationTerminal)" href="#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a>[<span title="cosmica.models.terminal.RFCommunicationTerminal[T]">T</span>]</code></p>
 
 
 
@@ -3673,7 +3677,7 @@
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal.CommunicationTerminal[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3730,9 +3734,11 @@
 
             <details class="quote">
               <summary>Source code in <code>src/cosmica/models/terminal.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;RFCT&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -3764,7 +3770,7 @@
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">UserOpticalCommunicationTerminal</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal._T">_T</span></span><span class="p">,</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal.CommunicationTerminal[T]">T</span></span><span class="p">,</span>
     <span class="n">azimuth_min</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">azimuth_max</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">elevation_min</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
@@ -3780,7 +3786,7 @@
 
   
       dataclass
-   (cosmica.models.terminal.OpticalCommunicationTerminal)" href="#cosmica.models.terminal.OpticalCommunicationTerminal">OpticalCommunicationTerminal</a>[<span title="cosmica.models.terminal._T">_T</span>]</code></p>
+   (cosmica.models.terminal.OpticalCommunicationTerminal)" href="#cosmica.models.terminal.OpticalCommunicationTerminal">OpticalCommunicationTerminal</a>[<span title="cosmica.models.terminal.UserOpticalCommunicationTerminal[T]">T</span>]</code></p>
 
 
 
@@ -3953,7 +3959,7 @@
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal._T">_T</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.terminal.CommunicationTerminal[T]">T</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -4012,7 +4018,9 @@
               <summary>Source code in <code>src/cosmica/models/terminal.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
 <span class="normal">41</span>
-<span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">42</span>
+<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;UOCT&quot;</span>
 </code></pre></div></td></tr></table></div>

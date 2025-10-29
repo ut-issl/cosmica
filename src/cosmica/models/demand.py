@@ -5,7 +5,6 @@ __all__ = [
     "load_demands_from_toml_file",
     "parse_demand_item",
 ]
-
 import tomllib
 from abc import ABC, abstractmethod
 from collections.abc import Hashable, Mapping
@@ -15,6 +14,7 @@ from pathlib import Path
 from typing import Any, Literal, Self, TypeVar
 
 import numpy as np
+from typing_extensions import deprecated
 
 from .node import NodeGID
 
@@ -29,6 +29,7 @@ class Demand[T: Hashable](ABC):
 
     @classmethod
     @abstractmethod
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     def parse_demand_item(cls, item: Mapping[str, Any]) -> Self:
         """Parse a demand item."""
         ...
@@ -45,6 +46,7 @@ class ConstantCommunicationDemand(Demand[_T]):
     transmission_rate: float
 
     @classmethod
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     def parse_demand_item(cls, item: Mapping[str, Any]) -> Self:
         return cls(
             id=item["id"],
@@ -74,6 +76,7 @@ class TemporaryCommunicationDemand(Demand[_T]):
         return self.start_time <= current_time < self.end_time
 
     @classmethod
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     def parse_demand_item(cls, item: Mapping[str, Any]) -> Self:
         return cls(
             id=item["id"],
@@ -104,6 +107,7 @@ class OneTimeCommunicationDemand(Demand[_T]):
     deadline: np.datetime64
 
     @classmethod
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     def parse_demand_item(cls, item: Mapping[str, Any]) -> Self:
         return cls(
             id=item["id"],
@@ -122,12 +126,14 @@ _DEMAND_TYPES: dict[str, type[Demand]] = {
 }
 
 
+@deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
 def parse_demand_item(item: Mapping[str, Any]) -> Demand:
     """Parse a demand item."""
     demand_type = item["type"]
     return _DEMAND_TYPES[demand_type].parse_demand_item(item)
 
 
+@deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
 def load_demands_from_toml_file(toml_file_path: str | Path) -> list[Demand]:
     """Load demands from a TOML file."""
     toml_file_path = Path(toml_file_path)

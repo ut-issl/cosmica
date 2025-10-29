@@ -4,12 +4,13 @@ __all__ = [
     "Gateway",
     "GatewayOGS",
 ]
-
 import tomllib
 from collections.abc import Hashable
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Self, TypeVar
+
+from typing_extensions import deprecated
 
 if TYPE_CHECKING:
     from collections.abc import MutableMapping
@@ -32,6 +33,7 @@ class Gateway(Node[_T]):
     n_terminals: int = field(default=1, compare=False)
 
     @classmethod
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     def from_toml_file(cls, toml_file_path: Path | str) -> list[Self]:
         toml_file_path = Path(toml_file_path)
         with toml_file_path.open("rb") as f:
@@ -39,6 +41,7 @@ class Gateway(Node[_T]):
         return list(map(cls.parse_gateway_item, toml_data["gateways"]))
 
     @classmethod
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     def parse_gateway_item(cls, item: MutableMapping[str, Any]) -> Self:
         item["latitude"] = np.deg2rad(item.pop("lat_deg"))
         item["longitude"] = np.deg2rad(item.pop("lon_deg"))
@@ -62,6 +65,7 @@ class GatewayOGS(Node[_T]):
     rytov_variance: float = field(default=0.5, compare=False)
 
     @classmethod
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     def from_toml_file(cls, toml_file_path: Path | str) -> list[Self]:
         toml_file_path = Path(toml_file_path)
         with toml_file_path.open("rb") as f:
@@ -69,6 +73,7 @@ class GatewayOGS(Node[_T]):
         return list(map(cls.parse_gateway_item, toml_data["gateways"]))
 
     @classmethod
+    @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
     def parse_gateway_item(cls, item: MutableMapping[str, Any]) -> Self:
         item["latitude"] = np.deg2rad(item.pop("lat_deg"))
         item["longitude"] = np.deg2rad(item.pop("lon_deg"))

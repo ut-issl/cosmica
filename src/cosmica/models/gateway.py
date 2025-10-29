@@ -8,7 +8,7 @@ import tomllib
 from collections.abc import Hashable
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Self, TypeVar
+from typing import TYPE_CHECKING, Any, Self, override
 
 from typing_extensions import deprecated
 
@@ -20,12 +20,10 @@ import numpy as np
 
 from .node import Node
 
-_T = TypeVar("_T", bound=Hashable)
-
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class Gateway(Node[_T]):
-    id: _T
+class Gateway[T: Hashable](Node[T]):
+    id: T
     latitude: float = field(compare=False)
     longitude: float = field(compare=False)
     minimum_elevation: float = field(compare=False)
@@ -49,13 +47,14 @@ class Gateway(Node[_T]):
         return cls(**item)
 
     @classmethod
+    @override
     def class_name(cls) -> str:
         return "GW"
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class GatewayOGS(Node[_T]):
-    id: _T
+class GatewayOGS[T: Hashable](Node[T]):
+    id: T
     latitude: float = field(compare=False)
     longitude: float = field(compare=False)
     minimum_elevation: float = field(compare=False)
@@ -84,5 +83,6 @@ class GatewayOGS(Node[_T]):
         return cls(**item)
 
     @classmethod
+    @override
     def class_name(cls) -> str:
         return "GW_OGS"

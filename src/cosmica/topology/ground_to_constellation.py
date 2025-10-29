@@ -7,7 +7,6 @@ import logging
 from abc import ABC, abstractmethod
 from collections.abc import Collection
 from itertools import product
-from typing import TypeVar
 
 import networkx as nx
 import numpy as np
@@ -19,10 +18,6 @@ from cosmica.models import ConstellationSatellite, Gateway, Node, StationaryOnGr
 from cosmica.utils.coordinates import ecef2aer
 
 logger = logging.getLogger(__name__)
-
-TConstellation = TypeVar("TConstellation", bound=SatelliteConstellation)
-TGraph = TypeVar("TGraph", bound=nx.Graph)
-TNode = TypeVar("TNode", bound=Node)
 
 
 class GroundToConstellationTopologyBuilder[TConstellation: SatelliteConstellation, TNode: Node, TGraph: nx.Graph](ABC):

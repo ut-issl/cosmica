@@ -6,24 +6,23 @@ __all__ = [
 ]
 from collections.abc import Hashable
 from dataclasses import dataclass
-from typing import TypeVar
+from typing import override
 
 from .node import Node
 
-_T = TypeVar("_T", bound=Hashable)
-
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class CommunicationTerminal(Node[_T]):
-    id: _T
+class CommunicationTerminal[T: Hashable](Node[T]):
+    id: T
 
     @classmethod
+    @override
     def class_name(cls) -> str:
         return "CT"
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class OpticalCommunicationTerminal(CommunicationTerminal[_T]):
+class OpticalCommunicationTerminal[T: Hashable](CommunicationTerminal[T]):
     azimuth_min: float
     azimuth_max: float
     elevation_min: float
@@ -31,19 +30,22 @@ class OpticalCommunicationTerminal(CommunicationTerminal[_T]):
     angular_velocity_max: float
 
     @classmethod
+    @override
     def class_name(cls) -> str:
         return "OCT"
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class UserOpticalCommunicationTerminal(OpticalCommunicationTerminal[_T]):
+class UserOpticalCommunicationTerminal[T: Hashable](OpticalCommunicationTerminal[T]):
     @classmethod
+    @override
     def class_name(cls) -> str:
         return "UOCT"
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class RFCommunicationTerminal(CommunicationTerminal[_T]):
+class RFCommunicationTerminal[T: Hashable](CommunicationTerminal[T]):
     @classmethod
+    @override
     def class_name(cls) -> str:
         return "RFCT"

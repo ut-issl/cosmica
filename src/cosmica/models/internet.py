@@ -3,19 +3,18 @@ __all__ = [
 ]
 from collections.abc import Hashable
 from dataclasses import dataclass
-from typing import TypeVar
+from typing import override
 
 from .node import Node
 
-_T = TypeVar("_T", bound=Hashable)
-
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class Internet(Node[_T | None]):
+class Internet[T: Hashable](Node[T | None]):
     """The Internet node."""
 
-    id: _T | None = None
+    id: T | None = None
 
     @classmethod
+    @override
     def class_name(cls) -> str:
         return "Internet"

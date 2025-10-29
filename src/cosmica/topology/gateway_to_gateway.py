@@ -2,7 +2,7 @@ __all__ = [
     "GatewayToGatewayTopologyBuilder",
 ]
 
-from collections.abc import Collection
+from collections.abc import Collection, Hashable
 
 import networkx as nx
 
@@ -13,7 +13,7 @@ class GatewayToGatewayTopologyBuilder:
     def build(
         self,
         *,
-        gateways: Collection[Gateway],
+        gateways: Collection[Gateway[Hashable]],
     ) -> nx.Graph:
         graph = nx.Graph()
         gateway_list = list(gateways)

@@ -11,7 +11,7 @@ import importlib.resources
 import logging
 from dataclasses import dataclass, fields
 from functools import cache
-from typing import Annotated, Any, Generic, TypeVar
+from typing import Annotated, Any
 
 import geopandas as gpd
 import matplotlib.lines as mlines
@@ -90,11 +90,10 @@ def draw_lat_lon_grid(*, ax: Axes) -> Axes:
 @cache
 def _dummy_class_creator(class_: type) -> type:
     # This function creates a new dummy class based on the original class
-    T = TypeVar("T")
     assert issubclass(class_, Node), f"{class_} is not a subclass of Node"
 
     # Create a new class dynamically
-    class DummyClass(class_, Generic[T]):
+    class DummyClass[T](class_):
         id: T
 
         # Copying the `from_real` method

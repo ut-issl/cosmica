@@ -6,7 +6,6 @@ import logging
 from abc import ABC, abstractmethod
 from collections.abc import Collection
 from itertools import product
-from typing import TypeVar
 
 import networkx as nx
 import numpy as np
@@ -18,10 +17,6 @@ from cosmica.models import UserSatellite
 from cosmica.utils.vector import angle_between
 
 logger = logging.getLogger(__name__)
-
-TConstellation = TypeVar("TConstellation", bound=SatelliteConstellation)
-TGraph = TypeVar("TGraph", bound=nx.Graph)
-TUserSatellite = TypeVar("TUserSatellite", bound=UserSatellite)
 
 
 class UserSatelliteToConstellationTopologyBuilder[

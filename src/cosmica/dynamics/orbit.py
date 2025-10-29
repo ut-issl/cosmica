@@ -15,7 +15,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from datetime import datetime
 from functools import cached_property
-from typing import TYPE_CHECKING, Any, Literal
+from typing import TYPE_CHECKING, Any, Literal, override
 
 import numpy as np
 from sgp4.model import Satrec
@@ -69,7 +69,7 @@ class CircularSatelliteOrbitPropagator(SatelliteOrbitPropagator):
 
     @cached_property
     def mean_motion(self) -> float:
-        return np.sqrt(EARTH_MU / self._model.semi_major_axis**3)
+        return float(np.sqrt(EARTH_MU / self._model.semi_major_axis**3))  # pyright: ignore [reportAny]
 
     @cached_property
     def dcm_orbit_to_eci(self) -> npt.NDArray[np.floating]:
@@ -154,6 +154,7 @@ class EllipticalSatelliteOrbitPropagator(SatelliteOrbitPropagator):
         )
         return EarthSatellite.from_satrec(satrec, self.ts)
 
+    @override
     def propagate(self, time: npt.NDArray[np.datetime64]) -> SatelliteOrbitState:
         time_from_epoch = self.datetime64_utc_to_skytime(time)
         if self.reference_frame in {"j2000", "gcrs"}:

@@ -11,14 +11,12 @@ from collections.abc import Hashable, Mapping
 from dataclasses import dataclass
 from datetime import UTC
 from pathlib import Path
-from typing import Any, Literal, Self, TypeVar
+from typing import Any, Literal, Self
 
 import numpy as np
 from typing_extensions import deprecated
 
 from .node import NodeGID
-
-_T = TypeVar("_T", bound=Hashable)
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
@@ -36,10 +34,10 @@ class Demand[T: Hashable](ABC):
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class ConstantCommunicationDemand(Demand[_T]):
+class ConstantCommunicationDemand[T: Hashable](Demand[T]):
     """Constant communication demand model."""
 
-    id: _T
+    id: T
     source: NodeGID
     destination: NodeGID
     distribution: Literal["uniform", "poisson"]
@@ -58,10 +56,10 @@ class ConstantCommunicationDemand(Demand[_T]):
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class TemporaryCommunicationDemand(Demand[_T]):
+class TemporaryCommunicationDemand[T: Hashable](Demand[T]):
     """Temporary communication demand model."""
 
-    id: _T
+    id: T
     source: NodeGID
     destination: NodeGID
     transmission_rate: float
@@ -90,7 +88,7 @@ class TemporaryCommunicationDemand(Demand[_T]):
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class OneTimeCommunicationDemand(Demand[_T]):
+class OneTimeCommunicationDemand[T: Hashable](Demand[T]):
     """One-time communication demand model.
 
     This model is used for the communication demand to transfer a certain amount of data
@@ -99,7 +97,7 @@ class OneTimeCommunicationDemand(Demand[_T]):
     data transfer should be completed is also given.
     """
 
-    id: _T
+    id: T
     source: NodeGID
     destination: NodeGID
     data_size: float
@@ -119,7 +117,7 @@ class OneTimeCommunicationDemand(Demand[_T]):
         )
 
 
-_DEMAND_TYPES: dict[str, type[Demand]] = {
+_DEMAND_TYPES: dict[str, type[Demand[Hashable]]] = {
     "constant": ConstantCommunicationDemand,
     "temporary": TemporaryCommunicationDemand,
     "one_time": OneTimeCommunicationDemand,
@@ -127,14 +125,14 @@ _DEMAND_TYPES: dict[str, type[Demand]] = {
 
 
 @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
-def parse_demand_item(item: Mapping[str, Any]) -> Demand:
+def parse_demand_item(item: Mapping[str, Any]) -> Demand[Hashable]:
     """Parse a demand item."""
     demand_type = item["type"]
     return _DEMAND_TYPES[demand_type].parse_demand_item(item)
 
 
 @deprecated("Construction of objects from TOML files is deprecated and will be removed in future versions.")
-def load_demands_from_toml_file(toml_file_path: str | Path) -> list[Demand]:
+def load_demands_from_toml_file(toml_file_path: str | Path) -> list[Demand[Hashable]]:
     """Load demands from a TOML file."""
     toml_file_path = Path(toml_file_path)
     with toml_file_path.open("rb") as f:

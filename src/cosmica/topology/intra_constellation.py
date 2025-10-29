@@ -5,7 +5,6 @@ __all__ = [
     "ManhattanTopologyBuilder",
 ]
 from abc import ABC, abstractmethod
-from typing import TypeVar
 
 import networkx as nx
 import numpy as np
@@ -18,9 +17,6 @@ from cosmica.dynamics import (
 )
 from cosmica.models import ConstellationSatellite
 from cosmica.utils.vector import normalize, unit_vector_to_azimuth_elevation
-
-TConstellation = TypeVar("TConstellation", bound=SatelliteConstellation)
-TGraph = TypeVar("TGraph", bound=nx.Graph)
 
 
 class ConstellationTopologyBuilder[TConstellation: SatelliteConstellation, TGraph: nx.Graph](ABC):

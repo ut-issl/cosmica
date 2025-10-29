@@ -16,7 +16,7 @@ __all__ = [
 
 import logging
 import math
-from typing import Annotated, Any, Literal, TypeVar, overload
+from typing import Annotated, Any, Literal, overload
 
 import numpy as np
 import numpy.typing as npt
@@ -25,8 +25,6 @@ from numpy._typing import _64Bit
 from typing_extensions import Doc
 
 from .constants import EARTH_RADIUS
-
-_NumberType = TypeVar("_NumberType", bound=np.number)
 
 logger = logging.getLogger(__name__)
 
@@ -137,9 +135,9 @@ def perturb_vector(
     return direction * norm
 
 
-def project_vector(
-    vec: npt.NDArray[_NumberType],  # (n_data, dim) or (dim,)
-    onto: npt.NDArray[_NumberType],  # (n_data, dim) or (dim,)
+def project_vector[NumberType: np.number](
+    vec: npt.NDArray[NumberType],  # (n_data, dim) or (dim,)
+    onto: npt.NDArray[NumberType],  # (n_data, dim) or (dim,)
 ) -> npt.NDArray[np.floating]:  # (n_data, dim) or (dim,)
     # Make sure vec and onto both have shape (n_data, dim)
     if vec.ndim == 1 and onto.ndim == 1:

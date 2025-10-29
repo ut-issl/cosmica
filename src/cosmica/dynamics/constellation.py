@@ -7,23 +7,17 @@ __all__ = [
 ]
 
 import logging
-import tomllib
 from abc import ABC
 from collections.abc import Hashable, Mapping, Sequence
-from datetime import UTC
-from pathlib import Path
-from typing import TYPE_CHECKING, Any, NamedTuple
-
-import numpy as np
-from typing_extensions import deprecated
+from typing import TYPE_CHECKING, NamedTuple
 
 if TYPE_CHECKING:
+    import numpy as np
     import numpy.typing as npt
 
+    from cosmica.models import ConstellationSatellite
 
-from cosmica.models import ConstellationSatellite
-
-from .orbit import SatelliteOrbit, SatelliteOrbitState, make_satellite_orbit
+from .orbit import SatelliteOrbit, SatelliteOrbitState
 
 logger = logging.getLogger(__name__)
 

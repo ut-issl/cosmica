@@ -134,8 +134,29 @@ jobs:
       - name: Build docs
         run: uv run -- mkdocs build
 
+  pip-licenses:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: ${{ env.UV_VERSION }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: .python-version
+
+      - name: Install the project
+        run: uv sync --no-dev --group license
+
+      - name: Check licenses
+        run: uv run -- pip-licenses
+
   collect:
-    needs: [ruff, mypy, import-linter, build-docs, pytest]
+    needs: [ruff, mypy, import-linter, build-docs, pytest, pip-licenses]
     runs-on: ubuntu-latest
     steps:
       - name: Collect results

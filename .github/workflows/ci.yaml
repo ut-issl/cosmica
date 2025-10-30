@@ -177,7 +177,7 @@ jobs:
         run: uv run -- deptry src
 
   collect:
-    needs: [ruff, mypy, import-linter, build-docs, pytest, pip-licenses]
+    needs: [ruff, mypy, import-linter, build-docs, pytest, pip-licenses, deptry]
     runs-on: ubuntu-latest
     steps:
       - name: Collect results

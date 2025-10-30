@@ -53,9 +53,10 @@ dev = [
   "pydeps>=3.0.1",
   { include-group = "docs" },
   { include-group = "examples" },
+  { include-group = "license" },
   { include-group = "lint" },
   { include-group = "test" },
-  { include-group = "typing" },
+  { include-group = "typing" }
 ]
 docs = [
   "black>=25.1.0",
@@ -105,8 +106,12 @@ exclude_also = [
   '@(abc\.)?abstractmethod',
 ]
 
+[tool.deptry]
+# `examples` and `scripts` are allowed to have development dependencies.
+extend_exclude = ["examples", "scripts"]
+
 [tool.deptry.per_rule_ignores]
-DEP004 = ["mkdocs_gen_files"]
+DEP003 = ["cosmica"]
 
 [tool.importlinter]
 root_package = "cosmica"

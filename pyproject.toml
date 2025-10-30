@@ -115,7 +115,6 @@ root_package = "cosmica"
 name = "COSMICA layered architecture"
 type = "layers"
 layers = [
-  "cosmica.cli",
   "cosmica.visualization",
   "cosmica.comm_link | cosmica.dynamics | cosmica.topology | cosmica.scenario",
   "cosmica.dtos",
@@ -138,7 +137,6 @@ type = "forbidden"
 # Other modules are not listed as source_modules because
 # they cannot import experimental_packet_routing due to the layered architecture.
 source_modules = [
-  "cosmica.cli",
   "cosmica.visualization",
   "cosmica.comm_link",
   "cosmica.dynamics",

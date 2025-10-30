@@ -14,7 +14,7 @@ lint-imports:
 
 deptry:
     uv sync --quiet --frozen
-    uv run --no-sync -- deptry src
+    uv run --no-sync -- deptry .
 
 license:
     uv sync --quiet --frozen --no-dev --group license

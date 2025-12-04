@@ -31,11 +31,9 @@ dependencies = [
   "pandas>=2.0.2",
   "pydantic>=2.7.4",
   "pymap3d>=3.0.1",
-  "rich>=13.7.1",
   "sgp4>=2.23",
   "skyfield>=1.46",
   "tqdm>=4.66.4",
-  "typer>=0.12.3",
   "typing-extensions>=4.9.0",
 ]
 
@@ -43,9 +41,6 @@ dependencies = [
 Documentation = "https://www.space.t.u-tokyo.ac.jp/cosmica/"
 Issues = "https://github.com/ut-issl/cosmica/issues"
 Repository = "https://github.com/ut-issl/cosmica"
-
-[project.scripts]
-cosmica = "cosmica.cli.main:app"
 
 [dependency-groups]
 dev = [
@@ -120,7 +115,6 @@ root_package = "cosmica"
 name = "COSMICA layered architecture"
 type = "layers"
 layers = [
-  "cosmica.cli",
   "cosmica.visualization",
   "cosmica.comm_link | cosmica.dynamics | cosmica.topology | cosmica.scenario",
   "cosmica.dtos",
@@ -143,7 +137,6 @@ type = "forbidden"
 # Other modules are not listed as source_modules because
 # they cannot import experimental_packet_routing due to the layered architecture.
 source_modules = [
-  "cosmica.cli",
   "cosmica.visualization",
   "cosmica.comm_link",
   "cosmica.dynamics",

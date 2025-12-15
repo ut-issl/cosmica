@@ -163,7 +163,7 @@ module = [
 ignore_missing_imports = true
 
 [tool.pip-licenses]
-allow-only = "MIT License;BSD License;Apache 2.0;Python Software Foundation License;PSF-2.0;ISC License (ISCL);Apache Software License;The Unlicense (Unlicense);MIT;BSD-3-Clause;Mozilla Public License 2.0 (MPL 2.0);MIT OR Apache-2.0;MIT-CMU"
+allow-only = "MIT License;BSD License;Apache 2.0;Python Software Foundation License;PSF-2.0;ISC License (ISCL);Apache Software License;The Unlicense (Unlicense);MIT;BSD-3-Clause;Mozilla Public License 2.0 (MPL 2.0);MIT OR Apache-2.0;MIT-CMU;Apache-2.0"
 
 [tool.pytest.ini_options]
 addopts = "-ra --verbose --verbose --capture=no --strict-markers --color=yes --log-cli-level=INFO"

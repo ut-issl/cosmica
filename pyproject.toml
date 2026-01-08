@@ -183,8 +183,17 @@ allow-only = """\
   BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0;\
 """
 
-[tool.pytest.ini_options]
-addopts = "-ra --verbose --verbose --capture=no --strict-markers --color=yes --log-cli-level=INFO"
+[tool.pytest]
+addopts = [
+  "--capture=no",
+  "--color=yes",
+  "--log-cli-level=INFO",
+  "--strict-markers",
+  "--verbose",
+  "--verbose",
+  "-ra",  # show extra test summary info for all tests except passed tests
+]
+minversion = "9.0"
 testpaths = ["tests"]
 
 [tool.ruff]

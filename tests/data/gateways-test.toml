@@ -1,4 +1,0 @@
-gateways = [
-    { id = 1, lat_deg = 36, lon_deg = 139, min_el_deg = 5, n_terminals = 1 },
-    { id = 2, lat_deg = 40, lon_deg = -120, min_el_deg = 5, n_terminals = 1 },
-]

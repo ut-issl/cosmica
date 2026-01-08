@@ -21,23 +21,23 @@ license:
     uv run --quiet --no-sync -- pip-licenses
 
 lint:
-    -just --justfile {{justfile()}} ruff
-    -just --justfile {{justfile()}} mypy
-    -just --justfile {{justfile()}} lint-imports
-    -just --justfile {{justfile()}} deptry
-    -just --justfile {{justfile()}} license
+    -just --justfile {{ justfile() }} ruff
+    -just --justfile {{ justfile() }} mypy
+    -just --justfile {{ justfile() }} lint-imports
+    -just --justfile {{ justfile() }} deptry
+    -just --justfile {{ justfile() }} license
 
-pytest:
+test:
     uv sync --quiet --frozen --no-dev --group test
     uv run --no-sync -- coverage run -m pytest --import-mode importlib
     uv run --no-sync -- coverage report -m
     uv run --no-sync -- coverage xml -o ./coverage.xml
 
-
 docs-addr := "localhost:8000"
+
 # Serve the documentation
 serve-docs:
-    uv run -- mkdocs serve --dev-addr {{docs-addr}}
+    uv run -- mkdocs serve --dev-addr {{ docs-addr }}
 
 # Build the documentation
 build-docs:

@@ -77,6 +77,7 @@ typing = [
   "mypy>=1.17.1",
   "pandas-stubs>=2.3.0.250703",
   "pytest",
+  "ty>=0.0.7",
   "types-tqdm>=4.67.0.20250809",
   { include-group = "examples" },
 ]
@@ -182,8 +183,17 @@ allow-only = """\
   BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0;\
 """
 
-[tool.pytest.ini_options]
-addopts = "-ra --verbose --verbose --capture=no --strict-markers --color=yes --log-cli-level=INFO"
+[tool.pytest]
+addopts = [
+  "--capture=no",
+  "--color=yes",
+  "--log-cli-level=INFO",
+  "--strict-markers",
+  "--verbose",
+  "--verbose",
+  "-ra",  # show extra test summary info for all tests except passed tests
+]
+minversion = "9.0"
 testpaths = ["tests"]
 
 [tool.ruff]
@@ -216,7 +226,7 @@ unfixable = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["ANN201"]
+"tests/*" = ["ANN201", "INP001"]
 "scripts/*" = ["INP001"]
 "cosmica/cli/*" = ["UP007"]
 "examples/**.py" = ["PLR1711", "ANN202", "B018", "ANN001", "INP001", "PLC0415"]

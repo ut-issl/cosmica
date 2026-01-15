@@ -369,7 +369,7 @@ dev = [
     { name = "pytest" },
     { name = "pytest", specifier = ">=8.4.1" },
     { name = "ruff", specifier = ">=0.12.9" },
-    { name = "syrupy", specifier = ">=4.8.0" },
+    { name = "syrupy", specifier = ">=5.0.0" },
     { name = "ty", specifier = ">=0.0.7" },
     { name = "types-tqdm", specifier = ">=4.67.0.20250809" },
 ]
@@ -394,7 +394,7 @@ ruff = [{ name = "ruff", specifier = ">=0.12.9" }]
 test = [
     { name = "coverage", specifier = ">=7.10.4" },
     { name = "pytest", specifier = ">=8.4.1" },
-    { name = "syrupy", specifier = ">=4.8.0" },
+    { name = "syrupy", specifier = ">=5.0.0" },
 ]
 typing = [
     { name = "marimo", specifier = ">=0.15.0" },

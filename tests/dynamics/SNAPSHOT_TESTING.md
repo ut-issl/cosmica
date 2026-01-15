@@ -42,14 +42,21 @@ The snapshot tests cover:
 pytest tests/dynamics/test_orbit_snapshot.py -v
 ```
 
-### Run specific test class
+### Run specific tests by pattern
 ```bash
-pytest tests/dynamics/test_orbit_snapshot.py::TestCircularOrbitPropagatorSnapshot -v
+# Run all circular orbit tests
+pytest tests/dynamics/test_orbit_snapshot.py -k "circular" -v
+
+# Run all elliptical orbit tests
+pytest tests/dynamics/test_orbit_snapshot.py -k "elliptical" -v
+
+# Run all sun direction tests
+pytest tests/dynamics/test_orbit_snapshot.py -k "sun_direction" -v
 ```
 
 ### Run a specific test
 ```bash
-pytest tests/dynamics/test_orbit_snapshot.py::TestCircularOrbitPropagatorSnapshot::test_equatorial_orbit_snapshot -v
+pytest tests/dynamics/test_orbit_snapshot.py::test_circular_equatorial_orbit_snapshot -v
 ```
 
 ## When Refactoring
@@ -101,7 +108,7 @@ This file contains human-readable representations of:
 
 Example snapshot format:
 ```
-# name: TestCircularOrbitPropagatorSnapshot.test_equatorial_orbit_snapshot
+# name: test_circular_equatorial_orbit_snapshot
   SatelliteOrbitState(
     position_eci=
       [[7000000.0, 0.0, 0.0],

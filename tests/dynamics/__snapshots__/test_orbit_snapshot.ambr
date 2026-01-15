@@ -1,5 +1,5 @@
 # serializer version: 1
-# name: TestCircularOrbitPropagatorSnapshot.test_equatorial_orbit_snapshot
+# name: test_circular_equatorial_orbit_snapshot
   SatelliteOrbitState(
     position_eci=
       [[7000000.          ,       0.          ,       0.          ],
@@ -25,7 +25,7 @@
        [-4148.8164335416,  6303.1936962308,     0.          ]]
   )
 # ---
-# name: TestCircularOrbitPropagatorSnapshot.test_full_orbit_period_snapshot
+# name: test_circular_full_orbit_period_snapshot
   SatelliteOrbitState(
     position_eci=
       [[ 3.5000000000e+06,  6.0621778265e+06,  0.0000000000e+00],
@@ -71,7 +71,7 @@
        [-4618.8950384921,  2671.5691504969,  5335.8650159965]]
   )
 # ---
-# name: TestCircularOrbitPropagatorSnapshot.test_geostationary_orbit_snapshot
+# name: test_circular_geostationary_orbit_snapshot
   SatelliteOrbitState(
     position_eci=
       [[42164000.          ,        0.          ,        0.          ],
@@ -97,7 +97,7 @@
        [-1179.6842448535,  2839.3519016706,     0.          ]]
   )
 # ---
-# name: TestCircularOrbitPropagatorSnapshot.test_inclined_orbit_snapshot
+# name: test_circular_inclined_orbit_snapshot
   SatelliteOrbitState(
     position_eci=
       [[ 2668042.672325171 ,  4985567.263971399 ,  3764374.630010768 ],
@@ -133,7 +133,7 @@
        [-3926.9446071164, -5528.2241037505, -3563.1403075544]]
   )
 # ---
-# name: TestCircularOrbitPropagatorSnapshot.test_leo_constellation_snapshot
+# name: test_circular_leo_constellation_snapshot
   SatelliteOrbitState(
     position_eci=
       [[-3610784.2179146847, -2084687.2401986942,  5532946.813607644 ],
@@ -163,7 +163,7 @@
        [ 5.0497162915e+03, -2.2281501578e+02, -5.6555665541e+03]]
   )
 # ---
-# name: TestCircularOrbitPropagatorSnapshot.test_polar_orbit_snapshot
+# name: test_circular_polar_orbit_snapshot
   SatelliteOrbitState(
     position_eci=
       [[7.0000000000e+06, 0.0000000000e+00, 0.0000000000e+00],
@@ -189,7 +189,7 @@
        [-6.9309851591e+03,  1.8271850590e-13,  2.9840196542e+03]]
   )
 # ---
-# name: TestCircularOrbitPropagatorSnapshot.test_propagate_from_epoch_snapshot
+# name: test_circular_propagate_from_epoch_snapshot
   SatelliteOrbitState(
     position_eci=
       [[-1237436.8670764565,  6187184.335382291 ,  3031088.9132455345],
@@ -215,7 +215,7 @@
        [-5056.439056121 , -5597.0213307809,  -220.691789485 ]]
   )
 # ---
-# name: TestEllipticalOrbitPropagatorSnapshot.test_circular_case_snapshot
+# name: test_elliptical_circular_case_snapshot
   SatelliteOrbitState(
     position_eci=
       [[6996719.10262478  ,  -40683.0374250224,  -17747.7487266656],
@@ -241,7 +241,7 @@
        [-4.1207628740e+03,  6.3296362758e+03,  1.0253212123e+01]]
   )
 # ---
-# name: TestEllipticalOrbitPropagatorSnapshot.test_eccentric_orbit_snapshot
+# name: test_elliptical_eccentric_orbit_snapshot
   SatelliteOrbitState(
     position_eci=
       [[-1361028.1129267493,  7076453.007444957 ,  3463615.0362864365],
@@ -277,7 +277,7 @@
        [ -816.8742514368, -6286.4975715746, -2252.8003173861]]
   )
 # ---
-# name: TestEllipticalOrbitPropagatorSnapshot.test_gto_orbit_snapshot
+# name: test_elliptical_gto_orbit_snapshot
   SatelliteOrbitState(
     position_eci=
       [[-6.6075855734e+06,  2.6680737597e+03,  1.2439715100e+04],
@@ -313,7 +313,7 @@
        [  5318.23621205  ,  -1775.4848111925,   -228.5537799403]]
   )
 # ---
-# name: TestEllipticalOrbitPropagatorSnapshot.test_highly_eccentric_orbit_snapshot
+# name: test_elliptical_highly_eccentric_orbit_snapshot
   SatelliteOrbitState(
     position_eci=
       [[  -58899.8005692474, -3330353.3567217514, -6644932.339298985 ],
@@ -359,7 +359,7 @@
        [  76.4500723062, 1760.4055663255, 3513.6109768883]]
   )
 # ---
-# name: TestEllipticalOrbitPropagatorSnapshot.test_iss_like_orbit_snapshot
+# name: test_elliptical_iss_like_orbit_snapshot
   SatelliteOrbitState(
     position_eci=
       [[-4297169.02910645  ,  1049330.0935723593,  5145847.482850184 ],
@@ -385,7 +385,7 @@
        [ 3857.5298591503, -5522.2716748933, -3657.969017214 ]]
   )
 # ---
-# name: TestEllipticalOrbitPropagatorSnapshot.test_j2000_reference_frame_snapshot
+# name: test_elliptical_j2000_reference_frame_snapshot
   SatelliteOrbitState(
     position_eci=
       [[6930511.543784569 ,  -47514.6383199188,  -26677.8318648551],
@@ -411,7 +411,7 @@
        [-4183.9811934087,  3960.9945567788,  4977.6969224499]]
   )
 # ---
-# name: TestEllipticalOrbitPropagatorSnapshot.test_teme_reference_frame_snapshot
+# name: test_elliptical_teme_reference_frame_snapshot
   SatelliteOrbitState(
     position_eci=
       [[6930716.034970503 ,   -7216.0265838253,   -9098.2230099866],
@@ -437,7 +437,7 @@
        [-4219.554208649 ,  3936.3694919208,  4967.1924324254]]
   )
 # ---
-# name: TestSunDynamicsSnapshot.test_sun_direction_daily_snapshot
+# name: test_sun_direction_daily_snapshot
       [[ 0.1772924822, -0.9029475009, -0.3914756524],
        [ 0.1787511568, -0.9027053854, -0.3913706825],
        [ 0.1802094419, -0.9024612858, -0.3912648524],
@@ -452,13 +452,13 @@
        [ 0.1933159386, -0.9001751936, -0.3902737101],
        [ 0.1947701476, -0.899911283 , -0.3901592909]]
 # ---
-# name: TestSunDynamicsSnapshot.test_sun_direction_equinox_solstice_snapshot
+# name: test_sun_direction_equinox_solstice_snapshot
       [[ 0.9999465141, -0.0094891307, -0.0041140417],
        [ 0.0079867181,  0.9174527996,  0.3977644691],
        [-0.9999158551,  0.0119019271,  0.0051601169],
        [-0.008589695 , -0.9174482142, -0.3977624811]]
 # ---
-# name: TestSunDynamicsSnapshot.test_sun_direction_intraday_snapshot
+# name: test_sun_direction_intraday_snapshot
       [[0.1118940177, 0.9117204088, 0.3952791735],
        [0.1098229457, 0.9119323655, 0.395371068 ],
        [0.1077514451, 0.9121403571, 0.3954612434],
@@ -468,16 +468,16 @@
        [0.0994613316, 0.9129326613, 0.3958047493],
        [0.0973878191, 0.9131208189, 0.3958863256]]
 # ---
-# name: TestSunDynamicsSnapshot.test_sun_direction_seasonal_snapshot
+# name: test_sun_direction_seasonal_snapshot
       [[ 0.1860386222, -0.9014650568, -0.3908329342],
        [ 0.9802163509,  0.1815963453,  0.0787316513],
        [-0.1619224477,  0.9053744976,  0.3925278843],
        [-0.9903653733, -0.1270519781, -0.055083774 ]]
 # ---
-# name: TestSunDynamicsSnapshot.test_sun_direction_single_time_snapshot
+# name: test_sun_direction_single_time_snapshot
       [ 0.1772924822, -0.9029475009, -0.3914756524]
 # ---
-# name: TestSunDynamicsSnapshot.test_sun_direction_yearly_snapshot
+# name: test_sun_direction_yearly_snapshot
       [[ 0.1772924822, -0.9029475009, -0.3914756524],
        [ 0.6528109096, -0.6950118389, -0.3013245098],
        [ 0.9458293718, -0.2978735186, -0.1291439756],

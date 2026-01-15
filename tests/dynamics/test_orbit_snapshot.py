@@ -24,7 +24,7 @@ from cosmica.models import CircularSatelliteOrbitModel, EllipticalSatelliteOrbit
 
 if TYPE_CHECKING:
     from syrupy.assertion import SnapshotAssertion
-    from syrupy.types import SerializableData, SerializedData
+    from syrupy.types import SerializableData
 
 
 class NumpySnapshotExtension(AmberSnapshotExtension):
@@ -34,7 +34,7 @@ class NumpySnapshotExtension(AmberSnapshotExtension):
         self,
         data: SerializableData,
         **kwargs: Any,
-    ) -> SerializedData:
+    ) -> str:
         """Serialize data with reduced precision to handle platform differences."""
         if isinstance(data, SatelliteOrbitState):
             # Round arrays to 7 decimal places to avoid platform-specific differences

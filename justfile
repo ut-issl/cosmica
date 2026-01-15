@@ -4,7 +4,7 @@ default:
 ruff:
     uv run -- ruff check
 
-mypy:
+typecheck:
     uv sync --quiet --frozen --no-dev --group typing
     uv run --no-sync -- mypy .
 
@@ -22,7 +22,7 @@ license:
 
 lint:
     -just --justfile {{ justfile() }} ruff
-    -just --justfile {{ justfile() }} mypy
+    -just --justfile {{ justfile() }} typecheck
     -just --justfile {{ justfile() }} lint-imports
     -just --justfile {{ justfile() }} deptry
     -just --justfile {{ justfile() }} license

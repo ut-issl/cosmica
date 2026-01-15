@@ -145,9 +145,9 @@ Example snapshot format:
   - Reducing the number of time steps in some tests
 
 ### Numerical precision issues
-- The tests use 10 decimal places of precision
-- Small numerical differences (<1e-10) are expected and acceptable
-- If you see consistent small differences, consider if they're due to legitimate improvements
+- Arrays are rounded to 7 decimal places before serialization
+- This prevents platform-specific floating-point precision differences between local and CI environments
+- The rounding ensures snapshots are identical across different platforms while maintaining sufficient precision for orbit calculations
 
 ## Additional Resources
 

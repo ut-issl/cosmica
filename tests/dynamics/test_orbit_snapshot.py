@@ -61,7 +61,7 @@ class NumpySnapshotExtension(AmberSnapshotExtension):
     def _format_array(self, arr: npt.NDArray[np.floating], indent: str = "    ") -> str:
         """Format numpy array with proper indentation."""
         # Set print options for consistent formatting
-        with np.printoptions(precision=10, suppress=False, threshold=10000, linewidth=100):
+        with np.printoptions(precision=8, suppress=False, threshold=10000, linewidth=100):
             lines = np.array2string(arr, separator=", ").split("\n")
             return "\n".join(indent + line for line in lines)
 

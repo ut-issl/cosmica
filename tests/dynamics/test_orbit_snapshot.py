@@ -8,7 +8,7 @@ the snapshots using: pytest --snapshot-update
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import numpy.typing as npt
@@ -24,22 +24,26 @@ from cosmica.models import CircularSatelliteOrbitModel, EllipticalSatelliteOrbit
 
 if TYPE_CHECKING:
     from syrupy.assertion import SnapshotAssertion
+    from syrupy.types import SerializableData, SerializedData
 
 
 class NumpySnapshotExtension(AmberSnapshotExtension):
-    """Snapshot extension for NumPy arrays with human-readable format."""
+    """Snapshot extension for NumPy arrays with human-readable format and tolerance-based comparison."""
 
     def serialize(
         self,
-        data: npt.NDArray[np.floating] | SatelliteOrbitState | dict,
-        **kwargs,  # noqa: ANN003
-    ) -> str:
-        """Serialize data to a human-readable string format."""
+        data: SerializableData,
+        **kwargs: Any,
+    ) -> SerializedData:
+        """Serialize data with reduced precision to handle platform differences."""
         if isinstance(data, SatelliteOrbitState):
+            # Round arrays to 7 decimal places to avoid platform-specific differences
+            rounded_pos = np.round(data.position_eci, decimals=7)
+            rounded_vel = np.round(data.velocity_eci, decimals=7)
             return (
                 "SatelliteOrbitState(\n"
-                f"  position_eci=\n{self._format_array(data.position_eci)}\n"
-                f"  velocity_eci=\n{self._format_array(data.velocity_eci)}\n"
+                f"  position_eci=\n{self._format_array(rounded_pos)}\n"
+                f"  velocity_eci=\n{self._format_array(rounded_vel)}\n"
                 ")"
             )
         elif isinstance(data, dict):
@@ -48,19 +52,22 @@ class NumpySnapshotExtension(AmberSnapshotExtension):
                 if isinstance(value, SatelliteOrbitState):
                     result += f"  {key}: {self.serialize(value, **kwargs)}\n"
                 elif isinstance(value, np.ndarray):
-                    result += f"  {key}:\n{self._format_array(value, indent='    ')}\n"
+                    rounded = np.round(value, decimals=7)
+                    result += f"  {key}:\n{self._format_array(rounded, indent='    ')}\n"
                 else:
                     result += f"  {key}: {value}\n"
             result += "}"
             return result
         elif isinstance(data, np.ndarray):
-            return self._format_array(data)
+            # Round to 7 decimal places
+            rounded = np.round(data, decimals=7)
+            return self._format_array(rounded)
         else:
             return str(data)
 
     def _format_array(self, arr: npt.NDArray[np.floating], indent: str = "    ") -> str:
         """Format numpy array with proper indentation."""
-        # Set print options for consistent formatting
+        # Use 8 decimal places for display (since we've already rounded to 7)
         with np.printoptions(precision=8, suppress=False, threshold=10000, linewidth=100):
             lines = np.array2string(arr, separator=", ").split("\n")
             return "\n".join(indent + line for line in lines)

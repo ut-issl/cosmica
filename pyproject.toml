@@ -80,6 +80,7 @@ typing = [
   "ty>=0.0.7",
   "types-tqdm>=4.67.0.20250809",
   { include-group = "examples" },
+  { include-group = "test" },
 ]
 
 [build-system]

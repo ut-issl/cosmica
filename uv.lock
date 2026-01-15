@@ -322,11 +322,13 @@ test = [
     { name = "syrupy" },
 ]
 typing = [
+    { name = "coverage" },
     { name = "marimo" },
     { name = "mkdocs-gen-files" },
     { name = "mypy" },
     { name = "pandas-stubs" },
     { name = "pytest" },
+    { name = "syrupy" },
     { name = "ty" },
     { name = "types-tqdm" },
 ]
@@ -397,11 +399,14 @@ test = [
     { name = "syrupy", specifier = ">=5.0.0" },
 ]
 typing = [
+    { name = "coverage", specifier = ">=7.10.4" },
     { name = "marimo", specifier = ">=0.15.0" },
     { name = "mkdocs-gen-files" },
     { name = "mypy", specifier = ">=1.17.1" },
     { name = "pandas-stubs", specifier = ">=2.3.0.250703" },
     { name = "pytest" },
+    { name = "pytest", specifier = ">=8.4.1" },
+    { name = "syrupy", specifier = ">=5.0.0" },
     { name = "ty", specifier = ">=0.0.7" },
     { name = "types-tqdm", specifier = ">=4.67.0.20250809" },
 ]

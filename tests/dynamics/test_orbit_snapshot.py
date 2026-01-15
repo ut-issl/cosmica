@@ -8,9 +8,10 @@ the snapshots using: pytest --snapshot-update
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import numpy as np
 import numpy.typing as npt
-from syrupy.assertion import SnapshotAssertion
 from syrupy.extensions.amber import AmberSnapshotExtension
 
 from cosmica.dynamics import (
@@ -20,6 +21,9 @@ from cosmica.dynamics import (
 )
 from cosmica.dynamics.sun_dynamics import get_sun_direction_eci
 from cosmica.models import CircularSatelliteOrbitModel, EllipticalSatelliteOrbitModel, GravityModel
+
+if TYPE_CHECKING:
+    from syrupy.assertion import SnapshotAssertion
 
 
 class NumpySnapshotExtension(AmberSnapshotExtension):
@@ -404,7 +408,7 @@ def test_sun_direction_seasonal_snapshot(snapshot: SnapshotAssertion) -> None:
             np.datetime64("2026-04-01T12:00:00"),  # Spring
             np.datetime64("2026-07-01T12:00:00"),  # Summer
             np.datetime64("2026-10-01T12:00:00"),  # Fall
-        ]
+        ],
     )
     sun_dir = get_sun_direction_eci(times)
 
@@ -429,7 +433,7 @@ def test_sun_direction_equinox_solstice_snapshot(snapshot: SnapshotAssertion) ->
             np.datetime64("2026-06-21T06:00:00"),  # Summer solstice (approx)
             np.datetime64("2026-09-22T15:00:00"),  # Autumnal equinox (approx)
             np.datetime64("2026-12-21T18:00:00"),  # Winter solstice (approx)
-        ]
+        ],
     )
     sun_dir = get_sun_direction_eci(times)
 

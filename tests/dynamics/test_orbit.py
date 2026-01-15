@@ -227,7 +227,7 @@ class TestCircularSatelliteOrbitPropagator:
             [
                 epoch,
                 epoch + np.timedelta64(int(period_seconds * 1e9), "ns"),
-            ]
+            ],
         )
         states = propagator.propagate(time_array)
 

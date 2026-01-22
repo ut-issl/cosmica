@@ -4,6 +4,7 @@ __all__ = [
     "MOPCSatelliteKey",
     "MultiOrbitalPlaneConstellation",
     "SatelliteConstellation",
+    "WalkerDeltaConstellation",
 ]
 
 import logging
@@ -21,9 +22,10 @@ if TYPE_CHECKING:
     import numpy.typing as npt
 
 
-from cosmica.models import ConstellationSatellite
+from cosmica.models import CircularSatelliteOrbitModel, ConstellationSatellite
+from cosmica.models.constellation import WalkerDeltaConstellationModel
 
-from .orbit import SatelliteOrbit, SatelliteOrbitState, make_satellite_orbit
+from .orbit import CircularSatelliteOrbitPropagator, SatelliteOrbit, SatelliteOrbitState, make_satellite_orbit
 
 logger = logging.getLogger(__name__)
 
@@ -124,3 +126,34 @@ class MultiOrbitalPlaneConstellation[TOrbit: SatelliteOrbit](SatelliteConstellat
         satellite_orbits = dict(map(parse_satellite_item, toml_data["satellites"]))
 
         return cls(satellite_orbits)
+
+
+class WalkerDeltaConstellation(MultiOrbitalPlaneConstellation[CircularSatelliteOrbitPropagator]):
+    """Walker Delta constellation."""
+
+    def __init__(self, model: WalkerDeltaConstellationModel) -> None:
+        p_planes = model.geometry_planes_num
+        s_per_plane = model.total_satellites_num // p_planes
+        t_total = model.total_satellites_num
+        f_phasing = model.phasing_factor
+
+        satellite_orbits: dict[ConstellationSatellite[MOPCSatelliteKey], CircularSatelliteOrbitPropagator] = {}
+        for plane_id in range(p_planes):
+            raan = plane_id * (2 * np.pi / p_planes)
+            for sat_id_in_plane in range(s_per_plane):
+                phase = sat_id_in_plane * (2 * np.pi / s_per_plane) + plane_id * f_phasing * (2 * np.pi / t_total)
+                global_sat_id = plane_id * s_per_plane + sat_id_in_plane
+
+                orbit_model = CircularSatelliteOrbitModel(
+                    semi_major_axis=model.radius,
+                    inclination=model.inclination,
+                    raan=raan,
+                    phase_at_epoch=phase,
+                    epoch=model.epoch,
+                )
+                satellite = ConstellationSatellite(
+                    id=MOPCSatelliteKey(plane_id, global_sat_id),
+                )
+                satellite_orbits[satellite] = CircularSatelliteOrbitPropagator(orbit_model)
+
+        super().__init__(satellite_orbits)

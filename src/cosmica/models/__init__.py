@@ -21,6 +21,7 @@ __all__ = [
     "User",
     "UserOpticalCommunicationTerminal",
     "UserSatellite",
+    "WalkerDeltaConstellationModel",
     "load_demands_from_toml_file",
     "load_users_from_toml_file",
 ]
@@ -38,4 +39,5 @@ from .terminal import (
     RFCommunicationTerminal,
     UserOpticalCommunicationTerminal,
 )
+from .constellation import WalkerDeltaConstellationModel
 from .user import StationaryOnGroundUser, User, load_users_from_toml_file

@@ -38,8 +38,8 @@ class NumpySnapshotExtension(AmberSnapshotExtension):
         """Serialize data with reduced precision to handle platform differences."""
         if isinstance(data, SatelliteOrbitState):
             # Round arrays to 7 decimal places to avoid platform-specific differences
-            rounded_pos = np.round(data.position_eci, decimals=7)
-            rounded_vel = np.round(data.velocity_eci, decimals=7)
+            rounded_pos = np.round(data.position_eci, decimals=6)
+            rounded_vel = np.round(data.velocity_eci, decimals=6)
             return (
                 "SatelliteOrbitState(\n"
                 f"  position_eci=\n{self._format_array(rounded_pos)}\n"
@@ -52,7 +52,7 @@ class NumpySnapshotExtension(AmberSnapshotExtension):
                 if isinstance(value, SatelliteOrbitState):
                     result += f"  {key}: {self.serialize(value, **kwargs)}\n"
                 elif isinstance(value, np.ndarray):
-                    rounded = np.round(value, decimals=7)
+                    rounded = np.round(value, decimals=6)
                     result += f"  {key}:\n{self._format_array(rounded, indent='    ')}\n"
                 else:
                     result += f"  {key}: {value}\n"
@@ -60,15 +60,15 @@ class NumpySnapshotExtension(AmberSnapshotExtension):
             return result
         elif isinstance(data, np.ndarray):
             # Round to 7 decimal places
-            rounded = np.round(data, decimals=7)
+            rounded = np.round(data, decimals=6)
             return self._format_array(rounded)
         else:
             return str(data)
 
     def _format_array(self, arr: npt.NDArray[np.floating], indent: str = "    ") -> str:
         """Format numpy array with proper indentation."""
-        # Use 8 decimal places for display (since we've already rounded to 7)
-        with np.printoptions(precision=8, suppress=False, threshold=10000, linewidth=100):
+        # Use 7 decimal places for display (since we've already rounded to 6)
+        with np.printoptions(precision=7, suppress=False, threshold=10000, linewidth=100):
             lines = np.array2string(arr, separator=", ").split("\n")
             return "\n".join(indent + line for line in lines)
 

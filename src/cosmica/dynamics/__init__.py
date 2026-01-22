@@ -8,11 +8,16 @@ __all__ = [
     "SatelliteConstellation",
     "SatelliteOrbit",
     "SatelliteOrbitState",
-    "WalkerDeltaConstellation",
+    "build_walker_delta_constellation",
     "get_sun_direction_eci",
     "make_satellite_orbit",
 ]
-from .constellation import MOPCSatelliteKey, MultiOrbitalPlaneConstellation, SatelliteConstellation, WalkerDeltaConstellation
+from .constellation import (
+    MOPCSatelliteKey,
+    MultiOrbitalPlaneConstellation,
+    SatelliteConstellation,
+    build_walker_delta_constellation,
+)
 from .orbit import (
     CircularSatelliteOrbit,
     CircularSatelliteOrbitPropagator,

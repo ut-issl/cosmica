@@ -4,7 +4,7 @@ __all__ = [
     "MOPCSatelliteKey",
     "MultiOrbitalPlaneConstellation",
     "SatelliteConstellation",
-    "WalkerDeltaConstellation",
+    "build_walker_delta_constellation",
 ]
 
 import logging
@@ -22,10 +22,9 @@ if TYPE_CHECKING:
     import numpy.typing as npt
 
 
-from cosmica.models import CircularSatelliteOrbitModel, ConstellationSatellite
-from cosmica.models.constellation import WalkerDeltaConstellationModel
+from cosmica.models import ConstellationSatellite
 
-from .orbit import CircularSatelliteOrbitPropagator, SatelliteOrbit, SatelliteOrbitState, make_satellite_orbit
+from .orbit import CircularSatelliteOrbit, SatelliteOrbit, SatelliteOrbitState, make_satellite_orbit
 
 logger = logging.getLogger(__name__)
 
@@ -128,32 +127,48 @@ class MultiOrbitalPlaneConstellation[TOrbit: SatelliteOrbit](SatelliteConstellat
         return cls(satellite_orbits)
 
 
-class WalkerDeltaConstellation(MultiOrbitalPlaneConstellation[CircularSatelliteOrbitPropagator]):
-    """Walker Delta constellation."""
+def build_walker_delta_constellation(
+    semi_major_axis: float,
+    inclination: float,
+    n_total_sats: int,
+    n_geometry_planes: int,
+    phasing_factor: int,
+    epoch: np.datetime64,
+) -> MultiOrbitalPlaneConstellation[CircularSatelliteOrbit]:
+    """Create a multi-plane Walker Delta constellation."""
+    assert semi_major_axis > 0, "Semi-major axis must be positive."
+    assert 0 <= inclination <= np.pi, "Inclination must be between 0 and pi radians."
+    assert n_total_sats > 0, "Total number of satellites must be positive."
+    assert 0 < n_geometry_planes <= n_total_sats, (
+        "Number of geometry planes must be positive and less than or equal to total number of satellites."
+    )
+    assert n_total_sats % n_geometry_planes == 0, "Total number of satellites must be divisible by number of planes."
+    assert 0 <= phasing_factor < n_geometry_planes, (
+        "Phasing factor must be less than number of planes and non-negative."
+    )
 
-    def __init__(self, model: WalkerDeltaConstellationModel) -> None:
-        p_planes = model.geometry_planes_num
-        s_per_plane = model.total_satellites_num // p_planes
-        t_total = model.total_satellites_num
-        f_phasing = model.phasing_factor
+    n_sats_per_plane = n_total_sats // n_geometry_planes
 
-        satellite_orbits: dict[ConstellationSatellite[MOPCSatelliteKey], CircularSatelliteOrbitPropagator] = {}
-        for plane_id in range(p_planes):
-            raan = plane_id * (2 * np.pi / p_planes)
-            for sat_id_in_plane in range(s_per_plane):
-                phase = sat_id_in_plane * (2 * np.pi / s_per_plane) + plane_id * f_phasing * (2 * np.pi / t_total)
-                global_sat_id = plane_id * s_per_plane + sat_id_in_plane
+    satellite_orbits: dict[ConstellationSatellite[MOPCSatelliteKey], CircularSatelliteOrbit] = {}
 
-                orbit_model = CircularSatelliteOrbitModel(
-                    semi_major_axis=model.radius,
-                    inclination=model.inclination,
-                    raan=raan,
-                    phase_at_epoch=phase,
-                    epoch=model.epoch,
-                )
-                satellite = ConstellationSatellite(
-                    id=MOPCSatelliteKey(plane_id, global_sat_id),
-                )
-                satellite_orbits[satellite] = CircularSatelliteOrbitPropagator(orbit_model)
+    for plane_id in range(1, n_geometry_planes + 1):
+        raan = plane_id * (2 * np.pi / n_geometry_planes)
 
-        super().__init__(satellite_orbits)
+        for sat_id_in_plane in range(1, n_sats_per_plane + 1):
+            phase = (sat_id_in_plane - 1) * (2 * np.pi / n_sats_per_plane) + (plane_id - 1) * phasing_factor * (
+                2 * np.pi / n_total_sats
+            )
+            global_sat_id = (plane_id - 1) * n_sats_per_plane + sat_id_in_plane
+
+            satellite = ConstellationSatellite(
+                id=MOPCSatelliteKey(plane_id, global_sat_id),
+            )
+            satellite_orbits[satellite] = CircularSatelliteOrbit(
+                semi_major_axis=semi_major_axis,
+                inclination=inclination,
+                raan=raan,
+                phase_at_epoch=phase,
+                epoch=epoch,
+            )
+
+    return MultiOrbitalPlaneConstellation(satellite_orbits=satellite_orbits)

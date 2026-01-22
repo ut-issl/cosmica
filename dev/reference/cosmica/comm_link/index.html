@@ -3128,10 +3128,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#cosmica.comm_link.GatewayToGatewayCommLinkCalculator.gateway_to_gateway_bandwidth" class="md-nav__link">
+  <a href="#cosmica.comm_link.GatewayToGatewayCommLinkCalculator.gateway_to_gateway_link_capacity" class="md-nav__link">
     <span class="md-ellipsis">
       
-        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;gateway_to_gateway_bandwidth
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;gateway_to_gateway_link_capacity
       
     </span>
   </a>
@@ -5570,7 +5570,7 @@ An edge can be thought as the link between two nodes (e.g. terminals, satellites
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">GatewayToGatewayCommLinkCalculator</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">gateway_to_gateway_bandwidth</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
+    <span class="n">gateway_to_gateway_link_capacity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">refractive_index</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">1.5</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -5615,11 +5615,11 @@ An edge can be thought as the link between two nodes (e.g. terminals, satellites
 <span class="normal">27</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">gateway_to_gateway_bandwidth</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">gateway_to_gateway_link_capacity</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">refractive_index</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the gateway-to-gateway communication link calculator.&quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">gateway_to_gateway_bandwidth</span> <span class="o">=</span> <span class="n">gateway_to_gateway_bandwidth</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">gateway_to_gateway_link_capacity</span> <span class="o">=</span> <span class="n">gateway_to_gateway_link_capacity</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">refractive_index</span> <span class="o">=</span> <span class="n">refractive_index</span>
 </code></pre></div></td></tr></table></div>
                   </details>
@@ -5638,8 +5638,8 @@ An edge can be thought as the link between two nodes (e.g. terminals, satellites
 
 
 
-<h4 id="cosmica.comm_link.GatewayToGatewayCommLinkCalculator.gateway_to_gateway_bandwidth" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">gateway_to_gateway_bandwidth</span>
+<h4 id="cosmica.comm_link.GatewayToGatewayCommLinkCalculator.gateway_to_gateway_link_capacity" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">gateway_to_gateway_link_capacity</span>
 
 
   <span class="doc doc-labels">
@@ -5647,7 +5647,9 @@ An edge can be thought as the link between two nodes (e.g. terminals, satellites
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">gateway_to_gateway_bandwidth</span> <span class="o">=</span> <span class="n"><span title="cosmica.comm_link.gateway_to_gateway.GatewayToGatewayCommLinkCalculator(gateway_to_gateway_bandwidth)">gateway_to_gateway_bandwidth</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">gateway_to_gateway_link_capacity</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n"><span title="cosmica.comm_link.gateway_to_gateway.GatewayToGatewayCommLinkCalculator(gateway_to_gateway_link_capacity)">gateway_to_gateway_link_capacity</span></span>
+<span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">

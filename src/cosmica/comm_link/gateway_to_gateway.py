@@ -13,17 +13,19 @@ from cosmica.utils.constants import EARTH_RADIUS, SPEED_OF_LIGHT
 from .base import CommLinkPerformance, MemorylessCommLinkCalculator
 
 
-class GatewayToGatewayCommLinkCalculator(MemorylessCommLinkCalculator[Gateway, Gateway]):
+class GatewayToGatewayCommLinkCalculator(
+    MemorylessCommLinkCalculator[Gateway, Gateway]
+):
     """Calculate gateway-to-gateway communication link performance using great circle distance."""
 
     def __init__(
         self,
         *,
-        gateway_to_gateway_bandwidth: float,
+        gateway_to_gateway_link_capacity: float,
         refractive_index: float = 1.5,
     ) -> None:
         """Initialize the gateway-to-gateway communication link calculator."""
-        self.gateway_to_gateway_bandwidth = gateway_to_gateway_bandwidth
+        self.gateway_to_gateway_link_capacity = gateway_to_gateway_link_capacity
         self.refractive_index = refractive_index
 
     def calc(
@@ -64,7 +66,9 @@ class GatewayToGatewayCommLinkCalculator(MemorylessCommLinkCalculator[Gateway, G
         link_available = True
 
         return CommLinkPerformance(
-            link_capacity=self.gateway_to_gateway_bandwidth if link_available else 0.0,
+            link_capacity=self.gateway_to_gateway_link_capacity
+            if link_available
+            else 0.0,
             delay=float(delay),
             link_available=link_available,
         )

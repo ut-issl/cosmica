@@ -12,7 +12,12 @@ __all__ = [
     "get_sun_direction_eci",
     "make_satellite_orbit",
 ]
-from .constellation import MOPCSatelliteKey, MultiOrbitalPlaneConstellation, SatelliteConstellation, WalkerDeltaConstellation
+from .constellation import (
+    MOPCSatelliteKey,
+    MultiOrbitalPlaneConstellation,
+    SatelliteConstellation,
+    WalkerDeltaConstellation,
+)
 from .orbit import (
     CircularSatelliteOrbit,
     CircularSatelliteOrbitPropagator,

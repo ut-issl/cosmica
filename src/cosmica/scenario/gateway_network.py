@@ -131,12 +131,8 @@ def _validate_gateway_map(gateway_map: Mapping[Hashable, Mapping[str, float | in
         _assert_real_in_range(lon_deg, "lon_deg", -180.0, 180.0, gateway_id)
         _assert_real_in_range(min_el_deg, "min_el_deg", 0.0, 90.0, gateway_id)
         if n_terminals is not None:
-            assert isinstance(n_terminals, Integral), (
-                f"Gateway {gateway_id} n_terminals must be an integer."
-            )
-            assert int(n_terminals) > 0, (
-                f"Gateway {gateway_id} n_terminals must be a positive integer."
-            )
+            assert isinstance(n_terminals, Integral), f"Gateway {gateway_id} n_terminals must be an integer."
+            assert int(n_terminals) > 0, f"Gateway {gateway_id} n_terminals must be a positive integer."
 
         if "altitude" in specs:
             _assert_real_in_range(specs["altitude"], "altitude", -1e6, 1e6, gateway_id)
@@ -145,7 +141,11 @@ def _validate_gateway_map(gateway_map: Mapping[Hashable, Mapping[str, float | in
 
 
 def _assert_real_in_range(
-    value: float, name: str, min_value: float, max_value: float, gateway_id: Hashable,
+    value: float,
+    name: str,
+    min_value: float,
+    max_value: float,
+    gateway_id: Hashable,
 ) -> None:
     assert isinstance(value, Real), f"Gateway {gateway_id} {name} must be a real number."
     assert np.isfinite(float(value)), f"Gateway {gateway_id} {name} must be finite."

@@ -3468,6 +3468,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#cosmica.dynamics.build_walker_delta_constellation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;build_walker_delta_constellation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#cosmica.dynamics.get_sun_direction_eci" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3568,6 +3579,7 @@
     <span class="s2">&quot;SatelliteConstellation&quot;</span><span class="p">,</span>
     <span class="s2">&quot;SatelliteOrbit&quot;</span><span class="p">,</span>
     <span class="s2">&quot;SatelliteOrbitState&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;build_walker_delta_constellation&quot;</span><span class="p">,</span>
     <span class="s2">&quot;get_sun_direction_eci&quot;</span><span class="p">,</span>
     <span class="s2">&quot;make_satellite_orbit&quot;</span><span class="p">,</span>
 <span class="p">]</span>
@@ -4913,8 +4925,8 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/dynamics/constellation.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">50</span>
-<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">51</span>
+<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">plane_id</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">satellite_id</span><span class="si">}</span><span class="s2">)&quot;</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4969,8 +4981,7 @@
 
                   <details class="mkdocstrings-source">
                     <summary>Source code in <code>src/cosmica/dynamics/constellation.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">60</span>
-<span class="normal">61</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">61</span>
 <span class="normal">62</span>
 <span class="normal">63</span>
 <span class="normal">64</span>
@@ -4988,7 +4999,8 @@
 <span class="normal">76</span>
 <span class="normal">77</span>
 <span class="normal">78</span>
-<span class="normal">79</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">79</span>
+<span class="normal">80</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">satellite_orbits</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">ConstellationSatellite</span><span class="p">[</span><span class="n">MOPCSatelliteKey</span><span class="p">],</span> <span class="n">TOrbit</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -5195,8 +5207,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/dynamics/constellation.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 93</span>
-<span class="normal"> 94</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 94</span>
 <span class="normal"> 95</span>
 <span class="normal"> 96</span>
 <span class="normal"> 97</span>
@@ -5228,7 +5239,8 @@
 <span class="normal">123</span>
 <span class="normal">124</span>
 <span class="normal">125</span>
-<span class="normal">126</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">126</span>
+<span class="normal">127</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;Construction of objects from TOML files is deprecated and will be removed in future versions.&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">from_toml_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">toml_file_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MultiOrbitalPlaneConstellation</span><span class="p">:</span>
     <span class="n">toml_file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">toml_file_path</span><span class="p">)</span>
@@ -5296,8 +5308,8 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/dynamics/constellation.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">42</span>
-<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">propagate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">ConstellationSatellite</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">SatelliteOrbitState</span><span class="p">]:</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">43</span>
+<span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">propagate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">ConstellationSatellite</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">SatelliteOrbitState</span><span class="p">]:</span>
     <span class="k">return</span> <span class="p">{</span><span class="n">sat</span><span class="p">:</span> <span class="n">orbit</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">for</span> <span class="n">sat</span><span class="p">,</span> <span class="n">orbit</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">satellite_orbits</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5438,8 +5450,8 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/dynamics/constellation.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">42</span>
-<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">propagate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">ConstellationSatellite</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">SatelliteOrbitState</span><span class="p">]:</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">43</span>
+<span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">propagate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">ConstellationSatellite</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">SatelliteOrbitState</span><span class="p">]:</span>
     <span class="k">return</span> <span class="p">{</span><span class="n">sat</span><span class="p">:</span> <span class="n">orbit</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">for</span> <span class="n">sat</span><span class="p">,</span> <span class="n">orbit</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">satellite_orbits</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5730,6 +5742,131 @@
 
 </div>
 
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cosmica.dynamics.build_walker_delta_constellation" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">build_walker_delta_constellation</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">build_walker_delta_constellation</span><span class="p">(</span>
+    <span class="n">semi_major_axis</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
+    <span class="n">inclination</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
+    <span class="n">n_total_sats</span><span class="p">:</span> <span class="n"><span title="int">int</span></span><span class="p">,</span>
+    <span class="n">n_geometry_planes</span><span class="p">:</span> <span class="n"><span title="int">int</span></span><span class="p">,</span>
+    <span class="n">phasing_factor</span><span class="p">:</span> <span class="n"><span title="int">int</span></span><span class="p">,</span>
+    <span class="n">epoch</span><span class="p">:</span> <span class="n"><span title="numpy.datetime64">datetime64</span></span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            MultiOrbitalPlaneConstellation (cosmica.dynamics.constellation.MultiOrbitalPlaneConstellation)" href="constellation/#cosmica.dynamics.constellation.MultiOrbitalPlaneConstellation">MultiOrbitalPlaneConstellation</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            CircularSatelliteOrbit
+
+
+  
+      dataclass
+   (cosmica.dynamics.orbit.CircularSatelliteOrbit)" href="orbit/#cosmica.dynamics.orbit.CircularSatelliteOrbit">CircularSatelliteOrbit</a></span><span class="p">]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Create a multi-plane Walker Delta constellation.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/cosmica/dynamics/constellation.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_walker_delta_constellation</span><span class="p">(</span>
+    <span class="n">semi_major_axis</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">inclination</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">n_total_sats</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">n_geometry_planes</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">phasing_factor</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">epoch</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MultiOrbitalPlaneConstellation</span><span class="p">[</span><span class="n">CircularSatelliteOrbit</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a multi-plane Walker Delta constellation.&quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">semi_major_axis</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Semi-major axis must be positive.&quot;</span>
+    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">inclination</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="s2">&quot;Inclination must be between 0 and pi radians.&quot;</span>
+    <span class="k">assert</span> <span class="n">n_total_sats</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Total number of satellites must be positive.&quot;</span>
+    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">n_geometry_planes</span> <span class="o">&lt;=</span> <span class="n">n_total_sats</span><span class="p">,</span> <span class="p">(</span>
+        <span class="s2">&quot;Number of geometry planes must be positive and less than or equal to total number of satellites.&quot;</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">n_total_sats</span> <span class="o">%</span> <span class="n">n_geometry_planes</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Total number of satellites must be divisible by number of planes.&quot;</span>
+    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">phasing_factor</span> <span class="o">&lt;</span> <span class="n">n_geometry_planes</span><span class="p">,</span> <span class="p">(</span>
+        <span class="s2">&quot;Phasing factor must be less than number of planes and non-negative.&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">n_sats_per_plane</span> <span class="o">=</span> <span class="n">n_total_sats</span> <span class="o">//</span> <span class="n">n_geometry_planes</span>
+
+    <span class="n">satellite_orbits</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">ConstellationSatellite</span><span class="p">[</span><span class="n">MOPCSatelliteKey</span><span class="p">],</span> <span class="n">CircularSatelliteOrbit</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">plane_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_geometry_planes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">raan</span> <span class="o">=</span> <span class="n">plane_id</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">n_geometry_planes</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">sat_id_in_plane</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_sats_per_plane</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">phase</span> <span class="o">=</span> <span class="p">(</span><span class="n">sat_id_in_plane</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">n_sats_per_plane</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">plane_id</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">phasing_factor</span> <span class="o">*</span> <span class="p">(</span>
+                <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">n_total_sats</span>
+            <span class="p">)</span>
+            <span class="n">global_sat_id</span> <span class="o">=</span> <span class="p">(</span><span class="n">plane_id</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_sats_per_plane</span> <span class="o">+</span> <span class="n">sat_id_in_plane</span>
+
+            <span class="n">satellite</span> <span class="o">=</span> <span class="n">ConstellationSatellite</span><span class="p">(</span>
+                <span class="nb">id</span><span class="o">=</span><span class="n">MOPCSatelliteKey</span><span class="p">(</span><span class="n">plane_id</span><span class="p">,</span> <span class="n">global_sat_id</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">satellite_orbits</span><span class="p">[</span><span class="n">satellite</span><span class="p">]</span> <span class="o">=</span> <span class="n">CircularSatelliteOrbit</span><span class="p">(</span>
+                <span class="n">semi_major_axis</span><span class="o">=</span><span class="n">semi_major_axis</span><span class="p">,</span>
+                <span class="n">inclination</span><span class="o">=</span><span class="n">inclination</span><span class="p">,</span>
+                <span class="n">raan</span><span class="o">=</span><span class="n">raan</span><span class="p">,</span>
+                <span class="n">phase_at_epoch</span><span class="o">=</span><span class="n">phase</span><span class="p">,</span>
+                <span class="n">epoch</span><span class="o">=</span><span class="n">epoch</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">MultiOrbitalPlaneConstellation</span><span class="p">(</span><span class="n">satellite_orbits</span><span class="o">=</span><span class="n">satellite_orbits</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
 
 <div class="doc doc-object doc-function">
 

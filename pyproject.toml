@@ -103,13 +103,6 @@ exclude_also = [
   '@(abc\.)?abstractmethod',
 ]
 
-[tool.deptry]
-# `examples` and `scripts` are allowed to have development dependencies.
-extend_exclude = ["examples", "scripts"]
-
-[tool.deptry.per_rule_ignores]
-DEP003 = ["cosmica"]
-
 [tool.importlinter]
 root_package = "cosmica"
 
@@ -181,6 +174,7 @@ allow-only = """\
   MIT-CMU;\
   Apache-2.0;\
   BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0;\
+  Apache-2.0 OR BSD-2-Clause;\
 """
 
 [tool.pytest]

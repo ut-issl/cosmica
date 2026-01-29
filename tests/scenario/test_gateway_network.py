@@ -1,5 +1,10 @@
+from typing import TYPE_CHECKING
+
 import numpy as np
 import pytest
+
+if TYPE_CHECKING:
+    from collections.abc import Hashable, Mapping
 
 from cosmica.models import Gateway
 from cosmica.scenario.gateway_network import DEFAULT_GATEWAYS, build_default_gateway_network, build_gateway_network
@@ -23,7 +28,7 @@ def test_build_default_gateway_network_indexes() -> None:
 
 
 def test_build_gateway_network_optional_n_terminals() -> None:
-    gateway_map = {
+    gateway_map: Mapping[Hashable, Mapping[str, float | int]] = {
         "gw-1": {
             "lat_deg": 10.0,
             "lon_deg": 20.0,
@@ -36,7 +41,7 @@ def test_build_gateway_network_optional_n_terminals() -> None:
 
 
 def test_build_gateway_network_converts_degrees_to_radians() -> None:
-    gateway_map = {
+    gateway_map: Mapping[Hashable, Mapping[str, float | int]] = {
         0: {
             "lat_deg": 45.0,
             "lon_deg": -90.0,
@@ -55,7 +60,7 @@ def test_build_gateway_network_converts_degrees_to_radians() -> None:
 
 
 def test_build_gateway_network_missing_required_field() -> None:
-    gateway_map = {
+    gateway_map: Mapping[Hashable, Mapping[str, float | int]] = {
         0: {
             "lat_deg": 45.0,
             "lon_deg": -90.0,
@@ -66,7 +71,7 @@ def test_build_gateway_network_missing_required_field() -> None:
 
 
 def test_build_gateway_network_invalid_n_terminals() -> None:
-    gateway_map = {
+    gateway_map: Mapping[Hashable, Mapping[str, float | int]] = {
         0: {
             "lat_deg": 45.0,
             "lon_deg": -90.0,

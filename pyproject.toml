@@ -103,13 +103,6 @@ exclude_also = [
   '@(abc\.)?abstractmethod',
 ]
 
-[tool.deptry]
-# `examples` and `scripts` are allowed to have development dependencies.
-extend_exclude = ["examples", "scripts"]
-
-[tool.deptry.per_rule_ignores]
-DEP003 = ["cosmica"]
-
 [tool.importlinter]
 root_package = "cosmica"
 

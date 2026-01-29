@@ -68,9 +68,7 @@ def build_default_gateway_network(
         assert not invalid_ids, f"Unknown gateway ids: {sorted(invalid_ids)}."
         selected_ids = list(indexes)
     else:
-        assert 1 <= n_stations <= len(DEFAULT_GATEWAYS), (
-            f"n_stations must be between 1 and {len(DEFAULT_GATEWAYS)}."
-        )
+        assert 1 <= n_stations <= len(DEFAULT_GATEWAYS), f"n_stations must be between 1 and {len(DEFAULT_GATEWAYS)}."
         selected_ids = list(sorted(DEFAULT_GATEWAYS))[:n_stations]
 
     gateway_map = {gateway_id: DEFAULT_GATEWAYS[gateway_id] for gateway_id in selected_ids}
@@ -139,7 +137,9 @@ def _validate_gateway_map(gateway_map: Mapping[Hashable, Mapping[str, Real | int
             _assert_real_in_range(specs["altitude_m"], "altitude_m", -1e6, 1e6, gateway_id)
 
 
-def _assert_real_in_range(value: Real | int, name: str, min_value: float, max_value: float, gateway_id: Hashable) -> None:
+def _assert_real_in_range(
+    value: Real | int, name: str, min_value: float, max_value: float, gateway_id: Hashable
+) -> None:
     assert isinstance(value, Real), f"Gateway {gateway_id} {name} must be a real number."
     assert np.isfinite(value), f"Gateway {gateway_id} {name} must be finite."
     assert min_value <= float(value) <= max_value, (

@@ -14,7 +14,7 @@ from typing_extensions import Doc
 
 from cosmica.models import Gateway
 
-DEFAULT_GATEWAYS = {
+DEFAULT_GATEWAYS: dict[int, dict[str, float | int]] = {
     0: {  # Tokyo, Japan
         "lat_deg": 36.0,
         "lon_deg": 139.0,
@@ -69,15 +69,17 @@ def build_default_gateway_network(
         selected_ids = list(indexes)
     else:
         assert 1 <= n_stations <= len(DEFAULT_GATEWAYS), f"n_stations must be between 1 and {len(DEFAULT_GATEWAYS)}."
-        selected_ids = list(sorted(DEFAULT_GATEWAYS))[:n_stations]
+        selected_ids = sorted(DEFAULT_GATEWAYS)[:n_stations]
 
-    gateway_map = {gateway_id: DEFAULT_GATEWAYS[gateway_id] for gateway_id in selected_ids}
+    gateway_map: Mapping[Hashable, Mapping[str, float | int]] = {
+        gateway_id: DEFAULT_GATEWAYS[gateway_id] for gateway_id in selected_ids
+    }
     return build_gateway_network(gateway_map)
 
 
 def build_gateway_network(
     gateway_map: Annotated[
-        Mapping[Hashable, Mapping[str, Real | int]],
+        Mapping[Hashable, Mapping[str, float | int]],
         Doc("Mapping of gateway ID to gateway parameters."),
     ],
 ) -> list[Gateway]:
@@ -97,7 +99,9 @@ def build_gateway_network(
     gateway_list: list[Gateway] = []
     for gateway_id, specs in gateway_map.items():
         altitude = specs.get("altitude", specs.get("altitude_m", 0.0))
-        n_terminals = specs.get("n_terminals", 1)
+        n_terminals_raw = specs.get("n_terminals", 1)
+        assert isinstance(n_terminals_raw, Integral)
+        n_terminals = int(n_terminals_raw)
         gateway_list.append(
             Gateway(
                 id=gateway_id,
@@ -111,7 +115,7 @@ def build_gateway_network(
     return gateway_list
 
 
-def _validate_gateway_map(gateway_map: Mapping[Hashable, Mapping[str, Real | int]]) -> None:
+def _validate_gateway_map(gateway_map: Mapping[Hashable, Mapping[str, float | int]]) -> None:
     assert len(gateway_map) > 0, "gateway_map must contain at least one gateway."
     for gateway_id, specs in gateway_map.items():
         assert isinstance(specs, Mapping), f"Gateway {gateway_id} parameters must be a mapping."
@@ -127,7 +131,10 @@ def _validate_gateway_map(gateway_map: Mapping[Hashable, Mapping[str, Real | int
         _assert_real_in_range(lon_deg, "lon_deg", -180.0, 180.0, gateway_id)
         _assert_real_in_range(min_el_deg, "min_el_deg", 0.0, 90.0, gateway_id)
         if n_terminals is not None:
-            assert isinstance(n_terminals, Integral) and int(n_terminals) > 0, (
+            assert isinstance(n_terminals, Integral), (
+                f"Gateway {gateway_id} n_terminals must be an integer."
+            )
+            assert int(n_terminals) > 0, (
                 f"Gateway {gateway_id} n_terminals must be a positive integer."
             )
 
@@ -138,10 +145,10 @@ def _validate_gateway_map(gateway_map: Mapping[Hashable, Mapping[str, Real | int
 
 
 def _assert_real_in_range(
-    value: Real | int, name: str, min_value: float, max_value: float, gateway_id: Hashable
+    value: float, name: str, min_value: float, max_value: float, gateway_id: Hashable,
 ) -> None:
     assert isinstance(value, Real), f"Gateway {gateway_id} {name} must be a real number."
-    assert np.isfinite(value), f"Gateway {gateway_id} {name} must be finite."
+    assert np.isfinite(float(value)), f"Gateway {gateway_id} {name} must be finite."
     assert min_value <= float(value) <= max_value, (
         f"Gateway {gateway_id} {name} must be between {min_value} and {max_value}."
     )

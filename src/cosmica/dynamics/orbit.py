@@ -271,6 +271,7 @@ class EllipticalSatelliteOrbit(SatelliteOrbit):
         return self._propagator.propagate(time)
 
 
+@deprecated("This function will be removed in future versions.")
 def make_satellite_orbit(
     orbit_type: Literal["circular"],
     *args: Any,

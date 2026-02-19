@@ -14,7 +14,7 @@ from .base import CommLinkPerformance, MemorylessCommLinkCalculator
 
 
 class GatewayToGatewayCommLinkCalculator(
-    MemorylessCommLinkCalculator[Gateway, Gateway]
+    MemorylessCommLinkCalculator[Gateway, Gateway],
 ):
     """Calculate gateway-to-gateway communication link performance using great circle distance."""
 
@@ -66,9 +66,7 @@ class GatewayToGatewayCommLinkCalculator(
         link_available = True
 
         return CommLinkPerformance(
-            link_capacity=self.gateway_to_gateway_link_capacity
-            if link_available
-            else 0.0,
+            link_capacity=self.gateway_to_gateway_link_capacity if link_available else 0.0,
             delay=float(delay),
             link_available=link_available,
         )

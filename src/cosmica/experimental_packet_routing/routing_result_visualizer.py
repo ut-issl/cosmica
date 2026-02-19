@@ -241,14 +241,14 @@ class RoutingResultVisualizer:
 
         # 軸の範囲設定
         if use_time_from_epoch:
-            ax.set_xlim(xlim if xlim else (self.time_from_epoch[0], self.time_from_epoch[-1]))
+            ax.set_xlim(xlim or (self.time_from_epoch[0], self.time_from_epoch[-1]))
         else:
-            ax.set_xlim(xlim if xlim else (self.time[0], self.time[-1]))
+            ax.set_xlim(xlim or (self.time[0], self.time[-1]))
 
         if max_delay == np.inf or np.isnan(max_delay):
             ax.set_ylim(0, None)
         else:
-            ax.set_ylim(ylim if ylim else (0, max_delay * 1.1))
+            ax.set_ylim(ylim or (0, max_delay * 1.1))
 
         if with_grid:
             ax.xaxis.set_minor_locator(AutoMinorLocator(5))
@@ -335,8 +335,8 @@ class RoutingResultVisualizer:
             plt.setp(ax.get_xticklabels(), rotation=45, ha="right")
 
         ax.tick_params(axis="both", labelsize=tick_label_fontsize)
-        ax.set_xlim(xlim if xlim else (x_data.iloc[0], x_data.iloc[-1]))
-        ax.set_ylim(ylim if ylim else (0, None))
+        ax.set_xlim(xlim or (x_data.iloc[0], x_data.iloc[-1]))
+        ax.set_ylim(ylim or (0, None))
 
         if with_grid:
             ax.xaxis.set_minor_locator(AutoMinorLocator(5))
@@ -423,10 +423,10 @@ class RoutingResultVisualizer:
 
         # 軸の範囲設定
         if use_time_from_epoch:
-            ax.set_xlim(xlim if xlim else (self.time_from_epoch[0], self.time_from_epoch[-1]))
+            ax.set_xlim(xlim or (self.time_from_epoch[0], self.time_from_epoch[-1]))
         else:
-            ax.set_xlim(xlim if xlim else (self.time[0], self.time[-1]))
-        ax.set_ylim(ylim if ylim else (0, None))
+            ax.set_xlim(xlim or (self.time[0], self.time[-1]))
+        ax.set_ylim(ylim or (0, None))
 
         if with_grid:
             ax.xaxis.set_minor_locator(AutoMinorLocator(5))

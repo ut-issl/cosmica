@@ -1,5 +1,6 @@
 __all__ = [
     "HybridUS2CG2CTopologyBuilder",
+    "build_hybrid_us2c_g2c_topology",
 ]
 
 import logging
@@ -10,16 +11,18 @@ import networkx as nx
 import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
+from typing_extensions import deprecated
 
 from cosmica.dtos import DynamicsData
 from cosmica.dynamics import SatelliteConstellation
-from cosmica.models import ConstellationSatellite, Gateway, StationaryOnGroundUser, UserSatellite
+from cosmica.models import Constellation, ConstellationSatellite, Gateway, StationaryOnGroundUser, UserSatellite
 from cosmica.utils.coordinates import ecef2aer, geodetic2ecef
 from cosmica.utils.vector import angle_between
 
 logger = logging.getLogger(__name__)
 
 
+@deprecated("Use build_hybrid_us2c_g2c_topology() instead.")
 class HybridUS2CG2CTopologyBuilder:
     """Hybrid topology builder for user satellites and ground stations to constellation.
 
@@ -436,3 +439,215 @@ class HybridUS2CG2CTopologyBuilder:
                     f"Time {time_idx}: Ground node {ground_idx} "
                     f"connected to new constellation satellite {selected_sat_idx}",
                 )
+
+
+# ---------------------------------------------------------------------------
+# New functions using Constellation model
+# ---------------------------------------------------------------------------
+
+
+def build_hybrid_us2c_g2c_topology(  # noqa: C901, PLR0912, PLR0915
+    constellation: Constellation,
+    *,
+    user_satellites: Collection[UserSatellite],
+    ground_nodes: Collection[Gateway | StationaryOnGroundUser],
+    dynamics_data: DynamicsData,
+    max_distance: float = float("inf"),
+    max_relative_angular_velocity: float = float("inf"),
+    sun_exclusion_angle: float = 0.0,
+) -> list[nx.Graph]:
+    """Build hybrid topology connecting user satellites and ground stations to constellation.
+
+    Combines user-satellite and ground-station connectivity. User satellite
+    connections are prioritized, then ground station connections are optimized
+    based on maximum visibility duration.
+
+    This function only needs the satellite set, so it accepts `Constellation`
+    with any `SatelliteId` type.
+
+    Args:
+        constellation: Constellation (any SatelliteId type).
+        user_satellites: User satellites to connect.
+        ground_nodes: Ground stations or users.
+        dynamics_data: Time-series dynamics data.
+        max_distance: Maximum distance constraint for user satellite links.
+        max_relative_angular_velocity: Maximum relative angular velocity constraint.
+        sun_exclusion_angle: Sun exclusion angle constraint (radians).
+
+    Returns:
+        A list of networkx Graphs, one per time step.
+
+    """
+    logger.info(
+        f"Building hybrid topology for {len(user_satellites)} user satellites and {len(ground_nodes)} ground nodes",
+    )
+    logger.info(f"Number of time steps: {len(dynamics_data.time)}")
+
+    user_satellites_list = list(user_satellites)
+    ground_nodes_list = list(ground_nodes)
+    constellation_satellites = list(constellation.satellites.values())
+
+    n_time = len(dynamics_data.time)
+
+    # --- Calculate user satellite visibility ---
+    logger.info("Calculating user satellite visibility...")
+    n_users = len(user_satellites_list)
+    n_constellation = len(constellation_satellites)
+
+    user_visibility = np.zeros((n_users, n_constellation, n_time), dtype=np.bool_)
+    for (user_idx, user_sat), (const_idx, const_sat) in tqdm(
+        product(enumerate(user_satellites_list), enumerate(constellation_satellites)),
+        total=n_users * n_constellation,
+        desc="Calculating user satellite visibility",
+    ):
+        user_pos_eci = dynamics_data.satellite_position_eci[user_sat]
+        const_pos_eci = dynamics_data.satellite_position_eci[const_sat]
+        user_vel_eci = dynamics_data.satellite_velocity_eci[user_sat]
+        const_vel_eci = dynamics_data.satellite_velocity_eci[const_sat]
+        user_att_ang_vel_eci = dynamics_data.satellite_attitude_angular_velocity_eci[user_sat]
+        const_att_ang_vel_eci = dynamics_data.satellite_attitude_angular_velocity_eci[const_sat]
+
+        relative_pos_eci = const_pos_eci - user_pos_eci
+        relative_vel_eci = const_vel_eci - user_vel_eci
+        distances = np.linalg.norm(relative_pos_eci, axis=1)
+
+        relative_angular_velocities = []
+        for t in range(n_time):
+            distance = distances[t]
+            if distance > 0:
+                relative_angular_velocity_translational = (
+                    np.cross(relative_pos_eci[t], relative_vel_eci[t]) / distance**2
+                )
+                rel_ang_vel_user = relative_angular_velocity_translational - user_att_ang_vel_eci[t]
+                rel_ang_vel_const = -relative_angular_velocity_translational - const_att_ang_vel_eci[t]
+                max_rel_ang_vel = np.maximum(
+                    np.linalg.norm(rel_ang_vel_user),
+                    np.linalg.norm(rel_ang_vel_const),
+                )
+                relative_angular_velocities.append(float(max_rel_ang_vel))
+            else:
+                relative_angular_velocities.append(float("inf"))
+
+        relative_angular_velocities_array = np.array(relative_angular_velocities)
+        sun_angles = np.array(
+            [angle_between(relative_pos_eci[t], dynamics_data.sun_direction_eci[t]) for t in range(n_time)],
+        )
+
+        distance_ok = distances <= max_distance
+        sun_ok = (sun_angles >= sun_exclusion_angle) & (sun_angles <= (np.pi - sun_exclusion_angle))
+        angular_velocity_ok = relative_angular_velocities_array <= max_relative_angular_velocity
+        user_visibility[user_idx, const_idx, :] = distance_ok & sun_ok & angular_velocity_ok
+
+    # --- Calculate ground node visibility ---
+    logger.info("Calculating ground node visibility...")
+    n_ground = len(ground_nodes_list)
+
+    ground_visibility = np.zeros((n_ground, n_constellation, n_time), dtype=np.bool_)
+    for (ground_idx, ground_node), (sat_idx, satellite) in tqdm(
+        product(enumerate(ground_nodes_list), enumerate(constellation_satellites)),
+        total=n_ground * n_constellation,
+        desc="Calculating ground node visibility",
+    ):
+        _, elevation, _ = ecef2aer(
+            x=dynamics_data.satellite_position_ecef[satellite][:, 0],
+            y=dynamics_data.satellite_position_ecef[satellite][:, 1],
+            z=dynamics_data.satellite_position_ecef[satellite][:, 2],
+            lat0=ground_node.latitude,
+            lon0=ground_node.longitude,
+            h0=ground_node.altitude,
+            deg=False,
+        )
+        elevation_ok = elevation >= ground_node.minimum_elevation
+
+        ground_x_ecef, ground_y_ecef, ground_z_ecef = geodetic2ecef(
+            lat=ground_node.latitude,
+            lon=ground_node.longitude,
+            alt=ground_node.altitude,
+            deg=False,
+        )
+        ground_pos_ecef = np.array([ground_x_ecef, ground_y_ecef, ground_z_ecef])
+        relative_pos_ecef = dynamics_data.satellite_position_ecef[satellite] - ground_pos_ecef
+
+        sun_angles = np.array(
+            [angle_between(relative_pos_ecef[t], dynamics_data.sun_direction_eci[t]) for t in range(n_time)],
+        )
+        sun_ok = sun_angles >= sun_exclusion_angle
+
+        ground_visibility[ground_idx, sat_idx, :] = elevation_ok & sun_ok
+
+    # --- Calculate remaining connection times (backward pass) ---
+    def calc_remaining_time(visibility: npt.NDArray[np.bool_]) -> npt.NDArray[np.int_]:
+        n_a, n_b, n_t = visibility.shape
+        remaining = np.zeros((n_a, n_b, n_t), dtype=np.int_)
+        for t in reversed(range(n_t)):
+            if t == n_t - 1:
+                remaining[:, :, t] = visibility[:, :, t].astype(int)
+            else:
+                remaining[:, :, t] = np.where(visibility[:, :, t], remaining[:, :, t + 1] + 1, 0)
+        return remaining
+
+    user_remaining = calc_remaining_time(user_visibility)
+    ground_remaining = calc_remaining_time(ground_visibility)
+
+    # --- Build topology for each time step ---
+    user_connections: dict[int, int] = {}
+    ground_connections: dict[int, int] = {}
+
+    logger.info("Building topology graphs for each time step...")
+    graphs = []
+    for time_idx in tqdm(range(n_time), desc="Building topology graphs"):
+        assigned_satellites: set[int] = set()
+        graph = nx.Graph()
+        graph.add_nodes_from(constellation_satellites)
+        graph.add_nodes_from(user_satellites_list)
+        graph.add_nodes_from(ground_nodes_list)
+
+        # Phase 1: Handle user satellites (priority)
+        for user_idx in range(n_users):
+            user_sat = user_satellites_list[user_idx]
+
+            if user_idx in user_connections:
+                current_sat_idx = user_connections[user_idx]
+                if user_visibility[user_idx, current_sat_idx, time_idx]:
+                    graph.add_edge(user_sat, constellation_satellites[current_sat_idx])
+                    assigned_satellites.add(current_sat_idx)
+                    continue
+                del user_connections[user_idx]
+
+            user_remaining_times = user_remaining[user_idx, :, time_idx].copy()
+            for assigned_sat_idx in assigned_satellites:
+                user_remaining_times[assigned_sat_idx] = 0
+
+            if user_remaining_times.max() > 0:
+                selected = int(np.argmax(user_remaining_times))
+                if user_visibility[user_idx, selected, time_idx]:
+                    graph.add_edge(user_sat, constellation_satellites[selected])
+                    assigned_satellites.add(selected)
+                    user_connections[user_idx] = selected
+
+        # Phase 2: Handle ground nodes
+        for ground_idx in range(n_ground):
+            ground_node = ground_nodes_list[ground_idx]
+
+            if ground_idx in ground_connections:
+                current_sat_idx = ground_connections[ground_idx]
+                if ground_visibility[ground_idx, current_sat_idx, time_idx]:
+                    graph.add_edge(ground_node, constellation_satellites[current_sat_idx])
+                    assigned_satellites.add(current_sat_idx)
+                    continue
+                del ground_connections[ground_idx]
+
+            ground_remaining_times = ground_remaining[ground_idx, :, time_idx].copy()
+            for assigned_sat_idx in assigned_satellites:
+                ground_remaining_times[assigned_sat_idx] = 0
+
+            if ground_remaining_times.max() > 0:
+                selected = int(np.argmax(ground_remaining_times))
+                if ground_visibility[ground_idx, selected, time_idx]:
+                    graph.add_edge(ground_node, constellation_satellites[selected])
+                    assigned_satellites.add(selected)
+                    ground_connections[ground_idx] = selected
+
+        graphs.append(graph)
+
+    return graphs

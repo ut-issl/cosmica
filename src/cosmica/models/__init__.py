@@ -2,6 +2,7 @@ __all__ = [
     "CircularSatelliteOrbitModel",
     "CommunicationTerminal",
     "ConstantCommunicationDemand",
+    "Constellation",
     "ConstellationSatellite",
     "Demand",
     "EllipticalSatelliteOrbitModel",
@@ -25,6 +26,7 @@ __all__ = [
     "load_users_from_toml_file",
 ]
 
+from .constellation import Constellation
 from .demand import ConstantCommunicationDemand, Demand, OneTimeCommunicationDemand, load_demands_from_toml_file
 from .gateway import Gateway, GatewayOGS
 from .internet import Internet

@@ -115,55 +115,6 @@ class ManualG2CTopologyBuilder(
         return [construct_graph() for _ in range(len(dynamics_data.time))]
 
 
-# class MaxElevationHandOverG2CTopologyBuilder(
-#     GroundToConstellationTopologyBuilder[SatelliteConstellation, Gateway | StationaryOnGroundUser, nx.Graph],
-# ):
-#     def build(
-#         self,
-#         *,
-#         constellation: SatelliteConstellation,
-#         ground_nodes: Collection[Gateway | StationaryOnGroundUser],
-#         dynamics_data: DynamicsData,
-#     ) -> list[nx.Graph]:
-#         logger.info(f"Number of time steps: {len(dynamics_data.time)}")
-#         ground_nodes = list(ground_nodes)
-
-#         n_satellites = len(dynamics_data.satellite_position_eci)
-#         visibility = np.zeros((len(ground_nodes), n_satellites, len(dynamics_data.time)), dtype=np.bool_)
-#         elevation_angles = np.zeros((len(ground_nodes), n_satellites, len(dynamics_data.time)))
-#         for (ground_node_idx, ground_node), (sat_idx, satellite) in product(
-#             enumerate(ground_nodes),
-#             enumerate(constellation.satellites),
-#         ):
-#             _, elevation, _ = ecef2aer(
-#                 x=dynamics_data.satellite_position_ecef[satellite][:, 0],
-#                 y=dynamics_data.satellite_position_ecef[satellite][:, 1],
-#                 z=dynamics_data.satellite_position_ecef[satellite][:, 2],
-#                 lat0=ground_node.latitude,
-#                 lon0=ground_node.longitude,
-#                 h0=ground_node.altitude,
-#                 deg=False,
-#             )
-#             elevation_angles[ground_node_idx, sat_idx, :] = elevation
-#             visibility[ground_node_idx, sat_idx, :] = elevation >= ground_node.minimum_elevation
-
-#         def construct_graph(visibility: npt.NDArray[np.bool_]) -> nx.Graph:
-#             graph = nx.Graph()
-#             graph.add_nodes_from(constellation.satellites)
-#             graph.add_nodes_from(ground_nodes)
-
-#             for (ground_node_idx, ground_node), (sat_idx, satellite) in product(
-#                 enumerate(ground_nodes),
-#                 enumerate(constellation.satellites),
-#             ):
-#                 if visibility[ground_node_idx, sat_idx]:
-#                     graph.add_edge(ground_node, satellite)
-
-#             return graph
-
-#         return [construct_graph(visibility[:, :, time_idx]) for time_idx in range(len(dynamics_data.time))]
-
-
 @deprecated("Use build_max_visibility_handover_g2c_topology() instead.")
 class MaxVisibilityHandOverG2CTopologyBuilder(
     GroundToConstellationTopologyBuilder[SatelliteConstellation, Gateway | StationaryOnGroundUser, nx.Graph],

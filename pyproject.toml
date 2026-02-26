@@ -117,14 +117,6 @@ layers = [
   "cosmica.models",
   "cosmica.utils",
 ]
-# The following imports are allowed to break the layered architecture for now.
-# TODO: Remove them.
-ignore_imports = [
-  "cosmica.topology.ground_to_constellation -> cosmica.dynamics",
-  "cosmica.topology.intra_constellation -> cosmica.dynamics",
-  "cosmica.topology.usersatellite_to_constellation -> cosmica.dynamics",
-  "cosmica.topology.usersatellite_gateway_to_constellation -> cosmica.dynamics",
-]
 
 [[tool.importlinter.contracts]]
 # TODO: Remove this rule when the experimental_packet_routing module is stable.

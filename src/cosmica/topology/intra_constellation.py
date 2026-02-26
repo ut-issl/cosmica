@@ -7,6 +7,7 @@ __all__ = [
     "build_manhattan_topology",
 ]
 from abc import ABC, abstractmethod
+from collections import defaultdict
 
 import networkx as nx
 import numpy as np
@@ -213,9 +214,12 @@ class ManhattanTimeSeriesTopologyBuilder(
 # New functions using Constellation model
 # ---------------------------------------------------------------------------
 
+type PlaneId = int
+type InPlaneIndex = int
+
 
 def _group_by_plane(
-    constellation: Constellation[tuple[int, int]],
+    constellation: Constellation[tuple[PlaneId, InPlaneIndex]],
 ) -> list[list[ConstellationSatellite]]:
     """Group satellites by plane and sort by in-plane index.
 
@@ -228,9 +232,11 @@ def _group_by_plane(
     on the two-ID distinction.
     """
     # Collect (plane_id, in_plane_index, satellite) triples from dict keys
-    entries: dict[int, list[tuple[int, ConstellationSatellite]]] = {}
+    entries_dd: defaultdict[PlaneId, list[tuple[InPlaneIndex, ConstellationSatellite]]] = defaultdict(list)
     for (plane_id, in_plane_index), satellite in constellation.satellites.items():
-        entries.setdefault(plane_id, []).append((in_plane_index, satellite))
+        entries_dd[plane_id].append((in_plane_index, satellite))
+
+    entries = dict(entries_dd)
 
     # Sort planes by plane_id, satellites within each plane by in_plane_index
     planes: list[list[ConstellationSatellite]] = [

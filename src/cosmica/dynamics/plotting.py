@@ -4,6 +4,7 @@ __all__ = [
     "visualize_grouped_constellation",
     "visualize_multi_orbital_plane_constellation",
 ]
+from collections import defaultdict
 from typing import TYPE_CHECKING
 
 import matplotlib as mpl
@@ -73,8 +74,12 @@ def visualize_multi_orbital_plane_constellation(
     plt.show()
 
 
+type PlaneId = int
+type InPlaneIndex = int
+
+
 def visualize_grouped_constellation(
-    constellation: Constellation[tuple[int, int]],
+    constellation: Constellation[tuple[PlaneId, InPlaneIndex]],
     propagation_result: Mapping[ConstellationSatellite, SatelliteOrbitState],
     *,
     time_index: int = 0,
@@ -104,11 +109,13 @@ def visualize_grouped_constellation(
 
     # Group satellites by plane_id (first element of the structural key).
     # All structural information comes from dict keys, not from satellite.id.
-    planes: dict[int, list[tuple[int, ConstellationSatellite]]] = {}
+    planes_dd: defaultdict[PlaneId, list[tuple[InPlaneIndex, ConstellationSatellite]]] = defaultdict(list)
     for (plane_id, in_plane_index), satellite in constellation.satellites.items():
-        planes.setdefault(plane_id, []).append((in_plane_index, satellite))
+        planes_dd[plane_id].append((in_plane_index, satellite))
 
-    for i, plane_id in enumerate(sorted(planes)):
+    planes = dict(planes_dd)
+
+    for i, plane_id in enumerate(sorted(planes)):  # sort by plane_id
         # Sort by in_plane_index to find the first satellite
         sats_in_plane = sorted(planes[plane_id])
         first_satellite = sats_in_plane[0][1]

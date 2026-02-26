@@ -106,7 +106,7 @@ def _ms(
     resolution: float = 20,
 ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """Return the coordinates for plotting a sphere centered at (x,y,z)."""
-    u, v = np.mgrid[0 : 2 * np.pi : resolution * 2j, 0 : np.pi : resolution * 1j]
+    u, v = np.mgrid[0 : 2 * np.pi : resolution * 2j, 0 : np.pi : resolution * 1j]  # type: ignore[misc]
     xx = radius * np.cos(u) * np.sin(v) + x
     yy = radius * np.sin(u) * np.sin(v) + y
     zz = radius * np.cos(v) + z

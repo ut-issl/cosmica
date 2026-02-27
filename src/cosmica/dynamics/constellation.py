@@ -31,6 +31,7 @@ logger = logging.getLogger(__name__)
 # Type of the key used to identify a satellite in a constellation
 
 
+@deprecated("This class will be replaced by a class that accepts `SatelliteOrbitModel` in future versions.")
 class SatelliteConstellation[T: Hashable, TOrbit: SatelliteOrbit](ABC):
     """A constellation of satellites.
 
@@ -52,6 +53,7 @@ class MOPCSatelliteKey(NamedTuple):
         return f"({self.plane_id},{self.satellite_id})"
 
 
+@deprecated("This class will be replaced by a class that accepts `SatelliteOrbitModel` in future versions.")
 class MultiOrbitalPlaneConstellation[TOrbit: SatelliteOrbit](SatelliteConstellation[MOPCSatelliteKey, TOrbit]):
     """A constellation of satellites in multiple orbital planes.
 

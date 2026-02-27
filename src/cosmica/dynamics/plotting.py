@@ -1,13 +1,16 @@
 from __future__ import annotations
 
 __all__ = [
-    "visualize_multi_orbital_plane_constellation",
+    "visualize_grouped_constellation",
 ]
+from collections import defaultdict
 from typing import TYPE_CHECKING
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
+
+from cosmica.utils.constants import EARTH_RADIUS
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
@@ -15,23 +18,35 @@ if TYPE_CHECKING:
     import numpy.typing as npt
     from mpl_toolkits.mplot3d.axes3d import Axes3D
 
-    from cosmica.models import ConstellationSatellite
-
-if TYPE_CHECKING:
-    from cosmica.dynamics import (
-        CircularSatelliteOrbit,
-        MultiOrbitalPlaneConstellation,
-        SatelliteOrbitState,
-    )
-
-from cosmica.utils.constants import EARTH_RADIUS
+    from cosmica.dynamics import SatelliteOrbitState
+    from cosmica.models import Constellation, ConstellationSatellite
 
 
-def visualize_multi_orbital_plane_constellation(
-    constellation: MultiOrbitalPlaneConstellation[CircularSatelliteOrbit],
+type PlaneId = int
+type InPlaneIndex = int
+
+
+def visualize_grouped_constellation(
+    constellation: Constellation[tuple[PlaneId, InPlaneIndex]],
     propagation_result: Mapping[ConstellationSatellite, SatelliteOrbitState],
+    *,
     time_index: int = 0,
 ) -> None:
+    """Visualize a grouped constellation in 3D.
+
+    The constellation must be parameterized as `Constellation[tuple[int, int]]`
+    where each key is `(plane_id, in_plane_index)`. Plane structure is derived
+    entirely from the dict keys — not from orbital parameters or `satellite.id`.
+
+    Plots one orbital trajectory per plane (using the first satellite in each
+    plane) and marks all satellite positions at the given `time_index`.
+
+    Args:
+        constellation: Constellation with `(plane_id, in_plane_index)` keys.
+        propagation_result: Mapping from satellite objects to propagation results.
+        time_index: Time step index at which to plot satellite positions.
+
+    """
     fig = plt.figure()
     ax: Axes3D = fig.add_subplot(111, projection="3d")
 
@@ -40,28 +55,39 @@ def visualize_multi_orbital_plane_constellation(
     # Plot the Earth
     ax.plot_surface(*_ms(0, 0, 0, EARTH_RADIUS), color="blue", alpha=0.2)
 
-    # Plot the orbit trajectory of the first satellite in each orbital plane
-    for i, plane_id in enumerate(constellation.plane_ids):
-        satellite = constellation.plane_id_to_satellites[plane_id][0]
+    # Group satellites by plane_id (first element of the structural key).
+    # All structural information comes from dict keys, not from satellite.id.
+    planes_dd: defaultdict[PlaneId, list[tuple[InPlaneIndex, ConstellationSatellite]]] = defaultdict(list)
+    for (plane_id, in_plane_index), satellite in constellation.satellites.items():
+        planes_dd[plane_id].append((in_plane_index, satellite))
+
+    planes = dict(planes_dd)
+
+    for i, plane_id in enumerate(sorted(planes)):  # sort by plane_id
+        # Sort by in_plane_index to find the first satellite
+        sats_in_plane = sorted(planes[plane_id])
+        first_satellite = sats_in_plane[0][1]
+
+        # Plot trajectory of the first satellite in this plane
         ax.plot(
-            propagation_result[satellite].position_eci[:, 0],
-            propagation_result[satellite].position_eci[:, 1],
-            propagation_result[satellite].position_eci[:, 2],
+            propagation_result[first_satellite].position_eci[:, 0],
+            propagation_result[first_satellite].position_eci[:, 1],
+            propagation_result[first_satellite].position_eci[:, 2],
             color=cmap(i),
             linewidth=0.5,
             label=f"Plane {plane_id}",
         )
-        for satellite in constellation.satellites:
-            # Plot the position of each satellite at the `time_index`
-            ax.plot(
-                propagation_result[satellite].position_eci[time_index, 0],
-                propagation_result[satellite].position_eci[time_index, 1],
-                propagation_result[satellite].position_eci[time_index, 2],
-                "ro",
-                markersize=2,
-            )
 
-    # Set plot labels and aspect ratio
+    # Plot all satellite positions at the given time index
+    for satellite in constellation.satellites.values():
+        ax.plot(
+            propagation_result[satellite].position_eci[time_index, 0],
+            propagation_result[satellite].position_eci[time_index, 1],
+            propagation_result[satellite].position_eci[time_index, 2],
+            "ro",
+            markersize=2,
+        )
+
     ax.set_xlabel("X (km)")
     ax.set_ylabel("Y (km)")
     ax.set_zlabel("Z (km)")

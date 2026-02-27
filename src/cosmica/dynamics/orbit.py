@@ -1,33 +1,29 @@
 from __future__ import annotations
 
 __all__ = [
-    "CircularSatelliteOrbit",
     "CircularSatelliteOrbitPropagator",
-    "EllipticalSatelliteOrbit",
     "EllipticalSatelliteOrbitPropagator",
-    "SatelliteOrbit",
     "SatelliteOrbitState",
-    "make_satellite_orbit",
 ]
 
 import logging
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
 from functools import cached_property
-from typing import TYPE_CHECKING, Any, Literal, override
+from typing import TYPE_CHECKING, Literal, override
 
 import numpy as np
 from sgp4.model import Satrec
 from skyfield.api import EarthSatellite, Time, Timescale, load, utc
-from typing_extensions import deprecated
 
-from cosmica.models import CircularSatelliteOrbitModel, EllipticalSatelliteOrbitModel, GravityModel
 from cosmica.utils.constants import EARTH_MU
 from cosmica.utils.vector import rowwise_matmul
 
 if TYPE_CHECKING:
     import numpy.typing as npt
+
+    from cosmica.models import CircularSatelliteOrbitModel, EllipticalSatelliteOrbitModel
 
 
 logger = logging.getLogger(__name__)
@@ -165,119 +161,3 @@ class EllipticalSatelliteOrbitPropagator(SatelliteOrbitPropagator):
         else:  # TEME
             [position_eci, velocity_eci, _] = self.satellite._position_and_velocity_TEME_km(time_from_epoch)  # noqa: SLF001
             return SatelliteOrbitState(position_eci=position_eci.T * 1e3, velocity_eci=velocity_eci.T * 1e3)
-
-
-@deprecated("Use SatelliteOrbitModel and SatelliteOrbitPropagator instead.")
-class SatelliteOrbit(ABC):
-    @abstractmethod
-    def propagate(self, time: npt.NDArray[np.datetime64]) -> SatelliteOrbitState: ...
-
-
-@deprecated("Use CircularSatelliteOrbitModel and CircularSatelliteOrbitPropagator instead.")
-@dataclass(frozen=True, kw_only=True, slots=True)
-class CircularSatelliteOrbit(SatelliteOrbit):
-    semi_major_axis: float
-    inclination: float
-    raan: float
-    phase_at_epoch: float
-    epoch: np.datetime64
-
-    _model: CircularSatelliteOrbitModel = field(init=False, repr=False)
-    _propagator: CircularSatelliteOrbitPropagator = field(init=False, repr=False)
-
-    def __post_init__(self) -> None:
-        object.__setattr__(
-            self,
-            "_model",
-            CircularSatelliteOrbitModel(
-                semi_major_axis=self.semi_major_axis,
-                inclination=self.inclination,
-                raan=self.raan,
-                phase_at_epoch=self.phase_at_epoch,
-                epoch=self.epoch,
-            ),
-        )
-        object.__setattr__(self, "_propagator", CircularSatelliteOrbitPropagator(self._model))
-
-    @cached_property
-    def mean_motion(self) -> float:
-        return self._propagator.mean_motion
-
-    @cached_property
-    def dcm_orbit_to_eci(self) -> npt.NDArray[np.floating]:
-        return self._propagator.dcm_orbit_to_eci
-
-    def propagate(self, time: npt.NDArray[np.datetime64]) -> SatelliteOrbitState:
-        return self._propagator.propagate(time)
-
-    def propagate_from_epoch(self, time_from_epoch: npt.NDArray[np.timedelta64]) -> SatelliteOrbitState:
-        return self._propagator.propagate_from_epoch(time_from_epoch)
-
-
-@deprecated(
-    "Use EllipticalSatelliteOrbitModel and EllipticalSatelliteOrbitPropagator instead.",
-)
-@dataclass(frozen=True, kw_only=True, slots=True)
-class EllipticalSatelliteOrbit(SatelliteOrbit):
-    semi_major_axis: float
-    inclination: float
-    raan: float
-    phase_at_epoch: float
-    epoch: np.datetime64
-    satnum: int  # Satellite number
-    gravity_model: GravityModel = GravityModel.WGS84
-    drag_coeff: float  # B star drag coefficient given in [1/earth radii]
-    eccentricity: float
-    argpo: float  # Argument of Perigee
-
-    _model: EllipticalSatelliteOrbitModel = field(init=False, repr=False)
-    _propagator: EllipticalSatelliteOrbitPropagator = field(init=False, repr=False)
-
-    def __post_init__(self) -> None:
-        object.__setattr__(
-            self,
-            "_model",
-            EllipticalSatelliteOrbitModel(
-                semi_major_axis=self.semi_major_axis,
-                inclination=self.inclination,
-                raan=self.raan,
-                phase_at_epoch=self.phase_at_epoch,
-                epoch=self.epoch,
-                satnum=self.satnum,
-                gravity_model=self.gravity_model,
-                drag_coeff=self.drag_coeff,
-                eccentricity=self.eccentricity,
-                argpo=self.argpo,
-            ),
-        )
-        object.__setattr__(self, "_propagator", EllipticalSatelliteOrbitPropagator(self._model))
-
-    @cached_property
-    def ts(self) -> Timescale:
-        return self._propagator.ts
-
-    @cached_property
-    def mean_motion(self) -> float:
-        return self._propagator.mean_motion
-
-    def datetime64_utc_to_skytime(self, t_datetime64: npt.NDArray[np.datetime64]) -> Time:
-        return self._propagator.datetime64_utc_to_skytime(t_datetime64)
-
-    @cached_property
-    def satellite(self) -> EarthSatellite:
-        return self._propagator.satellite
-
-    def propagate(self, time: npt.NDArray[np.datetime64]) -> SatelliteOrbitState:
-        return self._propagator.propagate(time)
-
-
-def make_satellite_orbit(
-    orbit_type: Literal["circular"],
-    *args: Any,
-    **kwargs: Any,
-) -> SatelliteOrbit:
-    if orbit_type == "circular":
-        return CircularSatelliteOrbit(*args, **kwargs)
-    else:
-        msg = f"Unknown orbit type: {orbit_type}"
-        raise ValueError(msg)

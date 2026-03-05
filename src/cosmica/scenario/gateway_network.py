@@ -46,9 +46,7 @@ def build_default_gateway_network(
         assert not invalid_ids, f"Unknown gateway ids: {sorted(invalid_ids)}."
         return [default_gateway_by_id[gateway_id] for gateway_id in indexes]
     else:
-        assert 1 <= n_stations <= len(DEFAULT_GATEWAYS), (
-            f"n_stations must be between 1 and {len(DEFAULT_GATEWAYS)}."
-        )
+        assert 1 <= n_stations <= len(DEFAULT_GATEWAYS), f"n_stations must be between 1 and {len(DEFAULT_GATEWAYS)}."
         return list(DEFAULT_GATEWAYS[:n_stations])
 
 

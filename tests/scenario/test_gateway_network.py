@@ -22,9 +22,9 @@ def test_build_default_gateway_network_indexes() -> None:
     assert gateway_ids == [1, 3]
     for gateway in gateways:
         expected = DEFAULT_GATEWAYS[gateway.id]
-        assert np.isclose(gateway.latitude, np.deg2rad(expected["lat_deg"]))
-        assert np.isclose(gateway.longitude, np.deg2rad(expected["lon_deg"]))
-        assert np.isclose(gateway.minimum_elevation, np.deg2rad(expected["min_el_deg"]))
+        assert np.isclose(gateway.latitude, expected.latitude)
+        assert np.isclose(gateway.longitude, expected.longitude)
+        assert np.isclose(gateway.minimum_elevation, expected.minimum_elevation)
 
 
 def test_build_gateway_network_optional_n_terminals() -> None:

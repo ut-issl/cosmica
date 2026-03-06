@@ -1091,6 +1091,39 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#cosmica.dynamics.plotting.InPlaneIndex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-type_alias"></code>&nbsp;InPlaneIndex
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.dynamics.plotting.PlaneId" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-type_alias"></code>&nbsp;PlaneId
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.dynamics.plotting.visualize_grouped_constellation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;visualize_grouped_constellation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#cosmica.dynamics.plotting.visualize_multi_orbital_plane_constellation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2781,6 +2814,39 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#cosmica.dynamics.plotting.InPlaneIndex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-type_alias"></code>&nbsp;InPlaneIndex
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.dynamics.plotting.PlaneId" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-type_alias"></code>&nbsp;PlaneId
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.dynamics.plotting.visualize_grouped_constellation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;visualize_grouped_constellation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#cosmica.dynamics.plotting.visualize_multi_orbital_plane_constellation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2860,7 +2926,10 @@
   </span>
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;visualize_multi_orbital_plane_constellation&#39;</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;visualize_grouped_constellation&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;visualize_multi_orbital_plane_constellation&quot;</span><span class="p">,</span>
+<span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2870,7 +2939,312 @@
 </div>
 
 
+<div class="doc doc-object doc-type_alias">
 
+
+
+<h3 id="cosmica.dynamics.plotting.InPlaneIndex" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-type_alias"></code>            <span class="doc doc-object-name doc-type_alias-name">InPlaneIndex</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nc">InPlaneIndex</span> <span class="o">=</span> <span class="n"><span title="int">int</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-type_alias">
+
+
+
+<h3 id="cosmica.dynamics.plotting.PlaneId" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-type_alias"></code>            <span class="doc doc-object-name doc-type_alias-name">PlaneId</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nc">PlaneId</span> <span class="o">=</span> <span class="n"><span title="int">int</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cosmica.dynamics.plotting.visualize_grouped_constellation" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">visualize_grouped_constellation</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">visualize_grouped_constellation</span><span class="p">(</span>
+    <span class="n">constellation</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Constellation
+
+
+  
+      dataclass
+   (cosmica.models.Constellation)" href="../../models/#cosmica.models.Constellation">Constellation</a></span><span class="p">[</span>
+        <span class="n"><span title="tuple">tuple</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            PlaneId (cosmica.dynamics.plotting.PlaneId)" href="#cosmica.dynamics.plotting.PlaneId">PlaneId</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="            InPlaneIndex (cosmica.dynamics.plotting.InPlaneIndex)" href="#cosmica.dynamics.plotting.InPlaneIndex">InPlaneIndex</a></span><span class="p">]</span>
+    <span class="p">],</span>
+    <span class="n">propagation_result</span><span class="p">:</span> <span class="n"><span title="collections.abc.Mapping">Mapping</span></span><span class="p">[</span>
+        <span class="n"><a class="autorefs autorefs-internal" title="            ConstellationSatellite
+
+
+  
+      dataclass
+   (cosmica.models.ConstellationSatellite)" href="../../models/#cosmica.models.ConstellationSatellite">ConstellationSatellite</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="            SatelliteOrbitState
+
+
+  
+      dataclass
+   (cosmica.dynamics.SatelliteOrbitState)" href="../#cosmica.dynamics.SatelliteOrbitState">SatelliteOrbitState</a></span>
+    <span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">time_index</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">0</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Visualize a grouped constellation in 3D.</p>
+<p>The constellation must be parameterized as <code>Constellation[tuple[int, int]]</code>
+where each key is <code>(plane_id, in_plane_index)</code>. Plane structure is derived
+entirely from the dict keys — not from orbital parameters or <code>satellite.id</code>.</p>
+<p>Plots one orbital trajectory per plane (using the first satellite in each
+plane) and marks all satellite positions at the given <code>time_index</code>.</p>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">PARAMETER</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>constellation</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Constellation with <code>(plane_id, in_plane_index)</code> keys.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><a class="autorefs autorefs-internal" title="            Constellation
+
+
+  
+      dataclass
+   (cosmica.models.Constellation)" href="../../models/#cosmica.models.Constellation">Constellation</a>[<span title="tuple">tuple</span>[<a class="autorefs autorefs-internal" title="            PlaneId (cosmica.dynamics.plotting.PlaneId)" href="#cosmica.dynamics.plotting.PlaneId">PlaneId</a>, <a class="autorefs autorefs-internal" title="            InPlaneIndex (cosmica.dynamics.plotting.InPlaneIndex)" href="#cosmica.dynamics.plotting.InPlaneIndex">InPlaneIndex</a>]]</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>propagation_result</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Mapping from satellite objects to propagation results.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="collections.abc.Mapping">Mapping</span>[<a class="autorefs autorefs-internal" title="            ConstellationSatellite
+
+
+  
+      dataclass
+   (cosmica.models.ConstellationSatellite)" href="../../models/#cosmica.models.ConstellationSatellite">ConstellationSatellite</a>, <a class="autorefs autorefs-internal" title="            SatelliteOrbitState
+
+
+  
+      dataclass
+   (cosmica.dynamics.SatelliteOrbitState)" href="../#cosmica.dynamics.SatelliteOrbitState">SatelliteOrbitState</a>]</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>time_index</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Time step index at which to plot satellite positions.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="int">int</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>0</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/cosmica/dynamics/plotting.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">visualize_grouped_constellation</span><span class="p">(</span>
+    <span class="n">constellation</span><span class="p">:</span> <span class="n">Constellation</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">PlaneId</span><span class="p">,</span> <span class="n">InPlaneIndex</span><span class="p">]],</span>
+    <span class="n">propagation_result</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">ConstellationSatellite</span><span class="p">,</span> <span class="n">SatelliteOrbitState</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">time_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Visualize a grouped constellation in 3D.</span>
+
+<span class="sd">    The constellation must be parameterized as `Constellation[tuple[int, int]]`</span>
+<span class="sd">    where each key is `(plane_id, in_plane_index)`. Plane structure is derived</span>
+<span class="sd">    entirely from the dict keys — not from orbital parameters or `satellite.id`.</span>
+
+<span class="sd">    Plots one orbital trajectory per plane (using the first satellite in each</span>
+<span class="sd">    plane) and marks all satellite positions at the given `time_index`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        constellation: Constellation with `(plane_id, in_plane_index)` keys.</span>
+<span class="sd">        propagation_result: Mapping from satellite objects to propagation results.</span>
+<span class="sd">        time_index: Time step index at which to plot satellite positions.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span><span class="p">:</span> <span class="n">Axes3D</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;3d&quot;</span><span class="p">)</span>
+
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">colormaps</span><span class="p">[</span><span class="s2">&quot;tab20&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Plot the Earth</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="o">*</span><span class="n">_ms</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">EARTH_RADIUS</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+    <span class="c1"># Group satellites by plane_id (first element of the structural key).</span>
+    <span class="c1"># All structural information comes from dict keys, not from satellite.id.</span>
+    <span class="n">planes_dd</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">[</span><span class="n">PlaneId</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">InPlaneIndex</span><span class="p">,</span> <span class="n">ConstellationSatellite</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">plane_id</span><span class="p">,</span> <span class="n">in_plane_index</span><span class="p">),</span> <span class="n">satellite</span> <span class="ow">in</span> <span class="n">constellation</span><span class="o">.</span><span class="n">satellites</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">planes_dd</span><span class="p">[</span><span class="n">plane_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">in_plane_index</span><span class="p">,</span> <span class="n">satellite</span><span class="p">))</span>
+
+    <span class="n">planes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">planes_dd</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">plane_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">planes</span><span class="p">)):</span>  <span class="c1"># sort by plane_id</span>
+        <span class="c1"># Sort by in_plane_index to find the first satellite</span>
+        <span class="n">sats_in_plane</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">planes</span><span class="p">[</span><span class="n">plane_id</span><span class="p">])</span>
+        <span class="n">first_satellite</span> <span class="o">=</span> <span class="n">sats_in_plane</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Plot trajectory of the first satellite in this plane</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">propagation_result</span><span class="p">[</span><span class="n">first_satellite</span><span class="p">]</span><span class="o">.</span><span class="n">position_eci</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">propagation_result</span><span class="p">[</span><span class="n">first_satellite</span><span class="p">]</span><span class="o">.</span><span class="n">position_eci</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">propagation_result</span><span class="p">[</span><span class="n">first_satellite</span><span class="p">]</span><span class="o">.</span><span class="n">position_eci</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
+            <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Plane </span><span class="si">{</span><span class="n">plane_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Plot all satellite positions at the given time index</span>
+    <span class="k">for</span> <span class="n">satellite</span> <span class="ow">in</span> <span class="n">constellation</span><span class="o">.</span><span class="n">satellites</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">propagation_result</span><span class="p">[</span><span class="n">satellite</span><span class="p">]</span><span class="o">.</span><span class="n">position_eci</span><span class="p">[</span><span class="n">time_index</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">propagation_result</span><span class="p">[</span><span class="n">satellite</span><span class="p">]</span><span class="o">.</span><span class="n">position_eci</span><span class="p">[</span><span class="n">time_index</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">propagation_result</span><span class="p">[</span><span class="n">satellite</span><span class="p">]</span><span class="o">.</span><span class="n">position_eci</span><span class="p">[</span><span class="n">time_index</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+            <span class="s2">&quot;ro&quot;</span><span class="p">,</span>
+            <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;X (km)&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Y (km)&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;Z (km)&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_box_aspect</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
 
 <div class="doc doc-object doc-function">
 
@@ -2911,8 +3285,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/dynamics/plotting.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">30</span>
-<span class="normal">31</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">31</span>
 <span class="normal">32</span>
 <span class="normal">33</span>
 <span class="normal">34</span>
@@ -2953,7 +3326,10 @@
 <span class="normal">69</span>
 <span class="normal">70</span>
 <span class="normal">71</span>
-<span class="normal">72</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">visualize_multi_orbital_plane_constellation</span><span class="p">(</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@deprecated</span><span class="p">(</span><span class="s2">&quot;Use visualize_grouped_constellation() instead.&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">visualize_multi_orbital_plane_constellation</span><span class="p">(</span>
     <span class="n">constellation</span><span class="p">:</span> <span class="n">MultiOrbitalPlaneConstellation</span><span class="p">[</span><span class="n">CircularSatelliteOrbit</span><span class="p">],</span>
     <span class="n">propagation_result</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">ConstellationSatellite</span><span class="p">,</span> <span class="n">SatelliteOrbitState</span><span class="p">],</span>
     <span class="n">time_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>

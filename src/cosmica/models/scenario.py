@@ -6,8 +6,7 @@ from dataclasses import dataclass, field
 import numpy as np
 import numpy.typing as npt
 
-# from cosmica.dynamics import SatelliteConstellation # This leads to circular import.
-# Maybe we should move constellation to the `models` subpackage?
+from .constellation import Constellation
 from .demand import Demand
 from .gateway import Gateway
 from .user import User
@@ -18,7 +17,7 @@ class Scenario:
     """The simulation scenario."""
 
     time: npt.NDArray[np.datetime64]
-    # constellation: SatelliteConstellation
+    constellation: Constellation
     gateways: list[Gateway] = field(default_factory=list)
     users: list[User] = field(default_factory=list)
     demands: list[Demand] = field(default_factory=list)

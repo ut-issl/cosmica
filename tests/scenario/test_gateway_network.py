@@ -1,83 +1,36 @@
-from typing import TYPE_CHECKING
-
 import numpy as np
-import pytest
-
-if TYPE_CHECKING:
-    from collections.abc import Hashable, Mapping
 
 from cosmica.models import Gateway
-from cosmica.scenario.gateway_network import DEFAULT_GATEWAYS, build_default_gateway_network, build_gateway_network
+from cosmica.scenario.gateway_network import build_default_gateway_network
 
 
-def test_build_default_gateway_network_count() -> None:
-    gateways = build_default_gateway_network(n_stations=2)
-    assert len(gateways) == 2
-    assert all(isinstance(gateway, Gateway) for gateway in gateways)
+def test_build_default_gateway_network_returns_expected_gateways() -> None:
+    gateways = build_default_gateway_network()
+
+    expected_gateways = [
+        (0, 36.0, 139.0, 30.0),
+        (1, 40.0, -120.0, 30.0),
+        (2, 33.0, 130.0, 30.0),
+        (3, 47.0, 9.0, 30.0),
+        (4, 47.0, -70.0, 30.0),
+    ]
+
+    assert len(gateways) == len(expected_gateways)
+    for gateway, (gateway_id, lat_deg, lon_deg, min_el_deg) in zip(gateways, expected_gateways, strict=True):
+        assert isinstance(gateway, Gateway)
+        assert gateway.id == gateway_id
+        assert np.isclose(gateway.latitude, np.deg2rad(lat_deg))
+        assert np.isclose(gateway.longitude, np.deg2rad(lon_deg))
+        assert np.isclose(gateway.minimum_elevation, np.deg2rad(min_el_deg))
+        assert gateway.altitude == 0.0
+        assert gateway.n_terminals == 1
 
 
-def test_build_default_gateway_network_indexes() -> None:
-    gateways = build_default_gateway_network(indexes=[1, 3])
-    gateway_ids = [gateway.id for gateway in gateways]
-    assert gateway_ids == [1, 3]
-    for gateway in gateways:
-        expected = DEFAULT_GATEWAYS[gateway.id]
-        assert np.isclose(gateway.latitude, expected.latitude)
-        assert np.isclose(gateway.longitude, expected.longitude)
-        assert np.isclose(gateway.minimum_elevation, expected.minimum_elevation)
+def test_build_default_gateway_network_returns_a_new_list_each_time() -> None:
+    gateways = build_default_gateway_network()
+    gateways.pop()
 
+    rebuilt_gateways = build_default_gateway_network()
 
-def test_build_gateway_network_optional_n_terminals() -> None:
-    gateway_map: Mapping[Hashable, Mapping[str, float | int]] = {
-        "gw-1": {
-            "lat_deg": 10.0,
-            "lon_deg": 20.0,
-            "min_el_deg": 5.0,
-        },
-    }
-    gateways = build_gateway_network(gateway_map)
-    assert len(gateways) == 1
-    assert gateways[0].n_terminals == 1
-
-
-def test_build_gateway_network_converts_degrees_to_radians() -> None:
-    gateway_map: Mapping[Hashable, Mapping[str, float | int]] = {
-        0: {
-            "lat_deg": 45.0,
-            "lon_deg": -90.0,
-            "min_el_deg": 30.0,
-            "n_terminals": 2,
-            "altitude": 500.0,
-        },
-    }
-    gateways = build_gateway_network(gateway_map)
-    gateway = gateways[0]
-    assert np.isclose(gateway.latitude, np.deg2rad(45.0))
-    assert np.isclose(gateway.longitude, np.deg2rad(-90.0))
-    assert np.isclose(gateway.minimum_elevation, np.deg2rad(30.0))
-    assert gateway.altitude == 500.0
-    assert gateway.n_terminals == 2
-
-
-def test_build_gateway_network_missing_required_field() -> None:
-    gateway_map: Mapping[Hashable, Mapping[str, float | int]] = {
-        0: {
-            "lat_deg": 45.0,
-            "lon_deg": -90.0,
-        },
-    }
-    with pytest.raises(AssertionError):
-        build_gateway_network(gateway_map)
-
-
-def test_build_gateway_network_invalid_n_terminals() -> None:
-    gateway_map: Mapping[Hashable, Mapping[str, float | int]] = {
-        0: {
-            "lat_deg": 45.0,
-            "lon_deg": -90.0,
-            "min_el_deg": 30.0,
-            "n_terminals": 0,
-        },
-    }
-    with pytest.raises(AssertionError):
-        build_gateway_network(gateway_map)
+    assert len(rebuilt_gateways) == 5
+    assert [gateway.id for gateway in rebuilt_gateways] == [0, 1, 2, 3, 4]

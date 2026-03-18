@@ -281,10 +281,14 @@ def draw_snapshot(  # noqa: C901, PLR0915
                 dummy_u = _dummy_class_creator(type(u)).from_real(u)  # type: ignore[attr-defined,arg-type]
                 pos[dummy_u] = pos[u].copy()
                 pos[dummy_u][0] = pos[dummy_u][0] + 360 if u_to_east else pos[dummy_u][0] - 360
+                if u in sat_to_in_constellation_id:
+                    sat_to_in_constellation_id[dummy_u] = sat_to_in_constellation_id[u]
 
                 dummy_v = _dummy_class_creator(type(v)).from_real(v)  # type: ignore[attr-defined,arg-type]
                 pos[dummy_v] = pos[v].copy()
                 pos[dummy_v][0] = pos[dummy_v][0] + 360 if not u_to_east else pos[dummy_v][0] - 360
+                if v in sat_to_in_constellation_id:
+                    sat_to_in_constellation_id[dummy_v] = sat_to_in_constellation_id[v]
 
                 graph_pos_corrected.add_edge(u, dummy_v)
                 graph_pos_corrected.add_edge(dummy_u, v)

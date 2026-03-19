@@ -6,7 +6,7 @@ __all__ = [
 ]
 from abc import ABC
 from collections.abc import Hashable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import override
 
 from .node import Node
@@ -22,7 +22,7 @@ class ConstellationSatellite[T: Hashable](Satellite[T]):
     id: T
 
     # Allow none for backward compatibility.
-    orbit: SatelliteOrbitModel | None = None
+    orbit: SatelliteOrbitModel | None = field(hash=False, compare=False, default=None)
 
     @classmethod
     @override

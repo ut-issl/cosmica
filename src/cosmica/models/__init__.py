@@ -2,6 +2,7 @@ __all__ = [
     "CircularSatelliteOrbitModel",
     "CommunicationTerminal",
     "ConstantCommunicationDemand",
+    "Constellation",
     "ConstellationSatellite",
     "Demand",
     "EllipticalSatelliteOrbitModel",
@@ -21,11 +22,13 @@ __all__ = [
     "User",
     "UserOpticalCommunicationTerminal",
     "UserSatellite",
+    "build_walker_delta_constellation",
     "load_demands_from_toml_file",
     "load_users_from_toml_file",
 ]
 
-from .demand import ConstantCommunicationDemand, Demand, OneTimeCommunicationDemand, load_demands_from_toml_file
+from .constellation import Constellation, build_walker_delta_constellation
+from .demand import ConstantCommunicationDemand, Demand, OneTimeCommunicationDemand
 from .gateway import Gateway, GatewayOGS
 from .internet import Internet
 from .node import Node, NodeGID
@@ -38,4 +41,4 @@ from .terminal import (
     RFCommunicationTerminal,
     UserOpticalCommunicationTerminal,
 )
-from .user import StationaryOnGroundUser, User, load_users_from_toml_file
+from .user import StationaryOnGroundUser, User

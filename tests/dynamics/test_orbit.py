@@ -257,6 +257,58 @@ class TestCircularSatelliteOrbitPropagator:
         # Should have non-zero z components
         assert np.any(np.abs(states.position_eci[:, 2]) > 1e6)  # At least 1000 km
 
+    def test_velocity_at_epoch(self):
+        """Test that velocity at epoch matches DCM-rotated orbit-frame velocity."""
+        epoch = np.datetime64("2026-01-01T00:00:00")
+        semi_major_axis = 7000e3
+
+        model = CircularSatelliteOrbitModel(
+            semi_major_axis=semi_major_axis,
+            inclination=np.radians(28.5),
+            raan=np.radians(45),
+            phase_at_epoch=np.radians(0),
+            epoch=epoch,
+        )
+        propagator = CircularSatelliteOrbitPropagator(model=model)
+
+        states = propagator.propagate(np.array([epoch]))
+
+        # At phase=0, velocity in orbit frame is (0, a*n, 0)
+        expected_velocity_orbit = np.array([0, semi_major_axis * propagator.mean_motion, 0])
+        expected_velocity_eci = propagator.dcm_orbit_to_eci @ expected_velocity_orbit
+
+        assert np.allclose(states.velocity_eci[0], expected_velocity_eci, rtol=1e-9)
+
+    @pytest.mark.parametrize(
+        ("inclination", "raan", "expected_dcm"),
+        [
+            # Equatorial orbit with RAAN = 0: identity
+            (0, 0, np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])),
+            # Equatorial orbit with RAAN = pi/2
+            (0, np.pi / 2, np.array([[0, -1, 0], [1, 0, 0], [0, 0, 1]])),
+            # Polar orbit with RAAN = 0
+            (np.pi / 2, 0, np.array([[1, 0, 0], [0, 0, -1], [0, 1, 0]])),
+            # Polar orbit with RAAN = pi/2
+            (np.pi / 2, np.pi / 2, np.array([[0, 0, 1], [1, 0, 0], [0, 1, 0]])),
+        ],
+    )
+    def test_dcm_orbit_to_eci(
+        self,
+        inclination: float,
+        raan: float,
+        expected_dcm: npt.NDArray[np.float64],
+    ):
+        """Test that the DCM from orbit frame to ECI is correct for various inclination/RAAN."""
+        model = CircularSatelliteOrbitModel(
+            semi_major_axis=7000e3,
+            inclination=inclination,
+            raan=raan,
+            phase_at_epoch=0,
+            epoch=np.datetime64("2026-01-01T00:00:00"),
+        )
+        propagator = CircularSatelliteOrbitPropagator(model=model)
+        assert np.allclose(propagator.dcm_orbit_to_eci, expected_dcm, rtol=1e-9, atol=1e-9)
+
     def test_propagate_from_epoch(self):
         """Test propagate_from_epoch method with timedelta."""
         epoch = np.datetime64("2026-01-01T00:00:00")

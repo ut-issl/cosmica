@@ -954,34 +954,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dynamics/constellation/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    constellation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../dynamics/orbit/" class="md-nav__link">
         
   
@@ -1225,6 +1197,17 @@
         
       </ul>
     </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.models.constellation.build_walker_delta_constellation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;build_walker_delta_constellation
+      
+    </span>
+  </a>
   
 </li>
         
@@ -2374,6 +2357,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#cosmica.models.constellation.build_walker_delta_constellation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;build_walker_delta_constellation
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2546,6 +2540,133 @@ e.g., <code>Constellation[tuple[int, int]]</code>.</p>
 
 </div>
 
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cosmica.models.constellation.build_walker_delta_constellation" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">build_walker_delta_constellation</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">build_walker_delta_constellation</span><span class="p">(</span>
+    <span class="n">semi_major_axis</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
+    <span class="n">inclination</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
+    <span class="n">n_total_sats</span><span class="p">:</span> <span class="n"><span title="int">int</span></span><span class="p">,</span>
+    <span class="n">n_geometry_planes</span><span class="p">:</span> <span class="n"><span title="int">int</span></span><span class="p">,</span>
+    <span class="n">phasing_factor</span><span class="p">:</span> <span class="n"><span title="int">int</span></span><span class="p">,</span>
+    <span class="n">epoch</span><span class="p">:</span> <span class="n"><span title="numpy.datetime64">datetime64</span></span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            Constellation
+
+
+  
+      dataclass
+   (cosmica.models.constellation.Constellation)" href="#cosmica.models.constellation.Constellation">Constellation</a></span><span class="p">[</span><span class="n"><span title="tuple">tuple</span></span><span class="p">[</span><span class="n"><span title="int">int</span></span><span class="p">,</span> <span class="n"><span title="int">int</span></span><span class="p">]]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Create a multi-plane Walker Delta constellation.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/cosmica/models/constellation.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_walker_delta_constellation</span><span class="p">(</span>
+    <span class="n">semi_major_axis</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">inclination</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">n_total_sats</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">n_geometry_planes</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">phasing_factor</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">epoch</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Constellation</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a multi-plane Walker Delta constellation.&quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">semi_major_axis</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Semi-major axis must be positive.&quot;</span>
+    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">inclination</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="s2">&quot;Inclination must be between 0 and pi radians.&quot;</span>
+    <span class="k">assert</span> <span class="n">n_total_sats</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Total number of satellites must be positive.&quot;</span>
+    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">n_geometry_planes</span> <span class="o">&lt;=</span> <span class="n">n_total_sats</span><span class="p">,</span> <span class="p">(</span>
+        <span class="s2">&quot;Number of geometry planes must be positive and less than or equal to total number of satellites.&quot;</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">n_total_sats</span> <span class="o">%</span> <span class="n">n_geometry_planes</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Total number of satellites must be divisible by number of planes.&quot;</span>
+    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">phasing_factor</span> <span class="o">&lt;</span> <span class="n">n_geometry_planes</span><span class="p">,</span> <span class="p">(</span>
+        <span class="s2">&quot;Phasing factor must be less than number of planes and non-negative.&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">n_sats_per_plane</span> <span class="o">=</span> <span class="n">n_total_sats</span> <span class="o">//</span> <span class="n">n_geometry_planes</span>
+
+    <span class="n">satellites</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">ConstellationSatellite</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">plane_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_geometry_planes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">raan</span> <span class="o">=</span> <span class="n">plane_id</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">n_geometry_planes</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">sat_id_in_plane</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_sats_per_plane</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">phase</span> <span class="o">=</span> <span class="p">(</span><span class="n">sat_id_in_plane</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">n_sats_per_plane</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">plane_id</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">phasing_factor</span> <span class="o">*</span> <span class="p">(</span>
+                <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">n_total_sats</span>
+            <span class="p">)</span>
+            <span class="n">sat_id</span> <span class="o">=</span> <span class="p">(</span><span class="n">plane_id</span><span class="p">,</span> <span class="n">sat_id_in_plane</span><span class="p">)</span>
+            <span class="n">sat_orbit</span> <span class="o">=</span> <span class="n">CircularSatelliteOrbitModel</span><span class="p">(</span>
+                <span class="n">semi_major_axis</span><span class="o">=</span><span class="n">semi_major_axis</span><span class="p">,</span>
+                <span class="n">inclination</span><span class="o">=</span><span class="n">inclination</span><span class="p">,</span>
+                <span class="n">raan</span><span class="o">=</span><span class="n">raan</span><span class="p">,</span>
+                <span class="n">phase_at_epoch</span><span class="o">=</span><span class="n">phase</span><span class="p">,</span>
+                <span class="n">epoch</span><span class="o">=</span><span class="n">epoch</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">sat</span> <span class="o">=</span> <span class="n">ConstellationSatellite</span><span class="p">(</span>
+                <span class="nb">id</span><span class="o">=</span><span class="p">(</span><span class="n">plane_id</span><span class="p">,</span> <span class="n">sat_id_in_plane</span><span class="p">),</span>
+                <span class="n">orbit</span><span class="o">=</span><span class="n">sat_orbit</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">satellites</span><span class="p">[</span><span class="n">sat_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">sat</span>
+
+    <span class="k">return</span> <span class="n">Constellation</span><span class="p">(</span><span class="n">satellites</span><span class="o">=</span><span class="n">satellites</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
 
 
 

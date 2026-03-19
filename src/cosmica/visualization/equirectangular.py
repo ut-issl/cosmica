@@ -28,6 +28,7 @@ from typing_extensions import Doc
 
 from cosmica.dtos import DynamicsData
 from cosmica.models import (
+    Constellation,
     ConstellationSatellite,
     Gateway,
     Internet,
@@ -126,9 +127,14 @@ def _add_legend_to_edges(handler: Any, label: str, ax: Axes) -> None:
         ax.add_artist(lin1)
 
 
-def draw_snapshot(  # noqa: C901, PLR0915
+type PlaneId = int
+type InPlaneIndex = int
+
+
+def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
     *,
     graph: nx.Graph,
+    constellation: Constellation[tuple[PlaneId, InPlaneIndex]],
     dynamics_data: DynamicsData[Any],
     ax: Axes,
     with_labels: bool = False,
@@ -176,6 +182,10 @@ def draw_snapshot(  # noqa: C901, PLR0915
 
     pos = pos_constellation | pos_user_satellites | pos_gateways | pos_ogu | pos_internets
     nodes_to_draw: set[Node] = constellation_satellites_to_draw | user_satellites_to_draw | gateways | on_ground_users
+
+    sat_to_in_constellation_id: dict[ConstellationSatellite, tuple[PlaneId, InPlaneIndex]] = {
+        satellite: (plane_id, in_plane_idx) for (plane_id, in_plane_idx), satellite in constellation.satellites.items()
+    }
 
     with preserve_tick_params(ax):
         # Draw nodes
@@ -281,10 +291,14 @@ def draw_snapshot(  # noqa: C901, PLR0915
                 dummy_u = _dummy_class_creator(type(u)).from_real(u)  # type: ignore[attr-defined,arg-type]
                 pos[dummy_u] = pos[u].copy()
                 pos[dummy_u][0] = pos[dummy_u][0] + 360 if u_to_east else pos[dummy_u][0] - 360
+                if u in sat_to_in_constellation_id:
+                    sat_to_in_constellation_id[dummy_u] = sat_to_in_constellation_id[u]
 
                 dummy_v = _dummy_class_creator(type(v)).from_real(v)  # type: ignore[attr-defined,arg-type]
                 pos[dummy_v] = pos[v].copy()
                 pos[dummy_v][0] = pos[dummy_v][0] + 360 if not u_to_east else pos[dummy_v][0] - 360
+                if v in sat_to_in_constellation_id:
+                    sat_to_in_constellation_id[dummy_v] = sat_to_in_constellation_id[v]
 
                 graph_pos_corrected.add_edge(u, dummy_v)
                 graph_pos_corrected.add_edge(dummy_u, v)
@@ -305,14 +319,14 @@ def draw_snapshot(  # noqa: C901, PLR0915
             for u, v in graph_pos_corrected.edges()
             if isinstance(u, ConstellationSatellite)
             and isinstance(v, ConstellationSatellite)
-            and u.id.plane_id == v.id.plane_id
+            and sat_to_in_constellation_id[u][0] == sat_to_in_constellation_id[v][0]  # same plane_id
         }
         inter_plane_edges = {
             (u, v)
             for u, v in graph_pos_corrected.edges()
             if isinstance(u, ConstellationSatellite)
             and isinstance(v, ConstellationSatellite)
-            and u.id.plane_id != v.id.plane_id
+            and sat_to_in_constellation_id[u][0] != sat_to_in_constellation_id[v][0]  # different plane_id
         }
         constellation_gateway_edges = {
             (u, v)
@@ -536,6 +550,7 @@ def draw_coverage_area[T](
 def draw_snapshot_movie(
     *,
     graph: list[nx.Graph],
+    constellation: Constellation[tuple[PlaneId, InPlaneIndex]],
     time_array: npt.NDArray,
     dynamics_data: DynamicsData,
     time_index_for_plot: npt.NDArray,
@@ -557,6 +572,7 @@ def draw_snapshot_movie(
         draw_countries(ax=ax)
         draw_snapshot(
             graph=graph[time_index],
+            constellation=constellation,
             dynamics_data=dynamics_data[time_index],
             ax=ax,
             with_labels=False,

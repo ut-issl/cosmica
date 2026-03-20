@@ -26,7 +26,7 @@ def _restore_tick_params(params: dict[str, dict[str, dict[str, Any]]], ax: Axes)
 
 
 @contextmanager
-def preserve_tick_params(ax: Axes) -> Generator[None, Any, None]:
+def preserve_tick_params(ax: Axes) -> Generator[None, Any]:
     params = _save_tick_params(ax)
     try:
         yield

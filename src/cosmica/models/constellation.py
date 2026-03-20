@@ -21,15 +21,20 @@ use the dict key for structural queries and the satellite object itself
 
 from collections.abc import Hashable
 from dataclasses import dataclass
+from typing import Any
 
 import numpy as np
 
-from .orbit import CircularSatelliteOrbitModel
+from .orbit import CircularSatelliteOrbitModel, SatelliteOrbitModel
 from .satellite import ConstellationSatellite
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
-class Constellation[SatelliteId: Hashable]:
+class Constellation[
+    SatelliteId: Hashable,
+    SatelliteNodeId: Hashable = Any,
+    SatelliteOrbitType: SatelliteOrbitModel = Any,
+]:
     """A constellation of satellites.
 
     `satellites` maps a structural identifier (`SatelliteId`) to each
@@ -42,7 +47,10 @@ class Constellation[SatelliteId: Hashable]:
     e.g., `Constellation[tuple[int, int]]`.
     """
 
-    satellites: dict[SatelliteId, ConstellationSatellite]
+    satellites: dict[
+        SatelliteId,
+        ConstellationSatellite[SatelliteNodeId, SatelliteOrbitType],
+    ]
 
 
 def build_walker_delta_constellation(

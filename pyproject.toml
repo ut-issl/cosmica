@@ -215,3 +215,6 @@ unfixable = [
 "scripts/*" = ["INP001"]
 "cosmica/cli/*" = ["UP007"]
 "examples/**.py" = ["PLR1711", "ANN202", "B018", "ANN001", "INP001", "PLC0415"]
+
+[tool.uv]
+exclude-newer = "7 days"

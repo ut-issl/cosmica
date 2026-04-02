@@ -2467,9 +2467,7 @@
 
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">preserve_tick_params</span><span class="p">(</span>
-    <span class="n">ax</span><span class="p">:</span> <span class="n"><span title="matplotlib.axes.Axes">Axes</span></span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="collections.abc.Generator">Generator</span></span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n"><span title="typing.Any">Any</span></span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">preserve_tick_params</span><span class="p">(</span><span class="n">ax</span><span class="p">:</span> <span class="n"><span title="matplotlib.axes.Axes">Axes</span></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="collections.abc.Generator">Generator</span></span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n"><span title="typing.Any">Any</span></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2484,7 +2482,7 @@
 <span class="normal">32</span>
 <span class="normal">33</span>
 <span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@contextmanager</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">preserve_tick_params</span><span class="p">(</span><span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">preserve_tick_params</span><span class="p">(</span><span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
     <span class="n">params</span> <span class="o">=</span> <span class="n">_save_tick_params</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">yield</span>

@@ -65,4 +65,4 @@ def get_sun_direction_eci(
     sun_vec_eci = sun_vec_eci.T  # shape: (3,) or (len(time), 3)
 
     # shape: (3,) or (len(time), 3)
-    return normalize(sun_vec_eci, axis=-1)  # type: ignore[return-value]
+    return normalize(sun_vec_eci, axis=-1)  # type: ignore[return-value]  # ty: ignore[invalid-return-type]

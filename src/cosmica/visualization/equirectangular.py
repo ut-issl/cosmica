@@ -152,7 +152,9 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
         msg = "focus_edges と focus_edges_label の要素数が一致していません。"
         raise ValueError(msg)
 
-    constellation_satellites_to_draw = {node for node in graph.nodes if isinstance(node, ConstellationSatellite)}
+    constellation_satellites_to_draw: set[ConstellationSatellite[Any]] = {
+        node for node in graph.nodes if isinstance(node, ConstellationSatellite)
+    }
     pos_constellation = {
         satellite: np.degrees(
             np.asarray(ecef2geodetic(*dynamics_data.satellite_position_ecef[satellite], deg=False))[(1, 0),],
@@ -160,7 +162,7 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
         for satellite in constellation_satellites_to_draw
     }
 
-    user_satellites_to_draw = {node for node in graph.nodes if isinstance(node, UserSatellite)}
+    user_satellites_to_draw: set[UserSatellite[Any]] = {node for node in graph.nodes if isinstance(node, UserSatellite)}
     pos_user_satellites = {
         satellite: np.degrees(
             np.asarray(ecef2geodetic(*dynamics_data.satellite_position_ecef[satellite], deg=False))[(1, 0),],
@@ -168,10 +170,12 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
         for satellite in user_satellites_to_draw
     }
 
-    gateways = {node for node in graph.nodes if isinstance(node, Gateway)}
+    gateways: set[Gateway[Any]] = {node for node in graph.nodes if isinstance(node, Gateway)}
     pos_gateways = {gateway: np.degrees(np.array([gateway.longitude, gateway.latitude])) for gateway in gateways}
 
-    on_ground_users = {node for node in graph.nodes if isinstance(node, StationaryOnGroundUser)}
+    on_ground_users: set[StationaryOnGroundUser[Any]] = {
+        node for node in graph.nodes if isinstance(node, StationaryOnGroundUser)
+    }
     pos_ogu = {
         on_ground_user: np.degrees(np.array([on_ground_user.longitude, on_ground_user.latitude]))
         for on_ground_user in on_ground_users
@@ -181,7 +185,9 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
     pos_internets = {internet: [np.nan, np.nan] for internet in internets}
 
     pos = pos_constellation | pos_user_satellites | pos_gateways | pos_ogu | pos_internets
-    nodes_to_draw: set[Node] = constellation_satellites_to_draw | user_satellites_to_draw | gateways | on_ground_users
+    nodes_to_draw: set[Node[Any]] = (  # ty: ignore[invalid-assignment]
+        constellation_satellites_to_draw | user_satellites_to_draw | gateways | on_ground_users
+    )
 
     sat_to_in_constellation_id: dict[ConstellationSatellite, tuple[PlaneId, InPlaneIndex]] = {
         satellite: (plane_id, in_plane_idx) for (plane_id, in_plane_idx), satellite in constellation.satellites.items()
@@ -288,13 +294,13 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
                 graph_pos_corrected.remove_edge(u, v)
                 u_to_east = pos[u][0] < pos[v][0]
 
-                dummy_u = _dummy_class_creator(type(u)).from_real(u)  # type: ignore[attr-defined,arg-type]
+                dummy_u = _dummy_class_creator(type(u)).from_real(u)  # type: ignore[attr-defined,arg-type]  # ty: ignore[unresolved-attribute]
                 pos[dummy_u] = pos[u].copy()
                 pos[dummy_u][0] = pos[dummy_u][0] + 360 if u_to_east else pos[dummy_u][0] - 360
                 if u in sat_to_in_constellation_id:
                     sat_to_in_constellation_id[dummy_u] = sat_to_in_constellation_id[u]
 
-                dummy_v = _dummy_class_creator(type(v)).from_real(v)  # type: ignore[attr-defined,arg-type]
+                dummy_v = _dummy_class_creator(type(v)).from_real(v)  # type: ignore[attr-defined,arg-type]  # ty: ignore[unresolved-attribute]
                 pos[dummy_v] = pos[v].copy()
                 pos[dummy_v][0] = pos[dummy_v][0] + 360 if not u_to_east else pos[dummy_v][0] - 360
                 if v in sat_to_in_constellation_id:

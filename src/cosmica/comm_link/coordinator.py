@@ -53,12 +53,12 @@ class CommLinkCalculationCoordinator:
         for edge_type, edges_of_type in edge_group.items():
             if edge_type in self.calculator_assignment:
                 calculator = self.calculator_assignment[edge_type]
-                link_performance.update(calculator.calc(edges_of_type, dynamics_data=dynamics_data))
+                link_performance.update(calculator.calc(edges_of_type, dynamics_data=dynamics_data))  # ty: ignore[no-matching-overload, missing-argument, invalid-argument-type]
             elif not self.directed and edge_type[::-1] in self.calculator_assignment:
                 calculator = self.calculator_assignment[(edge_type[1], edge_type[0])]
                 edges_inverted = [(dst, src) for src, dst in edges_of_type]
-                result_inverted = calculator.calc(edges_inverted, dynamics_data=dynamics_data)
-                link_performance.update({(src, dst): result_inverted[(dst, src)] for src, dst in edges_of_type})
+                result_inverted = calculator.calc(edges_inverted, dynamics_data=dynamics_data)  # ty: ignore[missing-argument, invalid-argument-type]
+                link_performance.update({(src, dst): result_inverted[(dst, src)] for src, dst in edges_of_type})  # ty: ignore[invalid-argument-type]
             else:
                 msg = f"No calculator found for edge type {edge_type}"
                 raise ValueError(msg)

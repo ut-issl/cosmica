@@ -86,7 +86,7 @@ class CircularSatelliteOrbitPropagator(SatelliteOrbitPropagator):
         )
 
     def propagate(self, time: npt.NDArray[np.datetime64]) -> SatelliteOrbitState:
-        time_from_epoch = time - self._model.epoch
+        time_from_epoch: npt.NDArray[np.timedelta64] = time - self._model.epoch  # ty: ignore[invalid-assignment]
         return self.propagate_from_epoch(time_from_epoch)
 
     def propagate_from_epoch(self, time_from_epoch: npt.NDArray[np.timedelta64]) -> SatelliteOrbitState:

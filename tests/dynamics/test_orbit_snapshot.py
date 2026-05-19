@@ -91,7 +91,7 @@ def test_circular_equatorial_orbit_snapshot(snapshot: SnapshotAssertion) -> None
     )
 
     propagator = CircularSatelliteOrbitPropagator(model=model)
-    states = propagator.propagate(time_array)
+    states = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
     assert states == snapshot(extension_class=NumpySnapshotExtension)
 
@@ -110,7 +110,7 @@ def test_circular_polar_orbit_snapshot(snapshot: SnapshotAssertion) -> None:
     )
 
     propagator = CircularSatelliteOrbitPropagator(model=model)
-    states = propagator.propagate(time_array)
+    states = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
     assert states == snapshot(extension_class=NumpySnapshotExtension)
 
@@ -129,7 +129,7 @@ def test_circular_inclined_orbit_snapshot(snapshot: SnapshotAssertion) -> None:
     )
 
     propagator = CircularSatelliteOrbitPropagator(model=model)
-    states = propagator.propagate(time_array)
+    states = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
     assert states == snapshot(extension_class=NumpySnapshotExtension)
 
@@ -172,7 +172,7 @@ def test_circular_geostationary_orbit_snapshot(snapshot: SnapshotAssertion) -> N
     )
 
     propagator = CircularSatelliteOrbitPropagator(model=model)
-    states = propagator.propagate(time_array)
+    states = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
     assert states == snapshot(extension_class=NumpySnapshotExtension)
 
@@ -191,7 +191,7 @@ def test_circular_leo_constellation_snapshot(snapshot: SnapshotAssertion) -> Non
     )
 
     propagator = CircularSatelliteOrbitPropagator(model=model)
-    states = propagator.propagate(time_array)
+    states = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
     assert states == snapshot(extension_class=NumpySnapshotExtension)
 
@@ -210,7 +210,7 @@ def test_circular_propagate_from_epoch_snapshot(snapshot: SnapshotAssertion) -> 
     )
 
     propagator = CircularSatelliteOrbitPropagator(model=model)
-    states = propagator.propagate_from_epoch(time_deltas)
+    states = propagator.propagate_from_epoch(time_deltas)  # ty: ignore[invalid-argument-type]
 
     assert states == snapshot(extension_class=NumpySnapshotExtension)
 
@@ -237,7 +237,7 @@ def test_elliptical_circular_case_snapshot(snapshot: SnapshotAssertion) -> None:
     )
 
     propagator = EllipticalSatelliteOrbitPropagator(model=model, reference_frame="gcrs")
-    states = propagator.propagate(time_array)
+    states = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
     assert states == snapshot(extension_class=NumpySnapshotExtension)
 
@@ -261,7 +261,7 @@ def test_elliptical_eccentric_orbit_snapshot(snapshot: SnapshotAssertion) -> Non
     )
 
     propagator = EllipticalSatelliteOrbitPropagator(model=model, reference_frame="gcrs")
-    states = propagator.propagate(time_array)
+    states = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
     assert states == snapshot(extension_class=NumpySnapshotExtension)
 
@@ -285,7 +285,7 @@ def test_elliptical_highly_eccentric_orbit_snapshot(snapshot: SnapshotAssertion)
     )
 
     propagator = EllipticalSatelliteOrbitPropagator(model=model, reference_frame="gcrs")
-    states = propagator.propagate(time_array)
+    states = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
     assert states == snapshot(extension_class=NumpySnapshotExtension)
 
@@ -309,7 +309,7 @@ def test_elliptical_iss_like_orbit_snapshot(snapshot: SnapshotAssertion) -> None
     )
 
     propagator = EllipticalSatelliteOrbitPropagator(model=model, reference_frame="gcrs")
-    states = propagator.propagate(time_array)
+    states = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
     assert states == snapshot(extension_class=NumpySnapshotExtension)
 
@@ -333,7 +333,7 @@ def test_elliptical_teme_reference_frame_snapshot(snapshot: SnapshotAssertion) -
     )
 
     propagator = EllipticalSatelliteOrbitPropagator(model=model, reference_frame="teme")
-    states = propagator.propagate(time_array)
+    states = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
     assert states == snapshot(extension_class=NumpySnapshotExtension)
 
@@ -359,7 +359,7 @@ def test_elliptical_j2000_reference_frame_snapshot(snapshot: SnapshotAssertion) 
     )
 
     propagator = EllipticalSatelliteOrbitPropagator(model=model, reference_frame="j2000")
-    states = propagator.propagate(time_array)
+    states = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
     assert states == snapshot(extension_class=NumpySnapshotExtension)
 
@@ -384,7 +384,7 @@ def test_elliptical_gto_orbit_snapshot(snapshot: SnapshotAssertion) -> None:
     )
 
     propagator = EllipticalSatelliteOrbitPropagator(model=model, reference_frame="gcrs")
-    states = propagator.propagate(time_array)
+    states = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
     assert states == snapshot(extension_class=NumpySnapshotExtension)
 
@@ -405,7 +405,7 @@ def test_sun_direction_daily_snapshot(snapshot: SnapshotAssertion) -> None:
     start_time = np.datetime64("2026-01-01T00:00:00")
     # Sample every 2 hours for 24 hours
     time_array = start_time + np.timedelta64(2, "h") * np.arange(13)
-    sun_dir = get_sun_direction_eci(time_array)
+    sun_dir = get_sun_direction_eci(time_array)  # ty: ignore[no-matching-overload]
 
     assert snapshot(extension_class=NumpySnapshotExtension) == sun_dir
 
@@ -430,7 +430,7 @@ def test_sun_direction_yearly_snapshot(snapshot: SnapshotAssertion) -> None:
     start_time = np.datetime64("2026-01-01T00:00:00")
     # Sample every 30 days for a year
     time_array = start_time + np.timedelta64(30, "D") * np.arange(13)
-    sun_dir = get_sun_direction_eci(time_array)
+    sun_dir = get_sun_direction_eci(time_array)  # ty: ignore[no-matching-overload]
 
     assert snapshot(extension_class=NumpySnapshotExtension) == sun_dir
 
@@ -454,6 +454,6 @@ def test_sun_direction_intraday_snapshot(snapshot: SnapshotAssertion) -> None:
     """Snapshot test for sun direction at different times of day."""
     base_date = np.datetime64("2026-06-15")
     times = base_date + np.timedelta64(1, "h") * np.arange(0, 24, 3)
-    sun_dir = get_sun_direction_eci(times)
+    sun_dir = get_sun_direction_eci(times)  # ty: ignore[no-matching-overload]
 
     assert snapshot(extension_class=NumpySnapshotExtension) == sun_dir

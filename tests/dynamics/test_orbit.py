@@ -72,7 +72,7 @@ class TestCircularSatelliteOrbitPropagator:
     def test_basic_propagation(self):
         """Test basic propagation returns correct shapes."""
         start_time = np.datetime64("2026-01-01T00:00:00")
-        time_array: npt.NDArray[np.datetime64] = start_time + np.timedelta64(60, "s") * np.arange(10)
+        time_array: npt.NDArray[np.datetime64] = start_time + np.timedelta64(60, "s") * np.arange(10)  # ty: ignore[invalid-assignment]
 
         model = CircularSatelliteOrbitModel(
             semi_major_axis=7000e3,  # 7000 km in meters
@@ -158,7 +158,7 @@ class TestCircularSatelliteOrbitPropagator:
         propagator = CircularSatelliteOrbitPropagator(model=model)
 
         time_array = epoch + np.timedelta64(60, "s") * np.arange(100)
-        states = propagator.propagate(time_array)
+        states = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
         velocity_magnitudes = np.linalg.norm(states.velocity_eci, axis=1)
 
@@ -181,7 +181,7 @@ class TestCircularSatelliteOrbitPropagator:
         propagator = CircularSatelliteOrbitPropagator(model=model)
 
         time_array = epoch + np.timedelta64(60, "s") * np.arange(100)
-        states = propagator.propagate(time_array)
+        states = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
         position_magnitudes = np.linalg.norm(states.position_eci, axis=1)
         assert np.allclose(position_magnitudes, semi_major_axis, rtol=1e-10)
@@ -200,7 +200,7 @@ class TestCircularSatelliteOrbitPropagator:
         propagator = CircularSatelliteOrbitPropagator(model=model)
 
         time_array = epoch + np.timedelta64(60, "s") * np.arange(100)
-        states = propagator.propagate(time_array)
+        states = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
         # Dot product should be zero for perpendicular vectors
         dot_products = np.sum(states.position_eci * states.velocity_eci, axis=1)
@@ -325,11 +325,11 @@ class TestCircularSatelliteOrbitPropagator:
 
         # Propagate using timedelta
         time_deltas = np.timedelta64(60, "s") * np.arange(10)
-        states_from_epoch = propagator.propagate_from_epoch(time_deltas)
+        states_from_epoch = propagator.propagate_from_epoch(time_deltas)  # ty: ignore[invalid-argument-type]
 
         # Should match propagate with absolute times
         time_array = epoch + time_deltas
-        states_absolute = propagator.propagate(time_array)
+        states_absolute = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
         assert np.allclose(states_from_epoch.position_eci, states_absolute.position_eci)
         assert np.allclose(states_from_epoch.velocity_eci, states_absolute.velocity_eci)
@@ -357,7 +357,7 @@ class TestEllipticalSatelliteOrbitPropagator:
         )
 
         propagator = EllipticalSatelliteOrbitPropagator(model=model)
-        states = propagator.propagate(time_array)
+        states = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
         assert states.position_eci.shape == (10, 3)
         assert states.velocity_eci.shape == (10, 3)
@@ -401,7 +401,7 @@ class TestEllipticalSatelliteOrbitPropagator:
 
         propagator = EllipticalSatelliteOrbitPropagator(model=model)
         time_array = epoch + np.timedelta64(60, "s") * np.arange(100)
-        states = propagator.propagate(time_array)
+        states = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
         # Radius should be approximately constant
         radii = np.linalg.norm(states.position_eci, axis=1)
@@ -428,12 +428,12 @@ class TestEllipticalSatelliteOrbitPropagator:
 
         # Test GCRS frame
         propagator_gcrs = EllipticalSatelliteOrbitPropagator(model=model, reference_frame="gcrs")
-        states_gcrs = propagator_gcrs.propagate(time_array)
+        states_gcrs = propagator_gcrs.propagate(time_array)  # ty: ignore[invalid-argument-type]
         assert states_gcrs.position_eci.shape == (10, 3)
 
         # Test TEME frame
         propagator_teme = EllipticalSatelliteOrbitPropagator(model=model, reference_frame="teme")
-        states_teme = propagator_teme.propagate(time_array)
+        states_teme = propagator_teme.propagate(time_array)  # ty: ignore[invalid-argument-type]
         assert states_teme.position_eci.shape == (10, 3)
 
         # Results should be different (different reference frames)
@@ -455,7 +455,7 @@ class TestEllipticalSatelliteOrbitPropagator:
         )
 
         with pytest.raises(ValueError, match="Invalid reference_frame"):
-            EllipticalSatelliteOrbitPropagator(model=model, reference_frame="invalid")
+            EllipticalSatelliteOrbitPropagator(model=model, reference_frame="invalid")  # ty: ignore[invalid-argument-type]
 
     def test_iss_like_orbit(self):
         """Test with ISS-like orbital parameters."""
@@ -477,7 +477,7 @@ class TestEllipticalSatelliteOrbitPropagator:
 
         propagator = EllipticalSatelliteOrbitPropagator(model=model)
         time_array = epoch + np.timedelta64(60, "s") * np.arange(100)
-        states = propagator.propagate(time_array)
+        states = propagator.propagate(time_array)  # ty: ignore[invalid-argument-type]
 
         # Check altitude is reasonable (near 420 km)
         radii = np.linalg.norm(states.position_eci, axis=1)

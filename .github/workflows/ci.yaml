@@ -172,7 +172,7 @@ jobs:
         run: uv sync --dev
 
       - name: Run deptry
-        run: uv run -- deptry src
+        run: uv run -- deptry .
 
   collect:
     needs: [ruff, mypy, import-linter, build-docs, pytest, pip-licenses, deptry]

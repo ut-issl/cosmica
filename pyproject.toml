@@ -101,6 +101,10 @@ exclude_also = [
   '@(abc\.)?abstractmethod',
 ]
 
+[tool.deptry]
+known_first_party = ["cosmica"]
+extend_exclude = ["examples", "scripts"]
+
 [tool.importlinter]
 root_package = "cosmica"
 

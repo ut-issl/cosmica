@@ -115,24 +115,6 @@ layers = [
   "cosmica.utils",
 ]
 
-[[tool.importlinter.contracts]]
-# TODO: Remove this rule when the experimental_packet_routing module is stable.
-name = "Experimental packet routing should not be imported by other modules until it is stable"
-type = "forbidden"
-# Other modules are not listed as source_modules because
-# they cannot import experimental_packet_routing due to the layered architecture.
-source_modules = [
-  "cosmica.visualization",
-  "cosmica.comm_link",
-  "cosmica.dynamics",
-  "cosmica.topology",
-  "cosmica.scenario",
-  "cosmica.dtos",
-  "cosmica.models",
-  "cosmica.utils",
-]
-forbidden_modules = ["cosmica.experimental_packet_routing"]
-
 [tool.mypy]
 [[tool.mypy.overrides]]
 module = [

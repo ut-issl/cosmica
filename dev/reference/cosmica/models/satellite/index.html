@@ -1657,6 +1657,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#cosmica.models.satellite.UserSatellite.orbit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;orbit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#cosmica.models.satellite.UserSatellite.__str__" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2978,6 +2989,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#cosmica.models.satellite.UserSatellite.orbit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;orbit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#cosmica.models.satellite.UserSatellite.__str__" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3102,9 +3124,7 @@
   </span>
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">ConstellationSatellite</span><span class="p">(</span>
-    <span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.ConstellationSatellite[T]">T</span></span><span class="p">,</span> <span class="n">orbit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            SatelliteOrbitModel (cosmica.models.orbit.SatelliteOrbitModel)" href="../orbit/#cosmica.models.orbit.SatelliteOrbitModel">SatelliteOrbitModel</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">ConstellationSatellite</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.ConstellationSatellite[T]">T</span></span><span class="p">,</span> <span class="n">orbit</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.ConstellationSatellite[O]">O</span></span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3201,9 +3221,7 @@
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">orbit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            SatelliteOrbitModel (cosmica.models.orbit.SatelliteOrbitModel)" href="../orbit/#cosmica.models.orbit.SatelliteOrbitModel">SatelliteOrbitModel</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n"><span title="dataclasses.field">field</span></span><span class="p">(</span>
-    <span class="n"><span title="dataclasses.field(hash)">hash</span></span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n"><span title="dataclasses.field(compare)">compare</span></span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n"><span title="dataclasses.field(default)">default</span></span><span class="o">=</span><span class="kc">None</span>
-<span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">orbit</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.ConstellationSatellite[O]">O</span></span> <span class="o">=</span> <span class="n"><span title="dataclasses.field">field</span></span><span class="p">(</span><span class="n"><span title="dataclasses.field(hash)">hash</span></span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n"><span title="dataclasses.field(compare)">compare</span></span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3260,10 +3278,10 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/models/satellite.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
+<span class="normal">27</span>
 <span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">29</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;CSAT&quot;</span>
@@ -3810,7 +3828,7 @@
   </span>
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">UserSatellite</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.UserSatellite[T]">T</span></span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">UserSatellite</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.UserSatellite[T]">T</span></span><span class="p">,</span> <span class="n">orbit</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.UserSatellite[O]">O</span></span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3893,6 +3911,29 @@
 
 </div>
 
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="cosmica.models.satellite.UserSatellite.orbit" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">orbit</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">orbit</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.UserSatellite[O]">O</span></span> <span class="o">=</span> <span class="n"><span title="dataclasses.field">field</span></span><span class="p">(</span><span class="n"><span title="dataclasses.field(hash)">hash</span></span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n"><span title="dataclasses.field(compare)">compare</span></span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
 
 
 
@@ -3941,10 +3982,10 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/models/satellite.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">37</span>
-<span class="normal">38</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">38</span>
 <span class="normal">39</span>
-<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">40</span>
+<span class="normal">41</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;USAT&quot;</span>

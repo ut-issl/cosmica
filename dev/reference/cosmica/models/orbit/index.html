@@ -1358,17 +1358,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cosmica.models.orbit.CircularSatelliteOrbitModel.model_config" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;model_config
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#cosmica.models.orbit.CircularSatelliteOrbitModel.phase_at_epoch" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1478,17 +1467,6 @@
     <span class="md-ellipsis">
       
         <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;inclination
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#cosmica.models.orbit.EllipticalSatelliteOrbitModel.model_config" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;model_config
       
     </span>
   </a>
@@ -2657,17 +2635,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cosmica.models.orbit.CircularSatelliteOrbitModel.model_config" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;model_config
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#cosmica.models.orbit.CircularSatelliteOrbitModel.phase_at_epoch" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2777,17 +2744,6 @@
     <span class="md-ellipsis">
       
         <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;inclination
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#cosmica.models.orbit.EllipticalSatelliteOrbitModel.model_config" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;model_config
       
     </span>
   </a>
@@ -2996,12 +2952,29 @@
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">CircularSatelliteOrbitModel</span>
 
 
-</h3>
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
 
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">CircularSatelliteOrbitModel</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">semi_major_axis</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
+    <span class="n">inclination</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
+    <span class="n">raan</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
+    <span class="n">phase_at_epoch</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
+    <span class="n">epoch</span><span class="p">:</span> <span class="n"><span title="numpy.datetime64">datetime64</span></span>
+<span class="p">)</span>
+</code></pre></div>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="            SatelliteOrbitModel (cosmica.models.orbit.SatelliteOrbitModel)" href="#cosmica.models.orbit.SatelliteOrbitModel">SatelliteOrbitModel</a></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="            SatelliteOrbitModel
+
+
+  
+      dataclass
+   (cosmica.models.orbit.SatelliteOrbitModel)" href="#cosmica.models.orbit.SatelliteOrbitModel">SatelliteOrbitModel</a></code></p>
 
 
 
@@ -3059,29 +3032,6 @@
 
 </h4>
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">inclination</span><span class="p">:</span> <span class="n"><span title="float">float</span></span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h4 id="cosmica.models.orbit.CircularSatelliteOrbitModel.model_config" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">model_config</span>
-
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
-  </span>
-
-</h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">model_config</span> <span class="o">=</span> <span class="n"><span title="pydantic.ConfigDict">ConfigDict</span></span><span class="p">(</span><span class="n"><span title="pydantic.ConfigDict(arbitrary_types_allowed)">arbitrary_types_allowed</span></span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3175,12 +3125,40 @@
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">EllipticalSatelliteOrbitModel</span>
 
 
-</h3>
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
 
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">EllipticalSatelliteOrbitModel</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">semi_major_axis</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
+    <span class="n">inclination</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
+    <span class="n">raan</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
+    <span class="n">phase_at_epoch</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
+    <span class="n">epoch</span><span class="p">:</span> <span class="n"><span title="numpy.datetime64">datetime64</span></span><span class="p">,</span>
+    <span class="n">satnum</span><span class="p">:</span> <span class="n"><span title="int">int</span></span><span class="p">,</span>
+    <span class="n">gravity_model</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            GravityModel (cosmica.models.orbit.GravityModel)" href="#cosmica.models.orbit.GravityModel">GravityModel</a></span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            WGS84
+
+
+  
+      class-attribute
+      instance-attribute
+   (cosmica.models.orbit.GravityModel.WGS84)" href="#cosmica.models.orbit.GravityModel.WGS84">WGS84</a></span><span class="p">,</span>
+    <span class="n">drag_coeff</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
+    <span class="n">eccentricity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
+    <span class="n">argpo</span><span class="p">:</span> <span class="n"><span title="float">float</span></span>
+<span class="p">)</span>
+</code></pre></div>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="            SatelliteOrbitModel (cosmica.models.orbit.SatelliteOrbitModel)" href="#cosmica.models.orbit.SatelliteOrbitModel">SatelliteOrbitModel</a></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="            SatelliteOrbitModel
+
+
+  
+      dataclass
+   (cosmica.models.orbit.SatelliteOrbitModel)" href="#cosmica.models.orbit.SatelliteOrbitModel">SatelliteOrbitModel</a></code></p>
 
 
 
@@ -3333,29 +3311,6 @@
 
 </h4>
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">inclination</span><span class="p">:</span> <span class="n"><span title="float">float</span></span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h4 id="cosmica.models.orbit.EllipticalSatelliteOrbitModel.model_config" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">model_config</span>
-
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
-  </span>
-
-</h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">model_config</span> <span class="o">=</span> <span class="n"><span title="pydantic.ConfigDict">ConfigDict</span></span><span class="p">(</span><span class="n"><span title="pydantic.ConfigDict(arbitrary_types_allowed)">arbitrary_types_allowed</span></span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3604,12 +3559,15 @@
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">SatelliteOrbitModel</span>
 
 
-</h3>
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
 
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">SatelliteOrbitModel</span><span class="p">()</span>
+</code></pre></div>
 
     <div class="doc doc-contents ">
-            <p class="doc doc-class-bases">
-              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
 
 
 
@@ -3622,6 +3580,23 @@
 
 
 
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
 
     </div>
 

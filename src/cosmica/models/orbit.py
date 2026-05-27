@@ -3,10 +3,10 @@ __all__ = [
     "EllipticalSatelliteOrbitModel",
     "GravityModel",
 ]
+from dataclasses import dataclass
 from enum import Enum
 
 import numpy as np
-from pydantic import BaseModel, ConfigDict
 from sgp4.model import WGS72, WGS72OLD, WGS84
 
 
@@ -16,14 +16,13 @@ class GravityModel(Enum):
     WGS84 = WGS84
 
 
-class SatelliteOrbitModel(BaseModel):
+@dataclass(kw_only=True, slots=True, frozen=True)
+class SatelliteOrbitModel:
     """Base model for a satellite orbit."""
 
 
+@dataclass(kw_only=True, slots=True, frozen=True)
 class CircularSatelliteOrbitModel(SatelliteOrbitModel):
-    # arbitrary_types_allowed is required to allow numpy.datetime64
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
     semi_major_axis: float
     inclination: float
     raan: float
@@ -31,10 +30,8 @@ class CircularSatelliteOrbitModel(SatelliteOrbitModel):
     epoch: np.datetime64
 
 
+@dataclass(kw_only=True, slots=True, frozen=True)
 class EllipticalSatelliteOrbitModel(SatelliteOrbitModel):
-    # arbitrary_types_allowed is required to allow numpy.datetime64
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
     semi_major_axis: float
     inclination: float
     raan: float

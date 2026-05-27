@@ -10,4 +10,3 @@ from .orbit import (
     SatelliteOrbitState,
 )
 from .sun_dynamics import get_sun_direction_eci
-# We don't export from the `plotting` module. Maybe we should move it to `utils`?

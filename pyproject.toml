@@ -1,9 +1,9 @@
 [project]
 name = "cosmica"
-version = "0.5.0"
+version = "0.6.0"
 description = "COnstellation Satellite siMulator for optIcal CommunicAtion"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 license = "MIT OR Apache-2.0"
 license-files = ["LICENSE-APACHE", "LICENSE-MIT"]
 authors = [
@@ -14,11 +14,8 @@ authors = [
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Science/Research",
-  "License :: OSI Approved :: Apache Software License",
-  "License :: OSI Approved :: MIT License",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
   "Topic :: Scientific/Engineering",
@@ -30,7 +27,6 @@ dependencies = [
   "networkx>=3.1",
   "numpy>=1.24.2",
   "pandas>=2.0.2",
-  "pydantic>=2.7.4",
   "pymap3d>=3.0.1",
   "sgp4>=2.23",
   "skyfield>=1.46",
@@ -84,7 +80,7 @@ typing = [
 ]
 
 [build-system]
-requires = ["uv_build>=0.10,<0.11"]
+requires = ["uv_build>=0.11,<0.12"]
 build-backend = "uv_build"
 
 [tool.coverage.run]
@@ -104,6 +100,10 @@ exclude_also = [
   '@(abc\.)?abstractmethod',
 ]
 
+[tool.deptry]
+known_first_party = ["cosmica"]
+extend_exclude = ["examples", "scripts"]
+
 [tool.importlinter]
 root_package = "cosmica"
 
@@ -117,24 +117,6 @@ layers = [
   "cosmica.models",
   "cosmica.utils",
 ]
-
-[[tool.importlinter.contracts]]
-# TODO: Remove this rule when the experimental_packet_routing module is stable.
-name = "Experimental packet routing should not be imported by other modules until it is stable"
-type = "forbidden"
-# Other modules are not listed as source_modules because
-# they cannot import experimental_packet_routing due to the layered architecture.
-source_modules = [
-  "cosmica.visualization",
-  "cosmica.comm_link",
-  "cosmica.dynamics",
-  "cosmica.topology",
-  "cosmica.scenario",
-  "cosmica.dtos",
-  "cosmica.models",
-  "cosmica.utils",
-]
-forbidden_modules = ["cosmica.experimental_packet_routing"]
 
 [tool.mypy]
 [[tool.mypy.overrides]]
@@ -218,3 +200,6 @@ unfixable = [
 "scripts/*" = ["INP001"]
 "cosmica/cli/*" = ["UP007"]
 "examples/**.py" = ["PLR1711", "ANN202", "B018", "ANN001", "INP001", "PLC0415"]
+
+[tool.uv]
+exclude-newer = "7 days"

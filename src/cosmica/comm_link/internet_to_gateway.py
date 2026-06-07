@@ -1,5 +1,5 @@
 __all__ = [
-    "GatewayToInternetCommLinkCalculator",
+    "InternetToGatewayCommLinkCalculator",
 ]
 from collections.abc import Collection
 
@@ -11,8 +11,8 @@ from cosmica.models import Gateway, Internet
 from .base import CommLinkPerformance, MemorylessCommLinkCalculator
 
 
-class GatewayToInternetCommLinkCalculator(MemorylessCommLinkCalculator[Gateway, Internet]):
-    """Calculate the gateway -> internet communication link performance."""
+class InternetToGatewayCommLinkCalculator(MemorylessCommLinkCalculator[Internet, Gateway]):
+    """Calculate the internet -> gateway communication link performance."""
 
     def __init__(
         self,
@@ -25,16 +25,16 @@ class GatewayToInternetCommLinkCalculator(MemorylessCommLinkCalculator[Gateway, 
 
     def calc(
         self,
-        edges: Collection[tuple[Gateway, Internet]],
+        edges: Collection[tuple[Internet, Gateway]],
         *,
         dynamics_data: DynamicsData,  # noqa: ARG002 For interface compatibility
         rng: np.random.Generator,  # noqa: ARG002 For interface compatibility
-    ) -> dict[tuple[Gateway, Internet], CommLinkPerformance]:
+    ) -> dict[tuple[Internet, Gateway], CommLinkPerformance]:
         return {
-            (gateway, internet): CommLinkPerformance(
+            (internet, gateway): CommLinkPerformance(
                 link_capacity=self.link_capacity,
                 delay=self.delay,
                 link_available=True,
             )
-            for gateway, internet in edges
+            for internet, gateway in edges
         }

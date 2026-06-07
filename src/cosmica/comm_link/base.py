@@ -1,4 +1,5 @@
 __all__ = [
+    "CommLinkCalculator",
     "CommLinkPerformance",
     "MemorylessCommLinkCalculator",
     "MemorylessCommLinkCalculatorWrapper",

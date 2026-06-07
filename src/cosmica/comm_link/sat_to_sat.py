@@ -409,7 +409,7 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
 
         return (
             CommLinkPerformance(
-                link_capacity=self.inter_satellite_link_capacity if link_available else 0.0,
+                link_capacity=self.link_capacity if link_available else 0.0,
                 delay=float(distance / SPEED_OF_LIGHT),
                 link_available=link_available,
             ),

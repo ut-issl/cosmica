@@ -59,9 +59,10 @@ class CommLinkCalculationCoordinator:
 
         edges_time_series_by_type_dd: defaultdict[EdgeType, list[set[tuple[Node, Node]]]] = defaultdict(list)
         for edges, edge_type in product(edges_time_series, all_edge_types):
-            edges_per_type = {
-                (src, dst) for src, dst in edges if isinstance(src, edge_type[0]) and isinstance(dst, edge_type[1])
-            }
+            # Match on the exact node types (consistent with the registration check above) so that
+            # each edge belongs to exactly one edge type even if both a class and its base class
+            # are registered; isinstance matching would dispatch such an edge to both calculators.
+            edges_per_type = {(src, dst) for src, dst in edges if (type(src), type(dst)) == edge_type}
             edges_time_series_by_type_dd[edge_type].append(edges_per_type)
         edges_time_series_by_type = dict(edges_time_series_by_type_dd)
 

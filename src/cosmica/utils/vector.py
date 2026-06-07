@@ -250,14 +250,15 @@ def is_satellite_in_eclipse(
 
     Args:
         satellite_position_eci: Position of satellite in ECI frame. Shape: (3,)
-        sun_direction_eci: Sun direction vector in ECI frame. Shape: (3,)
+        sun_direction_eci: Sun direction vector (from the Earth towards the sun) in ECI frame. Shape: (3,)
 
     Returns:
         True if the satellite is in Earth's eclipse
 
     """
-    # Vector from satellite to sun (opposite of sun direction)
-    sat_to_sun = -normalize(sun_direction_eci) * np.linalg.norm(satellite_position_eci) * 2
+    # Vector from satellite towards the sun (the sun is effectively at infinity, so the
+    # direction seen from the satellite equals the direction seen from the Earth)
+    sat_to_sun = normalize(sun_direction_eci) * np.linalg.norm(satellite_position_eci) * 2
 
     # Check if the line from satellite to sun intersects with Earth
     # Using the minimum distance from Earth center to the line

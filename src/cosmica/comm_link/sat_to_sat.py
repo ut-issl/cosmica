@@ -25,22 +25,27 @@ logger = logging.getLogger(__name__)
 
 
 class SatToSatBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Satellite, Satellite]):
-    """Calculate satellite-to-satellite communication link performance for each edge in a network.
+    """Calculate satellite-to-satellite communication link performance for each directed edge.
 
     The link performance is calculated as a binary value, i.e., 1 if the link is available and 0 otherwise.
+
+    Each input edge (src, dst) is the directed link src -> dst and gets its own entry.
+    Both directions of a physical link are handled by whatever registrations the user
+    sets up (a single registration for homogeneous satellite types, or one per
+    orientation for heterogeneous types such as user satellite <-> constellation).
     """
 
     def __init__(
         self,
         *,
-        inter_satellite_link_capacity: float,
+        link_capacity: float,
         max_inter_satellite_distance: float = float("inf"),
         lowest_altitude: float = 0.0,
         max_relative_angular_velocity: float = float("inf"),
         sun_exclusion_angle: float = 0.0,
     ) -> None:
+        self.link_capacity = link_capacity
         self.max_inter_satellite_distance = max_inter_satellite_distance
-        self.inter_satellite_link_capacity = inter_satellite_link_capacity
         self.lowest_altitude = lowest_altitude
         self.max_relative_angular_velocity = max_relative_angular_velocity
         self.sun_exclusion_angle = sun_exclusion_angle
@@ -110,18 +115,11 @@ class SatToSatBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Satellite, S
         )
 
         # Check if either satellite is in eclipse - if so, ignore sun exclusion angle for that satellite
-        satellite_a_in_eclipse = is_satellite_in_eclipse(positions_eci[0], sun_direction_eci)
         satellite_b_in_eclipse = is_satellite_in_eclipse(positions_eci[1], sun_direction_eci)
 
         # Calculate sun exclusion angle constraints for each direction
         # If satellite is in eclipse, skip sun exclusion angle check for that direction
         sun_exclusion_satisfied = True
-
-        if not satellite_a_in_eclipse:
-            # Check sun exclusion angle from satellite A's perspective (A looking towards B)
-            edge_sun_angle_a_to_b = angle_between(relative_position_eci, sun_direction_eci)
-            if edge_sun_angle_a_to_b < self.sun_exclusion_angle:
-                sun_exclusion_satisfied = False
 
         if not satellite_b_in_eclipse:
             # Check sun exclusion angle from satellite B's perspective (B looking towards A)
@@ -139,16 +137,22 @@ class SatToSatBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Satellite, S
         )
 
         return CommLinkPerformance(
-            link_capacity=self.inter_satellite_link_capacity if link_available else 0.0,
+            link_capacity=self.link_capacity if link_available else 0.0,
             delay=float(distance / SPEED_OF_LIGHT),
             link_available=link_available,
         )
 
 
 class SatToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, Satellite]):
-    """Calculate satellite-to-satellite communication link performance for each edge in a network.
+    """Calculate satellite-to-satellite communication link performance for each directed edge in a network.
 
     The link performance is calculated as a binary value, i.e., 1 if the link is available and 0 otherwise.
+
+    Link acquisition delay is tracked independently per directed edge (src, dst): when a directed
+    edge appears or its underlying memoryless availability drops, only that direction goes through
+    (re)acquisition. Since availability can be direction-asymmetric (e.g. the sun exclusion angle is
+    checked at the receiver only), the two directions of a physical link may be in different
+    acquisition states.
     """
 
     def __init__(
@@ -162,7 +166,7 @@ class SatToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, Satel
         self.link_acquisition_time = link_acquisition_time
         self.skip_link_acquisition_at_simulation_start = skip_link_acquisition_at_simulation_start
 
-    def calc(  # noqa: C901
+    def calc(
         self,
         edges_time_series: Sequence[Collection[tuple[Satellite, Satellite]]],
         *,
@@ -173,11 +177,10 @@ class SatToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, Satel
 
         comm_link_time_series: list[dict[tuple[Satellite, Satellite], CommLinkPerformance]] = []
 
-        # ― per-edge state ―
-        # TODO(): Currently only undirected edges are targeted, so inter-satellite links are represented in frozenset
-        # prev_dot: dict[frozenset[Satellite], float] = {}
-        link_acquisition_start_time: dict[frozenset[Satellite], np.datetime64] = {}
-        prev_edges: frozenset[frozenset[Satellite]] = frozenset()
+        # ― per-directed-edge state ―
+        # Link acquisition is tracked independently for each directed edge (src, dst).
+        link_acquisition_start_time: dict[tuple[Satellite, Satellite], np.datetime64] = {}
+        prev_edges: frozenset[tuple[Satellite, Satellite]] = frozenset()
 
         for time_index, edges_snapshot in enumerate(edges_time_series):
             current_time: np.datetime64 = dynamics_data.time[time_index]
@@ -188,57 +191,43 @@ class SatToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, Satel
                 rng=rng,
             )
 
-            edges_snapshot_set = to_edge_frozenset(edges_snapshot)
+            edges_snapshot_set = frozenset(edges_snapshot)
 
             # ── update “first-seen” bookkeeping ──────────────────── ★
             new_edges = edges_snapshot_set - prev_edges
-            for edge_fs in new_edges:
+            for edge in new_edges:
                 if self.skip_link_acquisition_at_simulation_start and time_index == 0:
-                    link_acquisition_start_time[edge_fs] = current_time - np.timedelta64(
+                    link_acquisition_start_time[edge] = current_time - np.timedelta64(
                         int(self.link_acquisition_time),
                         "s",
                     )
                 else:
-                    link_acquisition_start_time[edge_fs] = current_time
+                    link_acquisition_start_time[edge] = current_time
 
             disappeared_edges = prev_edges - edges_snapshot_set
-            for edge_fs in disappeared_edges:  # フェードアウトしたら状態を消去
-                link_acquisition_start_time.pop(edge_fs, None)
-                # prev_dot.pop(edge_fs, None)
+            for edge in disappeared_edges:  # フェードアウトしたら状態を消去
+                link_acquisition_start_time.pop(edge, None)
             prev_edges = edges_snapshot_set
             # ───────────────────────────────────────────────────────
 
-            for edge_fs in edges_snapshot_set:
-                sat_a, sat_b = sorted(edge_fs, key=id)
-
-                if ((sat_a, sat_b) in comm_link and comm_link[(sat_a, sat_b)]["link_available"] is False) or (
-                    (sat_b, sat_a) in comm_link and comm_link[(sat_b, sat_a)]["link_available"] is False
-                ):
-                    link_acquisition_start_time[edge_fs] = current_time
+            for edge in edges_snapshot_set:
+                if comm_link[edge]["link_available"] is False:
+                    link_acquisition_start_time[edge] = current_time
 
                 # --- link acquisition delay ------------ ★
-                within_link_acquisition: bool = False
-                if edge_fs in link_acquisition_start_time:
-                    within_link_acquisition = (
-                        float(
-                            (current_time - link_acquisition_start_time[edge_fs]) / np.timedelta64(1, "s"),
-                        )
-                        < self.link_acquisition_time
+                within_link_acquisition = (
+                    float(
+                        (current_time - link_acquisition_start_time[edge]) / np.timedelta64(1, "s"),
                     )
+                    < self.link_acquisition_time
+                )
 
                 if within_link_acquisition:
-                    if (sat_a, sat_b) in comm_link:
-                        comm_link[(sat_a, sat_b)] = CommLinkPerformance(
-                            link_capacity=0.0,
-                            delay=np.inf,
-                            link_available=False,
-                        )
-                    elif (sat_b, sat_a) in comm_link:
-                        comm_link[(sat_b, sat_a)] = CommLinkPerformance(
-                            link_capacity=0.0,
-                            delay=np.inf,
-                            link_available=False,
-                        )
+                    comm_link[edge] = CommLinkPerformance(
+                        link_capacity=0.0,
+                        delay=np.inf,
+                        link_available=False,
+                    )
                 # ----------------------------------------------------
 
             comm_link_time_series.append(comm_link)
@@ -255,14 +244,14 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
     def __init__(
         self,
         *,
-        inter_satellite_link_capacity: float,
+        link_capacity: float,
         max_inter_satellite_distance: float = float("inf"),
         lowest_altitude: float = 0.0,
         max_relative_angular_velocity: float = float("inf"),
         sun_exclusion_angle: float = 0.0,
     ) -> None:
+        self.link_capacity = link_capacity
         self.max_inter_satellite_distance = max_inter_satellite_distance
-        self.inter_satellite_link_capacity = inter_satellite_link_capacity
         self.lowest_altitude = lowest_altitude
         self.max_relative_angular_velocity = max_relative_angular_velocity
         self.sun_exclusion_angle = sun_exclusion_angle
@@ -436,8 +425,3 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
         # Note: Here we only inverted the z component of the unit vector, as it is assumed the terminals are located
         # at opposite faces
         return [terminal_a, terminal_b]
-
-
-def to_edge_frozenset(snapshot: Collection[tuple[Satellite, Satellite]]) -> frozenset[frozenset[Satellite]]:
-    """Convert a snapshot to {frozenset{SatA, SatB}, …} representation."""
-    return frozenset(frozenset(edge) for edge in snapshot)

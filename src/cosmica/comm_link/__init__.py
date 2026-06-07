@@ -10,7 +10,10 @@ __all__ = [
     "ExpEdgeModel",
     "GatewayToGatewayCommLinkCalculator",
     "GatewayToInternetCommLinkCalculator",
+    "GatewayToSatBinaryCommLinkCalculator",
+    "GatewayToSatBinaryMemoryCommLinkCalculator",
     "GeometricCommLinkCalculator",
+    "InternetToGatewayCommLinkCalculator",
     "MemorylessCommLinkCalculator",
     "MemorylessCommLinkCalculatorWrapper",
     "OTC2OTCBinaryCommLinkCalculator",
@@ -30,10 +33,14 @@ from .base import (
 )
 from .coordinator import CommLinkCalculationCoordinator
 from .gateway_to_gateway import GatewayToGatewayCommLinkCalculator
-from .gateway_to_internet import GatewayToInternetCommLinkCalculator
+from .gateway_to_internet import GatewayToInternetCommLinkCalculator, InternetToGatewayCommLinkCalculator
+from .gateway_to_sat import (
+    GatewayToSatBinaryCommLinkCalculator,
+    GatewayToSatBinaryMemoryCommLinkCalculator,
+)
 from .geometric import GeometricCommLinkCalculator
 from .rate_distance_calculator import SatToSatBinaryCommLinkCalculatorWithRateCalc
-from .sat_to_ground import (
+from .sat_to_gateway import (
     SatToGatewayBinaryCommLinkCalculator,
     SatToGatewayBinaryCommLinkCalculatorWithScintillation,
     SatToGatewayBinaryMemoryCommLinkCalculator,

@@ -14,7 +14,7 @@ class GatewayToGatewayTopologyBuilder:
         self,
         *,
         gateways: Collection[Gateway[Hashable]],
-    ) -> nx.Graph:
+    ) -> nx.DiGraph:
         graph = nx.Graph()
         gateway_list = list(gateways)
         graph.add_nodes_from(gateway_list)
@@ -24,4 +24,5 @@ class GatewayToGatewayTopologyBuilder:
             for gateway2 in gateway_list[i + 1 :]:
                 graph.add_edge(gateway1, gateway2)
 
-        return graph
+        # Each physical link is bidirectional: represent it as two directed edges
+        return graph.to_directed()

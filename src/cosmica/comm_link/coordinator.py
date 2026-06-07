@@ -20,19 +20,21 @@ logger = logging.getLogger(__name__)
 
 
 class CommLinkCalculationCoordinator:
+    """Coordinate comm link calculators over directed topology graphs.
+
+    Each directed edge (src, dst) is dispatched as-is to the calculator registered for the
+    exact node-type pair (type(src), type(dst)); a calculator handles exactly one link
+    direction. Since directed topology graphs represent every physical link as two directed
+    edges, a calculator must be registered for BOTH orientations of each link type — e.g.
+    (Satellite, Gateway) for the downlink and (Gateway, Satellite) for the uplink.
+    """
+
     def __init__(
         self,
         *,
         calculator_assignment: Mapping[EdgeType, CommLinkCalculator],
-        directed: bool = False,
     ) -> None:
         self.calculator_assignment = dict(calculator_assignment)
-        self.directed = directed
-
-        if not self.directed:
-            assert len(set(self.calculator_assignment)) == len(
-                self.calculator_assignment,
-            ), "All edge types must be unique."
 
     def calc(
         self,
@@ -43,39 +45,20 @@ class CommLinkCalculationCoordinator:
     ) -> list[dict[tuple[Node, Node], CommLinkPerformance]]:
         assert len(dynamics_data.time) == len(edges_time_series)
 
-        if self.directed:
-            msg = "calc_time_series is only supported for undirected calculators."
-            raise NotImplementedError(msg)
-        return self._calc_undirected(edges_time_series, dynamics_data=dynamics_data, rng=rng)
+        # Categorize edges by (source type, destination type), keeping edge direction as-is
+        all_edge_types: set[EdgeType] = {(type(src), type(dst)) for edges in edges_time_series for src, dst in edges}
+        unsupported_edge_types = all_edge_types - set(self.calculator_assignment)
+        if unsupported_edge_types:
+            msg = (
+                f"No calculator registered for edge types: "
+                f"{sorted((t1.__name__, t2.__name__) for t1, t2 in unsupported_edge_types)}. "
+                "Note that both directions of a physical link need a registered calculator "
+                "(e.g. (Satellite, Gateway) for the downlink and (Gateway, Satellite) for the uplink)."
+            )
+            raise ValueError(msg)
 
-    def _calc_undirected(
-        self,
-        edges_time_series: Sequence[Collection[tuple[Node, Node]]],
-        *,
-        dynamics_data: DynamicsData,
-        rng: np.random.Generator,
-    ) -> list[dict[tuple[Node, Node], CommLinkPerformance]]:
-        supported_edge_types = set(self.calculator_assignment)
-
-        def sort_edge_end_nodes(edge: tuple[Node, Node]) -> tuple[Node, Node]:
-            assert len(edge) == 2, "Edge must have exactly two nodes."
-            if (type(edge[0]), type(edge[1])) in supported_edge_types:
-                return edge
-            elif (type(edge[1]), type(edge[0])) in supported_edge_types:
-                return edge[::-1]
-            else:
-                msg = f"No calculator found for edge type {(type(edge[0]), type(edge[1]))}"
-                raise ValueError(msg)
-
-        # "Sort" the end nodes so the order matches that of the calculator arguments
-        edges_time_series_sorted = [{sort_edge_end_nodes(edge) for edge in edges} for edges in edges_time_series]
-
-        # Categorize edges based on node types
-        all_edge_types: set[EdgeType] = {
-            (type(src), type(dst)) for edges in edges_time_series_sorted for src, dst in edges
-        }
         edges_time_series_by_type_dd: defaultdict[EdgeType, list[set[tuple[Node, Node]]]] = defaultdict(list)
-        for edges, edge_type in product(edges_time_series_sorted, all_edge_types):
+        for edges, edge_type in product(edges_time_series, all_edge_types):
             edges_per_type = {
                 (src, dst) for src, dst in edges if isinstance(src, edge_type[0]) and isinstance(dst, edge_type[1])
             }
@@ -97,7 +80,7 @@ class CommLinkCalculationCoordinator:
         # Merge the results
         performance_time_series = []
         for time_index in tqdm(range(len(dynamics_data.time)), desc="Merging performance results"):
-            performance = {}
+            performance: dict[tuple[Node, Node], CommLinkPerformance] = {}
             for perf_of_type in performance_time_series_by_type.values():
                 performance.update(perf_of_type[time_index])
             performance_time_series.append(performance)

@@ -48,7 +48,7 @@ class HybridUS2CG2CTopologyBuilder:
         user_satellites: Collection[UserSatellite],
         ground_nodes: Collection[Gateway | StationaryOnGroundUser],
         dynamics_data: DynamicsData,
-    ) -> list[nx.Graph]:
+    ) -> list[nx.DiGraph]:
         """Build hybrid topology connecting user satellites and ground stations to constellation."""
         return build_hybrid_us2c_g2c_topology(
             constellation=constellation,
@@ -349,7 +349,7 @@ def _build_topology_graphs(
     ground_visibility: npt.NDArray[np.bool_],
     user_remaining: npt.NDArray[np.int_],
     ground_remaining: npt.NDArray[np.int_],
-) -> list[nx.Graph]:
+) -> list[nx.DiGraph]:
     """Build one graph per time step using greedy max-remaining-time assignment."""
     user_connections: dict[int, int] = {}
     ground_connections: dict[int, int] = {}
@@ -390,7 +390,8 @@ def _build_topology_graphs(
                 graph,
             )
 
-        graphs.append(graph)
+        # Each physical link is bidirectional: represent it as two directed edges
+        graphs.append(graph.to_directed())
 
     return graphs
 
@@ -404,7 +405,7 @@ def build_hybrid_us2c_g2c_topology(
     max_distance: float = float("inf"),
     max_relative_angular_velocity: float = float("inf"),
     sun_exclusion_angle: float = 0.0,
-) -> list[nx.Graph]:
+) -> list[nx.DiGraph]:
     """Build hybrid topology connecting user satellites and ground stations to constellation.
 
     Combines user-satellite and ground-station connectivity. User satellite
@@ -424,7 +425,8 @@ def build_hybrid_us2c_g2c_topology(
         sun_exclusion_angle: Sun exclusion angle constraint (radians).
 
     Returns:
-        A list of networkx Graphs, one per time step.
+        A list of networkx DiGraphs, one per time step.
+        Each physical link is represented by two directed edges (u, v) and (v, u).
 
     """
     logger.info(

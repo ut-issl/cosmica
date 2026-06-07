@@ -30,7 +30,7 @@ class MemorylessCommLinkCalculator[T: Node, U: Node](ABC):
         dynamics_data: DynamicsData,
         rng: np.random.Generator,
     ) -> dict[tuple[T, U], CommLinkPerformance]:
-        """Calculate communication link performance for each edge in a network."""
+        """Calculate communication link performance for each directed edge in a network."""
         raise NotImplementedError
 
 
@@ -43,7 +43,7 @@ class CommLinkCalculator[T: Node, U: Node](ABC):
         dynamics_data: DynamicsData,
         rng: np.random.Generator,
     ) -> list[dict[tuple[T, U], CommLinkPerformance]]:
-        """Calculate communication link performance for each edge in a network."""
+        """Calculate communication link performance for each directed edge in a network."""
         raise NotImplementedError
 
 

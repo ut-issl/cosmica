@@ -3,8 +3,13 @@
 Run from the repository root with:
 
     uv run examples/basic_simulation.py
+
+Add ``--plot`` to show a simple 2D equirectangular snapshot plot:
+
+    uv run examples/basic_simulation.py --plot
 """
 
+import argparse
 from itertools import pairwise
 
 import networkx as nx
@@ -33,10 +38,19 @@ from cosmica.topology import (
 from cosmica.utils.constants import EARTH_RADIUS
 from cosmica.utils.coordinates import calc_dcm_eci2ecef
 from cosmica.utils.vector import rowwise_innerdot
+from cosmica.visualization.equirectangular import draw_countries, draw_lat_lon_grid, draw_snapshot
 
 
 def main() -> None:
     """Set up a tiny relay scenario and print one topology snapshot."""
+    parser = argparse.ArgumentParser(description="Run a minimal COSMICA simulation.")
+    parser.add_argument(
+        "--plot",
+        action="store_true",
+        help="Show a simple 2D equirectangular network plot at the selected snapshot.",
+    )
+    args = parser.parse_args()
+
     epoch = np.datetime64("2026-01-01T00:00:00")
     time = epoch + np.arange(0, np.timedelta64(2, "h"), np.timedelta64(5, "m"))
 
@@ -144,6 +158,7 @@ def main() -> None:
     print(f"Active nodes: {snapshot.number_of_nodes()}, active links: {snapshot.number_of_edges()}")  # noqa: T201
     print(f"Available communication links: {len(available_links)}")  # noqa: T201
 
+    route_edges = []
     if nx.has_path(snapshot, gateway, user_satellite):
         route = nx.shortest_path(snapshot, gateway, user_satellite)
         route_edges = list(pairwise(route))
@@ -165,6 +180,36 @@ def main() -> None:
         print(f"Route propagation delay: {route_delay_ms:.2f} ms")  # noqa: T201
     else:
         print("No gateway-to-user route in this snapshot.")  # noqa: T201
+
+    if args.plot:
+        _draw_equirectangular_snapshot(
+            snapshot=snapshot,
+            constellation=constellation,
+            dynamics_data=dynamics_data,
+            snapshot_index=snapshot_index,
+            route_edges=route_edges,
+        )
+
+
+def _draw_equirectangular_snapshot(*, snapshot, constellation, dynamics_data, snapshot_index, route_edges) -> None:
+    import matplotlib.pyplot as plt
+
+    fig, ax = plt.subplots(figsize=(12, 6))
+    draw_lat_lon_grid(ax=ax)
+    draw_countries(ax=ax)
+    draw_snapshot(
+        graph=snapshot,
+        constellation=constellation,
+        dynamics_data=dynamics_data[snapshot_index],
+        ax=ax,
+        with_labels=True,
+        focus_edges_list=[set(route_edges)] if route_edges else None,
+        focus_edges_label_list=["Gateway-to-user route"] if route_edges else None,
+    )
+    ax.set_title(f"COSMICA network snapshot at {dynamics_data.time[snapshot_index]}")
+    ax.legend(loc="lower left")
+    fig.tight_layout()
+    plt.show()
 
 
 if __name__ == "__main__":

@@ -3370,17 +3370,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#cosmica.comm_link.SatToSatBinaryCommLinkCalculatorWithRateCalc.inter_satellite_link_capacity" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;inter_satellite_link_capacity
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#cosmica.comm_link.SatToSatBinaryCommLinkCalculatorWithRateCalc.lct_p0" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8009,7 +7998,6 @@ An edge can be thought as the link between two nodes (e.g. terminals, satellites
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">SatToSatBinaryCommLinkCalculatorWithRateCalc</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">inter_satellite_link_capacity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">max_inter_satellite_distance</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
     <span class="n">lowest_altitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
     <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
@@ -8068,12 +8056,9 @@ An edge can be thought as the link between two nodes (e.g. terminals, satellites
 <span class="normal">41</span>
 <span class="normal">42</span>
 <span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">inter_satellite_link_capacity</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">max_inter_satellite_distance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
     <span class="n">lowest_altitude</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
     <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
@@ -8084,7 +8069,6 @@ An edge can be thought as the link between two nodes (e.g. terminals, satellites
     <span class="n">noise_figure</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">max_inter_satellite_distance</span> <span class="o">=</span> <span class="n">max_inter_satellite_distance</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">inter_satellite_link_capacity</span> <span class="o">=</span> <span class="n">inter_satellite_link_capacity</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">lowest_altitude</span> <span class="o">=</span> <span class="n">lowest_altitude</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">max_relative_angular_velocity</span> <span class="o">=</span> <span class="n">max_relative_angular_velocity</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">sun_exclusion_angle</span> <span class="o">=</span> <span class="n">sun_exclusion_angle</span>
@@ -8104,30 +8088,6 @@ An edge can be thought as the link between two nodes (e.g. terminals, satellites
 
 
 
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h4 id="cosmica.comm_link.SatToSatBinaryCommLinkCalculatorWithRateCalc.inter_satellite_link_capacity" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">inter_satellite_link_capacity</span>
-
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
-  </span>
-
-</h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">inter_satellite_link_capacity</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n"><span title="cosmica.comm_link.rate_distance_calculator.SatToSatBinaryCommLinkCalculatorWithRateCalc(inter_satellite_link_capacity)">inter_satellite_link_capacity</span></span>
-<span class="p">)</span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-</div>
 
 <div class="doc doc-object doc-attribute">
 
@@ -8356,7 +8316,9 @@ An edge can be thought as the link between two nodes (e.g. terminals, satellites
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/comm_link/rate_distance_calculator.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">48</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
 <span class="normal">49</span>
 <span class="normal">50</span>
 <span class="normal">51</span>
@@ -8378,9 +8340,7 @@ An edge can be thought as the link between two nodes (e.g. terminals, satellites
 <span class="normal">67</span>
 <span class="normal">68</span>
 <span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
+<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">edges</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Satellite</span><span class="p">,</span> <span class="n">Satellite</span><span class="p">]],</span>
     <span class="o">*</span><span class="p">,</span>

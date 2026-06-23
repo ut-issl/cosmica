@@ -25,8 +25,10 @@ from cosmica.dtos import DynamicsData
 from cosmica.dynamics import CircularSatelliteOrbitPropagator, get_sun_direction_eci
 from cosmica.models import (
     CircularSatelliteOrbitModel,
+    Constellation,
     ConstellationSatellite,
     Gateway,
+    Node,
     UserSatellite,
     build_walker_delta_constellation,
 )
@@ -191,7 +193,14 @@ def main() -> None:
         )
 
 
-def _draw_equirectangular_snapshot(*, snapshot, constellation, dynamics_data, snapshot_index, route_edges) -> None:
+def _draw_equirectangular_snapshot(
+    *,
+    snapshot: nx.Graph,
+    constellation: Constellation[tuple[int, int]],
+    dynamics_data: DynamicsData,
+    snapshot_index: int,
+    route_edges: list[tuple[Node, Node]],
+) -> None:
     import matplotlib.pyplot as plt
 
     fig, ax = plt.subplots(figsize=(12, 6))

@@ -3092,12 +3092,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/visualization/equirectangular.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">473</span>
-<span class="normal">474</span>
-<span class="normal">475</span>
-<span class="normal">476</span>
-<span class="normal">477</span>
-<span class="normal">478</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">478</span>
 <span class="normal">479</span>
 <span class="normal">480</span>
 <span class="normal">481</span>
@@ -3170,7 +3165,12 @@
 <span class="normal">548</span>
 <span class="normal">549</span>
 <span class="normal">550</span>
-<span class="normal">551</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">draw_coverage_area</span><span class="p">[</span><span class="n">T</span><span class="p">](</span>
+<span class="normal">551</span>
+<span class="normal">552</span>
+<span class="normal">553</span>
+<span class="normal">554</span>
+<span class="normal">555</span>
+<span class="normal">556</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">draw_coverage_area</span><span class="p">[</span><span class="n">T</span><span class="p">](</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">DynamicsData</span><span class="p">[</span><span class="n">ConstellationSatellite</span><span class="p">[</span><span class="n">T</span><span class="p">]],</span>
@@ -3690,7 +3690,12 @@
 <span class="normal">467</span>
 <span class="normal">468</span>
 <span class="normal">469</span>
-<span class="normal">470</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">draw_snapshot</span><span class="p">(</span>  <span class="c1"># noqa: C901, PLR0915 PLR0912</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">draw_snapshot</span><span class="p">(</span>  <span class="c1"># noqa: C901, PLR0915 PLR0912</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">,</span>
     <span class="n">constellation</span><span class="p">:</span> <span class="n">Constellation</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">PlaneId</span><span class="p">,</span> <span class="n">InPlaneIndex</span><span class="p">]],</span>
@@ -3740,7 +3745,12 @@
     <span class="n">pos_internets</span> <span class="o">=</span> <span class="p">{</span><span class="n">internet</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span> <span class="k">for</span> <span class="n">internet</span> <span class="ow">in</span> <span class="n">internets</span><span class="p">}</span>
 
     <span class="n">pos</span> <span class="o">=</span> <span class="n">pos_constellation</span> <span class="o">|</span> <span class="n">pos_user_satellites</span> <span class="o">|</span> <span class="n">pos_gateways</span> <span class="o">|</span> <span class="n">pos_ogu</span> <span class="o">|</span> <span class="n">pos_internets</span>
-    <span class="n">nodes_to_draw</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="n">constellation_satellites_to_draw</span> <span class="o">|</span> <span class="n">user_satellites_to_draw</span> <span class="o">|</span> <span class="n">gateways</span> <span class="o">|</span> <span class="n">on_ground_users</span>
+    <span class="n">nodes_to_draw</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="o">*</span><span class="n">constellation_satellites_to_draw</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">user_satellites_to_draw</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">gateways</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">on_ground_users</span><span class="p">,</span>
+    <span class="p">}</span>
 
     <span class="n">sat_to_in_constellation_id</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">ConstellationSatellite</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">PlaneId</span><span class="p">,</span> <span class="n">InPlaneIndex</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">satellite</span><span class="p">:</span> <span class="p">(</span><span class="n">plane_id</span><span class="p">,</span> <span class="n">in_plane_idx</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">plane_id</span><span class="p">,</span> <span class="n">in_plane_idx</span><span class="p">),</span> <span class="n">satellite</span> <span class="ow">in</span> <span class="n">constellation</span><span class="o">.</span><span class="n">satellites</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
@@ -4074,12 +4084,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/visualization/equirectangular.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">554</span>
-<span class="normal">555</span>
-<span class="normal">556</span>
-<span class="normal">557</span>
-<span class="normal">558</span>
-<span class="normal">559</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">559</span>
 <span class="normal">560</span>
 <span class="normal">561</span>
 <span class="normal">562</span>
@@ -4106,7 +4111,12 @@
 <span class="normal">583</span>
 <span class="normal">584</span>
 <span class="normal">585</span>
-<span class="normal">586</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">draw_snapshot_movie</span><span class="p">(</span>
+<span class="normal">586</span>
+<span class="normal">587</span>
+<span class="normal">588</span>
+<span class="normal">589</span>
+<span class="normal">590</span>
+<span class="normal">591</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">draw_snapshot_movie</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">graph</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">],</span>
     <span class="n">constellation</span><span class="p">:</span> <span class="n">Constellation</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">PlaneId</span><span class="p">,</span> <span class="n">InPlaneIndex</span><span class="p">]],</span>

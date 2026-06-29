@@ -2908,7 +2908,7 @@
         <span class="n">visibility</span><span class="p">[</span><span class="n">ground_node_idx</span><span class="p">,</span> <span class="n">sat_idx</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">elevation</span> <span class="o">&gt;=</span> <span class="n">ground_node</span><span class="o">.</span><span class="n">minimum_elevation</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">construct_graph</span><span class="p">(</span><span class="n">visibility</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
-        <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+        <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">[</span><span class="n">Node</span><span class="p">[</span><span class="n">Hashable</span><span class="p">]]</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
         <span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">user_satellites</span><span class="p">)</span>
         <span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">ground_nodes</span><span class="p">)</span>
 
@@ -3229,7 +3229,7 @@
     <span class="n">ground_nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ground_nodes</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">construct_graph</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
-        <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+        <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">[</span><span class="n">Node</span><span class="p">[</span><span class="n">Hashable</span><span class="p">]]</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
         <span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">user_satellites</span><span class="p">)</span>
         <span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">ground_nodes</span><span class="p">)</span>
 

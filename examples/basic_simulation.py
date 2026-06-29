@@ -189,6 +189,7 @@ def main() -> None:
             constellation=constellation,
             dynamics_data=dynamics_data,
             snapshot_index=snapshot_index,
+            # pyrefly: ignore [bad-argument-type]
             route_edges=route_edges,
         )
 

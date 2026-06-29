@@ -64,6 +64,7 @@ class ElevationBasedG2USTopologyBuilder(
         def construct_graph(visibility: npt.NDArray[np.bool_]) -> nx.DiGraph:
             graph = nx.Graph()
             graph.add_nodes_from(user_satellites)
+            # pyrefly: ignore [bad-argument-type]
             graph.add_nodes_from(ground_nodes)
 
             for (ground_node_idx, ground_node), (sat_idx, satellite) in product(
@@ -71,6 +72,7 @@ class ElevationBasedG2USTopologyBuilder(
                 enumerate(user_satellites),
             ):
                 if visibility[ground_node_idx, sat_idx]:
+                    # pyrefly: ignore [bad-argument-type]
                     graph.add_edge(ground_node, satellite)
 
             # Each physical link is bidirectional: represent it as two directed edges
@@ -98,9 +100,11 @@ class ManualG2USTopologyBuilder(
         def construct_graph() -> nx.DiGraph:
             graph = nx.Graph()
             graph.add_nodes_from(user_satellites)
+            # pyrefly: ignore [bad-argument-type]
             graph.add_nodes_from(ground_nodes)
 
             for ground_node, satellite in self.custom_connections.items():
+                # pyrefly: ignore [bad-argument-type]
                 graph.add_edge(ground_node, satellite)
 
             # Each physical link is bidirectional: represent it as two directed edges

@@ -180,6 +180,7 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
     pos_internets = {internet: [np.nan, np.nan] for internet in internets}
 
     pos = pos_constellation | pos_user_satellites | pos_gateways | pos_ogu | pos_internets
+    # pyrefly: ignore [bad-assignment]
     nodes_to_draw: set[Node] = constellation_satellites_to_draw | user_satellites_to_draw | gateways | on_ground_users
 
     sat_to_in_constellation_id: dict[ConstellationSatellite, tuple[PlaneId, InPlaneIndex]] = {

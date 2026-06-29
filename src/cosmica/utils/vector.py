@@ -54,6 +54,7 @@ def rowwise_innerdot[NumberType: np.number](
     *,
     keepdims: Literal[True, False] = False,
 ) -> npt.NDArray[NumberType]:
+    # pyrefly: ignore [bad-return]
     return np.sum(x1 * x2, axis=-1, keepdims=keepdims)
 
 

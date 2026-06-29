@@ -217,11 +217,13 @@ def build_max_connection_time_us2c_topology(  # noqa: C901, PLR0912, PLR0915
     def construct_graph(link_available_at_time: npt.NDArray[np.bool_]) -> nx.DiGraph:
         graph = nx.Graph()
         graph.add_nodes_from(user_satellites_list)
+        # pyrefly: ignore [bad-argument-type]
         graph.add_nodes_from(constellation_satellites)
 
         for user_idx, user_sat in enumerate(user_satellites_list):
             for const_idx, const_sat in enumerate(constellation_satellites):
                 if link_available_at_time[user_idx, const_idx]:
+                    # pyrefly: ignore [bad-argument-type]
                     graph.add_edge(user_sat, const_sat)
 
         # Each physical link is bidirectional: represent it as two directed edges

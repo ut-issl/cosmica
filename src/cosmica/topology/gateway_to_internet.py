@@ -18,7 +18,9 @@ class GatewayToInternetTopologyBuilder:
     ) -> nx.DiGraph:
         graph = nx.Graph()
         graph.add_nodes_from(gateways)
+        # pyrefly: ignore [bad-argument-type]
         graph.add_node(internet)
+        # pyrefly: ignore [bad-argument-type]
         graph.add_edges_from((gateway, internet) for gateway in gateways)
 
         # Each physical link is bidirectional: represent it as two directed edges

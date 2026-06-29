@@ -359,7 +359,9 @@ def _build_topology_graphs(
         assigned_satellites: set[int] = set()
         graph = nx.Graph()
         graph.add_nodes_from(constellation_satellites)
+        # pyrefly: ignore [bad-argument-type]
         graph.add_nodes_from(user_satellites)
+        # pyrefly: ignore [bad-argument-type]
         graph.add_nodes_from(ground_nodes)
 
         # Phase 1: Handle user satellites (priority)

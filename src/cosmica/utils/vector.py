@@ -52,7 +52,7 @@ def rowwise_innerdot[NumberType: np.number](
     x1: npt.NDArray[NumberType],
     x2: npt.NDArray[NumberType],
     *,
-    keepdims: bool = False,
+    keepdims: Literal[True, False] = False,
 ) -> npt.NDArray[NumberType]:
     return np.sum(x1 * x2, axis=-1, keepdims=keepdims)
 
@@ -135,7 +135,7 @@ def perturb_vector(
     return direction * norm
 
 
-def project_vector[NumberType: np.number](
+def project_vector[NumberType: (np.floating, np.integer)](
     vec: npt.NDArray[NumberType],  # (n_data, dim) or (dim,)
     onto: npt.NDArray[NumberType],  # (n_data, dim) or (dim,)
 ) -> npt.NDArray[np.floating]:  # (n_data, dim) or (dim,)

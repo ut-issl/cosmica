@@ -128,7 +128,7 @@ def main() -> None:
 
     # Calculate communication performance for each active link.
     satellite_to_gateway_calculator = MemorylessCommLinkCalculatorWrapper(
-        SatToGatewayBinaryCommLinkCalculator(satellite_to_gateway_link_capacity=1e9),
+        SatToGatewayBinaryCommLinkCalculator(link_capacity=1e9),
     )
     satellite_to_satellite_calculator = MemorylessCommLinkCalculatorWrapper(
         SatToSatBinaryCommLinkCalculatorWithRateCalc(

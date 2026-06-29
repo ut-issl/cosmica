@@ -52,7 +52,7 @@ def rowwise_innerdot[NumberType: np.number](
     x1: npt.NDArray[NumberType],
     x2: npt.NDArray[NumberType],
     *,
-    keepdims: bool = False,
+    keepdims: Literal[True, False] = False,
 ) -> npt.NDArray[NumberType]:
     return np.sum(x1 * x2, axis=-1, keepdims=keepdims)
 
@@ -135,7 +135,7 @@ def perturb_vector(
     return direction * norm
 
 
-def project_vector[NumberType: np.number](
+def project_vector[NumberType: (np.floating, np.integer)](
     vec: npt.NDArray[NumberType],  # (n_data, dim) or (dim,)
     onto: npt.NDArray[NumberType],  # (n_data, dim) or (dim,)
 ) -> npt.NDArray[np.floating]:  # (n_data, dim) or (dim,)
@@ -250,14 +250,15 @@ def is_satellite_in_eclipse(
 
     Args:
         satellite_position_eci: Position of satellite in ECI frame. Shape: (3,)
-        sun_direction_eci: Sun direction vector in ECI frame. Shape: (3,)
+        sun_direction_eci: Sun direction vector (from the Earth towards the sun) in ECI frame. Shape: (3,)
 
     Returns:
         True if the satellite is in Earth's eclipse
 
     """
-    # Vector from satellite to sun (opposite of sun direction)
-    sat_to_sun = -normalize(sun_direction_eci) * np.linalg.norm(satellite_position_eci) * 2
+    # Vector from satellite towards the sun (the sun is effectively at infinity, so the
+    # direction seen from the satellite equals the direction seen from the Earth)
+    sat_to_sun = normalize(sun_direction_eci) * np.linalg.norm(satellite_position_eci) * 2
 
     # Check if the line from satellite to sun intersects with Earth
     # Using the minimum distance from Earth center to the line

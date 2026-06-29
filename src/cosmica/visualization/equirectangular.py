@@ -6,7 +6,6 @@ __all__ = [
     "draw_snapshot_movie",
     "draw_urban_areas",
 ]
-import copy
 import importlib.resources
 import logging
 from dataclasses import dataclass, fields
@@ -276,12 +275,17 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
             )
 
         # Draw edges
-        graph_pos_corrected = copy.deepcopy(graph)
+        # Directed graphs carry two directed edges per physical link; draw each link once
+        # by working on an undirected copy (otherwise each link is drawn twice and the
+        # antimeridian correction below removes/adds edges inconsistently).
+        # to_undirected() returns a deep copy, so it is safe to mutate below.
+        graph_pos_corrected = graph.to_undirected()
 
         focus_edges_corrected_list = [focus_edges.copy() for focus_edges in focus_edges_list]
 
         # Re-draw the edges with the correct direction around the globe
-        for u, v in graph.edges():
+        # (snapshot the edge list first: the loop mutates graph_pos_corrected)
+        for u, v in list(graph_pos_corrected.edges()):
             if not (u in nodes_to_draw and v in nodes_to_draw):
                 continue
             if abs(pos[u][0] - pos[v][0]) > 180:

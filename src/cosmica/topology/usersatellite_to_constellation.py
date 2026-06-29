@@ -37,7 +37,7 @@ class UserSatelliteToConstellationTopologyBuilder[
 
 
 class MaxConnectionTimeUS2CTopologyBuilder(
-    UserSatelliteToConstellationTopologyBuilder[Constellation, UserSatellite, nx.Graph],
+    UserSatelliteToConstellationTopologyBuilder[Constellation, UserSatellite, nx.DiGraph],
 ):
     """Topology builder connecting user satellites to constellation with longest connection time.
 
@@ -64,7 +64,7 @@ class MaxConnectionTimeUS2CTopologyBuilder(
         constellation: Constellation,
         user_satellites: Collection[UserSatellite],
         dynamics_data: DynamicsData,
-    ) -> list[nx.Graph]:
+    ) -> list[nx.DiGraph]:
         return build_max_connection_time_us2c_topology(
             constellation=constellation,
             user_satellites=user_satellites,
@@ -88,7 +88,7 @@ def build_max_connection_time_us2c_topology(  # noqa: C901, PLR0912, PLR0915
     max_distance: float = float("inf"),
     max_relative_angular_velocity: float = float("inf"),
     sun_exclusion_angle: float = 0.0,
-) -> list[nx.Graph]:
+) -> list[nx.DiGraph]:
     """Build user-satellite-to-constellation topology with longest connection time.
 
     Selects the constellation satellite that provides the longest continuous
@@ -106,7 +106,8 @@ def build_max_connection_time_us2c_topology(  # noqa: C901, PLR0912, PLR0915
         sun_exclusion_angle: Sun exclusion angle constraint (radians).
 
     Returns:
-        A list of networkx Graphs, one per time step.
+        A list of networkx DiGraphs, one per time step.
+        Each physical link is represented by two directed edges (u, v) and (v, u).
 
     """
     logger.info(f"Building user-to-constellation topology for {len(user_satellites)} user satellites")
@@ -213,7 +214,7 @@ def build_max_connection_time_us2c_topology(  # noqa: C901, PLR0912, PLR0915
             if selected_constellation_idx[user_idx] >= 0:
                 link_available[user_idx, selected_constellation_idx[user_idx], time_idx] = True
 
-    def construct_graph(link_available_at_time: npt.NDArray[np.bool_]) -> nx.Graph:
+    def construct_graph(link_available_at_time: npt.NDArray[np.bool_]) -> nx.DiGraph:
         graph = nx.Graph()
         graph.add_nodes_from(user_satellites_list)
         graph.add_nodes_from(constellation_satellites)
@@ -223,6 +224,7 @@ def build_max_connection_time_us2c_topology(  # noqa: C901, PLR0912, PLR0915
                 if link_available_at_time[user_idx, const_idx]:
                     graph.add_edge(user_sat, const_sat)
 
-        return graph
+        # Each physical link is bidirectional: represent it as two directed edges
+        return graph.to_directed()
 
     return [construct_graph(link_available[:, :, time_idx]) for time_idx in range(n_time)]

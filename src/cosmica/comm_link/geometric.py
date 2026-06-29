@@ -2,17 +2,18 @@ __all__ = [
     "GeometricCommLinkCalculator",
 ]
 import warnings
+from collections.abc import Collection
 from itertools import chain
 
-import networkx as nx
 import numpy as np
 import numpy.typing as npt
 
+from cosmica.dtos import DynamicsData
 from cosmica.models import ConstellationSatellite, Gateway
 from cosmica.utils.constants import SPEED_OF_LIGHT
 from cosmica.utils.coordinates import ecef2aer
 
-from .base import CommLinkPerformance
+from .base import CommLinkPerformance, MemorylessCommLinkCalculator
 
 # TODO(Nomura): Separate different calculators into different classes
 # so that the user can choose which calculator to use for each edge type.
@@ -22,8 +23,11 @@ type _NodeType = ConstellationSatellite | Gateway
 type _EdgeType = tuple[_NodeType, _NodeType]
 
 
-class GeometricCommLinkCalculator:
-    """Calculate geometric communication link performance for each edge in a network."""
+class GeometricCommLinkCalculator(MemorylessCommLinkCalculator[_NodeType, _NodeType]):
+    """Calculate geometric communication link performance for each directed edge in a network.
+
+    Each input edge (src, dst) is the directed link src -> dst and gets its own entry.
+    """
 
     def __init__(
         self,
@@ -47,29 +51,39 @@ class GeometricCommLinkCalculator:
 
     def calc(
         self,
-        graph: nx.Graph,
+        edges: Collection[_EdgeType],
         *,
-        satellite_position_eci: dict[ConstellationSatellite, npt.NDArray[np.float64]],
-        satellite_velocity_eci: dict[ConstellationSatellite, npt.NDArray[np.float64]],
-        satellite_position_ecef: dict[ConstellationSatellite, npt.NDArray[np.float64]],
-        satellite_attitude_angular_velocity_eci: dict[ConstellationSatellite, npt.NDArray[np.float64]],
+        dynamics_data: DynamicsData,
+        rng: np.random.Generator,  # noqa: ARG002 For interface compatibility
     ) -> dict[_EdgeType, CommLinkPerformance]:
-        """Calculate geometric communication link performance for each edge in a network."""
+        """Calculate geometric communication link performance for each directed edge in a network."""
         performance: dict[_EdgeType, CommLinkPerformance] = {}
-        for node1, node2 in graph.edges:
+        for node1, node2 in edges:
             if isinstance(node1, ConstellationSatellite) and isinstance(node2, ConstellationSatellite):
                 performance[(node1, node2)] = self._calc_satellite_to_satellite(
-                    positions_eci=(satellite_position_eci[node1], satellite_position_eci[node2]),
-                    velocities_eci=(satellite_velocity_eci[node1], satellite_velocity_eci[node2]),
+                    positions_eci=(
+                        dynamics_data.satellite_position_eci[node1],
+                        dynamics_data.satellite_position_eci[node2],
+                    ),
+                    velocities_eci=(
+                        dynamics_data.satellite_velocity_eci[node1],
+                        dynamics_data.satellite_velocity_eci[node2],
+                    ),
                     attitude_angular_velocities_eci=(
-                        satellite_attitude_angular_velocity_eci[node1],
-                        satellite_attitude_angular_velocity_eci[node2],
+                        dynamics_data.satellite_attitude_angular_velocity_eci[node1],
+                        dynamics_data.satellite_attitude_angular_velocity_eci[node2],
                     ),
                 )
             elif isinstance(node1, ConstellationSatellite) and isinstance(node2, Gateway):
-                performance[(node1, node2)] = self._calc_satellite_to_gateway(satellite_position_ecef[node1], node2)
+                performance[(node1, node2)] = self._calc_satellite_to_gateway(
+                    dynamics_data.satellite_position_ecef[node1],
+                    node2,
+                )
             elif isinstance(node1, Gateway) and isinstance(node2, ConstellationSatellite):
-                performance[(node1, node2)] = self._calc_satellite_to_gateway(satellite_position_ecef[node2], node1)
+                performance[(node1, node2)] = self._calc_satellite_to_gateway(
+                    dynamics_data.satellite_position_ecef[node2],
+                    node1,
+                )
             else:
                 msg = f"Invalid edge: {node1} -> {node2}"
                 raise TypeError(msg)
@@ -78,9 +92,9 @@ class GeometricCommLinkCalculator:
     def _calc_satellite_to_satellite(
         self,
         *,
-        positions_eci: tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]],
-        velocities_eci: tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]],
-        attitude_angular_velocities_eci: tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]],
+        positions_eci: tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]],
+        velocities_eci: tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]],
+        attitude_angular_velocities_eci: tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]],
     ) -> CommLinkPerformance:
         for vec in chain(positions_eci, velocities_eci):
             assert vec.shape == (3,)
@@ -115,7 +129,7 @@ class GeometricCommLinkCalculator:
 
     def _calc_satellite_to_gateway(
         self,
-        satellite_position_ecef: npt.NDArray[np.float64],
+        satellite_position_ecef: npt.NDArray[np.floating],
         gateway: Gateway,
     ) -> CommLinkPerformance:
         assert satellite_position_ecef.shape == (3,)
@@ -128,7 +142,7 @@ class GeometricCommLinkCalculator:
             h0=gateway.altitude,
             deg=False,
         )
-        link_available = elevation >= gateway.minimum_elevation
+        link_available = bool(elevation >= gateway.minimum_elevation)
         return CommLinkPerformance(
             link_capacity=self.satellite_to_gateway_link_capacity if link_available else 0.0,
             delay=float(srange / SPEED_OF_LIGHT),

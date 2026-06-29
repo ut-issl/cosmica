@@ -34,7 +34,7 @@ class GroundToConstellationTopologyBuilder[TConstellation: Constellation, TNode:
 
 
 class ElevationBasedG2CTopologyBuilder(
-    GroundToConstellationTopologyBuilder[Constellation, Gateway | StationaryOnGroundUser, nx.Graph],
+    GroundToConstellationTopologyBuilder[Constellation, Gateway | StationaryOnGroundUser, nx.DiGraph],
 ):
     def build(
         self,
@@ -42,7 +42,7 @@ class ElevationBasedG2CTopologyBuilder(
         constellation: Constellation,
         ground_nodes: Collection[Gateway | StationaryOnGroundUser],
         dynamics_data: DynamicsData,
-    ) -> list[nx.Graph]:
+    ) -> list[nx.DiGraph]:
         return build_elevation_based_g2c_topology(
             constellation,
             ground_nodes=ground_nodes,
@@ -51,7 +51,7 @@ class ElevationBasedG2CTopologyBuilder(
 
 
 class ManualG2CTopologyBuilder(
-    GroundToConstellationTopologyBuilder[Constellation, Gateway | StationaryOnGroundUser, nx.Graph],
+    GroundToConstellationTopologyBuilder[Constellation, Gateway | StationaryOnGroundUser, nx.DiGraph],
 ):
     def __init__(self, custom_connections: dict[Gateway | StationaryOnGroundUser, ConstellationSatellite]) -> None:
         self.custom_connections: dict[Gateway | StationaryOnGroundUser, ConstellationSatellite] = custom_connections
@@ -62,7 +62,7 @@ class ManualG2CTopologyBuilder(
         constellation: Constellation,
         ground_nodes: Collection[Gateway | StationaryOnGroundUser],
         dynamics_data: DynamicsData,
-    ) -> list[nx.Graph]:
+    ) -> list[nx.DiGraph]:
         return build_manual_g2c_topology(
             constellation,
             ground_nodes=ground_nodes,
@@ -72,7 +72,7 @@ class ManualG2CTopologyBuilder(
 
 
 class MaxVisibilityHandOverG2CTopologyBuilder(
-    GroundToConstellationTopologyBuilder[Constellation, Gateway | StationaryOnGroundUser, nx.Graph],
+    GroundToConstellationTopologyBuilder[Constellation, Gateway | StationaryOnGroundUser, nx.DiGraph],
 ):
     def build(
         self,
@@ -80,7 +80,7 @@ class MaxVisibilityHandOverG2CTopologyBuilder(
         constellation: Constellation,
         ground_nodes: Collection[Gateway | StationaryOnGroundUser],
         dynamics_data: DynamicsData,
-    ) -> list[nx.Graph]:
+    ) -> list[nx.DiGraph]:
         return build_max_visibility_handover_g2c_topology(
             constellation,
             ground_nodes=ground_nodes,
@@ -98,7 +98,7 @@ def build_elevation_based_g2c_topology(
     *,
     ground_nodes: Collection[Gateway | StationaryOnGroundUser],
     dynamics_data: DynamicsData,
-) -> list[nx.Graph]:
+) -> list[nx.DiGraph]:
     """Build ground-to-constellation topology based on elevation angle.
 
     Connects ground nodes to constellation satellites when the satellite's
@@ -114,7 +114,8 @@ def build_elevation_based_g2c_topology(
         dynamics_data: Time-series dynamics data.
 
     Returns:
-        A list of networkx Graphs, one per time step.
+        A list of networkx DiGraphs, one per time step.
+        Each physical link is represented by two directed edges (u, v) and (v, u).
 
     """
     logger.info(f"Number of time steps: {len(dynamics_data.time)}")
@@ -138,7 +139,7 @@ def build_elevation_based_g2c_topology(
         )
         visibility[ground_node_idx, sat_idx, :] = elevation >= ground_node.minimum_elevation
 
-    def construct_graph(visibility: npt.NDArray[np.bool_]) -> nx.Graph:
+    def construct_graph(visibility: npt.NDArray[np.bool_]) -> nx.DiGraph:
         graph = nx.Graph()
         graph.add_nodes_from(satellites)
         graph.add_nodes_from(ground_nodes_list)
@@ -150,7 +151,8 @@ def build_elevation_based_g2c_topology(
             if visibility[ground_node_idx, sat_idx]:
                 graph.add_edge(ground_node, satellite)
 
-        return graph
+        # Each physical link is bidirectional: represent it as two directed edges
+        return graph.to_directed()
 
     return [construct_graph(visibility[:, :, time_idx]) for time_idx in range(len(dynamics_data.time))]
 
@@ -161,7 +163,7 @@ def build_manual_g2c_topology(
     ground_nodes: Collection[Gateway | StationaryOnGroundUser],
     dynamics_data: DynamicsData,
     custom_connections: dict[Gateway | StationaryOnGroundUser, ConstellationSatellite],
-) -> list[nx.Graph]:
+) -> list[nx.DiGraph]:
     """Build ground-to-constellation topology with manually specified connections.
 
     Creates a static topology (same at every time step) based on the provided
@@ -174,14 +176,15 @@ def build_manual_g2c_topology(
         custom_connections: Mapping from ground nodes to their connected satellites.
 
     Returns:
-        A list of identical networkx Graphs, one per time step.
+        A list of identical networkx DiGraphs, one per time step.
+        Each physical link is represented by two directed edges (u, v) and (v, u).
 
     """
     logger.info(f"Number of time steps: {len(dynamics_data.time)}")
     ground_nodes_list = list(ground_nodes)
     satellites = list(constellation.satellites.values())
 
-    def construct_graph() -> nx.Graph:
+    def construct_graph() -> nx.DiGraph:
         graph = nx.Graph()
         graph.add_nodes_from(satellites)
         graph.add_nodes_from(ground_nodes_list)
@@ -189,7 +192,8 @@ def build_manual_g2c_topology(
         for ground_node, satellite in custom_connections.items():
             graph.add_edge(ground_node, satellite)
 
-        return graph
+        # Each physical link is bidirectional: represent it as two directed edges
+        return graph.to_directed()
 
     return [construct_graph() for _ in range(len(dynamics_data.time))]
 
@@ -199,7 +203,7 @@ def build_max_visibility_handover_g2c_topology(  # noqa: C901
     *,
     ground_nodes: Collection[Gateway | StationaryOnGroundUser],
     dynamics_data: DynamicsData,
-) -> list[nx.Graph]:
+) -> list[nx.DiGraph]:
     """Build ground-to-constellation topology with maximum-visibility handover.
 
     Each ground node connects to the satellite with the longest remaining
@@ -212,7 +216,8 @@ def build_max_visibility_handover_g2c_topology(  # noqa: C901
         dynamics_data: Time-series dynamics data.
 
     Returns:
-        A list of networkx Graphs, one per time step.
+        A list of networkx DiGraphs, one per time step.
+        Each physical link is represented by two directed edges (u, v) and (v, u).
 
     """
     logger.info(f"Number of time steps: {len(dynamics_data.time)}")
@@ -287,7 +292,7 @@ def build_max_visibility_handover_g2c_topology(  # noqa: C901
                     select_max_visibility_satellite(ground_node_idx, time_idx)
             link_available[ground_node_idx, select_sat_idx[ground_node_idx], time_idx] = True
 
-    def construct_graph(link_available: npt.NDArray[np.bool_]) -> nx.Graph:
+    def construct_graph(link_available: npt.NDArray[np.bool_]) -> nx.DiGraph:
         graph = nx.Graph()
         graph.add_nodes_from(satellites)
         graph.add_nodes_from(ground_nodes_list)
@@ -299,6 +304,7 @@ def build_max_visibility_handover_g2c_topology(  # noqa: C901
             if link_available[ground_node_idx, sat_idx]:
                 graph.add_edge(ground_node, satellite)
 
-        return graph
+        # Each physical link is bidirectional: represent it as two directed edges
+        return graph.to_directed()
 
     return [construct_graph(link_available[:, :, time_idx]) for time_idx in range(len(dynamics_data.time))]

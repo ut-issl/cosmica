@@ -8,7 +8,7 @@ __all__ = [
 ]
 import logging
 from abc import ABC, abstractmethod
-from collections.abc import Collection
+from collections.abc import Collection, Hashable
 from itertools import product
 
 import networkx as nx
@@ -140,9 +140,8 @@ def build_elevation_based_g2c_topology(
         visibility[ground_node_idx, sat_idx, :] = elevation >= ground_node.minimum_elevation
 
     def construct_graph(visibility: npt.NDArray[np.bool_]) -> nx.DiGraph:
-        graph = nx.Graph()
+        graph: nx.Graph[Node[Hashable]] = nx.Graph()
         graph.add_nodes_from(satellites)
-        # pyrefly: ignore [bad-argument-type]
         graph.add_nodes_from(ground_nodes_list)
 
         for (ground_node_idx, ground_node), (sat_idx, satellite) in product(
@@ -150,7 +149,6 @@ def build_elevation_based_g2c_topology(
             enumerate(satellites),
         ):
             if visibility[ground_node_idx, sat_idx]:
-                # pyrefly: ignore [bad-argument-type]
                 graph.add_edge(ground_node, satellite)
 
         # Each physical link is bidirectional: represent it as two directed edges
@@ -187,13 +185,11 @@ def build_manual_g2c_topology(
     satellites = list(constellation.satellites.values())
 
     def construct_graph() -> nx.DiGraph:
-        graph = nx.Graph()
+        graph: nx.Graph[Node[Hashable]] = nx.Graph()
         graph.add_nodes_from(satellites)
-        # pyrefly: ignore [bad-argument-type]
         graph.add_nodes_from(ground_nodes_list)
 
         for ground_node, satellite in custom_connections.items():
-            # pyrefly: ignore [bad-argument-type]
             graph.add_edge(ground_node, satellite)
 
         # Each physical link is bidirectional: represent it as two directed edges

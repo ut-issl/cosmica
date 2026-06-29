@@ -10,6 +10,7 @@ Add ``--plot`` to show a simple 2D equirectangular snapshot plot:
 """
 
 import argparse
+from collections.abc import Sequence
 from itertools import pairwise
 
 import networkx as nx
@@ -189,7 +190,6 @@ def main() -> None:
             constellation=constellation,
             dynamics_data=dynamics_data,
             snapshot_index=snapshot_index,
-            # pyrefly: ignore [bad-argument-type]
             route_edges=route_edges,
         )
 
@@ -200,7 +200,7 @@ def _draw_equirectangular_snapshot(
     constellation: Constellation[tuple[int, int]],
     dynamics_data: DynamicsData,
     snapshot_index: int,
-    route_edges: list[tuple[Node, Node]],
+    route_edges: Sequence[tuple[Node, Node]],
 ) -> None:
     import matplotlib.pyplot as plt
 

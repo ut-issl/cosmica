@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://www.space.t.u-tokyo.ac.jp/cosmica/dev/reference/cosmica/topology/intra_constellation/">
       
       
-        <link rel="prev" href="../ground_to_constellation/">
+        <link rel="prev" href="../ground_to_usersatellite/">
       
       
         <link rel="next" href="../usersatellite_gateway_to_constellation/">
@@ -656,6 +656,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../comm_link/gateway_to_sat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gateway_to_sat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../comm_link/geometric/" class="md-nav__link">
         
   
@@ -664,6 +692,34 @@
     
   
     geometric
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comm_link/internet_to_gateway/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    internet_to_gateway
   
 
     
@@ -712,14 +768,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../comm_link/sat_to_ground/" class="md-nav__link">
+      <a href="../../comm_link/sat_to_gateway/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    sat_to_ground
+    sat_to_gateway
   
 
     
@@ -1635,6 +1691,34 @@
     
   
     ground_to_constellation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ground_to_usersatellite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ground_to_usersatellite
   
 
     
@@ -3084,7 +3168,7 @@
 
   
       dataclass
-   (cosmica.models.Constellation)" href="../../models/#cosmica.models.Constellation">Constellation</a>[<span title="tuple">tuple</span>[<a class="autorefs autorefs-internal" title="            PlaneId (cosmica.topology.intra_constellation.PlaneId)" href="#cosmica.topology.intra_constellation.PlaneId">PlaneId</a>, <a class="autorefs autorefs-internal" title="            InPlaneIndex (cosmica.topology.intra_constellation.InPlaneIndex)" href="#cosmica.topology.intra_constellation.InPlaneIndex">InPlaneIndex</a>]], <span title="networkx.Graph">Graph</span>]</code></p>
+   (cosmica.models.Constellation)" href="../../models/#cosmica.models.Constellation">Constellation</a>[<span title="tuple">tuple</span>[<a class="autorefs autorefs-internal" title="            PlaneId (cosmica.topology.intra_constellation.PlaneId)" href="#cosmica.topology.intra_constellation.PlaneId">PlaneId</a>, <a class="autorefs autorefs-internal" title="            InPlaneIndex (cosmica.topology.intra_constellation.InPlaneIndex)" href="#cosmica.topology.intra_constellation.InPlaneIndex">InPlaneIndex</a>]], <span title="networkx.DiGraph">DiGraph</span>]</code></p>
 
 
 
@@ -3222,7 +3306,7 @@
   
       dataclass
    (cosmica.dtos.DynamicsData)" href="../../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.Graph">Graph</span></span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3247,7 +3331,7 @@
     <span class="o">*</span><span class="p">,</span>
     <span class="n">constellation</span><span class="p">:</span> <span class="n">Constellation</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">PlaneId</span><span class="p">,</span> <span class="n">InPlaneIndex</span><span class="p">]],</span>
     <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">DynamicsData</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]:</span>
     <span class="k">return</span> <span class="n">build_manhattan_time_series_topology</span><span class="p">(</span>
         <span class="n">constellation</span><span class="p">,</span>
         <span class="n">dynamics_data</span><span class="o">=</span><span class="n">dynamics_data</span><span class="p">,</span>
@@ -3292,7 +3376,7 @@
 
   
       dataclass
-   (cosmica.models.Constellation)" href="../../models/#cosmica.models.Constellation">Constellation</a>[<span title="tuple">tuple</span>[<a class="autorefs autorefs-internal" title="            PlaneId (cosmica.topology.intra_constellation.PlaneId)" href="#cosmica.topology.intra_constellation.PlaneId">PlaneId</a>, <a class="autorefs autorefs-internal" title="            InPlaneIndex (cosmica.topology.intra_constellation.InPlaneIndex)" href="#cosmica.topology.intra_constellation.InPlaneIndex">InPlaneIndex</a>]], <span title="networkx.Graph">Graph</span>]</code></p>
+   (cosmica.models.Constellation)" href="../../models/#cosmica.models.Constellation">Constellation</a>[<span title="tuple">tuple</span>[<a class="autorefs autorefs-internal" title="            PlaneId (cosmica.topology.intra_constellation.PlaneId)" href="#cosmica.topology.intra_constellation.PlaneId">PlaneId</a>, <a class="autorefs autorefs-internal" title="            InPlaneIndex (cosmica.topology.intra_constellation.InPlaneIndex)" href="#cosmica.topology.intra_constellation.InPlaneIndex">InPlaneIndex</a>]], <span title="networkx.DiGraph">DiGraph</span>]</code></p>
 
 
 
@@ -3398,7 +3482,7 @@
    (cosmica.models.Constellation)" href="../../models/#cosmica.models.Constellation">Constellation</a></span><span class="p">[</span>
         <span class="n"><span title="tuple">tuple</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            PlaneId (cosmica.topology.intra_constellation.PlaneId)" href="#cosmica.topology.intra_constellation.PlaneId">PlaneId</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="            InPlaneIndex (cosmica.topology.intra_constellation.InPlaneIndex)" href="#cosmica.topology.intra_constellation.InPlaneIndex">InPlaneIndex</a></span><span class="p">]</span>
     <span class="p">]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="networkx.Graph">Graph</span></span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="networkx.DiGraph">DiGraph</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3419,7 +3503,7 @@
     <span class="bp">self</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">constellation</span><span class="p">:</span> <span class="n">Constellation</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">PlaneId</span><span class="p">,</span> <span class="n">InPlaneIndex</span><span class="p">]],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">build_manhattan_topology</span><span class="p">(</span>
         <span class="n">constellation</span><span class="p">,</span>
         <span class="n">inter_plane_offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">inter_plane_offset</span><span class="p">,</span>
@@ -3465,7 +3549,7 @@
     <span class="n">inter_plane_offset</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">last_to_first_plane_offset</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">max_latitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="numpy.deg2rad">deg2rad</span></span><span class="p">(</span><span class="mf">90.0</span><span class="p">)</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.Graph">Graph</span></span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3603,12 +3687,24 @@ links are disabled.</p>
           <tr class="doc-section-item">
             <td>
                 <span class="doc-returns-annotation">
-                    <code><span title="list">list</span>[<span title="networkx.Graph">Graph</span>]</code>
+                    <code><span title="list">list</span>[<span title="networkx.DiGraph">DiGraph</span>]</code>
                 </span>
             </td>
             <td class="doc-returns-details">
               <div class="doc-md-description">
-                <p>A list of networkx Graphs, one per time step.</p>
+                <p>A list of networkx DiGraphs, one per time step. Each physical link is</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><span title="list">list</span>[<span title="networkx.DiGraph">DiGraph</span>]</code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>represented by two directed edges (u, v) and (v, u).</p>
               </div>
             </td>
           </tr>
@@ -3618,9 +3714,7 @@ links are disabled.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/topology/intra_constellation.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">196</span>
 <span class="normal">197</span>
 <span class="normal">198</span>
 <span class="normal">199</span>
@@ -3692,14 +3786,18 @@ links are disabled.</p>
 <span class="normal">265</span>
 <span class="normal">266</span>
 <span class="normal">267</span>
-<span class="normal">268</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_manhattan_time_series_topology</span><span class="p">(</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_manhattan_time_series_topology</span><span class="p">(</span>
     <span class="n">constellation</span><span class="p">:</span> <span class="n">Constellation</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">DynamicsData</span><span class="p">,</span>
     <span class="n">inter_plane_offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">last_to_first_plane_offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">max_latitude</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mf">90.0</span><span class="p">),</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Build time-varying Manhattan topology, disabling inter-plane links near poles.</span>
 
 <span class="sd">    Same as :func:`build_manhattan_topology`, but produces one graph per time</span>
@@ -3716,12 +3814,13 @@ links are disabled.</p>
 <span class="sd">            links are disabled.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A list of networkx Graphs, one per time step.</span>
+<span class="sd">        A list of networkx DiGraphs, one per time step. Each physical link is</span>
+<span class="sd">        represented by two directed edges (u, v) and (v, u).</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">planes</span> <span class="o">=</span> <span class="n">_group_by_plane</span><span class="p">(</span><span class="n">constellation</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">construct_graph</span><span class="p">(</span><span class="n">time_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">construct_graph</span><span class="p">(</span><span class="n">time_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
         <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">satellite</span> <span class="ow">in</span> <span class="n">constellation</span><span class="o">.</span><span class="n">satellites</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -3764,7 +3863,8 @@ links are disabled.</p>
 
                 <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">graph</span>
+        <span class="c1"># Each physical link is bidirectional: represent it as two directed edges</span>
+        <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="p">[</span><span class="n">construct_graph</span><span class="p">(</span><span class="n">time_idx</span><span class="p">)</span> <span class="k">for</span> <span class="n">time_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">))]</span>
 </code></pre></div></td></tr></table></div>
@@ -3793,7 +3893,7 @@ links are disabled.</p>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">inter_plane_offset</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">last_to_first_plane_offset</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">0</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="networkx.Graph">Graph</span></span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="networkx.DiGraph">DiGraph</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3891,12 +3991,24 @@ connection from the last plane back to the first.</p>
           <tr class="doc-section-item">
             <td>
                 <span class="doc-returns-annotation">
-                    <code><span title="networkx.Graph">Graph</span></code>
+                    <code><span title="networkx.DiGraph">DiGraph</span></code>
                 </span>
             </td>
             <td class="doc-returns-details">
               <div class="doc-md-description">
-                <p>A networkx Graph with satellites as nodes and Manhattan grid edges.</p>
+                <p>A networkx DiGraph with satellites as nodes and Manhattan grid edges.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><span title="networkx.DiGraph">DiGraph</span></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>Each physical link is represented by two directed edges (u, v) and (v, u).</p>
               </div>
             </td>
           </tr>
@@ -3969,12 +4081,14 @@ connection from the last plane back to the first.</p>
 <span class="normal">188</span>
 <span class="normal">189</span>
 <span class="normal">190</span>
-<span class="normal">191</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_manhattan_topology</span><span class="p">(</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_manhattan_topology</span><span class="p">(</span>
     <span class="n">constellation</span><span class="p">:</span> <span class="n">Constellation</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">PlaneId</span><span class="p">,</span> <span class="n">InPlaneIndex</span><span class="p">]],</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">inter_plane_offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">last_to_first_plane_offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a Manhattan (grid) topology for a multi-plane constellation.</span>
 
 <span class="sd">    The constellation must be parameterized as `Constellation[tuple[int, int]]`</span>
@@ -3991,7 +4105,8 @@ connection from the last plane back to the first.</p>
 <span class="sd">            connection from the last plane back to the first.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A networkx Graph with satellites as nodes and Manhattan grid edges.</span>
+<span class="sd">        A networkx DiGraph with satellites as nodes and Manhattan grid edges.</span>
+<span class="sd">        Each physical link is represented by two directed edges (u, v) and (v, u).</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">planes</span> <span class="o">=</span> <span class="n">_group_by_plane</span><span class="p">(</span><span class="n">constellation</span><span class="p">)</span>
@@ -4032,7 +4147,8 @@ connection from the last plane back to the first.</p>
             <span class="n">dst</span> <span class="o">=</span> <span class="n">next_plane</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">next_plane</span><span class="p">)]</span>
             <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">graph</span>
+    <span class="c1"># Each physical link is bidirectional: represent it as two directed edges</span>
+    <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

@@ -11,10 +11,10 @@
         <link rel="canonical" href="https://www.space.t.u-tokyo.ac.jp/cosmica/dev/reference/cosmica/comm_link/rate_distance_calculator/">
       
       
-        <link rel="prev" href="../geometric/">
+        <link rel="prev" href="../internet_to_gateway/">
       
       
-        <link rel="next" href="../sat_to_ground/">
+        <link rel="next" href="../sat_to_gateway/">
       
       
         
@@ -658,6 +658,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../gateway_to_sat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gateway_to_sat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../geometric/" class="md-nav__link">
         
   
@@ -666,6 +694,34 @@
     
   
     geometric
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../internet_to_gateway/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    internet_to_gateway
   
 
     
@@ -901,14 +957,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../sat_to_ground/" class="md-nav__link">
+      <a href="../sat_to_gateway/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    sat_to_ground
+    sat_to_gateway
   
 
     
@@ -1842,6 +1898,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../topology/ground_to_usersatellite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ground_to_usersatellite
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../topology/intra_constellation/" class="md-nav__link">
         
   
@@ -2690,8 +2774,12 @@
 
 
 
-        <p>Calculate satellite-to-satellite communication link performance for each edge in a network.</p>
+        <p>Calculate satellite-to-satellite communication link performance for each directed edge.</p>
 <p>The link performance is calculated as a binary value, i.e., 1 if the link is available and 0 otherwise.</p>
+<p>Each input edge (src, dst) is the directed link src -&gt; dst and gets its own entry.
+Both directions of a physical link are handled by whatever registrations the user
+sets up (a single registration for homogeneous satellite types, or one per
+orientation for heterogeneous types such as user satellite &lt;-&gt; constellation).</p>
 
 
 
@@ -2702,12 +2790,7 @@
 
                   <details class="mkdocstrings-source">
                     <summary>Source code in <code>src/cosmica/comm_link/rate_distance_calculator.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
 <span class="normal">33</span>
@@ -2721,7 +2804,12 @@
 <span class="normal">41</span>
 <span class="normal">42</span>
 <span class="normal">43</span>
-<span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">max_inter_satellite_distance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
@@ -2981,12 +3069,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/comm_link/rate_distance_calculator.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">51</span>
 <span class="normal">52</span>
 <span class="normal">53</span>
 <span class="normal">54</span>
@@ -3005,7 +3088,12 @@
 <span class="normal">67</span>
 <span class="normal">68</span>
 <span class="normal">69</span>
-<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">edges</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Satellite</span><span class="p">,</span> <span class="n">Satellite</span><span class="p">]],</span>
     <span class="o">*</span><span class="p">,</span>

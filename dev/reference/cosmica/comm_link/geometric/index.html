@@ -11,10 +11,10 @@
         <link rel="canonical" href="https://www.space.t.u-tokyo.ac.jp/cosmica/dev/reference/cosmica/comm_link/geometric/">
       
       
-        <link rel="prev" href="../gateway_to_internet/">
+        <link rel="prev" href="../gateway_to_sat/">
       
       
-        <link rel="next" href="../rate_distance_calculator/">
+        <link rel="next" href="../internet_to_gateway/">
       
       
         
@@ -655,6 +655,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../gateway_to_sat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gateway_to_sat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -840,6 +868,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../internet_to_gateway/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    internet_to_gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../rate_distance_calculator/" class="md-nav__link">
         
   
@@ -868,14 +924,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../sat_to_ground/" class="md-nav__link">
+      <a href="../sat_to_gateway/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    sat_to_ground
+    sat_to_gateway
   
 
     
@@ -1809,6 +1865,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../topology/ground_to_usersatellite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ground_to_usersatellite
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../topology/intra_constellation/" class="md-nav__link">
         
   
@@ -2606,10 +2690,13 @@
 </code></pre></div>
 
     <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="            MemorylessCommLinkCalculator (cosmica.comm_link.base.MemorylessCommLinkCalculator)" href="../base/#cosmica.comm_link.base.MemorylessCommLinkCalculator">MemorylessCommLinkCalculator</a>[<span title="cosmica.comm_link.geometric._NodeType">_NodeType</span>, <span title="cosmica.comm_link.geometric._NodeType">_NodeType</span>]</code></p>
 
 
 
-        <p>Calculate geometric communication link performance for each edge in a network.</p>
+        <p>Calculate geometric communication link performance for each directed edge in a network.</p>
+<p>Each input edge (src, dst) is the directed link src -&gt; dst and gets its own entry.</p>
 
 
 
@@ -2620,11 +2707,7 @@
 
                   <details class="mkdocstrings-source">
                     <summary>Source code in <code>src/cosmica/comm_link/geometric.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">32</span>
 <span class="normal">33</span>
 <span class="normal">34</span>
 <span class="normal">35</span>
@@ -2638,7 +2721,11 @@
 <span class="normal">43</span>
 <span class="normal">44</span>
 <span class="normal">45</span>
-<span class="normal">46</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">inter_satellite_link_capacity</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -2798,55 +2885,26 @@
 
 </h4>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">calc</span><span class="p">(</span>
-    <span class="n">graph</span><span class="p">:</span> <span class="n"><span title="networkx.Graph">Graph</span></span><span class="p">,</span>
+    <span class="n">edges</span><span class="p">:</span> <span class="n"><span title="collections.abc.Collection">Collection</span></span><span class="p">[</span><span class="n"><span title="cosmica.comm_link.geometric._EdgeType">_EdgeType</span></span><span class="p">],</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">satellite_position_eci</span><span class="p">:</span> <span class="n"><span title="dict">dict</span></span><span class="p">[</span>
-        <span class="n"><a class="autorefs autorefs-internal" title="            ConstellationSatellite
+    <span class="n">dynamics_data</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            DynamicsData
 
 
   
       dataclass
-   (cosmica.models.ConstellationSatellite)" href="../../models/#cosmica.models.ConstellationSatellite">ConstellationSatellite</a></span><span class="p">,</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.float64">float64</span></span><span class="p">]</span>
-    <span class="p">],</span>
-    <span class="n">satellite_velocity_eci</span><span class="p">:</span> <span class="n"><span title="dict">dict</span></span><span class="p">[</span>
-        <span class="n"><a class="autorefs autorefs-internal" title="            ConstellationSatellite
-
-
-  
-      dataclass
-   (cosmica.models.ConstellationSatellite)" href="../../models/#cosmica.models.ConstellationSatellite">ConstellationSatellite</a></span><span class="p">,</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.float64">float64</span></span><span class="p">]</span>
-    <span class="p">],</span>
-    <span class="n">satellite_position_ecef</span><span class="p">:</span> <span class="n"><span title="dict">dict</span></span><span class="p">[</span>
-        <span class="n"><a class="autorefs autorefs-internal" title="            ConstellationSatellite
-
-
-  
-      dataclass
-   (cosmica.models.ConstellationSatellite)" href="../../models/#cosmica.models.ConstellationSatellite">ConstellationSatellite</a></span><span class="p">,</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.float64">float64</span></span><span class="p">]</span>
-    <span class="p">],</span>
-    <span class="n">satellite_attitude_angular_velocity_eci</span><span class="p">:</span> <span class="n"><span title="dict">dict</span></span><span class="p">[</span>
-        <span class="n"><a class="autorefs autorefs-internal" title="            ConstellationSatellite
-
-
-  
-      dataclass
-   (cosmica.models.ConstellationSatellite)" href="../../models/#cosmica.models.ConstellationSatellite">ConstellationSatellite</a></span><span class="p">,</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.float64">float64</span></span><span class="p">]</span>
-    <span class="p">]</span>
+   (cosmica.dtos.DynamicsData)" href="../../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
+    <span class="n">rng</span><span class="p">:</span> <span class="n"><span title="numpy.random.Generator">Generator</span></span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="dict">dict</span></span><span class="p">[</span><span class="n"><span title="cosmica.comm_link.geometric._EdgeType">_EdgeType</span></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="            CommLinkPerformance (cosmica.comm_link.base.CommLinkPerformance)" href="../base/#cosmica.comm_link.base.CommLinkPerformance">CommLinkPerformance</a></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
 
-        <p>Calculate geometric communication link performance for each edge in a network.</p>
+        <p>Calculate geometric communication link performance for each directed edge in a network.</p>
 
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/comm_link/geometric.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">52</span>
 <span class="normal">53</span>
 <span class="normal">54</span>
 <span class="normal">55</span>
@@ -2870,31 +2928,55 @@
 <span class="normal">73</span>
 <span class="normal">74</span>
 <span class="normal">75</span>
-<span class="normal">76</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">,</span>
+    <span class="n">edges</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">_EdgeType</span><span class="p">],</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">satellite_position_eci</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">ConstellationSatellite</span><span class="p">,</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]],</span>
-    <span class="n">satellite_velocity_eci</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">ConstellationSatellite</span><span class="p">,</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]],</span>
-    <span class="n">satellite_position_ecef</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">ConstellationSatellite</span><span class="p">,</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]],</span>
-    <span class="n">satellite_attitude_angular_velocity_eci</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">ConstellationSatellite</span><span class="p">,</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]],</span>
+    <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">DynamicsData</span><span class="p">,</span>
+    <span class="n">rng</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span><span class="p">,</span>  <span class="c1"># noqa: ARG002 For interface compatibility</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">_EdgeType</span><span class="p">,</span> <span class="n">CommLinkPerformance</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate geometric communication link performance for each edge in a network.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate geometric communication link performance for each directed edge in a network.&quot;&quot;&quot;</span>
     <span class="n">performance</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">_EdgeType</span><span class="p">,</span> <span class="n">CommLinkPerformance</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">node1</span><span class="p">,</span> <span class="n">node2</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">node1</span><span class="p">,</span> <span class="n">node2</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node1</span><span class="p">,</span> <span class="n">ConstellationSatellite</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node2</span><span class="p">,</span> <span class="n">ConstellationSatellite</span><span class="p">):</span>
             <span class="n">performance</span><span class="p">[(</span><span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_satellite_to_satellite</span><span class="p">(</span>
-                <span class="n">positions_eci</span><span class="o">=</span><span class="p">(</span><span class="n">satellite_position_eci</span><span class="p">[</span><span class="n">node1</span><span class="p">],</span> <span class="n">satellite_position_eci</span><span class="p">[</span><span class="n">node2</span><span class="p">]),</span>
-                <span class="n">velocities_eci</span><span class="o">=</span><span class="p">(</span><span class="n">satellite_velocity_eci</span><span class="p">[</span><span class="n">node1</span><span class="p">],</span> <span class="n">satellite_velocity_eci</span><span class="p">[</span><span class="n">node2</span><span class="p">]),</span>
+                <span class="n">positions_eci</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">dynamics_data</span><span class="o">.</span><span class="n">satellite_position_eci</span><span class="p">[</span><span class="n">node1</span><span class="p">],</span>
+                    <span class="n">dynamics_data</span><span class="o">.</span><span class="n">satellite_position_eci</span><span class="p">[</span><span class="n">node2</span><span class="p">],</span>
+                <span class="p">),</span>
+                <span class="n">velocities_eci</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">dynamics_data</span><span class="o">.</span><span class="n">satellite_velocity_eci</span><span class="p">[</span><span class="n">node1</span><span class="p">],</span>
+                    <span class="n">dynamics_data</span><span class="o">.</span><span class="n">satellite_velocity_eci</span><span class="p">[</span><span class="n">node2</span><span class="p">],</span>
+                <span class="p">),</span>
                 <span class="n">attitude_angular_velocities_eci</span><span class="o">=</span><span class="p">(</span>
-                    <span class="n">satellite_attitude_angular_velocity_eci</span><span class="p">[</span><span class="n">node1</span><span class="p">],</span>
-                    <span class="n">satellite_attitude_angular_velocity_eci</span><span class="p">[</span><span class="n">node2</span><span class="p">],</span>
+                    <span class="n">dynamics_data</span><span class="o">.</span><span class="n">satellite_attitude_angular_velocity_eci</span><span class="p">[</span><span class="n">node1</span><span class="p">],</span>
+                    <span class="n">dynamics_data</span><span class="o">.</span><span class="n">satellite_attitude_angular_velocity_eci</span><span class="p">[</span><span class="n">node2</span><span class="p">],</span>
                 <span class="p">),</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node1</span><span class="p">,</span> <span class="n">ConstellationSatellite</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node2</span><span class="p">,</span> <span class="n">Gateway</span><span class="p">):</span>
-            <span class="n">performance</span><span class="p">[(</span><span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_satellite_to_gateway</span><span class="p">(</span><span class="n">satellite_position_ecef</span><span class="p">[</span><span class="n">node1</span><span class="p">],</span> <span class="n">node2</span><span class="p">)</span>
+            <span class="n">performance</span><span class="p">[(</span><span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_satellite_to_gateway</span><span class="p">(</span>
+                <span class="n">dynamics_data</span><span class="o">.</span><span class="n">satellite_position_ecef</span><span class="p">[</span><span class="n">node1</span><span class="p">],</span>
+                <span class="n">node2</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node1</span><span class="p">,</span> <span class="n">Gateway</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node2</span><span class="p">,</span> <span class="n">ConstellationSatellite</span><span class="p">):</span>
-            <span class="n">performance</span><span class="p">[(</span><span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_satellite_to_gateway</span><span class="p">(</span><span class="n">satellite_position_ecef</span><span class="p">[</span><span class="n">node2</span><span class="p">],</span> <span class="n">node1</span><span class="p">)</span>
+            <span class="n">performance</span><span class="p">[(</span><span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_satellite_to_gateway</span><span class="p">(</span>
+                <span class="n">dynamics_data</span><span class="o">.</span><span class="n">satellite_position_ecef</span><span class="p">[</span><span class="n">node2</span><span class="p">],</span>
+                <span class="n">node1</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Invalid edge: </span><span class="si">{</span><span class="n">node1</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">node2</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>

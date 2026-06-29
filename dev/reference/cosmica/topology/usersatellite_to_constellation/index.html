@@ -656,6 +656,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../comm_link/gateway_to_sat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gateway_to_sat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../comm_link/geometric/" class="md-nav__link">
         
   
@@ -664,6 +692,34 @@
     
   
     geometric
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comm_link/internet_to_gateway/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    internet_to_gateway
   
 
     
@@ -712,14 +768,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../comm_link/sat_to_ground/" class="md-nav__link">
+      <a href="../../comm_link/sat_to_gateway/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    sat_to_ground
+    sat_to_gateway
   
 
     
@@ -1635,6 +1691,34 @@
     
   
     ground_to_constellation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ground_to_usersatellite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ground_to_usersatellite
   
 
     
@@ -2657,7 +2741,7 @@
   </span>
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">logger</span> <span class="o">=</span> <span class="n"><span title="logging.getLogger">getLogger</span></span><span class="p">(</span><span class="n"><span title="__name__">__name__</span></span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">logger</span> <span class="o">=</span> <span class="n"><span title="logging">logging</span></span><span class="o">.</span><span class="n"><span title="logging.getLogger">getLogger</span></span><span class="p">(</span><span class="n"><span title="__name__">__name__</span></span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2696,7 +2780,7 @@
 
   
       dataclass
-   (cosmica.models.UserSatellite)" href="../../models/#cosmica.models.UserSatellite">UserSatellite</a>, <span title="networkx.Graph">Graph</span>]</code></p>
+   (cosmica.models.UserSatellite)" href="../../models/#cosmica.models.UserSatellite">UserSatellite</a>, <span title="networkx.DiGraph">DiGraph</span>]</code></p>
 
 
 
@@ -2844,7 +2928,7 @@ connections.</p>
   
       dataclass
    (cosmica.dtos.DynamicsData)" href="../../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.Graph">Graph</span></span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2872,7 +2956,7 @@ connections.</p>
     <span class="n">constellation</span><span class="p">:</span> <span class="n">Constellation</span><span class="p">,</span>
     <span class="n">user_satellites</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">UserSatellite</span><span class="p">],</span>
     <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">DynamicsData</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]:</span>
     <span class="k">return</span> <span class="n">build_max_connection_time_us2c_topology</span><span class="p">(</span>
         <span class="n">constellation</span><span class="o">=</span><span class="n">constellation</span><span class="p">,</span>
         <span class="n">user_satellites</span><span class="o">=</span><span class="n">user_satellites</span><span class="p">,</span>
@@ -3030,7 +3114,7 @@ connections.</p>
     <span class="n">max_distance</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
     <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
     <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.Graph">Graph</span></span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3188,12 +3272,24 @@ with any <code>SatelliteId</code> type.</p>
           <tr class="doc-section-item">
             <td>
                 <span class="doc-returns-annotation">
-                    <code><span title="list">list</span>[<span title="networkx.Graph">Graph</span>]</code>
+                    <code><span title="list">list</span>[<span title="networkx.DiGraph">DiGraph</span>]</code>
                 </span>
             </td>
             <td class="doc-returns-details">
               <div class="doc-md-description">
-                <p>A list of networkx Graphs, one per time step.</p>
+                <p>A list of networkx DiGraphs, one per time step.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><span title="list">list</span>[<span title="networkx.DiGraph">DiGraph</span>]</code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>Each physical link is represented by two directed edges (u, v) and (v, u).</p>
               </div>
             </td>
           </tr>
@@ -3348,7 +3444,9 @@ with any <code>SatelliteId</code> type.</p>
 <span class="normal">225</span>
 <span class="normal">226</span>
 <span class="normal">227</span>
-<span class="normal">228</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_max_connection_time_us2c_topology</span><span class="p">(</span>  <span class="c1"># noqa: C901, PLR0912, PLR0915</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_max_connection_time_us2c_topology</span><span class="p">(</span>  <span class="c1"># noqa: C901, PLR0912, PLR0915</span>
     <span class="n">constellation</span><span class="p">:</span> <span class="n">Constellation</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">user_satellites</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">UserSatellite</span><span class="p">],</span>
@@ -3356,7 +3454,7 @@ with any <code>SatelliteId</code> type.</p>
     <span class="n">max_distance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
     <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
     <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Build user-satellite-to-constellation topology with longest connection time.</span>
 
 <span class="sd">    Selects the constellation satellite that provides the longest continuous</span>
@@ -3374,7 +3472,8 @@ with any <code>SatelliteId</code> type.</p>
 <span class="sd">        sun_exclusion_angle: Sun exclusion angle constraint (radians).</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A list of networkx Graphs, one per time step.</span>
+<span class="sd">        A list of networkx DiGraphs, one per time step.</span>
+<span class="sd">        Each physical link is represented by two directed edges (u, v) and (v, u).</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Building user-to-constellation topology for </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">user_satellites</span><span class="p">)</span><span class="si">}</span><span class="s2"> user satellites&quot;</span><span class="p">)</span>
@@ -3481,7 +3580,7 @@ with any <code>SatelliteId</code> type.</p>
             <span class="k">if</span> <span class="n">selected_constellation_idx</span><span class="p">[</span><span class="n">user_idx</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">link_available</span><span class="p">[</span><span class="n">user_idx</span><span class="p">,</span> <span class="n">selected_constellation_idx</span><span class="p">[</span><span class="n">user_idx</span><span class="p">],</span> <span class="n">time_idx</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">construct_graph</span><span class="p">(</span><span class="n">link_available_at_time</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">construct_graph</span><span class="p">(</span><span class="n">link_available_at_time</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
         <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
         <span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">user_satellites_list</span><span class="p">)</span>
         <span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">constellation_satellites</span><span class="p">)</span>
@@ -3491,7 +3590,8 @@ with any <code>SatelliteId</code> type.</p>
                 <span class="k">if</span> <span class="n">link_available_at_time</span><span class="p">[</span><span class="n">user_idx</span><span class="p">,</span> <span class="n">const_idx</span><span class="p">]:</span>
                     <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">user_sat</span><span class="p">,</span> <span class="n">const_sat</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">graph</span>
+        <span class="c1"># Each physical link is bidirectional: represent it as two directed edges</span>
+        <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="p">[</span><span class="n">construct_graph</span><span class="p">(</span><span class="n">link_available</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">time_idx</span><span class="p">])</span> <span class="k">for</span> <span class="n">time_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_time</span><span class="p">)]</span>
 </code></pre></div></td></tr></table></div>

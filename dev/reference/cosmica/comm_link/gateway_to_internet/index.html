@@ -14,7 +14,7 @@
         <link rel="prev" href="../gateway_to_gateway/">
       
       
-        <link rel="next" href="../geometric/">
+        <link rel="next" href="../gateway_to_sat/">
       
       
         
@@ -721,10 +721,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#cosmica.comm_link.gateway_to_internet.GatewayToInternetCommLinkCalculator.gateway_to_internet_delay" class="md-nav__link">
+  <a href="#cosmica.comm_link.gateway_to_internet.GatewayToInternetCommLinkCalculator.delay" class="md-nav__link">
     <span class="md-ellipsis">
       
-        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;gateway_to_internet_delay
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;delay
       
     </span>
   </a>
@@ -732,10 +732,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cosmica.comm_link.gateway_to_internet.GatewayToInternetCommLinkCalculator.gateway_to_internet_link_capacity" class="md-nav__link">
+  <a href="#cosmica.comm_link.gateway_to_internet.GatewayToInternetCommLinkCalculator.link_capacity" class="md-nav__link">
     <span class="md-ellipsis">
       
-        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;gateway_to_internet_link_capacity
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;link_capacity
       
     </span>
   </a>
@@ -779,6 +779,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../gateway_to_sat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gateway_to_sat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../geometric/" class="md-nav__link">
         
   
@@ -787,6 +815,34 @@
     
   
     geometric
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../internet_to_gateway/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    internet_to_gateway
   
 
     
@@ -835,14 +891,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../sat_to_ground/" class="md-nav__link">
+      <a href="../sat_to_gateway/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    sat_to_ground
+    sat_to_gateway
   
 
     
@@ -1776,6 +1832,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../topology/ground_to_usersatellite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ground_to_usersatellite
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../topology/intra_constellation/" class="md-nav__link">
         
   
@@ -2403,10 +2487,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#cosmica.comm_link.gateway_to_internet.GatewayToInternetCommLinkCalculator.gateway_to_internet_delay" class="md-nav__link">
+  <a href="#cosmica.comm_link.gateway_to_internet.GatewayToInternetCommLinkCalculator.delay" class="md-nav__link">
     <span class="md-ellipsis">
       
-        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;gateway_to_internet_delay
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;delay
       
     </span>
   </a>
@@ -2414,10 +2498,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cosmica.comm_link.gateway_to_internet.GatewayToInternetCommLinkCalculator.gateway_to_internet_link_capacity" class="md-nav__link">
+  <a href="#cosmica.comm_link.gateway_to_internet.GatewayToInternetCommLinkCalculator.link_capacity" class="md-nav__link">
     <span class="md-ellipsis">
       
-        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;gateway_to_internet_link_capacity
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;link_capacity
       
     </span>
   </a>
@@ -2530,9 +2614,7 @@
 
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">GatewayToInternetCommLinkCalculator</span><span class="p">(</span>
-    <span class="o">*</span><span class="p">,</span>
-    <span class="n">gateway_to_internet_link_capacity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
-    <span class="n">gateway_to_internet_delay</span><span class="p">:</span> <span class="n"><span title="float">float</span></span>
+    <span class="o">*</span><span class="p">,</span> <span class="n">link_capacity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span> <span class="n">delay</span><span class="p">:</span> <span class="n"><span title="float">float</span></span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -2552,7 +2634,7 @@
 
 
 
-        <p>Calculates the communication link between a gateway and an internet.</p>
+        <p>Calculate the gateway -&gt; internet communication link performance.</p>
 
 
 
@@ -2573,11 +2655,11 @@
 <span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">gateway_to_internet_link_capacity</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">gateway_to_internet_delay</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">link_capacity</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">delay</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">gateway_to_internet_link_capacity</span> <span class="o">=</span> <span class="n">gateway_to_internet_link_capacity</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">gateway_to_internet_delay</span> <span class="o">=</span> <span class="n">gateway_to_internet_delay</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">link_capacity</span> <span class="o">=</span> <span class="n">link_capacity</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">delay</span> <span class="o">=</span> <span class="n">delay</span>
 </code></pre></div></td></tr></table></div>
                   </details>
 
@@ -2595,8 +2677,8 @@
 
 
 
-<h4 id="cosmica.comm_link.gateway_to_internet.GatewayToInternetCommLinkCalculator.gateway_to_internet_delay" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">gateway_to_internet_delay</span>
+<h4 id="cosmica.comm_link.gateway_to_internet.GatewayToInternetCommLinkCalculator.delay" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">delay</span>
 
 
   <span class="doc doc-labels">
@@ -2604,7 +2686,7 @@
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">gateway_to_internet_delay</span> <span class="o">=</span> <span class="n"><span title="cosmica.comm_link.gateway_to_internet.GatewayToInternetCommLinkCalculator(gateway_to_internet_delay)">gateway_to_internet_delay</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">delay</span> <span class="o">=</span> <span class="n"><span title="cosmica.comm_link.gateway_to_internet.GatewayToInternetCommLinkCalculator(delay)">delay</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2617,8 +2699,8 @@
 
 
 
-<h4 id="cosmica.comm_link.gateway_to_internet.GatewayToInternetCommLinkCalculator.gateway_to_internet_link_capacity" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">gateway_to_internet_link_capacity</span>
+<h4 id="cosmica.comm_link.gateway_to_internet.GatewayToInternetCommLinkCalculator.link_capacity" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">link_capacity</span>
 
 
   <span class="doc doc-labels">
@@ -2626,9 +2708,7 @@
   </span>
 
 </h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">gateway_to_internet_link_capacity</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n"><span title="cosmica.comm_link.gateway_to_internet.GatewayToInternetCommLinkCalculator(gateway_to_internet_link_capacity)">gateway_to_internet_link_capacity</span></span>
-<span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">link_capacity</span> <span class="o">=</span> <span class="n"><span title="cosmica.comm_link.gateway_to_internet.GatewayToInternetCommLinkCalculator(link_capacity)">link_capacity</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2709,8 +2789,8 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Gateway</span><span class="p">,</span> <span class="n">Internet</span><span class="p">],</span> <span class="n">CommLinkPerformance</span><span class="p">]:</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="p">(</span><span class="n">gateway</span><span class="p">,</span> <span class="n">internet</span><span class="p">):</span> <span class="n">CommLinkPerformance</span><span class="p">(</span>
-            <span class="n">link_capacity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gateway_to_internet_link_capacity</span><span class="p">,</span>
-            <span class="n">delay</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gateway_to_internet_delay</span><span class="p">,</span>
+            <span class="n">link_capacity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">link_capacity</span><span class="p">,</span>
+            <span class="n">delay</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">delay</span><span class="p">,</span>
             <span class="n">link_available</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">for</span> <span class="n">gateway</span><span class="p">,</span> <span class="n">internet</span> <span class="ow">in</span> <span class="n">edges</span>

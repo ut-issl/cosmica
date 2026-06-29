@@ -14,7 +14,7 @@
         <link rel="prev" href="../gateway_to_internet/">
       
       
-        <link rel="next" href="../intra_constellation/">
+        <link rel="next" href="../ground_to_usersatellite/">
       
       
         
@@ -656,6 +656,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../comm_link/gateway_to_sat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gateway_to_sat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../comm_link/geometric/" class="md-nav__link">
         
   
@@ -664,6 +692,34 @@
     
   
     geometric
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comm_link/internet_to_gateway/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    internet_to_gateway
   
 
     
@@ -712,14 +768,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../comm_link/sat_to_ground/" class="md-nav__link">
+      <a href="../../comm_link/sat_to_gateway/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    sat_to_ground
+    sat_to_gateway
   
 
     
@@ -1893,6 +1949,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../ground_to_usersatellite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ground_to_usersatellite
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../intra_constellation/" class="md-nav__link">
         
   
@@ -2772,7 +2856,7 @@
   </span>
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">logger</span> <span class="o">=</span> <span class="n"><span title="logging.getLogger">getLogger</span></span><span class="p">(</span><span class="n"><span title="__name__">__name__</span></span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">logger</span> <span class="o">=</span> <span class="n"><span title="logging">logging</span></span><span class="o">.</span><span class="n"><span title="logging.getLogger">getLogger</span></span><span class="p">(</span><span class="n"><span title="__name__">__name__</span></span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2811,7 +2895,7 @@
 
   
       dataclass
-   (cosmica.models.StationaryOnGroundUser)" href="../../models/#cosmica.models.StationaryOnGroundUser">StationaryOnGroundUser</a>, <span title="networkx.Graph">Graph</span>]</code></p>
+   (cosmica.models.StationaryOnGroundUser)" href="../../models/#cosmica.models.StationaryOnGroundUser">StationaryOnGroundUser</a>, <span title="networkx.DiGraph">DiGraph</span>]</code></p>
 
 
 
@@ -2871,7 +2955,7 @@
   
       dataclass
    (cosmica.dtos.DynamicsData)" href="../../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.Graph">Graph</span></span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2896,7 +2980,7 @@
     <span class="n">constellation</span><span class="p">:</span> <span class="n">Constellation</span><span class="p">,</span>
     <span class="n">ground_nodes</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Gateway</span> <span class="o">|</span> <span class="n">StationaryOnGroundUser</span><span class="p">],</span>
     <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">DynamicsData</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]:</span>
     <span class="k">return</span> <span class="n">build_elevation_based_g2c_topology</span><span class="p">(</span>
         <span class="n">constellation</span><span class="p">,</span>
         <span class="n">ground_nodes</span><span class="o">=</span><span class="n">ground_nodes</span><span class="p">,</span>
@@ -3062,7 +3146,7 @@
 
   
       dataclass
-   (cosmica.models.StationaryOnGroundUser)" href="../../models/#cosmica.models.StationaryOnGroundUser">StationaryOnGroundUser</a>, <span title="networkx.Graph">Graph</span>]</code></p>
+   (cosmica.models.StationaryOnGroundUser)" href="../../models/#cosmica.models.StationaryOnGroundUser">StationaryOnGroundUser</a>, <span title="networkx.DiGraph">DiGraph</span>]</code></p>
 
 
 
@@ -3168,7 +3252,7 @@
   
       dataclass
    (cosmica.dtos.DynamicsData)" href="../../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.Graph">Graph</span></span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3194,7 +3278,7 @@
     <span class="n">constellation</span><span class="p">:</span> <span class="n">Constellation</span><span class="p">,</span>
     <span class="n">ground_nodes</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Gateway</span> <span class="o">|</span> <span class="n">StationaryOnGroundUser</span><span class="p">],</span>
     <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">DynamicsData</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]:</span>
     <span class="k">return</span> <span class="n">build_manual_g2c_topology</span><span class="p">(</span>
         <span class="n">constellation</span><span class="p">,</span>
         <span class="n">ground_nodes</span><span class="o">=</span><span class="n">ground_nodes</span><span class="p">,</span>
@@ -3243,7 +3327,7 @@
 
   
       dataclass
-   (cosmica.models.StationaryOnGroundUser)" href="../../models/#cosmica.models.StationaryOnGroundUser">StationaryOnGroundUser</a>, <span title="networkx.Graph">Graph</span>]</code></p>
+   (cosmica.models.StationaryOnGroundUser)" href="../../models/#cosmica.models.StationaryOnGroundUser">StationaryOnGroundUser</a>, <span title="networkx.DiGraph">DiGraph</span>]</code></p>
 
 
 
@@ -3303,7 +3387,7 @@
   
       dataclass
    (cosmica.dtos.DynamicsData)" href="../../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.Graph">Graph</span></span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3328,7 +3412,7 @@
     <span class="n">constellation</span><span class="p">:</span> <span class="n">Constellation</span><span class="p">,</span>
     <span class="n">ground_nodes</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Gateway</span> <span class="o">|</span> <span class="n">StationaryOnGroundUser</span><span class="p">],</span>
     <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">DynamicsData</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]:</span>
     <span class="k">return</span> <span class="n">build_max_visibility_handover_g2c_topology</span><span class="p">(</span>
         <span class="n">constellation</span><span class="p">,</span>
         <span class="n">ground_nodes</span><span class="o">=</span><span class="n">ground_nodes</span><span class="p">,</span>
@@ -3384,7 +3468,7 @@
   
       dataclass
    (cosmica.dtos.DynamicsData)" href="../../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.Graph">Graph</span></span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3488,12 +3572,24 @@ with any <code>SatelliteId</code> type.</p>
           <tr class="doc-section-item">
             <td>
                 <span class="doc-returns-annotation">
-                    <code><span title="list">list</span>[<span title="networkx.Graph">Graph</span>]</code>
+                    <code><span title="list">list</span>[<span title="networkx.DiGraph">DiGraph</span>]</code>
                 </span>
             </td>
             <td class="doc-returns-details">
               <div class="doc-md-description">
-                <p>A list of networkx Graphs, one per time step.</p>
+                <p>A list of networkx DiGraphs, one per time step.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><span title="list">list</span>[<span title="networkx.DiGraph">DiGraph</span>]</code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>Each physical link is represented by two directed edges (u, v) and (v, u).</p>
               </div>
             </td>
           </tr>
@@ -3562,12 +3658,14 @@ with any <code>SatelliteId</code> type.</p>
 <span class="normal">152</span>
 <span class="normal">153</span>
 <span class="normal">154</span>
-<span class="normal">155</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_elevation_based_g2c_topology</span><span class="p">(</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_elevation_based_g2c_topology</span><span class="p">(</span>
     <span class="n">constellation</span><span class="p">:</span> <span class="n">Constellation</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">ground_nodes</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Gateway</span> <span class="o">|</span> <span class="n">StationaryOnGroundUser</span><span class="p">],</span>
     <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">DynamicsData</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Build ground-to-constellation topology based on elevation angle.</span>
 
 <span class="sd">    Connects ground nodes to constellation satellites when the satellite&#39;s</span>
@@ -3583,7 +3681,8 @@ with any <code>SatelliteId</code> type.</p>
 <span class="sd">        dynamics_data: Time-series dynamics data.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A list of networkx Graphs, one per time step.</span>
+<span class="sd">        A list of networkx DiGraphs, one per time step.</span>
+<span class="sd">        Each physical link is represented by two directed edges (u, v) and (v, u).</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of time steps: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -3607,7 +3706,7 @@ with any <code>SatelliteId</code> type.</p>
         <span class="p">)</span>
         <span class="n">visibility</span><span class="p">[</span><span class="n">ground_node_idx</span><span class="p">,</span> <span class="n">sat_idx</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">elevation</span> <span class="o">&gt;=</span> <span class="n">ground_node</span><span class="o">.</span><span class="n">minimum_elevation</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">construct_graph</span><span class="p">(</span><span class="n">visibility</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">construct_graph</span><span class="p">(</span><span class="n">visibility</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
         <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
         <span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">satellites</span><span class="p">)</span>
         <span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">ground_nodes_list</span><span class="p">)</span>
@@ -3619,7 +3718,8 @@ with any <code>SatelliteId</code> type.</p>
             <span class="k">if</span> <span class="n">visibility</span><span class="p">[</span><span class="n">ground_node_idx</span><span class="p">,</span> <span class="n">sat_idx</span><span class="p">]:</span>
                 <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">ground_node</span><span class="p">,</span> <span class="n">satellite</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">graph</span>
+        <span class="c1"># Each physical link is bidirectional: represent it as two directed edges</span>
+        <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="p">[</span><span class="n">construct_graph</span><span class="p">(</span><span class="n">visibility</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">time_idx</span><span class="p">])</span> <span class="k">for</span> <span class="n">time_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">))]</span>
 </code></pre></div></td></tr></table></div>
@@ -3682,7 +3782,7 @@ with any <code>SatelliteId</code> type.</p>
       dataclass
    (cosmica.models.ConstellationSatellite)" href="../../models/#cosmica.models.ConstellationSatellite">ConstellationSatellite</a></span><span class="p">,</span>
     <span class="p">]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.Graph">Graph</span></span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3814,12 +3914,24 @@ with any <code>SatelliteId</code> type.</p>
           <tr class="doc-section-item">
             <td>
                 <span class="doc-returns-annotation">
-                    <code><span title="list">list</span>[<span title="networkx.Graph">Graph</span>]</code>
+                    <code><span title="list">list</span>[<span title="networkx.DiGraph">DiGraph</span>]</code>
                 </span>
             </td>
             <td class="doc-returns-details">
               <div class="doc-md-description">
-                <p>A list of identical networkx Graphs, one per time step.</p>
+                <p>A list of identical networkx DiGraphs, one per time step.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><span title="list">list</span>[<span title="networkx.DiGraph">DiGraph</span>]</code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>Each physical link is represented by two directed edges (u, v) and (v, u).</p>
               </div>
             </td>
           </tr>
@@ -3829,9 +3941,7 @@ with any <code>SatelliteId</code> type.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/topology/ground_to_constellation.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">160</span>
 <span class="normal">161</span>
 <span class="normal">162</span>
 <span class="normal">163</span>
@@ -3865,13 +3975,17 @@ with any <code>SatelliteId</code> type.</p>
 <span class="normal">191</span>
 <span class="normal">192</span>
 <span class="normal">193</span>
-<span class="normal">194</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_manual_g2c_topology</span><span class="p">(</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_manual_g2c_topology</span><span class="p">(</span>
     <span class="n">constellation</span><span class="p">:</span> <span class="n">Constellation</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">ground_nodes</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Gateway</span> <span class="o">|</span> <span class="n">StationaryOnGroundUser</span><span class="p">],</span>
     <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">DynamicsData</span><span class="p">,</span>
     <span class="n">custom_connections</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Gateway</span> <span class="o">|</span> <span class="n">StationaryOnGroundUser</span><span class="p">,</span> <span class="n">ConstellationSatellite</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Build ground-to-constellation topology with manually specified connections.</span>
 
 <span class="sd">    Creates a static topology (same at every time step) based on the provided</span>
@@ -3884,14 +3998,15 @@ with any <code>SatelliteId</code> type.</p>
 <span class="sd">        custom_connections: Mapping from ground nodes to their connected satellites.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A list of identical networkx Graphs, one per time step.</span>
+<span class="sd">        A list of identical networkx DiGraphs, one per time step.</span>
+<span class="sd">        Each physical link is represented by two directed edges (u, v) and (v, u).</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of time steps: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">ground_nodes_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ground_nodes</span><span class="p">)</span>
     <span class="n">satellites</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">constellation</span><span class="o">.</span><span class="n">satellites</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">construct_graph</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">construct_graph</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
         <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
         <span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">satellites</span><span class="p">)</span>
         <span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">ground_nodes_list</span><span class="p">)</span>
@@ -3899,7 +4014,8 @@ with any <code>SatelliteId</code> type.</p>
         <span class="k">for</span> <span class="n">ground_node</span><span class="p">,</span> <span class="n">satellite</span> <span class="ow">in</span> <span class="n">custom_connections</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">ground_node</span><span class="p">,</span> <span class="n">satellite</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">graph</span>
+        <span class="c1"># Each physical link is bidirectional: represent it as two directed edges</span>
+        <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="p">[</span><span class="n">construct_graph</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">))]</span>
 </code></pre></div></td></tr></table></div>
@@ -3943,7 +4059,7 @@ with any <code>SatelliteId</code> type.</p>
   
       dataclass
    (cosmica.dtos.DynamicsData)" href="../../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.Graph">Graph</span></span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -4045,12 +4161,24 @@ longer visible.</p>
           <tr class="doc-section-item">
             <td>
                 <span class="doc-returns-annotation">
-                    <code><span title="list">list</span>[<span title="networkx.Graph">Graph</span>]</code>
+                    <code><span title="list">list</span>[<span title="networkx.DiGraph">DiGraph</span>]</code>
                 </span>
             </td>
             <td class="doc-returns-details">
               <div class="doc-md-description">
-                <p>A list of networkx Graphs, one per time step.</p>
+                <p>A list of networkx DiGraphs, one per time step.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><span title="list">list</span>[<span title="networkx.DiGraph">DiGraph</span>]</code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>Each physical link is represented by two directed edges (u, v) and (v, u).</p>
               </div>
             </td>
           </tr>
@@ -4060,11 +4188,7 @@ longer visible.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/topology/ground_to_constellation.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">201</span>
 <span class="normal">202</span>
 <span class="normal">203</span>
 <span class="normal">204</span>
@@ -4167,12 +4291,18 @@ longer visible.</p>
 <span class="normal">301</span>
 <span class="normal">302</span>
 <span class="normal">303</span>
-<span class="normal">304</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_max_visibility_handover_g2c_topology</span><span class="p">(</span>  <span class="c1"># noqa: C901</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_max_visibility_handover_g2c_topology</span><span class="p">(</span>  <span class="c1"># noqa: C901</span>
     <span class="n">constellation</span><span class="p">:</span> <span class="n">Constellation</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">ground_nodes</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Gateway</span> <span class="o">|</span> <span class="n">StationaryOnGroundUser</span><span class="p">],</span>
     <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">DynamicsData</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Build ground-to-constellation topology with maximum-visibility handover.</span>
 
 <span class="sd">    Each ground node connects to the satellite with the longest remaining</span>
@@ -4185,7 +4315,8 @@ longer visible.</p>
 <span class="sd">        dynamics_data: Time-series dynamics data.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A list of networkx Graphs, one per time step.</span>
+<span class="sd">        A list of networkx DiGraphs, one per time step.</span>
+<span class="sd">        Each physical link is represented by two directed edges (u, v) and (v, u).</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of time steps: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -4260,7 +4391,7 @@ longer visible.</p>
                     <span class="n">select_max_visibility_satellite</span><span class="p">(</span><span class="n">ground_node_idx</span><span class="p">,</span> <span class="n">time_idx</span><span class="p">)</span>
             <span class="n">link_available</span><span class="p">[</span><span class="n">ground_node_idx</span><span class="p">,</span> <span class="n">select_sat_idx</span><span class="p">[</span><span class="n">ground_node_idx</span><span class="p">],</span> <span class="n">time_idx</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">construct_graph</span><span class="p">(</span><span class="n">link_available</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">construct_graph</span><span class="p">(</span><span class="n">link_available</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
         <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
         <span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">satellites</span><span class="p">)</span>
         <span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">ground_nodes_list</span><span class="p">)</span>
@@ -4272,7 +4403,8 @@ longer visible.</p>
             <span class="k">if</span> <span class="n">link_available</span><span class="p">[</span><span class="n">ground_node_idx</span><span class="p">,</span> <span class="n">sat_idx</span><span class="p">]:</span>
                 <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">ground_node</span><span class="p">,</span> <span class="n">satellite</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">graph</span>
+        <span class="c1"># Each physical link is bidirectional: represent it as two directed edges</span>
+        <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="p">[</span><span class="n">construct_graph</span><span class="p">(</span><span class="n">link_available</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">time_idx</span><span class="p">])</span> <span class="k">for</span> <span class="n">time_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">))]</span>
 </code></pre></div></td></tr></table></div>

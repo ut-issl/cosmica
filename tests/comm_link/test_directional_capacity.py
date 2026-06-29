@@ -252,7 +252,7 @@ class TestSatToSatDirectionalSunExclusion:
                     sun_exclusion_angle=sun_exclusion_angle,
                 )
             return SatToSatBinaryCommLinkCalculatorWithRateCalc(
-                inter_satellite_link_capacity=10e9,
+                available_link_capacity=10e9,
                 lna_gain=30.0,
                 sun_exclusion_angle=sun_exclusion_angle,
             )

@@ -23,8 +23,6 @@ __all__ = [
     "UserOpticalCommunicationTerminal",
     "UserSatellite",
     "build_walker_delta_constellation",
-    "load_demands_from_toml_file",
-    "load_users_from_toml_file",
 ]
 
 from .constellation import Constellation, build_walker_delta_constellation

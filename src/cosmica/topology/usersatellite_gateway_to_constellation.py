@@ -4,7 +4,7 @@ __all__ = [
 ]
 
 import logging
-from collections.abc import Collection
+from collections.abc import Collection, Hashable
 from itertools import product
 
 import networkx as nx
@@ -13,7 +13,7 @@ import numpy.typing as npt
 from tqdm import tqdm
 
 from cosmica.dtos import DynamicsData
-from cosmica.models import Constellation, ConstellationSatellite, Gateway, StationaryOnGroundUser, UserSatellite
+from cosmica.models import Constellation, ConstellationSatellite, Gateway, Node, StationaryOnGroundUser, UserSatellite
 from cosmica.utils.coordinates import ecef2aer, geodetic2ecef
 from cosmica.utils.vector import angle_between
 
@@ -357,7 +357,7 @@ def _build_topology_graphs(
     graphs = []
     for time_idx in tqdm(range(n_time), desc="Building topology graphs"):
         assigned_satellites: set[int] = set()
-        graph = nx.Graph()
+        graph: nx.Graph[Node[Hashable]] = nx.Graph()
         graph.add_nodes_from(constellation_satellites)
         graph.add_nodes_from(user_satellites)
         graph.add_nodes_from(ground_nodes)

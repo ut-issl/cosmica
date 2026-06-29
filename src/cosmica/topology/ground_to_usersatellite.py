@@ -32,7 +32,7 @@ class GroundToUserSatelliteTopologyBuilder[TUserSatellite: UserSatellite, TNode:
 
 
 class ElevationBasedG2USTopologyBuilder(
-    GroundToUserSatelliteTopologyBuilder[UserSatellite, Gateway | StationaryOnGroundUser, nx.Graph],
+    GroundToUserSatelliteTopologyBuilder[UserSatellite, Gateway | StationaryOnGroundUser, nx.DiGraph],
 ):
     def build(
         self,
@@ -40,7 +40,7 @@ class ElevationBasedG2USTopologyBuilder(
         user_satellites: Collection[UserSatellite],
         ground_nodes: Collection[Gateway | StationaryOnGroundUser],
         dynamics_data: DynamicsData,
-    ) -> list[nx.Graph]:
+    ) -> list[nx.DiGraph]:
         logger.info(f"Number of time steps: {len(dynamics_data.time)}")
         ground_nodes = list(ground_nodes)
 
@@ -61,7 +61,7 @@ class ElevationBasedG2USTopologyBuilder(
             )
             visibility[ground_node_idx, sat_idx, :] = elevation >= ground_node.minimum_elevation
 
-        def construct_graph(visibility: npt.NDArray[np.bool_]) -> nx.Graph:
+        def construct_graph(visibility: npt.NDArray[np.bool_]) -> nx.DiGraph:
             graph = nx.Graph()
             graph.add_nodes_from(user_satellites)
             graph.add_nodes_from(ground_nodes)
@@ -73,13 +73,14 @@ class ElevationBasedG2USTopologyBuilder(
                 if visibility[ground_node_idx, sat_idx]:
                     graph.add_edge(ground_node, satellite)
 
-            return graph
+            # Each physical link is bidirectional: represent it as two directed edges
+            return graph.to_directed()
 
         return [construct_graph(visibility[:, :, time_idx]) for time_idx in range(len(dynamics_data.time))]
 
 
 class ManualG2USTopologyBuilder(
-    GroundToUserSatelliteTopologyBuilder[UserSatellite, Gateway | StationaryOnGroundUser, nx.Graph],
+    GroundToUserSatelliteTopologyBuilder[UserSatellite, Gateway | StationaryOnGroundUser, nx.DiGraph],
 ):
     def __init__(self, custom_connections: dict[Gateway | StationaryOnGroundUser, UserSatellite]) -> None:
         self.custom_connections: dict[Gateway | StationaryOnGroundUser, UserSatellite] = custom_connections
@@ -90,11 +91,11 @@ class ManualG2USTopologyBuilder(
         user_satellites: Collection[UserSatellite],
         ground_nodes: Collection[Gateway | StationaryOnGroundUser],
         dynamics_data: DynamicsData,
-    ) -> list[nx.Graph]:
+    ) -> list[nx.DiGraph]:
         logger.info(f"Number of time steps: {len(dynamics_data.time)}")
         ground_nodes = list(ground_nodes)
 
-        def construct_graph() -> nx.Graph:
+        def construct_graph() -> nx.DiGraph:
             graph = nx.Graph()
             graph.add_nodes_from(user_satellites)
             graph.add_nodes_from(ground_nodes)
@@ -102,7 +103,8 @@ class ManualG2USTopologyBuilder(
             for ground_node, satellite in self.custom_connections.items():
                 graph.add_edge(ground_node, satellite)
 
-            return graph
+            # Each physical link is bidirectional: represent it as two directed edges
+            return graph.to_directed()
 
         # dynamics_data.time の長さに応じたグラフを返す
         return [construct_graph() for _ in range(len(dynamics_data.time))]

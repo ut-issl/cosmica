@@ -40,7 +40,7 @@ class ConstellationTimeSeriesTopologyBuilder[TConstellation: Constellation, TGra
 
 
 class ManhattanTopologyBuilder(
-    ConstellationTopologyBuilder[Constellation[tuple[PlaneId, InPlaneIndex]], nx.Graph],
+    ConstellationTopologyBuilder[Constellation[tuple[PlaneId, InPlaneIndex]], nx.DiGraph],
 ):
     def __init__(
         self,
@@ -55,7 +55,7 @@ class ManhattanTopologyBuilder(
         self,
         *,
         constellation: Constellation[tuple[PlaneId, InPlaneIndex]],
-    ) -> nx.Graph:
+    ) -> nx.DiGraph:
         return build_manhattan_topology(
             constellation,
             inter_plane_offset=self.inter_plane_offset,
@@ -64,7 +64,7 @@ class ManhattanTopologyBuilder(
 
 
 class ManhattanTimeSeriesTopologyBuilder(
-    ConstellationTimeSeriesTopologyBuilder[Constellation[tuple[PlaneId, InPlaneIndex]], nx.Graph],
+    ConstellationTimeSeriesTopologyBuilder[Constellation[tuple[PlaneId, InPlaneIndex]], nx.DiGraph],
 ):
     def __init__(
         self,
@@ -82,7 +82,7 @@ class ManhattanTimeSeriesTopologyBuilder(
         *,
         constellation: Constellation[tuple[PlaneId, InPlaneIndex]],
         dynamics_data: DynamicsData,
-    ) -> list[nx.Graph]:
+    ) -> list[nx.DiGraph]:
         return build_manhattan_time_series_topology(
             constellation,
             dynamics_data=dynamics_data,
@@ -130,7 +130,7 @@ def build_manhattan_topology(
     *,
     inter_plane_offset: int = 0,
     last_to_first_plane_offset: int = 0,
-) -> nx.Graph:
+) -> nx.DiGraph:
     """Build a Manhattan (grid) topology for a multi-plane constellation.
 
     The constellation must be parameterized as `Constellation[tuple[int, int]]`
@@ -147,7 +147,8 @@ def build_manhattan_topology(
             connection from the last plane back to the first.
 
     Returns:
-        A networkx Graph with satellites as nodes and Manhattan grid edges.
+        A networkx DiGraph with satellites as nodes and Manhattan grid edges.
+        Each physical link is represented by two directed edges (u, v) and (v, u).
 
     """
     planes = _group_by_plane(constellation)
@@ -188,7 +189,8 @@ def build_manhattan_topology(
             dst = next_plane[(i + offset) % len(next_plane)]
             graph.add_edge(src, dst)
 
-    return graph
+    # Each physical link is bidirectional: represent it as two directed edges
+    return graph.to_directed()
 
 
 def build_manhattan_time_series_topology(
@@ -198,7 +200,7 @@ def build_manhattan_time_series_topology(
     inter_plane_offset: int = 0,
     last_to_first_plane_offset: int = 0,
     max_latitude: float = np.deg2rad(90.0),
-) -> list[nx.Graph]:
+) -> list[nx.DiGraph]:
     """Build time-varying Manhattan topology, disabling inter-plane links near poles.
 
     Same as :func:`build_manhattan_topology`, but produces one graph per time
@@ -215,12 +217,13 @@ def build_manhattan_time_series_topology(
             links are disabled.
 
     Returns:
-        A list of networkx Graphs, one per time step.
+        A list of networkx DiGraphs, one per time step. Each physical link is
+        represented by two directed edges (u, v) and (v, u).
 
     """
     planes = _group_by_plane(constellation)
 
-    def construct_graph(time_idx: int) -> nx.Graph:
+    def construct_graph(time_idx: int) -> nx.DiGraph:
         graph = nx.Graph()
 
         for satellite in constellation.satellites.values():
@@ -263,6 +266,7 @@ def build_manhattan_time_series_topology(
 
                 graph.add_edge(src, dst)
 
-        return graph
+        # Each physical link is bidirectional: represent it as two directed edges
+        return graph.to_directed()
 
     return [construct_graph(time_idx) for time_idx in range(len(dynamics_data.time))]

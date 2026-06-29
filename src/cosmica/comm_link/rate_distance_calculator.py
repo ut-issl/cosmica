@@ -11,21 +11,25 @@ from typing_extensions import Doc
 from cosmica.dtos import DynamicsData
 from cosmica.models import Satellite
 from cosmica.utils.constants import BOLTZ_CONST, SPEED_OF_LIGHT
-from cosmica.utils.vector import angle_between
+from cosmica.utils.vector import angle_between, is_satellite_in_eclipse
 
 from .base import CommLinkPerformance, MemorylessCommLinkCalculator
 
 
 class SatToSatBinaryCommLinkCalculatorWithRateCalc(MemorylessCommLinkCalculator[Satellite, Satellite]):
-    """Calculate satellite-to-satellite communication link performance for each edge in a network.
+    """Calculate satellite-to-satellite communication link performance for each directed edge.
 
     The link performance is calculated as a binary value, i.e., 1 if the link is available and 0 otherwise.
+
+    Each input edge (src, dst) is the directed link src -> dst and gets its own entry.
+    Both directions of a physical link are handled by whatever registrations the user
+    sets up (a single registration for homogeneous satellite types, or one per
+    orientation for heterogeneous types such as user satellite <-> constellation).
     """
 
     def __init__(
         self,
         *,
-        inter_satellite_link_capacity: float,
         max_inter_satellite_distance: float = float("inf"),
         lowest_altitude: float = 0.0,
         max_relative_angular_velocity: float = float("inf"),
@@ -36,7 +40,6 @@ class SatToSatBinaryCommLinkCalculatorWithRateCalc(MemorylessCommLinkCalculator[
         noise_figure: float = 4,
     ) -> None:
         self.max_inter_satellite_distance = max_inter_satellite_distance
-        self.inter_satellite_link_capacity = inter_satellite_link_capacity
         self.lowest_altitude = lowest_altitude
         self.max_relative_angular_velocity = max_relative_angular_velocity
         self.sun_exclusion_angle = sun_exclusion_angle
@@ -124,7 +127,18 @@ class SatToSatBinaryCommLinkCalculatorWithRateCalc(MemorylessCommLinkCalculator[
             -relative_angular_velocity_translational_eci - attitude_angular_velocities_eci[1],
         )
 
-        edge_sun_angle = angle_between(relative_position_eci, sun_direction_eci)
+        # Check if either satellite is in eclipse - if so, ignore sun exclusion angle for that satellite
+        satellite_b_in_eclipse = is_satellite_in_eclipse(positions_eci[1], sun_direction_eci)
+
+        # Calculate sun exclusion angle constraints for each direction
+        # If satellite is in eclipse, skip sun exclusion angle check for that direction
+        sun_exclusion_satisfied = True
+
+        if not satellite_b_in_eclipse:
+            # Check sun exclusion angle from satellite B's perspective (B looking towards A)
+            edge_sun_angle_b_to_a = angle_between(-relative_position_eci, sun_direction_eci)
+            if edge_sun_angle_b_to_a < self.sun_exclusion_angle:
+                sun_exclusion_satisfied = False
 
         link_available = bool(
             distance < self.max_inter_satellite_distance
@@ -132,8 +146,7 @@ class SatToSatBinaryCommLinkCalculatorWithRateCalc(MemorylessCommLinkCalculator[
                 float(np.linalg.norm(relative_angular_velocity)) < self.max_relative_angular_velocity
                 for relative_angular_velocity in relative_angular_velocities
             )
-            and edge_sun_angle >= self.sun_exclusion_angle
-            and edge_sun_angle <= np.pi - self.sun_exclusion_angle,
+            and sun_exclusion_satisfied,
         )
 
         return CommLinkPerformance(

@@ -30,7 +30,6 @@ class SatToSatBinaryCommLinkCalculatorWithRateCalc(MemorylessCommLinkCalculator[
     def __init__(
         self,
         *,
-        inter_satellite_link_capacity: float,
         max_inter_satellite_distance: float = float("inf"),
         lowest_altitude: float = 0.0,
         max_relative_angular_velocity: float = float("inf"),
@@ -41,7 +40,6 @@ class SatToSatBinaryCommLinkCalculatorWithRateCalc(MemorylessCommLinkCalculator[
         noise_figure: float = 4,
     ) -> None:
         self.max_inter_satellite_distance = max_inter_satellite_distance
-        self.inter_satellite_link_capacity = inter_satellite_link_capacity
         self.lowest_altitude = lowest_altitude
         self.max_relative_angular_velocity = max_relative_angular_velocity
         self.sun_exclusion_angle = sun_exclusion_angle

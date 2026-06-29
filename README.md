@@ -15,6 +15,17 @@ COSMICA is a Python package for simulating optical communication satellite const
 ### Examples
 
 - See `examples` directory for how to use COSMICA in analyses.
+- Run the basic simulation example:
+
+  ```bash
+  uv run examples/basic_simulation.py
+  ```
+
+  Add `--plot` to show a simple 2D equirectangular network snapshot:
+
+  ```bash
+  uv run examples/basic_simulation.py --plot
+  ```
 
 ## Getting started
 

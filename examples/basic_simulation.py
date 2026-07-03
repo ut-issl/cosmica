@@ -55,7 +55,7 @@ def main() -> None:
     args = parser.parse_args()
 
     epoch = np.datetime64("2026-01-01T00:00:00")
-    time = epoch + np.arange(0, np.timedelta64(2, "h"), np.timedelta64(5, "m"))
+    time = np.arange(epoch, epoch + np.timedelta64(2, "h"), np.timedelta64(5, "m"))
 
     constellation = build_walker_delta_constellation(
         semi_major_axis=EARTH_RADIUS + 1_200e3,

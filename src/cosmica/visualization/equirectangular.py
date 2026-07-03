@@ -93,7 +93,7 @@ def _dummy_class_creator(class_: type) -> type:
     assert issubclass(class_, Node), f"{class_} is not a subclass of Node"
 
     # Create a new class dynamically
-    class DummyClass[T](class_):
+    class DummyClass[T](class_):  # ty:ignore[unsupported-base]
         id: T
 
         # Copying the `from_real` method
@@ -297,13 +297,13 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
                 graph_pos_corrected.remove_edge(u, v)
                 u_to_east = pos[u][0] < pos[v][0]
 
-                dummy_u = _dummy_class_creator(type(u)).from_real(u)  # type: ignore[attr-defined,arg-type]
+                dummy_u = _dummy_class_creator(type(u)).from_real(u)  # type: ignore[attr-defined,arg-type]  # ty:ignore[unresolved-attribute]
                 pos[dummy_u] = pos[u].copy()
                 pos[dummy_u][0] = pos[dummy_u][0] + 360 if u_to_east else pos[dummy_u][0] - 360
                 if u in sat_to_in_constellation_id:
                     sat_to_in_constellation_id[dummy_u] = sat_to_in_constellation_id[u]
 
-                dummy_v = _dummy_class_creator(type(v)).from_real(v)  # type: ignore[attr-defined,arg-type]
+                dummy_v = _dummy_class_creator(type(v)).from_real(v)  # type: ignore[attr-defined,arg-type]  # ty:ignore[unresolved-attribute]
                 pos[dummy_v] = pos[v].copy()
                 pos[dummy_v][0] = pos[dummy_v][0] + 360 if not u_to_east else pos[dummy_v][0] - 360
                 if v in sat_to_in_constellation_id:

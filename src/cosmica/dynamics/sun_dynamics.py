@@ -59,10 +59,13 @@ def get_sun_direction_eci(
     epsilon = np.deg2rad(epsilon_deg)
 
     # Compute Sun Vector @ J2000. Shape: (3,) or (3, len(time))
-    sun_vec_eci = np.array([np.cos(s), np.sin(s) * np.cos(epsilon), np.sin(s) * np.sin(epsilon)], dtype=np.float64)
+    sun_vec_eci: npt.NDArray[np.float64] = np.array(
+        [np.cos(s), np.sin(s) * np.cos(epsilon), np.sin(s) * np.sin(epsilon)],
+        dtype=np.float64,
+    )
 
     # normalize
     sun_vec_eci = sun_vec_eci.T  # shape: (3,) or (len(time), 3)
 
     # shape: (3,) or (len(time), 3)
-    return normalize(sun_vec_eci, axis=-1)  # type: ignore[return-value]
+    return normalize(sun_vec_eci, axis=-1)

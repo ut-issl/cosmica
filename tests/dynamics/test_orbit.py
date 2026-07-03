@@ -11,6 +11,21 @@ from cosmica.models import CircularSatelliteOrbitModel, EllipticalSatelliteOrbit
 from cosmica.utils.constants import EARTH_MU, EARTH_RADIUS
 
 
+def _datetime_range(start: np.datetime64, step: np.timedelta64, count: int) -> npt.NDArray[np.datetime64]:
+    return np.arange(start, start + step * count, step)
+
+
+def _timedelta_range(step: np.timedelta64, count: int) -> npt.NDArray[np.timedelta64]:
+    return np.arange(step * 0, step * count, step)
+
+
+def _datetimes_from_second_offsets(
+    start: np.datetime64,
+    offsets: npt.NDArray[np.integer],
+) -> npt.NDArray[np.datetime64]:
+    return np.array([start + np.timedelta64(int(offset), "s") for offset in offsets])
+
+
 class TestSatelliteOrbitState:
     """Test the SatelliteOrbitState dataclass."""
 
@@ -72,7 +87,7 @@ class TestCircularSatelliteOrbitPropagator:
     def test_basic_propagation(self):
         """Test basic propagation returns correct shapes."""
         start_time = np.datetime64("2026-01-01T00:00:00")
-        time_array: npt.NDArray[np.datetime64] = start_time + np.timedelta64(60, "s") * np.arange(10)
+        time_array: npt.NDArray[np.datetime64] = _datetime_range(start_time, np.timedelta64(60, "s"), 10)
 
         model = CircularSatelliteOrbitModel(
             semi_major_axis=7000e3,  # 7000 km in meters
@@ -157,7 +172,7 @@ class TestCircularSatelliteOrbitPropagator:
         )
         propagator = CircularSatelliteOrbitPropagator(model=model)
 
-        time_array = epoch + np.timedelta64(60, "s") * np.arange(100)
+        time_array = _datetime_range(epoch, np.timedelta64(60, "s"), 100)
         states = propagator.propagate(time_array)
 
         velocity_magnitudes = np.linalg.norm(states.velocity_eci, axis=1)
@@ -180,7 +195,7 @@ class TestCircularSatelliteOrbitPropagator:
         )
         propagator = CircularSatelliteOrbitPropagator(model=model)
 
-        time_array = epoch + np.timedelta64(60, "s") * np.arange(100)
+        time_array = _datetime_range(epoch, np.timedelta64(60, "s"), 100)
         states = propagator.propagate(time_array)
 
         position_magnitudes = np.linalg.norm(states.position_eci, axis=1)
@@ -199,7 +214,7 @@ class TestCircularSatelliteOrbitPropagator:
         )
         propagator = CircularSatelliteOrbitPropagator(model=model)
 
-        time_array = epoch + np.timedelta64(60, "s") * np.arange(100)
+        time_array = _datetime_range(epoch, np.timedelta64(60, "s"), 100)
         states = propagator.propagate(time_array)
 
         # Dot product should be zero for perpendicular vectors
@@ -251,7 +266,7 @@ class TestCircularSatelliteOrbitPropagator:
 
         # Propagate for half an orbit
         period_seconds = 2 * np.pi / propagator.mean_motion
-        time_array = epoch + np.timedelta64(1, "s") * np.linspace(0, period_seconds, 100).astype(int)
+        time_array = _datetimes_from_second_offsets(epoch, np.linspace(0, period_seconds, 100).astype(int))
         states = propagator.propagate(time_array)
 
         # Should have non-zero z components
@@ -324,11 +339,11 @@ class TestCircularSatelliteOrbitPropagator:
         propagator = CircularSatelliteOrbitPropagator(model=model)
 
         # Propagate using timedelta
-        time_deltas = np.timedelta64(60, "s") * np.arange(10)
+        time_deltas = _timedelta_range(np.timedelta64(60, "s"), 10)
         states_from_epoch = propagator.propagate_from_epoch(time_deltas)
 
         # Should match propagate with absolute times
-        time_array = epoch + time_deltas
+        time_array = _datetime_range(epoch, np.timedelta64(60, "s"), 10)
         states_absolute = propagator.propagate(time_array)
 
         assert np.allclose(states_from_epoch.position_eci, states_absolute.position_eci)
@@ -341,7 +356,7 @@ class TestEllipticalSatelliteOrbitPropagator:
     def test_basic_propagation(self):
         """Test basic propagation returns correct shapes."""
         epoch = np.datetime64("2026-01-01T00:00:00")
-        time_array = epoch + np.timedelta64(60, "s") * np.arange(10)
+        time_array = _datetime_range(epoch, np.timedelta64(60, "s"), 10)
 
         model = EllipticalSatelliteOrbitModel(
             semi_major_axis=7000e3,
@@ -400,7 +415,7 @@ class TestEllipticalSatelliteOrbitPropagator:
         )
 
         propagator = EllipticalSatelliteOrbitPropagator(model=model)
-        time_array = epoch + np.timedelta64(60, "s") * np.arange(100)
+        time_array = _datetime_range(epoch, np.timedelta64(60, "s"), 100)
         states = propagator.propagate(time_array)
 
         # Radius should be approximately constant
@@ -411,7 +426,7 @@ class TestEllipticalSatelliteOrbitPropagator:
     def test_different_reference_frames(self):
         """Test propagation in different reference frames."""
         epoch = np.datetime64("2026-01-01T00:00:00")
-        time_array = epoch + np.timedelta64(60, "s") * np.arange(10)
+        time_array = _datetime_range(epoch, np.timedelta64(60, "s"), 10)
 
         model = EllipticalSatelliteOrbitModel(
             semi_major_axis=7000e3,
@@ -455,7 +470,7 @@ class TestEllipticalSatelliteOrbitPropagator:
         )
 
         with pytest.raises(ValueError, match="Invalid reference_frame"):
-            EllipticalSatelliteOrbitPropagator(model=model, reference_frame="invalid")
+            EllipticalSatelliteOrbitPropagator(model=model, reference_frame="invalid")  # ty:ignore[invalid-argument-type]
 
     def test_iss_like_orbit(self):
         """Test with ISS-like orbital parameters."""
@@ -476,7 +491,7 @@ class TestEllipticalSatelliteOrbitPropagator:
         )
 
         propagator = EllipticalSatelliteOrbitPropagator(model=model)
-        time_array = epoch + np.timedelta64(60, "s") * np.arange(100)
+        time_array = _datetime_range(epoch, np.timedelta64(60, "s"), 100)
         states = propagator.propagate(time_array)
 
         # Check altitude is reasonable (near 420 km)
@@ -508,7 +523,7 @@ class TestEllipticalSatelliteOrbitPropagator:
 
         # Propagate for multiple orbits
         period_seconds = 2 * np.pi / propagator.mean_motion
-        time_array = epoch + np.timedelta64(1, "s") * np.linspace(0, period_seconds * 2, 200).astype(int)
+        time_array = _datetimes_from_second_offsets(epoch, np.linspace(0, period_seconds * 2, 200).astype(int))
         states = propagator.propagate(time_array)
 
         radii = np.linalg.norm(states.position_eci, axis=1)

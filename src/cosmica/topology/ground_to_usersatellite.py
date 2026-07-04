@@ -5,7 +5,7 @@ __all__ = [
 ]
 import logging
 from abc import ABC, abstractmethod
-from collections.abc import Collection
+from collections.abc import Collection, Hashable
 from itertools import product
 
 import networkx as nx
@@ -62,7 +62,7 @@ class ElevationBasedG2USTopologyBuilder(
             visibility[ground_node_idx, sat_idx, :] = elevation >= ground_node.minimum_elevation
 
         def construct_graph(visibility: npt.NDArray[np.bool_]) -> nx.DiGraph:
-            graph = nx.Graph()
+            graph: nx.Graph[Node[Hashable]] = nx.Graph()
             graph.add_nodes_from(user_satellites)
             graph.add_nodes_from(ground_nodes)
 
@@ -96,7 +96,7 @@ class ManualG2USTopologyBuilder(
         ground_nodes = list(ground_nodes)
 
         def construct_graph() -> nx.DiGraph:
-            graph = nx.Graph()
+            graph: nx.Graph[Node[Hashable]] = nx.Graph()
             graph.add_nodes_from(user_satellites)
             graph.add_nodes_from(ground_nodes)
 

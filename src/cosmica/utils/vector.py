@@ -48,12 +48,30 @@ def rowwise_matmul(x1: npt.NDArray, x2: npt.NDArray) -> Any:
     return x2 @ x1.T
 
 
-def rowwise_innerdot[NumberType: np.number](
-    x1: npt.NDArray[NumberType],
-    x2: npt.NDArray[NumberType],
+@overload
+def rowwise_innerdot[FloatType: np.floating](
+    x1: npt.NDArray[FloatType],
+    x2: npt.NDArray[FloatType],
     *,
     keepdims: Literal[True, False] = False,
-) -> npt.NDArray[NumberType]:
+) -> npt.NDArray[FloatType]: ...
+
+
+@overload
+def rowwise_innerdot(
+    x1: npt.NDArray[np.number],
+    x2: npt.NDArray[np.number],
+    *,
+    keepdims: Literal[True, False] = False,
+) -> npt.NDArray[np.number]: ...
+
+
+def rowwise_innerdot(
+    x1: npt.NDArray[np.number],
+    x2: npt.NDArray[np.number],
+    *,
+    keepdims: Literal[True, False] = False,
+) -> npt.NDArray[np.number]:
     return np.sum(x1 * x2, axis=-1, keepdims=keepdims)
 
 

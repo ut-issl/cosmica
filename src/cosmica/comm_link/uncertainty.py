@@ -112,7 +112,12 @@ class ExpEdgeModel(EdgeFailureModel[np.bool_]):
 
         failure_time: np.timedelta64 = rng.exponential(self.reliability / _SECOND) * _SECOND
         while failure_time <= total_time:
-            failure_idx: int = np.where(time > (time[0] + failure_time))[0][0]
+            failure_idx_candidates = np.where(time > (time[0] + failure_time))[0]
+            if failure_idx_candidates.shape[0] == 0:
+                # failure_time が最終時刻ちょうど (timedelta64 への丸めで起こりうる) の場合は
+                # 観測窓内に故障インデックスが存在しないため終了する
+                return np.logical_xor.accumulate(state_changed)
+            failure_idx: int = failure_idx_candidates[0]
             state_changed[failure_idx] = True
             recovery_idx = failure_idx + int(self.recovery_time / time_step)
             if recovery_idx < state_changed.shape[0]:  # type: ignore[misc] # Possibly a typing bug in NumPy

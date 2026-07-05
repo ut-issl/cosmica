@@ -2,6 +2,7 @@ __all__ = [
     "ConstantCommunicationDemand",
     "Demand",
     "OneTimeCommunicationDemand",
+    "TemporaryCommunicationDemand",
 ]
 from abc import ABC
 from collections.abc import Hashable
@@ -15,9 +16,16 @@ from .node import NodeGID
 
 @dataclass(frozen=True, kw_only=True, slots=True)
 class Demand[T: Hashable](ABC):
-    """Base model for a demand."""
+    """Base model for a demand.
+
+    `traffic_class` is a free-form label of the application type (e.g. "video",
+    "imagery", "financial") used to group demands in analysis. `priority` is kept
+    for future QoS scheduling; it is not interpreted by the simulator yet.
+    """
 
     id: T
+    traffic_class: str = "default"
+    priority: int = 0
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)

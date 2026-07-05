@@ -19,6 +19,7 @@ __all__ = [
     "SatelliteTerminal",
     "Scenario",
     "StationaryOnGroundUser",
+    "TemporaryCommunicationDemand",
     "User",
     "UserOpticalCommunicationTerminal",
     "UserSatellite",
@@ -26,7 +27,12 @@ __all__ = [
 ]
 
 from .constellation import Constellation, build_walker_delta_constellation
-from .demand import ConstantCommunicationDemand, Demand, OneTimeCommunicationDemand
+from .demand import (
+    ConstantCommunicationDemand,
+    Demand,
+    OneTimeCommunicationDemand,
+    TemporaryCommunicationDemand,
+)
 from .gateway import Gateway, GatewayOGS
 from .internet import Internet
 from .node import Node, NodeGID

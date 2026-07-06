@@ -2,7 +2,11 @@ import numpy as np
 import pytest
 
 from cosmica.models import Gateway
-from cosmica.scenario.gateway_network import build_city_gateway_network, build_default_gateway_network
+from cosmica.scenario.gateway_network import (
+    build_city_gateway_network,
+    build_default_gateway_network,
+    get_gateway_econ_multiplier,
+)
 
 
 def test_build_default_gateway_network_returns_expected_gateways() -> None:
@@ -70,3 +74,36 @@ def test_build_city_gateway_network_first_gateway_is_tokyo() -> None:
 def test_build_city_gateway_network_rejects_too_many_gateways() -> None:
     with pytest.raises(AssertionError):
         build_city_gateway_network(1000)
+
+
+def test_get_gateway_econ_multiplier_population_is_all_ones() -> None:
+    gateways = build_city_gateway_network(5)
+
+    multipliers = get_gateway_econ_multiplier(gateways, "population")
+
+    assert multipliers.shape == (5,)
+    assert np.all(multipliers == 1.0)
+
+
+def test_get_gateway_econ_multiplier_models_are_positive() -> None:
+    gateways = build_city_gateway_network(10)
+
+    for model in ("gdp", "penetration", "subscriber"):
+        multipliers = get_gateway_econ_multiplier(gateways, model)
+        assert multipliers.shape == (10,)
+        assert np.all(multipliers > 0)
+
+
+def test_get_gateway_econ_multiplier_gdp_matches_table_for_tokyo() -> None:
+    gateways = build_city_gateway_network(1)  # Tokyo has id 0
+
+    multipliers = get_gateway_econ_multiplier(gateways, "gdp")
+
+    assert np.isclose(multipliers[0], 51800.0)
+
+
+def test_get_gateway_econ_multiplier_rejects_unknown_gateway_id() -> None:
+    gateway = Gateway(id=999, latitude=0.0, longitude=0.0, minimum_elevation=np.deg2rad(30.0))
+
+    with pytest.raises(ValueError, match="outside the city economic table"):
+        get_gateway_econ_multiplier([gateway], "gdp")

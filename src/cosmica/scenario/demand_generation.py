@@ -8,9 +8,13 @@ that the packet simulator can consume directly.
 
 __all__ = [
     "ConstantTrafficProfile",
+    "DemandWeightModel",
     "OneTimeTrafficProfile",
     "TrafficProfile",
     "assign_locations_to_nearest_gateway",
+    "build_demand_dataframe",
+    "build_gdp_gateway_network",
+    "compute_gateway_demand_weights",
     "compute_gateway_population_weights",
     "generate_downlink_demands",
     "generate_gateway_od_demands",
@@ -20,14 +24,16 @@ __all__ = [
 import logging
 from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Annotated, Literal
+from typing import Annotated, Final, Literal
 
 import numpy as np
 import numpy.typing as npt
+import pandas as pd
 from typing_extensions import Doc
 
 from cosmica.models import (
     ConstantCommunicationDemand,
+    Demand,
     Gateway,
     NodeGID,
     OneTimeCommunicationDemand,
@@ -35,6 +41,13 @@ from cosmica.models import (
 )
 from cosmica.utils.coordinates import great_circle_distance
 
+from .gateway_network import (
+    N_MAJOR_CITIES,
+    DemandWeightModel,
+    build_city_gateway_network,
+    get_gateway_city_name,
+    get_gateway_econ_multiplier,
+)
 from .population import get_population_data, sample_demand_locations
 
 logger = logging.getLogger(__name__)
@@ -177,20 +190,92 @@ def compute_gateway_population_weights(
     return weights / total
 
 
+def compute_gateway_demand_weights(
+    gateways: Annotated[Sequence[Gateway], Doc("Gateways acting as demand endpoints.")],
+    weight_model: Annotated[
+        DemandWeightModel,
+        Doc('Attractiveness model. "population" is pure population gravity; the others reshape it.'),
+    ] = "population",
+) -> Annotated[
+    npt.NDArray[np.floating],
+    Doc("Normalized demand weight of each gateway (sums to 1), shape (len(gateways),)."),
+]:
+    """Compute normalized per-gateway demand weights for a given attractiveness model.
+
+    The base population weight `P_i` (from `compute_gateway_population_weights`) is combined with a
+    per-gateway multiplier `m_i` (from `get_gateway_econ_multiplier`) as `w_i ∝ P_i · m_i`, then
+    renormalized to sum to 1. With `weight_model="population"` the multiplier is 1 everywhere, so
+    this reduces to the historical population gravity model. GDP / penetration / subscriber models
+    lift economically stronger regions relative to sheer population. `weight_model="uniform"` ignores
+    both population and economy and gives every gateway the same weight `1/N` (a demand-agnostic
+    baseline, e.g. for stress tests).
+    """
+    if weight_model == "uniform":
+        n_gateways = len(gateways)
+        return np.full(n_gateways, 1.0 / n_gateways)
+
+    population_weights = compute_gateway_population_weights(gateways)
+    if weight_model == "population":
+        return population_weights
+
+    multipliers = get_gateway_econ_multiplier(gateways, weight_model)
+    weights = population_weights * multipliers
+    total = weights.sum()
+    assert total > 0, f"Total demand weight must be positive for model {weight_model!r}"
+    return weights / total
+
+
+def build_gdp_gateway_network(
+    n_gateways: Annotated[int, Doc("Number of gateways to build. Must not exceed the number of candidate cities.")],
+    *,
+    minimum_elevation: Annotated[float, Doc("Minimum elevation angle of every gateway in radians.")] = np.deg2rad(30.0),
+) -> Annotated[
+    list[Gateway],
+    Doc("Gateways at the `n_gateways` cities with the largest GDP-weighted demand."),
+]:
+    """Build a gateway network placed at the cities with the largest total GDP.
+
+    Where `build_city_gateway_network` selects the most populous cities and
+    `build_geographically_distributed_gateway_network` spreads them over the globe, this ranks the
+    candidate cities by their GDP demand weight `w_i ∝ P_i · g_i` (population aggregated to the city
+    times its country's GDP per capita, see `compute_gateway_demand_weights`) and keeps the top
+    `n_gateways`. This favors economically dominant regions (North America, Europe, developed Asia)
+    over sheer-population megacities. Each gateway keeps the id equal to its index in the city table
+    (so ids are not contiguous), keeping the id-to-city-name mapping identical to the other builders.
+    The result is deterministic: repeated calls return equal gateways.
+    """
+    assert 0 < n_gateways <= N_MAJOR_CITIES, f"n_gateways must be in [1, {N_MAJOR_CITIES}], but got {n_gateways}"
+
+    all_gateways = build_city_gateway_network(N_MAJOR_CITIES, minimum_elevation=minimum_elevation)
+    gdp_weights = compute_gateway_demand_weights(all_gateways, "gdp")
+    top_indices = np.argsort(gdp_weights)[::-1][:n_gateways]
+    return [all_gateways[index] for index in sorted(top_indices)]
+
+
 def _compute_gateway_weights(
     gateways: Sequence[Gateway],
     method: Literal["deterministic", "sampling"],
     n_samples: int,
     rng: np.random.Generator | None,
+    weight_model: DemandWeightModel = "population",
 ) -> npt.NDArray[np.floating]:
+    if weight_model == "uniform":
+        n_gateways = len(gateways)
+        return np.full(n_gateways, 1.0 / n_gateways)
     if method == "deterministic":
-        return compute_gateway_population_weights(gateways)
+        return compute_gateway_demand_weights(gateways, weight_model)
 
+    # Sampling estimates population weights from sampled locations; the economic multiplier is then
+    # applied on top so the requested demand model is honored regardless of the method.
     rng = rng if rng is not None else np.random.default_rng()
     longitude, latitude = sample_demand_locations(n_samples, rng=rng)
     nearest_gateway_indices = assign_locations_to_nearest_gateway(longitude, latitude, gateways)
     counts = np.bincount(nearest_gateway_indices, minlength=len(gateways)).astype(np.float64)
-    return counts / counts.sum()
+    population_weights = counts / counts.sum()
+    if weight_model == "population":
+        return population_weights
+    weights = population_weights * get_gateway_econ_multiplier(gateways, weight_model)
+    return weights / weights.sum()
 
 
 def generate_gateway_od_demands(
@@ -209,6 +294,11 @@ def generate_gateway_od_demands(
         int | None,
         Doc("Keep only the largest `top_k` OD pairs to bound the number of demands. None keeps all pairs."),
     ] = 50,
+    weight_model: Annotated[
+        DemandWeightModel,
+        Doc('Gateway attractiveness model. "population" is population gravity; "gdp"/"penetration"/'
+            '"subscriber" reshape it by the region\'s economy (see `compute_gateway_demand_weights`).'),
+    ] = "population",
     rng: Annotated[np.random.Generator | None, Doc("NumPy random number generator. If None, use default.")] = None,
 ) -> Annotated[
     list[ConstantCommunicationDemand | TemporaryCommunicationDemand],
@@ -216,11 +306,11 @@ def generate_gateway_od_demands(
 ]:
     """Generate gateway-to-gateway OD demands from the geographic demand distribution.
 
-    Gateway weights `w` are computed from the population distribution, the OD share of a
-    pair (i, j), i != j, is proportional to `w_i * w_j`, and `profile.total_rate` is split
-    over the kept pairs in proportion to their shares.
+    Gateway weights `w` are computed from `weight_model` (population gravity by default), the OD
+    share of a pair (i, j), i != j, is proportional to `w_i * w_j`, and `profile.total_rate` is
+    split over the kept pairs in proportion to their shares.
     """
-    weights = _compute_gateway_weights(gateways, method, n_samples, rng)
+    weights = _compute_gateway_weights(gateways, method, n_samples, rng, weight_model)
 
     od_matrix = np.outer(weights, weights)
     np.fill_diagonal(od_matrix, 0.0)
@@ -280,19 +370,23 @@ def generate_downlink_demands(
     gateways: Annotated[Sequence[Gateway], Doc("Candidate destination gateways.")],
     profile: Annotated[OneTimeTrafficProfile, Doc("Traffic profile shared by all generated demands.")],
     *,
+    weight_model: Annotated[
+        DemandWeightModel,
+        Doc("Gateway attractiveness model for the destination distribution (see `generate_gateway_od_demands`)."),
+    ] = "population",
     rng: Annotated[np.random.Generator | None, Doc("NumPy random number generator. If None, use default.")] = None,
 ) -> Annotated[
     list[OneTimeCommunicationDemand],
-    Doc("One-time downlink demands from `source` to population-weighted random gateways."),
+    Doc("One-time downlink demands from `source` to demand-weighted random gateways."),
 ]:
     """Generate one-time bulk-transfer demands from a source node to gateways.
 
-    The destination gateway of each event is drawn with probability proportional to the
-    gateway population weights, and the generation time is drawn uniformly from
-    `profile.generation_window`.
+    The destination gateway of each event is drawn with probability proportional to the gateway
+    demand weights for `weight_model` (population gravity by default), and the generation time is
+    drawn uniformly from `profile.generation_window`.
     """
     rng = rng if rng is not None else np.random.default_rng()
-    weights = compute_gateway_population_weights(gateways)
+    weights = compute_gateway_demand_weights(gateways, weight_model)
 
     window_start, window_end = profile.generation_window
     window_ns = (window_end - window_start) / np.timedelta64(1, "ns")
@@ -314,3 +408,82 @@ def generate_downlink_demands(
             ),
         )
     return demands
+
+
+_DEMAND_DATAFRAME_COLUMNS: Final[tuple[str, ...]] = (
+    "demand_id",
+    "traffic_class",
+    "priority",
+    "source",
+    "destination",
+    "source_city",
+    "destination_city",
+    "demand_type",
+    "transmission_rate_bps",
+    "distribution",
+    "data_size_bit",
+    "generation_time",
+    "deadline",
+    "start_time",
+    "end_time",
+)
+
+
+def build_demand_dataframe(
+    demands: Annotated[Sequence[Demand], Doc("Demands to summarize, one row per demand.")],
+    gateways: Annotated[
+        Sequence[Gateway] | None,
+        Doc("Gateways used to resolve source_city/destination_city columns. If None, city columns stay empty."),
+    ] = None,
+) -> Annotated[pd.DataFrame, Doc("One row per demand with the fixed column layout of `_DEMAND_DATAFRAME_COLUMNS`.")]:
+    """Summarize generated demands into a one-row-per-demand DataFrame.
+
+    Lets one inspect after the fact which source/destination each demand connects and at what rate.
+    The three demand classes carry different fields (Constant/Temporary hold an instantaneous
+    `transmission_rate`, OneTime holds a total `data_size` plus a time window), so columns that do not
+    apply to a demand are left blank via the records approach. When `gateways` is given, the
+    `source_city`/`destination_city` columns are filled from `get_gateway_city_name` (non-gateway
+    endpoints such as user satellites stay blank).
+    """
+    # global_id ("GW-3" 等) -> 都市名 の逆引き辞書。gateways 未指定なら都市列は空欄のまま。
+    gid_to_city: dict[str, str] = {}
+    if gateways is not None:
+        for gw in gateways:
+            gid_to_city[gw.global_id] = get_gateway_city_name(gw) or ""
+
+    records: list[dict] = []
+    for d in demands:
+        # 基底 Demand は source/destination を持たないが, 現状の全具象クラスは持つ。
+        # 将来の非 OD 需要にも備えて getattr でフォールバックする。
+        source = getattr(d, "source", "")
+        destination = getattr(d, "destination", "")
+        row: dict = {
+            "demand_id": str(d.id),
+            "traffic_class": d.traffic_class,
+            "priority": d.priority,
+            "source": source,
+            "destination": destination,
+            "source_city": gid_to_city.get(source, ""),
+            "destination_city": gid_to_city.get(destination, ""),
+            "demand_type": type(d).__name__,
+            "transmission_rate_bps": "",
+            "distribution": "",
+            "data_size_bit": "",
+            "generation_time": "",
+            "deadline": "",
+            "start_time": "",
+            "end_time": "",
+        }
+        if isinstance(d, ConstantCommunicationDemand | TemporaryCommunicationDemand):
+            row["transmission_rate_bps"] = d.transmission_rate
+            row["distribution"] = d.distribution
+        if isinstance(d, TemporaryCommunicationDemand):
+            row["start_time"] = np.datetime_as_string(d.start_time, unit="ms")
+            row["end_time"] = np.datetime_as_string(d.end_time, unit="ms")
+        if isinstance(d, OneTimeCommunicationDemand):
+            row["data_size_bit"] = d.data_size
+            row["generation_time"] = np.datetime_as_string(d.generation_time, unit="ms")
+            row["deadline"] = np.datetime_as_string(d.deadline, unit="ms")
+        records.append(row)
+
+    return pd.DataFrame(records, columns=list(_DEMAND_DATAFRAME_COLUMNS))

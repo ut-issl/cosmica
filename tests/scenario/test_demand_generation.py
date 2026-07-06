@@ -11,11 +11,14 @@ from cosmica.scenario.demand_generation import (
     ConstantTrafficProfile,
     OneTimeTrafficProfile,
     assign_locations_to_nearest_gateway,
+    build_gdp_gateway_network,
+    compute_gateway_demand_weights,
     compute_gateway_population_weights,
     generate_downlink_demands,
     generate_gateway_od_demands,
     make_default_traffic_profiles,
 )
+from cosmica.scenario.gateway_network import build_city_gateway_network
 
 
 def _make_test_gateways() -> list[Gateway]:
@@ -49,6 +52,51 @@ def test_compute_gateway_population_weights_is_normalized_and_deterministic() ->
     assert np.array_equal(weights, weights_again)
 
 
+def test_compute_gateway_demand_weights_is_normalized_and_deterministic() -> None:
+    gateways = _make_test_gateways()
+
+    for model in ("population", "gdp", "penetration", "subscriber"):
+        weights = compute_gateway_demand_weights(gateways, model)
+        weights_again = compute_gateway_demand_weights(gateways, model)
+
+        assert weights.shape == (3,)
+        assert np.isclose(weights.sum(), 1.0)
+        assert np.all(weights > 0)
+        assert np.array_equal(weights, weights_again)
+
+
+def test_compute_gateway_demand_weights_population_matches_population_weights() -> None:
+    gateways = _make_test_gateways()
+
+    demand_weights = compute_gateway_demand_weights(gateways, "population")
+    population_weights = compute_gateway_population_weights(gateways)
+
+    assert np.array_equal(demand_weights, population_weights)
+
+
+def test_compute_gateway_demand_weights_uniform_is_equal_for_all_gateways() -> None:
+    gateways = _make_test_gateways()
+
+    weights = compute_gateway_demand_weights(gateways, "uniform")
+
+    assert weights.shape == (3,)
+    assert np.isclose(weights.sum(), 1.0)
+    assert np.allclose(weights, 1.0 / 3.0)
+
+
+def test_compute_gateway_demand_weights_gdp_lifts_developed_economies() -> None:
+    # First 11 cities include Delhi (id 1, developing) and New York (id 10, developed).
+    gateways = build_city_gateway_network(11)
+    idx_delhi = next(i for i, gateway in enumerate(gateways) if gateway.id == 1)
+    idx_new_york = next(i for i, gateway in enumerate(gateways) if gateway.id == 10)
+
+    population = compute_gateway_demand_weights(gateways, "population")
+    gdp = compute_gateway_demand_weights(gateways, "gdp")
+
+    # GDP weighting lifts New York (high GDP per capita) relative to Delhi (low).
+    assert gdp[idx_new_york] / gdp[idx_delhi] > population[idx_new_york] / population[idx_delhi]
+
+
 def test_generate_gateway_od_demands_total_rate_and_endpoints() -> None:
     gateways = _make_test_gateways()
     profile = ConstantTrafficProfile(traffic_class="video", total_rate=10e9)
@@ -73,6 +121,38 @@ def test_generate_gateway_od_demands_top_k_limits_pairs() -> None:
 
     assert len(demands) == 2
     assert np.isclose(sum(demand.transmission_rate for demand in demands), 10e9)
+
+
+def test_build_gdp_gateway_network_selects_requested_number_and_is_deterministic() -> None:
+    gateways = build_gdp_gateway_network(15)
+
+    assert len(gateways) == 15
+    assert len({gateway.id for gateway in gateways}) == 15
+    assert gateways == build_gdp_gateway_network(15)
+
+
+def test_build_gdp_gateway_network_pulls_in_high_gdp_cities_over_population() -> None:
+    # New York has id 10, so the population top-10 (ids 0-9) excludes it, but GDP ranking should not.
+    population_ids = {gateway.id for gateway in build_city_gateway_network(10)}
+    gdp_ids = {gateway.id for gateway in build_gdp_gateway_network(10)}
+
+    assert 10 not in population_ids
+    assert 10 in gdp_ids
+
+
+def test_build_gdp_gateway_network_rejects_too_many_gateways() -> None:
+    with pytest.raises(AssertionError):
+        build_gdp_gateway_network(1000)
+
+
+def test_generate_gateway_od_demands_gdp_model_preserves_total_rate() -> None:
+    gateways = build_city_gateway_network(11)
+    profile = ConstantTrafficProfile(traffic_class="video", total_rate=10e9)
+
+    demands = generate_gateway_od_demands(gateways, profile, weight_model="gdp")
+
+    assert np.isclose(sum(demand.transmission_rate for demand in demands), 10e9)
+    assert len({demand.id for demand in demands}) == len(demands)
 
 
 def test_generate_gateway_od_demands_temporary_when_window_given() -> None:

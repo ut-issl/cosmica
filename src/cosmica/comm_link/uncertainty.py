@@ -149,7 +149,7 @@ class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel[
     def sigma2_scintillation(
         self,
         link_distance: float,
-        ryotv_variance: float | None = None,
+        rytov_variance: float | None = None,
     ) -> Annotated[
         float,
         Doc(
@@ -158,13 +158,12 @@ class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel[
             'Propagation through Random Media" Chapter 10.',
         ),
     ]:
-        if ryotv_variance is not None and self.default_rytov_variance != ryotv_variance:
-            ryotv_variance = self.default_rytov_variance
+        variance = self.default_rytov_variance if rytov_variance is None else rytov_variance
         scaled_aperture = self.scaled_aperture(link_distance=link_distance)
-        num1 = 0.49 * self.default_rytov_variance
-        den1 = (1 + 0.65 * scaled_aperture**2 + 1.11 * self.default_rytov_variance ** (6 / 5)) ** (7 / 6)
-        num2 = 0.51 * self.default_rytov_variance * (1 + 0.69 * self.default_rytov_variance ** (6 / 5)) ** (-5 / 6)
-        den2 = 1 + 0.90 * scaled_aperture**2 + 0.62 * scaled_aperture**2 * self.default_rytov_variance ** (6 / 5)
+        num1 = 0.49 * variance
+        den1 = (1 + 0.65 * scaled_aperture**2 + 1.11 * variance ** (6 / 5)) ** (7 / 6)
+        num2 = 0.51 * variance * (1 + 0.69 * variance ** (6 / 5)) ** (-5 / 6)
+        den2 = 1 + 0.90 * scaled_aperture**2 + 0.62 * scaled_aperture**2 * variance ** (6 / 5)
         return np.exp(num1 / den1 + num2 / den2) - 1
 
     def sample(

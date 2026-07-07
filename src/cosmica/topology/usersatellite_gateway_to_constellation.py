@@ -278,7 +278,7 @@ def _calculate_ground_visibility(
         relative_pos_ecef = dynamics_data.satellite_position_ecef[satellite] - ground_pos_ecef
 
         sun_angles = np.array(
-            [angle_between(relative_pos_ecef[t], dynamics_data.sun_direction_eci[t]) for t in range(n_time)],
+            [angle_between(relative_pos_ecef[t], dynamics_data.sun_direction_ecef[t]) for t in range(n_time)],
         )
         sun_ok = sun_angles >= sun_exclusion_angle
 

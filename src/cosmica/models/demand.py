@@ -14,14 +14,14 @@ from .node import NodeGID
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class Demand[T: Hashable](ABC):
+class Demand[T: Hashable = Hashable](ABC):
     """Base model for a demand."""
 
     id: T
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class ConstantCommunicationDemand[T: Hashable](Demand[T]):
+class ConstantCommunicationDemand[T: Hashable = Hashable](Demand[T]):
     """Constant communication demand model."""
 
     id: T
@@ -32,7 +32,7 @@ class ConstantCommunicationDemand[T: Hashable](Demand[T]):
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class TemporaryCommunicationDemand[T: Hashable](Demand[T]):
+class TemporaryCommunicationDemand[T: Hashable = Hashable](Demand[T]):
     """Temporary communication demand model."""
 
     id: T
@@ -47,11 +47,11 @@ class TemporaryCommunicationDemand[T: Hashable](Demand[T]):
         self,
         current_time: np.datetime64,
     ) -> np.bool:
-        return self.start_time <= current_time < self.end_time
+        return np.bool_(self.start_time <= current_time < self.end_time)
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class OneTimeCommunicationDemand[T: Hashable](Demand[T]):
+class OneTimeCommunicationDemand[T: Hashable = Hashable](Demand[T]):
     """One-time communication demand model.
 
     This model is used for the communication demand to transfer a certain amount of data

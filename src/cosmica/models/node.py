@@ -11,7 +11,7 @@ NodeGID = NewType("NodeGID", str)
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class Node[T: Hashable](ABC):
+class Node[T: Hashable = Hashable](ABC):
     id: T
 
     @classmethod

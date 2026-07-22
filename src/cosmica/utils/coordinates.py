@@ -23,8 +23,13 @@ def juliandate(time: np.datetime64) -> float: ...
 def juliandate(time: npt.NDArray[np.datetime64]) -> npt.NDArray[np.float64]: ...
 
 
-def juliandate(time):
-    return pd.to_datetime(time).to_julian_date()
+def juliandate(
+    time: np.datetime64 | npt.NDArray[np.datetime64],
+) -> float | npt.NDArray[np.float64]:
+    if isinstance(time, np.datetime64):
+        return float(pd.Timestamp(time).to_julian_date())
+    converted = pd.DatetimeIndex(time)
+    return np.asarray(converted.to_julian_date(), dtype=np.float64)
 
 
 @overload
@@ -35,8 +40,19 @@ def greenwichsrt(time: np.datetime64) -> float: ...
 def greenwichsrt(time: npt.NDArray[np.datetime64]) -> npt.NDArray[np.float64]: ...
 
 
-def greenwichsrt(time):
-    return _greenwichsrt(juliandate(time))
+def greenwichsrt(
+    time: np.datetime64 | npt.NDArray[np.datetime64],
+) -> float | npt.NDArray[np.float64]:
+    if isinstance(time, np.datetime64):
+        return float(_greenwichsrt(juliandate(time)))
+
+    julian_dates = juliandate(time)
+    result = np.fromiter(
+        (_greenwichsrt(float(date)) for date in julian_dates.flat),
+        dtype=np.float64,
+        count=julian_dates.size,
+    )
+    return result.reshape(julian_dates.shape)
 
 
 def calc_dcm_eci2ecef(time: np.datetime64 | npt.NDArray[np.datetime64]) -> npt.NDArray[np.float64]:

@@ -5,7 +5,7 @@ __all__ = [
 ]
 import logging
 from abc import ABC, abstractmethod
-from collections.abc import Collection
+from collections.abc import Collection, Hashable
 from itertools import product
 
 import networkx as nx
@@ -13,7 +13,7 @@ import numpy as np
 import numpy.typing as npt
 
 from cosmica.dtos import DynamicsData
-from cosmica.models import Constellation, UserSatellite
+from cosmica.models import Constellation, SatelliteOrbitModel, UserSatellite
 from cosmica.utils.vector import angle_between
 
 logger = logging.getLogger(__name__)
@@ -80,10 +80,16 @@ class MaxConnectionTimeUS2CTopologyBuilder(
 # ---------------------------------------------------------------------------
 
 
-def build_max_connection_time_us2c_topology(  # noqa: C901, PLR0912, PLR0915
-    constellation: Constellation,
+def build_max_connection_time_us2c_topology[  # noqa: C901, PLR0912, PLR0915
+    SatelliteId: Hashable,
+    SatelliteNodeId: Hashable,
+    ConstellationOrbitType: SatelliteOrbitModel,
+    UserSatelliteId: Hashable,
+    UserOrbitType: SatelliteOrbitModel,
+](
+    constellation: Constellation[SatelliteId, SatelliteNodeId, ConstellationOrbitType],
     *,
-    user_satellites: Collection[UserSatellite],
+    user_satellites: Collection[UserSatellite[UserSatelliteId, UserOrbitType]],
     dynamics_data: DynamicsData,
     max_distance: float = float("inf"),
     max_relative_angular_velocity: float = float("inf"),

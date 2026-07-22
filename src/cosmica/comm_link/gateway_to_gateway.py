@@ -84,4 +84,4 @@ class GatewayToGatewayCommLinkCalculator(MemorylessCommLinkCalculator[Gateway, G
         a = np.sin(dlat / 2) ** 2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon / 2) ** 2
         c = 2 * np.arctan2(np.sqrt(a), np.sqrt(1 - a))
 
-        return EARTH_RADIUS * c
+        return float(EARTH_RADIUS * c)

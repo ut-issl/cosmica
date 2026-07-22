@@ -18,7 +18,7 @@ def _load_numpy_array_from_assets_dir(filename: str) -> npt.NDArray[np.floating]
     resource = importlib.resources.files("cosmica.scenario").joinpath(rel_path)
     with importlib.resources.as_file(resource) as f:
         logger.debug(f"Loading NumPy array from {f}")
-        return np.load(f)
+        return np.asarray(np.load(f), dtype=np.float64)
 
 
 def get_ais_density_data() -> Annotated[

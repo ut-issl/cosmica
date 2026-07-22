@@ -16,7 +16,7 @@ __all__ = [
 
 import logging
 import math
-from typing import Annotated, Any, Literal, overload
+from typing import Annotated, Literal, overload
 
 import numpy as np
 import numpy.typing as npt
@@ -43,7 +43,24 @@ def as_column_vector[NumberType: np.number](v: npt.NDArray[NumberType]) -> npt.N
         return v[..., np.newaxis]
 
 
-def rowwise_matmul(x1: npt.NDArray, x2: npt.NDArray) -> Any:
+@overload
+def rowwise_matmul[FloatType: np.floating](
+    x1: npt.NDArray[FloatType],
+    x2: npt.NDArray[FloatType],
+) -> npt.NDArray[FloatType]: ...
+
+
+@overload
+def rowwise_matmul(
+    x1: npt.NDArray[np.number],
+    x2: npt.NDArray[np.number],
+) -> npt.NDArray[np.number]: ...
+
+
+def rowwise_matmul(
+    x1: npt.NDArray[np.number],
+    x2: npt.NDArray[np.number],
+) -> npt.NDArray[np.number]:
     return x2 @ x1.T
 
 
@@ -104,7 +121,8 @@ def normalize(
     axis: int | None = None,
 ) -> npt.NDArray[np.floating]:
     norm = LA.norm(x, ord=ord, axis=axis, keepdims=True)
-    return np.where(norm == 0.0, x, x / norm)
+    result: npt.NDArray[np.floating] = np.where(norm == 0.0, x, x / norm)
+    return result
 
 
 def angle_between[NumberType1: (np.floating, np.integer), NumberType2: (np.floating, np.integer)](
@@ -157,7 +175,8 @@ def perturb_vector(
         + math.sin(phase_angle) * math.sin(alignment_angle) * e2
         + math.cos(alignment_angle) * e3
     )
-    return direction * norm
+    perturbed: npt.NDArray[np.floating] = direction * norm
+    return perturbed
 
 
 def project_vector[NumberType: (np.floating, np.integer)](
@@ -191,7 +210,8 @@ def project_vector[NumberType: (np.floating, np.integer)](
     onto = np.broadcast_to(onto, (n_data, dim))
 
     projected_vec = np.sum(vec * onto, axis=-1, keepdims=True) / np.sum(onto * onto, axis=-1, keepdims=True) * onto
-    return projected_vec.reshape(returned_shape)
+    reshaped: npt.NDArray[np.floating] = projected_vec.reshape(returned_shape)
+    return reshaped
 
 
 def decompose_wrt_reference_vector[FloatType1: np.floating, FloatType2: np.floating](
@@ -232,7 +252,8 @@ def closest_point_to_origin_on_line(
     t = np.where(extend_at_r2, t, np.clip(t, None, 1.0))
 
     # Compute r*
-    return r1 + t * (r2 - r1)
+    closest_point: npt.NDArray[np.floating] = r1 + t * (r2 - r1)
+    return closest_point
 
 
 def azimuth_elevation_to_unit_vector(

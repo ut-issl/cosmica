@@ -8,6 +8,7 @@ __all__ = [
 ]
 import importlib.resources
 import logging
+from collections.abc import Hashable
 from dataclasses import dataclass, fields
 from functools import cache
 from typing import Annotated, Any
@@ -32,6 +33,7 @@ from cosmica.models import (
     Gateway,
     Internet,
     Node,
+    SatelliteOrbitModel,
     StationaryOnGroundUser,
     UserSatellite,
 )
@@ -93,12 +95,12 @@ def _dummy_class_creator(class_: type) -> type:
     assert issubclass(class_, Node), f"{class_} is not a subclass of Node"
 
     # Create a new class dynamically
-    class DummyClass[T](class_):  # ty:ignore[unsupported-base]
+    class DummyClass[T](class_):  # type: ignore[misc]  # ty:ignore[unsupported-base]
         id: T
 
         # Copying the `from_real` method
         @classmethod
-        def from_real(cls, real_obj: Node) -> "DummyClass":
+        def from_real(cls, real_obj: Node) -> "DummyClass[T]":
             # Create a new instance with attributes copied from the real object
             assert isinstance(real_obj, class_), f"{real_obj} is not an instance of {class_}"
             class_field_names = [fld.name for fld in fields(class_)]
@@ -130,11 +132,15 @@ type PlaneId = int
 type InPlaneIndex = int
 
 
-def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
+def draw_snapshot[SatelliteNodeId: Hashable, OrbitType: SatelliteOrbitModel](  # noqa: C901, PLR0915 PLR0912
     *,
     graph: nx.Graph,
-    constellation: Constellation[tuple[PlaneId, InPlaneIndex]],
-    dynamics_data: DynamicsData[Any],
+    constellation: Constellation[
+        tuple[PlaneId, InPlaneIndex],
+        SatelliteNodeId,
+        OrbitType,
+    ],
+    dynamics_data: DynamicsData[Hashable],
     ax: Axes,
     with_labels: bool = False,
     focus_edges_list: list[set[tuple[Node, Node]]] | None = None,
@@ -187,7 +193,10 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
         *on_ground_users,
     }
 
-    sat_to_in_constellation_id: dict[ConstellationSatellite, tuple[PlaneId, InPlaneIndex]] = {
+    sat_to_in_constellation_id: dict[
+        ConstellationSatellite[SatelliteNodeId, OrbitType],
+        tuple[PlaneId, InPlaneIndex],
+    ] = {
         satellite: (plane_id, in_plane_idx) for (plane_id, in_plane_idx), satellite in constellation.satellites.items()
     }
 
@@ -475,10 +484,10 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
     return ax
 
 
-def draw_coverage_area[T](
+def draw_coverage_area[SatelliteType: Hashable](
     *,
     dynamics_data: Annotated[
-        DynamicsData[ConstellationSatellite[T]],
+        DynamicsData[SatelliteType],
         Doc("Dynamics data with no time dimension."),
     ],
     ax: Annotated[Axes, Doc("Matplotlib axes.")],
@@ -560,16 +569,16 @@ def draw_snapshot_movie(
     *,
     graph: list[nx.Graph],
     constellation: Constellation[tuple[PlaneId, InPlaneIndex]],
-    time_array: npt.NDArray,
-    dynamics_data: DynamicsData,
-    time_index_for_plot: npt.NDArray,
+    time_array: npt.NDArray[np.datetime64],
+    dynamics_data: DynamicsData[Hashable],
+    time_index_for_plot: npt.NDArray[np.integer],
     fig: Figure,
     ax: Axes,
     interval_ms: int = 100,
 ) -> FuncAnimation:
     """Draw a snapshot of the network graph for a movie."""
 
-    def update(frame: int):  # noqa: ANN202
+    def update(frame: int) -> None:
         ax.clear()
 
         time_index = time_index_for_plot[frame]

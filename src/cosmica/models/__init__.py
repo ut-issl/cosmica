@@ -16,6 +16,7 @@ __all__ = [
     "OpticalCommunicationTerminal",
     "RFCommunicationTerminal",
     "Satellite",
+    "SatelliteOrbitModel",
     "SatelliteTerminal",
     "Scenario",
     "StationaryOnGroundUser",
@@ -30,7 +31,7 @@ from .demand import ConstantCommunicationDemand, Demand, OneTimeCommunicationDem
 from .gateway import Gateway, GatewayOGS
 from .internet import Internet
 from .node import Node, NodeGID
-from .orbit import CircularSatelliteOrbitModel, EllipticalSatelliteOrbitModel, GravityModel
+from .orbit import CircularSatelliteOrbitModel, EllipticalSatelliteOrbitModel, GravityModel, SatelliteOrbitModel
 from .satellite import ConstellationSatellite, Satellite, SatelliteTerminal, UserSatellite
 from .scenario import Scenario
 from .terminal import (

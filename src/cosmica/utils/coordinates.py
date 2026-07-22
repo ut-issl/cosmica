@@ -12,7 +12,6 @@ import numpy.typing as npt
 import pandas as pd
 from pymap3d.aer import ecef2aer  # re-exported as cosmica.utils.coordinates.ecef2aer
 from pymap3d.ecef import geodetic2ecef
-from pymap3d.sidereal import greenwichsrt as _greenwichsrt
 
 
 @overload
@@ -43,16 +42,19 @@ def greenwichsrt(time: npt.NDArray[np.datetime64]) -> npt.NDArray[np.float64]: .
 def greenwichsrt(
     time: np.datetime64 | npt.NDArray[np.datetime64],
 ) -> float | npt.NDArray[np.float64]:
-    if isinstance(time, np.datetime64):
-        return float(_greenwichsrt(juliandate(time)))
-
-    julian_dates = juliandate(time)
-    result = np.fromiter(
-        (_greenwichsrt(float(date)) for date in julian_dates.flat),
-        dtype=np.float64,
-        count=julian_dates.size,
+    # Vallado, Fundamentals of Astrodynamics and Applications, 4th ed., Eq. 3-47.
+    julian_date = juliandate(time)
+    centuries_since_j2000 = (julian_date - 2451545.0) / 36525.0
+    mean_sidereal_time_seconds = (
+        67310.54841
+        + (876600 * 3600 + 8640184.812866) * centuries_since_j2000
+        + 0.093104 * centuries_since_j2000**2
+        - 6.2e-6 * centuries_since_j2000**3
     )
-    return result.reshape(julian_dates.shape)
+    sidereal_time = mean_sidereal_time_seconds * (2 * np.pi) / 86400.0 % (2 * np.pi)
+    if isinstance(time, np.datetime64):
+        return float(sidereal_time)
+    return np.asarray(sidereal_time, dtype=np.float64)
 
 
 def calc_dcm_eci2ecef(time: np.datetime64 | npt.NDArray[np.datetime64]) -> npt.NDArray[np.float64]:

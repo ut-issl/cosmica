@@ -12,7 +12,7 @@ from .node import Node
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class CommunicationTerminal[T: Hashable = Hashable](Node[T]):
+class CommunicationTerminal[T: Hashable](Node[T]):
     id: T
 
     @classmethod
@@ -22,7 +22,7 @@ class CommunicationTerminal[T: Hashable = Hashable](Node[T]):
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class OpticalCommunicationTerminal[T: Hashable = Hashable](CommunicationTerminal[T]):
+class OpticalCommunicationTerminal[T: Hashable](CommunicationTerminal[T]):
     azimuth_min: float
     azimuth_max: float
     elevation_min: float
@@ -36,7 +36,7 @@ class OpticalCommunicationTerminal[T: Hashable = Hashable](CommunicationTerminal
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class UserOpticalCommunicationTerminal[T: Hashable = Hashable](OpticalCommunicationTerminal[T]):
+class UserOpticalCommunicationTerminal[T: Hashable](OpticalCommunicationTerminal[T]):
     @classmethod
     @override
     def class_name(cls) -> str:
@@ -44,7 +44,7 @@ class UserOpticalCommunicationTerminal[T: Hashable = Hashable](OpticalCommunicat
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class RFCommunicationTerminal[T: Hashable = Hashable](CommunicationTerminal[T]):
+class RFCommunicationTerminal[T: Hashable](CommunicationTerminal[T]):
     @classmethod
     @override
     def class_name(cls) -> str:

@@ -41,7 +41,7 @@ def _validate_gateway_fields(
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class Gateway[T: Hashable = Hashable](Node[T]):
+class Gateway[T: Hashable](Node[T]):
     id: T
     latitude: float = field(compare=False)
     longitude: float = field(compare=False)
@@ -65,7 +65,7 @@ class Gateway[T: Hashable = Hashable](Node[T]):
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class GatewayOGS[T: Hashable = Hashable](Node[T]):
+class GatewayOGS[T: Hashable](Node[T]):
     id: T
     latitude: float = field(compare=False)
     longitude: float = field(compare=False)

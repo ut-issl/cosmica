@@ -10,14 +10,17 @@ Add ``--plot`` to show a simple 2D equirectangular snapshot plot:
 """
 
 import argparse
-from collections.abc import Hashable, Sequence
+from collections.abc import Sequence
 from itertools import pairwise
+from typing import Any
 
 import networkx as nx
 import numpy as np
 
 from cosmica.comm_link import (
     CommLinkCalculationCoordinator,
+    CommLinkCalculatorAssignment,
+    GatewayToSatBinaryCommLinkCalculator,
     MemorylessCommLinkCalculatorWrapper,
     SatToGatewayBinaryCommLinkCalculator,
     SatToSatBinaryCommLinkCalculatorWithRateCalc,
@@ -30,6 +33,7 @@ from cosmica.models import (
     ConstellationSatellite,
     Gateway,
     Node,
+    Satellite,
     UserSatellite,
     build_walker_delta_constellation,
 )
@@ -91,7 +95,7 @@ def main() -> None:
     orbit_states = {
         satellite: CircularSatelliteOrbitPropagator(satellite.orbit).propagate(time) for satellite in all_satellites
     }
-    dynamics_data: DynamicsData[Hashable] = DynamicsData(
+    dynamics_data: DynamicsData[Satellite[Any]] = DynamicsData(
         time=time,
         dcm_eci2ecef=dcm_eci2ecef,
         sun_direction_eci=sun_direction_eci,
@@ -128,20 +132,8 @@ def main() -> None:
     ]
 
     # Calculate communication performance for each active link.
-    satellite_to_gateway_calculator = MemorylessCommLinkCalculatorWrapper(
-        SatToGatewayBinaryCommLinkCalculator(link_capacity=1e9),
-    )
-    satellite_to_satellite_calculator = MemorylessCommLinkCalculatorWrapper(
-        SatToSatBinaryCommLinkCalculatorWithRateCalc(
-            lna_gain=40.0,
-        ),
-    )
     performance_time_series = CommLinkCalculationCoordinator(
-        calculator_assignment={
-            (ConstellationSatellite, Gateway): satellite_to_gateway_calculator,
-            (ConstellationSatellite, ConstellationSatellite): satellite_to_satellite_calculator,
-            (UserSatellite, ConstellationSatellite): satellite_to_satellite_calculator,
-        },
+        calculator_assignments=_build_calculator_assignments(),
     ).calc(
         [set(snapshot.edges) for snapshot in network_snapshots],
         dynamics_data=dynamics_data,
@@ -194,6 +186,25 @@ def main() -> None:
         )
 
 
+def _build_calculator_assignments() -> list[CommLinkCalculatorAssignment[Any, Any]]:
+    satellite_to_gateway = MemorylessCommLinkCalculatorWrapper(
+        SatToGatewayBinaryCommLinkCalculator(link_capacity=1e9),
+    )
+    gateway_to_satellite = MemorylessCommLinkCalculatorWrapper(
+        GatewayToSatBinaryCommLinkCalculator(link_capacity=1e9),
+    )
+    satellite_to_satellite = MemorylessCommLinkCalculatorWrapper(
+        SatToSatBinaryCommLinkCalculatorWithRateCalc(lna_gain=40.0),
+    )
+    return [
+        CommLinkCalculatorAssignment(ConstellationSatellite, Gateway, satellite_to_gateway),
+        CommLinkCalculatorAssignment(Gateway, ConstellationSatellite, gateway_to_satellite),
+        CommLinkCalculatorAssignment(ConstellationSatellite, ConstellationSatellite, satellite_to_satellite),
+        CommLinkCalculatorAssignment(UserSatellite, ConstellationSatellite, satellite_to_satellite),
+        CommLinkCalculatorAssignment(ConstellationSatellite, UserSatellite, satellite_to_satellite),
+    ]
+
+
 def _draw_equirectangular_snapshot(
     *,
     snapshot: nx.Graph,
@@ -202,9 +213,9 @@ def _draw_equirectangular_snapshot(
         tuple[int, int],
         CircularSatelliteOrbitModel,
     ],
-    dynamics_data: DynamicsData[Hashable],
+    dynamics_data: DynamicsData[Satellite[Any]],
     snapshot_index: int,
-    route_edges: Sequence[tuple[Node, Node]],
+    route_edges: Sequence[tuple[Node[Any], Node[Any]]],
 ) -> None:
     import matplotlib.pyplot as plt
 

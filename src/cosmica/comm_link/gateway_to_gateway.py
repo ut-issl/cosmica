@@ -3,17 +3,18 @@ __all__ = [
 ]
 
 from collections.abc import Collection
+from typing import Any
 
 import numpy as np
 
 from cosmica.dtos import DynamicsData
-from cosmica.models import Gateway
+from cosmica.models import Gateway, Satellite
 from cosmica.utils.constants import EARTH_RADIUS, SPEED_OF_LIGHT
 
 from .base import CommLinkPerformance, MemorylessCommLinkCalculator
 
 
-class GatewayToGatewayCommLinkCalculator(MemorylessCommLinkCalculator[Gateway, Gateway]):
+class GatewayToGatewayCommLinkCalculator(MemorylessCommLinkCalculator[Gateway[Any], Gateway[Any]]):
     """Calculate gateway-to-gateway communication link performance using great circle distance."""
 
     def __init__(
@@ -28,11 +29,11 @@ class GatewayToGatewayCommLinkCalculator(MemorylessCommLinkCalculator[Gateway, G
 
     def calc(
         self,
-        edges: Collection[tuple[Gateway, Gateway]],
+        edges: Collection[tuple[Gateway[Any], Gateway[Any]]],
         *,
-        dynamics_data: DynamicsData,  # noqa: ARG002 For interface compatibility
+        dynamics_data: DynamicsData[Satellite[Any]],  # noqa: ARG002 For interface compatibility
         rng: np.random.Generator,  # noqa: ARG002 For interface compatibility
-    ) -> dict[tuple[Gateway, Gateway], CommLinkPerformance]:
+    ) -> dict[tuple[Gateway[Any], Gateway[Any]], CommLinkPerformance]:
         """Calculate communication link performance for gateway-to-gateway edges."""
         return {
             edge: self._calc_gateway_to_gateway(
@@ -44,8 +45,8 @@ class GatewayToGatewayCommLinkCalculator(MemorylessCommLinkCalculator[Gateway, G
 
     def _calc_gateway_to_gateway(
         self,
-        gateway1: Gateway,
-        gateway2: Gateway,
+        gateway1: Gateway[Any],
+        gateway2: Gateway[Any],
     ) -> CommLinkPerformance:
         """Calculate communication link performance between two gateways."""
         # Calculate great circle distance between gateways

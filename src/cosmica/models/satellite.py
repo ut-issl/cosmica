@@ -7,18 +7,21 @@ __all__ = [
 from abc import ABC
 from collections.abc import Hashable
 from dataclasses import dataclass, field
-from typing import Any, override
+from typing import override
 
 from .node import Node
 from .orbit import SatelliteOrbitModel
 from .terminal import OpticalCommunicationTerminal
 
 
-class Satellite[T: Hashable](Node[T], ABC): ...
+class Satellite[T: Hashable = Hashable](Node[T], ABC): ...
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class ConstellationSatellite[T: Hashable, O: SatelliteOrbitModel = Any](Satellite[T]):
+class ConstellationSatellite[
+    T: Hashable = Hashable,
+    O: SatelliteOrbitModel = SatelliteOrbitModel,
+](Satellite[T]):
     id: T
 
     orbit: O = field(hash=False, compare=False)
@@ -30,7 +33,10 @@ class ConstellationSatellite[T: Hashable, O: SatelliteOrbitModel = Any](Satellit
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class UserSatellite[T: Hashable, O: SatelliteOrbitModel = Any](Satellite[T]):
+class UserSatellite[
+    T: Hashable = Hashable,
+    O: SatelliteOrbitModel = SatelliteOrbitModel,
+](Satellite[T]):
     id: T
 
     orbit: O = field(hash=False, compare=False)
@@ -42,7 +48,7 @@ class UserSatellite[T: Hashable, O: SatelliteOrbitModel = Any](Satellite[T]):
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class SatelliteTerminal[T: Hashable](Satellite[T]):
+class SatelliteTerminal[T: Hashable = Hashable](Satellite[T]):
     id: T
     terminal_id: T
     azimuth_min: float

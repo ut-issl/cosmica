@@ -416,7 +416,10 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
             terminal_directions,
         )
 
-    def _calc_terminal_directions(self, relative_position: npt.NDArray) -> list[tuple[float, float]]:
+    def _calc_terminal_directions(
+        self,
+        relative_position: npt.NDArray[np.floating],
+    ) -> list[tuple[float, float]]:
         unitary_direction = normalize(relative_position)
         terminal_a = unit_vector_to_azimuth_elevation(unitary_direction)
         terminal_b = unit_vector_to_azimuth_elevation(

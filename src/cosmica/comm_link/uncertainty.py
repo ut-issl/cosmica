@@ -115,7 +115,7 @@ class ExpEdgeModel(EdgeFailureModel[np.bool_]):
             failure_idx: int = np.where(time > (time[0] + failure_time))[0][0]
             state_changed[failure_idx] = True
             recovery_idx = failure_idx + int(self.recovery_time / time_step)
-            if recovery_idx < state_changed.shape[0]:  # type: ignore[misc] # Possibly a typing bug in NumPy
+            if recovery_idx < state_changed.shape[0]:
                 state_changed[recovery_idx] = True
             else:
                 return np.logical_xor.accumulate(state_changed)
@@ -123,7 +123,7 @@ class ExpEdgeModel(EdgeFailureModel[np.bool_]):
         return np.logical_xor.accumulate(state_changed)
 
 
-class AtmosphericScintillationModel[T: np.number | np.bool_](ABC):
+class AtmosphericScintillationModel(ABC):
     @abstractmethod
     def sample(
         self,
@@ -134,17 +134,17 @@ class AtmosphericScintillationModel[T: np.number | np.bool_](ABC):
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel[np.bool_]):
+class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel):
     default_rytov_variance: float
     wavelength: float
     aperture_diameter: float
 
     @cached_property
     def k_number(self) -> float:
-        return 2 * np.pi / self.wavelength
+        return float(2 * np.pi / self.wavelength)
 
     def scaled_aperture(self, link_distance: float) -> float:
-        return np.sqrt((self.k_number * self.aperture_diameter**2) / (4 * link_distance))
+        return float(np.sqrt((self.k_number * self.aperture_diameter**2) / (4 * link_distance)))
 
     def sigma2_scintillation(
         self,
@@ -165,7 +165,7 @@ class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel[
         den1 = (1 + 0.65 * scaled_aperture**2 + 1.11 * self.default_rytov_variance ** (6 / 5)) ** (7 / 6)
         num2 = 0.51 * self.default_rytov_variance * (1 + 0.69 * self.default_rytov_variance ** (6 / 5)) ** (-5 / 6)
         den2 = 1 + 0.90 * scaled_aperture**2 + 0.62 * scaled_aperture**2 * self.default_rytov_variance ** (6 / 5)
-        return np.exp(num1 / den1 + num2 / den2) - 1
+        return float(np.exp(num1 / den1 + num2 / den2) - 1)
 
     def sample(
         self,
@@ -174,4 +174,4 @@ class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel[
         rytov_variance: float | None = None,
     ) -> float:
         sigma2_scintillation = self.sigma2_scintillation(link_distance, rytov_variance)
-        return rng.lognormal(-sigma2_scintillation / 2, sigma2_scintillation)
+        return float(rng.lognormal(-sigma2_scintillation / 2, sigma2_scintillation))

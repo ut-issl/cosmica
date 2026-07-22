@@ -29,7 +29,7 @@ def _datetimes_from_second_offsets(
 class TestSatelliteOrbitState:
     """Test the SatelliteOrbitState dataclass."""
 
-    def test_init_valid(self):
+    def test_init_valid(self) -> None:
         """Test basic initialization with valid data."""
         pos = np.array([[1000.0, 2000.0, 3000.0]])
         vel = np.array([[100.0, 200.0, 300.0]])
@@ -37,7 +37,7 @@ class TestSatelliteOrbitState:
         assert np.array_equal(state.position_eci, pos)
         assert np.array_equal(state.velocity_eci, vel)
 
-    def test_shape_validation(self):
+    def test_shape_validation(self) -> None:
         """Test that shapes are validated correctly."""
         # Valid shapes
         pos = np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])
@@ -46,21 +46,21 @@ class TestSatelliteOrbitState:
         assert state.position_eci.shape == (2, 3)
         assert state.velocity_eci.shape == (2, 3)
 
-    def test_shape_mismatch_raises(self):
+    def test_shape_mismatch_raises(self) -> None:
         """Test that mismatched shapes raise an error."""
         pos = np.array([[1.0, 2.0, 3.0]])
         vel = np.array([[0.1, 0.2, 0.3], [0.4, 0.5, 0.6]])
         with pytest.raises(AssertionError):
             SatelliteOrbitState(position_eci=pos, velocity_eci=vel)
 
-    def test_invalid_last_dimension_raises(self):
+    def test_invalid_last_dimension_raises(self) -> None:
         """Test that non-3D vectors raise an error."""
         pos = np.array([[1.0, 2.0]])  # Only 2 dimensions
         vel = np.array([[0.1, 0.2]])
         with pytest.raises(AssertionError):
             SatelliteOrbitState(position_eci=pos, velocity_eci=vel)
 
-    def test_getitem_single_index(self):
+    def test_getitem_single_index(self) -> None:
         """Test indexing with a single index."""
         pos = np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])
         vel = np.array([[0.1, 0.2, 0.3], [0.4, 0.5, 0.6]])
@@ -70,7 +70,7 @@ class TestSatelliteOrbitState:
         assert np.array_equal(state_0.position_eci, pos[0])
         assert np.array_equal(state_0.velocity_eci, vel[0])
 
-    def test_getitem_slice(self):
+    def test_getitem_slice(self) -> None:
         """Test slicing."""
         pos = np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]])
         vel = np.array([[0.1, 0.2, 0.3], [0.4, 0.5, 0.6], [0.7, 0.8, 0.9]])
@@ -84,7 +84,7 @@ class TestSatelliteOrbitState:
 class TestCircularSatelliteOrbitPropagator:
     """Test the CircularSatelliteOrbitPropagator."""
 
-    def test_basic_propagation(self):
+    def test_basic_propagation(self) -> None:
         """Test basic propagation returns correct shapes."""
         start_time = np.datetime64("2026-01-01T00:00:00")
         time_array: npt.NDArray[np.datetime64] = _datetime_range(start_time, np.timedelta64(60, "s"), 10)
@@ -103,7 +103,7 @@ class TestCircularSatelliteOrbitPropagator:
         assert states.position_eci.shape == (10, 3)
         assert states.velocity_eci.shape == (10, 3)
 
-    def test_mean_motion_calculation(self):
+    def test_mean_motion_calculation(self) -> None:
         """Test that mean motion is calculated correctly from Kepler's third law."""
         model = CircularSatelliteOrbitModel(
             semi_major_axis=7000e3,  # 7000 km
@@ -118,7 +118,7 @@ class TestCircularSatelliteOrbitPropagator:
         expected_mean_motion = np.sqrt(EARTH_MU / (7000e3) ** 3)
         assert np.isclose(propagator.mean_motion, expected_mean_motion)
 
-    def test_position_at_epoch(self):
+    def test_position_at_epoch(self) -> None:
         """Test that position at epoch matches expected value for zero phase."""
         epoch = np.datetime64("2026-01-01T00:00:00")
         semi_major_axis = 7000e3
@@ -138,7 +138,7 @@ class TestCircularSatelliteOrbitPropagator:
         expected_position = np.array([[semi_major_axis, 0.0, 0.0]])
         assert np.allclose(states.position_eci, expected_position, atol=1e-6)
 
-    def test_position_at_90_degrees(self):
+    def test_position_at_90_degrees(self) -> None:
         """Test position after a quarter orbit."""
         epoch = np.datetime64("2026-01-01T00:00:00")
         semi_major_axis = 7000e3
@@ -158,7 +158,7 @@ class TestCircularSatelliteOrbitPropagator:
         expected_position = np.array([[0.0, semi_major_axis, 0.0]])
         assert np.allclose(states.position_eci, expected_position, atol=1e-6)
 
-    def test_velocity_magnitude_constant(self):
+    def test_velocity_magnitude_constant(self) -> None:
         """Test that velocity magnitude is constant for circular orbit."""
         epoch = np.datetime64("2026-01-01T00:00:00")
         semi_major_axis = 7000e3
@@ -181,7 +181,7 @@ class TestCircularSatelliteOrbitPropagator:
         expected_velocity = np.sqrt(EARTH_MU / semi_major_axis)
         assert np.allclose(velocity_magnitudes, expected_velocity, rtol=1e-10)
 
-    def test_position_magnitude_constant(self):
+    def test_position_magnitude_constant(self) -> None:
         """Test that position magnitude (orbital radius) is constant for circular orbit."""
         epoch = np.datetime64("2026-01-01T00:00:00")
         semi_major_axis = 7000e3
@@ -201,7 +201,7 @@ class TestCircularSatelliteOrbitPropagator:
         position_magnitudes = np.linalg.norm(states.position_eci, axis=1)
         assert np.allclose(position_magnitudes, semi_major_axis, rtol=1e-10)
 
-    def test_velocity_perpendicular_to_position(self):
+    def test_velocity_perpendicular_to_position(self) -> None:
         """Test that velocity is perpendicular to position for circular orbit."""
         epoch = np.datetime64("2026-01-01T00:00:00")
 
@@ -221,7 +221,7 @@ class TestCircularSatelliteOrbitPropagator:
         dot_products = np.sum(states.position_eci * states.velocity_eci, axis=1)
         assert np.allclose(dot_products, 0.0, atol=1e-3)
 
-    def test_orbital_period(self):
+    def test_orbital_period(self) -> None:
         """Test that satellite returns to same position after one orbital period."""
         epoch = np.datetime64("2026-01-01T00:00:00")
         semi_major_axis = 7000e3
@@ -251,7 +251,7 @@ class TestCircularSatelliteOrbitPropagator:
         assert np.allclose(states.position_eci[0], states.position_eci[1], atol=1e-3)
         assert np.allclose(states.velocity_eci[0], states.velocity_eci[1], atol=1e-6)
 
-    def test_inclined_orbit_z_component(self):
+    def test_inclined_orbit_z_component(self) -> None:
         """Test that inclined orbit has non-zero z-component."""
         epoch = np.datetime64("2026-01-01T00:00:00")
 
@@ -272,7 +272,7 @@ class TestCircularSatelliteOrbitPropagator:
         # Should have non-zero z components
         assert np.any(np.abs(states.position_eci[:, 2]) > 1e6)  # At least 1000 km
 
-    def test_velocity_at_epoch(self):
+    def test_velocity_at_epoch(self) -> None:
         """Test that velocity at epoch matches DCM-rotated orbit-frame velocity."""
         epoch = np.datetime64("2026-01-01T00:00:00")
         semi_major_axis = 7000e3
@@ -312,7 +312,7 @@ class TestCircularSatelliteOrbitPropagator:
         inclination: float,
         raan: float,
         expected_dcm: npt.NDArray[np.float64],
-    ):
+    ) -> None:
         """Test that the DCM from orbit frame to ECI is correct for various inclination/RAAN."""
         model = CircularSatelliteOrbitModel(
             semi_major_axis=7000e3,
@@ -324,7 +324,7 @@ class TestCircularSatelliteOrbitPropagator:
         propagator = CircularSatelliteOrbitPropagator(model=model)
         assert np.allclose(propagator.dcm_orbit_to_eci, expected_dcm, rtol=1e-9, atol=1e-9)
 
-    def test_propagate_from_epoch(self):
+    def test_propagate_from_epoch(self) -> None:
         """Test propagate_from_epoch method with timedelta."""
         epoch = np.datetime64("2026-01-01T00:00:00")
         semi_major_axis = 7000e3
@@ -353,7 +353,7 @@ class TestCircularSatelliteOrbitPropagator:
 class TestEllipticalSatelliteOrbitPropagator:
     """Test the EllipticalSatelliteOrbitPropagator using SGP4."""
 
-    def test_basic_propagation(self):
+    def test_basic_propagation(self) -> None:
         """Test basic propagation returns correct shapes."""
         epoch = np.datetime64("2026-01-01T00:00:00")
         time_array = _datetime_range(epoch, np.timedelta64(60, "s"), 10)
@@ -377,7 +377,7 @@ class TestEllipticalSatelliteOrbitPropagator:
         assert states.position_eci.shape == (10, 3)
         assert states.velocity_eci.shape == (10, 3)
 
-    def test_mean_motion_calculation(self):
+    def test_mean_motion_calculation(self) -> None:
         """Test mean motion calculation for elliptical orbit."""
         model = EllipticalSatelliteOrbitModel(
             semi_major_axis=7000e3,
@@ -396,7 +396,7 @@ class TestEllipticalSatelliteOrbitPropagator:
         expected_mean_motion = np.sqrt(EARTH_MU / (7000e3) ** 3)
         assert np.isclose(propagator.mean_motion, expected_mean_motion)
 
-    def test_circular_case_eccentricity_zero(self):
+    def test_circular_case_eccentricity_zero(self) -> None:
         """Test that zero eccentricity produces near-circular orbit."""
         epoch = np.datetime64("2026-01-01T00:00:00")
         semi_major_axis = 7000e3
@@ -423,7 +423,7 @@ class TestEllipticalSatelliteOrbitPropagator:
         radius_variation = np.std(radii) / np.mean(radii)
         assert radius_variation < 0.01  # Less than 1% variation
 
-    def test_different_reference_frames(self):
+    def test_different_reference_frames(self) -> None:
         """Test propagation in different reference frames."""
         epoch = np.datetime64("2026-01-01T00:00:00")
         time_array = _datetime_range(epoch, np.timedelta64(60, "s"), 10)
@@ -454,7 +454,7 @@ class TestEllipticalSatelliteOrbitPropagator:
         # Results should be different (different reference frames)
         assert not np.allclose(states_gcrs.position_eci, states_teme.position_eci, rtol=1e-3)
 
-    def test_invalid_reference_frame_raises(self):
+    def test_invalid_reference_frame_raises(self) -> None:
         """Test that invalid reference frame raises ValueError."""
         model = EllipticalSatelliteOrbitModel(
             semi_major_axis=7000e3,
@@ -470,9 +470,12 @@ class TestEllipticalSatelliteOrbitPropagator:
         )
 
         with pytest.raises(ValueError, match="Invalid reference_frame"):
-            EllipticalSatelliteOrbitPropagator(model=model, reference_frame="invalid")  # ty:ignore[invalid-argument-type]
+            EllipticalSatelliteOrbitPropagator(
+                model=model,
+                reference_frame="invalid",  # type: ignore[arg-type]  # ty:ignore[invalid-argument-type]
+            )
 
-    def test_iss_like_orbit(self):
+    def test_iss_like_orbit(self) -> None:
         """Test with ISS-like orbital parameters."""
         epoch = np.datetime64("2026-01-01T00:00:00")
 
@@ -500,7 +503,7 @@ class TestEllipticalSatelliteOrbitPropagator:
         assert np.all(altitudes > 400e3)
         assert np.all(altitudes < 450e3)
 
-    def test_perigee_apogee_with_eccentricity(self):
+    def test_perigee_apogee_with_eccentricity(self) -> None:
         """Test that elliptical orbit has correct perigee and apogee."""
         epoch = np.datetime64("2026-01-01T00:00:00")
         semi_major_axis = 10000e3

@@ -87,7 +87,7 @@ class SatToSatBinaryCommLinkCalculatorWithRateCalc(MemorylessCommLinkCalculator[
         noise = t_sys * self.link_capacity * BOLTZ_CONST * noise_factor
         gain = 10 ** (self.lna_gain / 10)  # convert from dB to W
         snr = gain * power / noise
-        return self.link_capacity * np.log2(1 + snr)
+        return float(self.link_capacity * np.log2(1 + snr))
 
     def _calc_satellite_to_satellite(
         self,

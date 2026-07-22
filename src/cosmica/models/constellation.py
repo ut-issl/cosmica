@@ -21,7 +21,6 @@ use the dict key for structural queries and the satellite object itself
 
 from collections.abc import Hashable
 from dataclasses import dataclass
-from typing import Any
 
 import numpy as np
 
@@ -31,9 +30,9 @@ from .satellite import ConstellationSatellite
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class Constellation[
-    SatelliteId: Hashable,
-    SatelliteNodeId: Hashable = Any,
-    SatelliteOrbitType: SatelliteOrbitModel = Any,
+    SatelliteId: Hashable = Hashable,
+    SatelliteNodeId: Hashable = Hashable,
+    SatelliteOrbitType: SatelliteOrbitModel = SatelliteOrbitModel,
 ]:
     """A constellation of satellites.
 
@@ -60,7 +59,11 @@ def build_walker_delta_constellation(
     n_geometry_planes: int,
     phasing_factor: int,
     epoch: np.datetime64,
-) -> Constellation[tuple[int, int]]:
+) -> Constellation[
+    tuple[int, int],
+    tuple[int, int],
+    CircularSatelliteOrbitModel,
+]:
     """Create a multi-plane Walker Delta constellation."""
     assert semi_major_axis > 0, "Semi-major axis must be positive."
     assert 0 <= inclination <= np.pi, "Inclination must be between 0 and pi radians."
@@ -75,7 +78,10 @@ def build_walker_delta_constellation(
 
     n_sats_per_plane = n_total_sats // n_geometry_planes
 
-    satellites: dict[tuple[int, int], ConstellationSatellite] = {}
+    satellites: dict[
+        tuple[int, int],
+        ConstellationSatellite[tuple[int, int], CircularSatelliteOrbitModel],
+    ] = {}
 
     for plane_id in range(1, n_geometry_planes + 1):
         raan = plane_id * (2 * np.pi / n_geometry_planes)

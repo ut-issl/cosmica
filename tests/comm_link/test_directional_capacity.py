@@ -4,9 +4,10 @@ Each calculator handles exactly one link direction; the coordinator dispatches e
 directed edge to the calculator registered for the exact (source type, destination type).
 """
 
-from collections.abc import Callable
+from collections.abc import Callable, Hashable
 
 import numpy as np
+import numpy.typing as npt
 import pytest
 
 from cosmica.comm_link import (
@@ -31,7 +32,7 @@ from cosmica.utils.constants import EARTH_RADIUS
 EPOCH = np.datetime64("2026-01-01T00:00:00")
 
 
-def _make_satellite(sat_id: int, phase_deg: float = 0.0) -> ConstellationSatellite[int]:
+def _make_satellite(sat_id: int, phase_deg: float = 0.0) -> ConstellationSatellite:
     return ConstellationSatellite(
         id=sat_id,
         orbit=CircularSatelliteOrbitModel(
@@ -45,10 +46,10 @@ def _make_satellite(sat_id: int, phase_deg: float = 0.0) -> ConstellationSatelli
 
 
 def _make_snapshot_dynamics_data(
-    position_eci: dict[Satellite, np.ndarray],
-    position_ecef: dict[Satellite, np.ndarray] | None = None,
-    sun_direction: np.ndarray | None = None,
-) -> DynamicsData:
+    position_eci: dict[Hashable, npt.NDArray[np.floating]],
+    position_ecef: dict[Hashable, npt.NDArray[np.floating]] | None = None,
+    sun_direction: npt.NDArray[np.floating] | None = None,
+) -> DynamicsData[Hashable]:
     """Build a single-snapshot (no time dimension) DynamicsData for memoryless calculators."""
     zero = np.zeros(3)
     sun_direction = sun_direction if sun_direction is not None else np.array([0.0, 0.0, 1.0])
@@ -65,12 +66,12 @@ def _make_snapshot_dynamics_data(
 
 
 @pytest.fixture
-def satellite() -> ConstellationSatellite[int]:
+def satellite() -> ConstellationSatellite:
     return _make_satellite(1)
 
 
 @pytest.fixture
-def gateway() -> Gateway[int]:
+def gateway() -> Gateway:
     return Gateway(
         id=1,
         latitude=0.0,
@@ -82,8 +83,8 @@ def gateway() -> Gateway[int]:
 class TestSatGatewayDirectionalCalculators:
     def test_downlink_calculator_emits_only_sat_to_gateway_direction(
         self,
-        satellite: ConstellationSatellite[int],
-        gateway: Gateway[int],
+        satellite: ConstellationSatellite,
+        gateway: Gateway,
     ) -> None:
         # Satellite directly above the gateway (gateway at lat=0, lon=0 -> ECEF x-axis)
         dynamics_data = _make_snapshot_dynamics_data(
@@ -103,8 +104,8 @@ class TestSatGatewayDirectionalCalculators:
 
     def test_uplink_calculator_emits_only_gateway_to_sat_direction(
         self,
-        satellite: ConstellationSatellite[int],
-        gateway: Gateway[int],
+        satellite: ConstellationSatellite,
+        gateway: Gateway,
     ) -> None:
         dynamics_data = _make_snapshot_dynamics_data(
             position_eci={satellite: np.array([EARTH_RADIUS + 1000e3, 0.0, 0.0])},
@@ -123,8 +124,8 @@ class TestSatGatewayDirectionalCalculators:
 
     def test_uplink_and_downlink_share_the_same_geometry(
         self,
-        satellite: ConstellationSatellite[int],
-        gateway: Gateway[int],
+        satellite: ConstellationSatellite,
+        gateway: Gateway,
     ) -> None:
         dynamics_data = _make_snapshot_dynamics_data(
             position_eci={satellite: np.array([EARTH_RADIUS + 1000e3, 0.0, 0.0])},
@@ -145,8 +146,8 @@ class TestSatGatewayDirectionalCalculators:
 
     def test_unavailable_link_has_zero_capacity(
         self,
-        satellite: ConstellationSatellite[int],
-        gateway: Gateway[int],
+        satellite: ConstellationSatellite,
+        gateway: Gateway,
     ) -> None:
         # Satellite on the opposite side of the Earth -> below the horizon
         dynamics_data = _make_snapshot_dynamics_data(
@@ -172,13 +173,13 @@ class TestSatGatewayDirectionalCalculators:
 
 class TestSatToSatDirectionalDispatch:
     @pytest.fixture
-    def sat_pair(self) -> tuple[ConstellationSatellite[int], ConstellationSatellite[int]]:
+    def sat_pair(self) -> tuple[ConstellationSatellite, ConstellationSatellite]:
         return _make_satellite(1), _make_satellite(2, phase_deg=10.0)
 
     @pytest.fixture
     def dynamics_data(
         self,
-        sat_pair: tuple[ConstellationSatellite[int], ConstellationSatellite[int]],
+        sat_pair: tuple[ConstellationSatellite, ConstellationSatellite],
     ) -> DynamicsData:
         sat_a, sat_b = sat_pair
         return _make_snapshot_dynamics_data(
@@ -190,7 +191,7 @@ class TestSatToSatDirectionalDispatch:
 
     def test_output_contains_exactly_the_input_directed_edges(
         self,
-        sat_pair: tuple[ConstellationSatellite[int], ConstellationSatellite[int]],
+        sat_pair: tuple[ConstellationSatellite, ConstellationSatellite],
         dynamics_data: DynamicsData,
     ) -> None:
         sat_a, sat_b = sat_pair
@@ -212,7 +213,7 @@ class TestSatToSatDirectionalDispatch:
 
     def test_both_directions_get_consistent_performance(
         self,
-        sat_pair: tuple[ConstellationSatellite[int], ConstellationSatellite[int]],
+        sat_pair: tuple[ConstellationSatellite, ConstellationSatellite],
         dynamics_data: DynamicsData,
     ) -> None:
         sat_a, sat_b = sat_pair
@@ -235,7 +236,7 @@ class TestSatToSatDirectionalSunExclusion:
     """Receiver-side sun exclusion behavior shared by both sat-to-sat calculator variants."""
 
     @pytest.fixture
-    def sat_pair(self) -> tuple[ConstellationSatellite[int], ConstellationSatellite[int]]:
+    def sat_pair(self) -> tuple[ConstellationSatellite, ConstellationSatellite]:
         return _make_satellite(1), _make_satellite(2, phase_deg=10.0)
 
     @pytest.fixture(params=["binary", "rate_calc"])
@@ -262,7 +263,7 @@ class TestSatToSatDirectionalSunExclusion:
     @pytest.fixture
     def dynamics_data(
         self,
-        sat_pair: tuple[ConstellationSatellite[int], ConstellationSatellite[int]],
+        sat_pair: tuple[ConstellationSatellite, ConstellationSatellite],
     ) -> DynamicsData:
         sat_a, sat_b = sat_pair
         # Sun along -y: satellite B (receiver of the a -> b edge) looks towards A along -y,
@@ -278,7 +279,7 @@ class TestSatToSatDirectionalSunExclusion:
 
     def test_output_contains_exactly_the_input_directed_edges(
         self,
-        sat_pair: tuple[ConstellationSatellite[int], ConstellationSatellite[int]],
+        sat_pair: tuple[ConstellationSatellite, ConstellationSatellite],
         dynamics_data: DynamicsData,
         make_calculator: Callable[[float], MemorylessCommLinkCalculator[Satellite, Satellite]],
     ) -> None:
@@ -295,7 +296,7 @@ class TestSatToSatDirectionalSunExclusion:
 
     def test_sun_exclusion_is_checked_at_the_receiver_only(
         self,
-        sat_pair: tuple[ConstellationSatellite[int], ConstellationSatellite[int]],
+        sat_pair: tuple[ConstellationSatellite, ConstellationSatellite],
         dynamics_data: DynamicsData,
         make_calculator: Callable[[float], MemorylessCommLinkCalculator[Satellite, Satellite]],
     ) -> None:
@@ -318,7 +319,7 @@ class TestSatToSatDirectionalSunExclusion:
 
     def test_receiver_in_eclipse_is_exempt_from_sun_exclusion(
         self,
-        sat_pair: tuple[ConstellationSatellite[int], ConstellationSatellite[int]],
+        sat_pair: tuple[ConstellationSatellite, ConstellationSatellite],
         make_calculator: Callable[[float], MemorylessCommLinkCalculator[Satellite, Satellite]],
     ) -> None:
         sat_a, sat_b = sat_pair
@@ -345,7 +346,7 @@ class TestSatToSatDirectionalSunExclusion:
 
     def test_both_directions_available_without_sun_exclusion(
         self,
-        sat_pair: tuple[ConstellationSatellite[int], ConstellationSatellite[int]],
+        sat_pair: tuple[ConstellationSatellite, ConstellationSatellite],
         dynamics_data: DynamicsData,
         make_calculator: Callable[[float], MemorylessCommLinkCalculator[Satellite, Satellite]],
     ) -> None:
@@ -367,7 +368,7 @@ class TestSatToSatDirectionalSunExclusion:
 class TestGeometricCalculatorDirectedEdges:
     def test_calc_emits_exactly_the_input_directed_edges(
         self,
-        gateway: Gateway[int],
+        gateway: Gateway,
     ) -> None:
         sat_a = _make_satellite(1)
         sat_b = _make_satellite(2, phase_deg=10.0)
@@ -399,7 +400,7 @@ class TestGeometricCalculatorDirectedEdges:
 
 class TestCoordinatorDirectionalDispatch:
     @pytest.fixture
-    def dynamics_data(self, satellite: ConstellationSatellite[int]) -> DynamicsData:
+    def dynamics_data(self, satellite: ConstellationSatellite) -> DynamicsData:
         position = np.array([[EARTH_RADIUS + 1000e3, 0.0, 0.0]])  # shape (1, 3): one time step
         zero = np.zeros((1, 3))
         return DynamicsData(
@@ -415,8 +416,8 @@ class TestCoordinatorDirectionalDispatch:
 
     def test_each_direction_is_dispatched_to_its_own_calculator(
         self,
-        satellite: ConstellationSatellite[int],
-        gateway: Gateway[int],
+        satellite: ConstellationSatellite,
+        gateway: Gateway,
         dynamics_data: DynamicsData,
     ) -> None:
         coordinator = CommLinkCalculationCoordinator(
@@ -444,8 +445,8 @@ class TestCoordinatorDirectionalDispatch:
 
     def test_edge_is_dispatched_only_to_the_exact_type_calculator(
         self,
-        satellite: ConstellationSatellite[int],
-        gateway: Gateway[int],
+        satellite: ConstellationSatellite,
+        gateway: Gateway,
         dynamics_data: DynamicsData,
     ) -> None:
         coordinator = CommLinkCalculationCoordinator(
@@ -471,8 +472,8 @@ class TestCoordinatorDirectionalDispatch:
 
     def test_missing_direction_registration_raises(
         self,
-        satellite: ConstellationSatellite[int],
-        gateway: Gateway[int],
+        satellite: ConstellationSatellite,
+        gateway: Gateway,
         dynamics_data: DynamicsData,
     ) -> None:
         coordinator = CommLinkCalculationCoordinator(

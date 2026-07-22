@@ -5,6 +5,7 @@ import logging
 from collections import defaultdict
 from collections.abc import Collection, Mapping, Sequence
 from itertools import product
+from typing import Any
 
 import numpy as np
 from tqdm import tqdm
@@ -32,8 +33,10 @@ class CommLinkCalculationCoordinator:
     def __init__(
         self,
         *,
-        calculator_assignment: Mapping[EdgeType, CommLinkCalculator],
+        calculator_assignment: Mapping[EdgeType, CommLinkCalculator[Any, Any]],
     ) -> None:
+        # The registry intentionally erases each calculator's node type parameters:
+        # runtime edge-type keys restore that information when dispatching below.
         self.calculator_assignment = dict(calculator_assignment)
 
     def calc(
@@ -57,7 +60,10 @@ class CommLinkCalculationCoordinator:
             )
             raise ValueError(msg)
 
-        edges_time_series_by_type_dd: defaultdict[EdgeType, list[set[tuple[Node, Node]]]] = defaultdict(list)
+        edges_time_series_by_type_dd: defaultdict[
+            EdgeType,
+            list[set[tuple[Node, Node]]],
+        ] = defaultdict(list)
         for edges, edge_type in product(edges_time_series, all_edge_types):
             # Match on the exact node types (consistent with the registration check above) so that
             # each edge belongs to exactly one edge type even if both a class and its base class
@@ -66,7 +72,10 @@ class CommLinkCalculationCoordinator:
             edges_time_series_by_type_dd[edge_type].append(edges_per_type)
         edges_time_series_by_type = dict(edges_time_series_by_type_dd)
 
-        performance_time_series_by_type: dict[EdgeType, list[dict[tuple[Node, Node], CommLinkPerformance]]] = {}
+        performance_time_series_by_type: dict[
+            EdgeType,
+            list[dict[tuple[Node, Node], CommLinkPerformance]],
+        ] = {}
         for edge_type, edges_time_series_of_type in edges_time_series_by_type.items():
             logger.info(
                 f"Calculating performance for edge type {edge_type} with {len(edges_time_series_of_type)} time steps.",

@@ -9,7 +9,7 @@ from .node import Node
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class Internet[T: Hashable](Node[T | None]):
+class Internet[T: Hashable = Hashable](Node[T | None]):
     """The Internet node."""
 
     id: T | None = None

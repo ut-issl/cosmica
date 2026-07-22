@@ -10,7 +10,7 @@ Add ``--plot`` to show a simple 2D equirectangular snapshot plot:
 """
 
 import argparse
-from collections.abc import Sequence
+from collections.abc import Hashable, Sequence
 from itertools import pairwise
 
 import networkx as nx
@@ -91,7 +91,7 @@ def main() -> None:
     orbit_states = {
         satellite: CircularSatelliteOrbitPropagator(satellite.orbit).propagate(time) for satellite in all_satellites
     }
-    dynamics_data = DynamicsData(
+    dynamics_data: DynamicsData[Hashable] = DynamicsData(
         time=time,
         dcm_eci2ecef=dcm_eci2ecef,
         sun_direction_eci=sun_direction_eci,
@@ -197,8 +197,12 @@ def main() -> None:
 def _draw_equirectangular_snapshot(
     *,
     snapshot: nx.Graph,
-    constellation: Constellation[tuple[int, int]],
-    dynamics_data: DynamicsData,
+    constellation: Constellation[
+        tuple[int, int],
+        tuple[int, int],
+        CircularSatelliteOrbitModel,
+    ],
+    dynamics_data: DynamicsData[Hashable],
     snapshot_index: int,
     route_edges: Sequence[tuple[Node, Node]],
 ) -> None:

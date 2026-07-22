@@ -3,7 +3,7 @@ import numpy as np
 from cosmica.models import CircularSatelliteOrbitModel, EllipticalSatelliteOrbitModel, GravityModel
 
 
-def test_construct_circular_satellite_orbit_model():
+def test_construct_circular_satellite_orbit_model() -> None:
     epoch = np.datetime64("2026-01-01T00:00:00")
     _model = CircularSatelliteOrbitModel(
         semi_major_axis=7000,
@@ -14,7 +14,7 @@ def test_construct_circular_satellite_orbit_model():
     )
 
 
-def test_construct_elliptical_satellite_orbit_model():
+def test_construct_elliptical_satellite_orbit_model() -> None:
     epoch = np.datetime64("2026-01-01T00:00:00")
     _model = EllipticalSatelliteOrbitModel(
         semi_major_axis=7000,

@@ -4,6 +4,7 @@ __all__ = [
     "visualize_grouped_constellation",
 ]
 from collections import defaultdict
+from collections.abc import Hashable
 from typing import TYPE_CHECKING
 
 import matplotlib as mpl
@@ -19,16 +20,26 @@ if TYPE_CHECKING:
     from mpl_toolkits.mplot3d.axes3d import Axes3D
 
     from cosmica.dynamics import SatelliteOrbitState
-    from cosmica.models import Constellation, ConstellationSatellite
+    from cosmica.models import Constellation, ConstellationSatellite, SatelliteOrbitModel
 
 
 type PlaneId = int
 type InPlaneIndex = int
 
 
-def visualize_grouped_constellation(
-    constellation: Constellation[tuple[PlaneId, InPlaneIndex]],
-    propagation_result: Mapping[ConstellationSatellite, SatelliteOrbitState],
+def visualize_grouped_constellation[
+    SatelliteNodeId: Hashable,
+    OrbitType: SatelliteOrbitModel,
+](
+    constellation: Constellation[
+        tuple[PlaneId, InPlaneIndex],
+        SatelliteNodeId,
+        OrbitType,
+    ],
+    propagation_result: Mapping[
+        ConstellationSatellite[SatelliteNodeId, OrbitType],
+        SatelliteOrbitState,
+    ],
     *,
     time_index: int = 0,
 ) -> None:
@@ -57,7 +68,10 @@ def visualize_grouped_constellation(
 
     # Group satellites by plane_id (first element of the structural key).
     # All structural information comes from dict keys, not from satellite.id.
-    planes_dd: defaultdict[PlaneId, list[tuple[InPlaneIndex, ConstellationSatellite]]] = defaultdict(list)
+    planes_dd: defaultdict[
+        PlaneId,
+        list[tuple[InPlaneIndex, ConstellationSatellite[SatelliteNodeId, OrbitType]]],
+    ] = defaultdict(list)
     for (plane_id, in_plane_index), satellite in constellation.satellites.items():
         planes_dd[plane_id].append((in_plane_index, satellite))
 
@@ -106,7 +120,7 @@ def _ms(
     resolution: float = 20,
 ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """Return the coordinates for plotting a sphere centered at (x,y,z)."""
-    u, v = np.mgrid[0 : 2 * np.pi : resolution * 2j, 0 : np.pi : resolution * 1j]  # type: ignore[misc]
+    u, v = np.mgrid[0 : 2 * np.pi : resolution * 2j, 0 : np.pi : resolution * 1j]
     xx = radius * np.cos(u) * np.sin(v) + x
     yy = radius * np.sin(u) * np.sin(v) + y
     zz = radius * np.cos(v) + z

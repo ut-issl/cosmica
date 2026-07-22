@@ -120,6 +120,8 @@ layers = [
 ]
 
 [tool.mypy]
+strict = true
+
 [[tool.mypy.overrides]]
 module = [
   "networkx",
@@ -132,6 +134,12 @@ module = [
   "sgp4.*",
 ]
 ignore_missing_imports = true
+
+# Marimo cells derive their inputs and outputs from cell dependencies. Explicit
+# function annotations are intentionally omitted because this file is a notebook.
+[[tool.mypy.overrides]]
+module = "orbit_propagation"
+disallow_untyped_defs = false
 
 [tool.pip-licenses]
 allow-only = """\

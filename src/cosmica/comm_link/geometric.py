@@ -4,12 +4,13 @@ __all__ = [
 import warnings
 from collections.abc import Collection
 from itertools import chain
+from typing import Any
 
 import numpy as np
 import numpy.typing as npt
 
 from cosmica.dtos import DynamicsData
-from cosmica.models import ConstellationSatellite, Gateway
+from cosmica.models import ConstellationSatellite, Gateway, Satellite
 from cosmica.utils.constants import SPEED_OF_LIGHT
 from cosmica.utils.coordinates import ecef2aer
 
@@ -19,7 +20,7 @@ from .base import CommLinkPerformance, MemorylessCommLinkCalculator
 # so that the user can choose which calculator to use for each edge type.
 
 
-type _NodeType = ConstellationSatellite | Gateway
+type _NodeType = ConstellationSatellite[Any, Any] | Gateway[Any]
 type _EdgeType = tuple[_NodeType, _NodeType]
 
 
@@ -53,7 +54,7 @@ class GeometricCommLinkCalculator(MemorylessCommLinkCalculator[_NodeType, _NodeT
         self,
         edges: Collection[_EdgeType],
         *,
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
         rng: np.random.Generator,  # noqa: ARG002 For interface compatibility
     ) -> dict[_EdgeType, CommLinkPerformance]:
         """Calculate geometric communication link performance for each directed edge in a network."""
@@ -130,7 +131,7 @@ class GeometricCommLinkCalculator(MemorylessCommLinkCalculator[_NodeType, _NodeT
     def _calc_satellite_to_gateway(
         self,
         satellite_position_ecef: npt.NDArray[np.floating],
-        gateway: Gateway,
+        gateway: Gateway[Any],
     ) -> CommLinkPerformance:
         assert satellite_position_ecef.shape == (3,)
         _, elevation, srange = ecef2aer(

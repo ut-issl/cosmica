@@ -4,17 +4,17 @@ __all__ = [
     "DynamicsData",
 ]
 
-from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from dataclasses import dataclass, replace
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     import numpy as np
     import numpy.typing as npt
 
-from cosmica.models import Satellite
+    from cosmica.models import Satellite
 
 
-def _check_item_shape_if_any[T: Satellite](
+def _check_item_shape_if_any[T: Satellite[Any]](
     data: dict[T, npt.NDArray[np.floating]],
     target_shape: tuple[int, ...],
     slice_: int | slice | None = None,
@@ -27,7 +27,7 @@ def _check_item_shape_if_any[T: Satellite](
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class DynamicsData[T: Satellite]:
+class DynamicsData[T: Satellite[Any]]:
     time: npt.NDArray[np.datetime64]
     dcm_eci2ecef: npt.NDArray[np.floating]
     satellite_position_eci: dict[T, npt.NDArray[np.floating]]
@@ -52,7 +52,8 @@ class DynamicsData[T: Satellite]:
         assert self.sun_direction_ecef.shape[:-1] == data_shape
 
     def __getitem__(self, item: int | slice) -> DynamicsData[T]:
-        return DynamicsData(
+        return replace(
+            self,
             time=self.time[item],
             dcm_eci2ecef=self.dcm_eci2ecef[item],
             satellite_position_eci={key: value[item] for key, value in self.satellite_position_eci.items()},

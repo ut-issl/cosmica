@@ -4,8 +4,9 @@ __all__ = [
 ]
 
 import logging
-from collections.abc import Collection, Hashable
+from collections.abc import Collection
 from itertools import product
+from typing import Any
 
 import networkx as nx
 import numpy as np
@@ -13,7 +14,15 @@ import numpy.typing as npt
 from tqdm import tqdm
 
 from cosmica.dtos import DynamicsData
-from cosmica.models import Constellation, ConstellationSatellite, Gateway, Node, StationaryOnGroundUser, UserSatellite
+from cosmica.models import (
+    Constellation,
+    ConstellationSatellite,
+    Gateway,
+    Node,
+    Satellite,
+    StationaryOnGroundUser,
+    UserSatellite,
+)
 from cosmica.utils.coordinates import ecef2aer, geodetic2ecef
 from cosmica.utils.vector import angle_between
 
@@ -44,10 +53,10 @@ class HybridUS2CG2CTopologyBuilder:
     def build(
         self,
         *,
-        constellation: Constellation,
-        user_satellites: Collection[UserSatellite],
-        ground_nodes: Collection[Gateway | StationaryOnGroundUser],
-        dynamics_data: DynamicsData,
+        constellation: Constellation[Any, Any, Any],
+        user_satellites: Collection[UserSatellite[Any, Any]],
+        ground_nodes: Collection[Gateway[Any] | StationaryOnGroundUser[Any]],
+        dynamics_data: DynamicsData[Satellite[Any]],
     ) -> list[nx.DiGraph]:
         """Build hybrid topology connecting user satellites and ground stations to constellation."""
         return build_hybrid_us2c_g2c_topology(
@@ -63,8 +72,8 @@ class HybridUS2CG2CTopologyBuilder:
 
 def _handle_user_satellite_connection(
     user_idx: int,
-    user_satellites: list[UserSatellite],
-    constellation_satellites: list[ConstellationSatellite],
+    user_satellites: list[UserSatellite[Any, Any]],
+    constellation_satellites: list[ConstellationSatellite[Any, Any]],
     user_visibility: npt.NDArray[np.bool_],
     user_remaining_connection_time: npt.NDArray[np.int_],
     time_idx: int,
@@ -119,8 +128,8 @@ def _handle_user_satellite_connection(
 
 def _handle_ground_node_connection(
     ground_idx: int,
-    ground_nodes: list[Gateway | StationaryOnGroundUser],
-    constellation_satellites: list[ConstellationSatellite],
+    ground_nodes: list[Gateway[Any] | StationaryOnGroundUser[Any]],
+    constellation_satellites: list[ConstellationSatellite[Any, Any]],
     ground_visibility: npt.NDArray[np.bool_],
     ground_remaining_visibility_time: npt.NDArray[np.int_],
     time_idx: int,
@@ -179,9 +188,9 @@ def _handle_ground_node_connection(
 
 
 def _calculate_user_satellite_visibility(
-    user_satellites: list[UserSatellite],
-    constellation_satellites: list[ConstellationSatellite],
-    dynamics_data: DynamicsData,
+    user_satellites: list[UserSatellite[Any, Any]],
+    constellation_satellites: list[ConstellationSatellite[Any, Any]],
+    dynamics_data: DynamicsData[Satellite[Any]],
     *,
     max_distance: float,
     max_relative_angular_velocity: float,
@@ -240,9 +249,9 @@ def _calculate_user_satellite_visibility(
 
 
 def _calculate_ground_visibility(
-    ground_nodes: list[Gateway | StationaryOnGroundUser],
-    constellation_satellites: list[ConstellationSatellite],
-    dynamics_data: DynamicsData,
+    ground_nodes: list[Gateway[Any] | StationaryOnGroundUser[Any]],
+    constellation_satellites: list[ConstellationSatellite[Any, Any]],
+    dynamics_data: DynamicsData[Satellite[Any]],
     *,
     sun_exclusion_angle: float,
 ) -> npt.NDArray[np.bool_]:
@@ -307,8 +316,8 @@ def _calculate_remaining_connection_time(
 
 def _assign_connection(
     node_idx: int,
-    node: UserSatellite | Gateway | StationaryOnGroundUser,
-    constellation_satellites: list[ConstellationSatellite],
+    node: UserSatellite[Any, Any] | Gateway[Any] | StationaryOnGroundUser[Any],
+    constellation_satellites: list[ConstellationSatellite[Any, Any]],
     visibility: npt.NDArray[np.bool_],
     remaining: npt.NDArray[np.int_],
     time_idx: int,
@@ -342,9 +351,9 @@ def _assign_connection(
 def _build_topology_graphs(
     *,
     n_time: int,
-    constellation_satellites: list[ConstellationSatellite],
-    user_satellites: list[UserSatellite],
-    ground_nodes: list[Gateway | StationaryOnGroundUser],
+    constellation_satellites: list[ConstellationSatellite[Any, Any]],
+    user_satellites: list[UserSatellite[Any, Any]],
+    ground_nodes: list[Gateway[Any] | StationaryOnGroundUser[Any]],
     user_visibility: npt.NDArray[np.bool_],
     ground_visibility: npt.NDArray[np.bool_],
     user_remaining: npt.NDArray[np.int_],
@@ -357,7 +366,7 @@ def _build_topology_graphs(
     graphs = []
     for time_idx in tqdm(range(n_time), desc="Building topology graphs"):
         assigned_satellites: set[int] = set()
-        graph: nx.Graph[Node[Hashable]] = nx.Graph()
+        graph: nx.Graph[Node[Any]] = nx.Graph()
         graph.add_nodes_from(constellation_satellites)
         graph.add_nodes_from(user_satellites)
         graph.add_nodes_from(ground_nodes)
@@ -397,11 +406,11 @@ def _build_topology_graphs(
 
 
 def build_hybrid_us2c_g2c_topology(
-    constellation: Constellation,
+    constellation: Constellation[Any, Any, Any],
     *,
-    user_satellites: Collection[UserSatellite],
-    ground_nodes: Collection[Gateway | StationaryOnGroundUser],
-    dynamics_data: DynamicsData,
+    user_satellites: Collection[UserSatellite[Any, Any]],
+    ground_nodes: Collection[Gateway[Any] | StationaryOnGroundUser[Any]],
+    dynamics_data: DynamicsData[Satellite[Any]],
     max_distance: float = float("inf"),
     max_relative_angular_velocity: float = float("inf"),
     sun_exclusion_angle: float = 0.0,

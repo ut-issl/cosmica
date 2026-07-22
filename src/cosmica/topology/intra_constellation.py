@@ -8,19 +8,24 @@ __all__ = [
 ]
 from abc import ABC, abstractmethod
 from collections import defaultdict
+from collections.abc import Hashable
+from typing import Any
 
 import networkx as nx
 import numpy as np
 
 from cosmica.dtos import DynamicsData
-from cosmica.models import Constellation, ConstellationSatellite
+from cosmica.models import Constellation, ConstellationSatellite, Satellite, SatelliteOrbitModel
 from cosmica.utils.vector import normalize, unit_vector_to_azimuth_elevation
 
 type PlaneId = int
 type InPlaneIndex = int
 
 
-class ConstellationTopologyBuilder[TConstellation: Constellation, TGraph: nx.Graph](ABC):
+class ConstellationTopologyBuilder[
+    TConstellation: Constellation[Any, Any, Any],
+    TGraph: nx.Graph,
+](ABC):
     @abstractmethod
     def build(
         self,
@@ -29,13 +34,16 @@ class ConstellationTopologyBuilder[TConstellation: Constellation, TGraph: nx.Gra
     ) -> TGraph: ...
 
 
-class ConstellationTimeSeriesTopologyBuilder[TConstellation: Constellation, TGraph: nx.Graph](ABC):
+class ConstellationTimeSeriesTopologyBuilder[
+    TConstellation: Constellation[Any, Any, Any],
+    TGraph: nx.Graph,
+](ABC):
     @abstractmethod
     def build(
         self,
         *,
         constellation: TConstellation,
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
     ) -> list[TGraph]: ...
 
 
@@ -81,7 +89,7 @@ class ManhattanTimeSeriesTopologyBuilder(
         self,
         *,
         constellation: Constellation[tuple[PlaneId, InPlaneIndex]],
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
     ) -> list[nx.DiGraph]:
         return build_manhattan_time_series_topology(
             constellation,
@@ -97,9 +105,13 @@ class ManhattanTimeSeriesTopologyBuilder(
 # ---------------------------------------------------------------------------
 
 
-def _group_by_plane(
-    constellation: Constellation[tuple[PlaneId, InPlaneIndex]],
-) -> list[list[ConstellationSatellite]]:
+def _group_by_plane[SatelliteNodeId: Hashable, OrbitType: SatelliteOrbitModel](
+    constellation: Constellation[
+        tuple[PlaneId, InPlaneIndex],
+        SatelliteNodeId,
+        OrbitType,
+    ],
+) -> list[list[ConstellationSatellite[SatelliteNodeId, OrbitType]]]:
     """Group satellites by plane and sort by in-plane index.
 
     Returns a list of planes (sorted by plane_id), where each plane is a list
@@ -111,22 +123,29 @@ def _group_by_plane(
     on the two-ID distinction.
     """
     # Collect (plane_id, in_plane_index, satellite) triples from dict keys
-    entries_dd: defaultdict[PlaneId, list[tuple[InPlaneIndex, ConstellationSatellite]]] = defaultdict(list)
+    entries_dd: defaultdict[
+        PlaneId,
+        list[tuple[InPlaneIndex, ConstellationSatellite[SatelliteNodeId, OrbitType]]],
+    ] = defaultdict(list)
     for (plane_id, in_plane_index), satellite in constellation.satellites.items():
         entries_dd[plane_id].append((in_plane_index, satellite))
 
     entries = dict(entries_dd)
 
     # Sort planes by plane_id, satellites within each plane by in_plane_index
-    planes: list[list[ConstellationSatellite]] = [
+    planes: list[list[ConstellationSatellite[SatelliteNodeId, OrbitType]]] = [
         [sat for _, sat in sorted(entries[plane_id])] for plane_id in sorted(entries)
     ]
 
     return planes
 
 
-def build_manhattan_topology(
-    constellation: Constellation[tuple[PlaneId, InPlaneIndex]],
+def build_manhattan_topology[SatelliteNodeId: Hashable, OrbitType: SatelliteOrbitModel](
+    constellation: Constellation[
+        tuple[PlaneId, InPlaneIndex],
+        SatelliteNodeId,
+        OrbitType,
+    ],
     *,
     inter_plane_offset: int = 0,
     last_to_first_plane_offset: int = 0,
@@ -193,10 +212,14 @@ def build_manhattan_topology(
     return graph.to_directed()
 
 
-def build_manhattan_time_series_topology(
-    constellation: Constellation[tuple[int, int]],
+def build_manhattan_time_series_topology[SatelliteNodeId: Hashable, OrbitType: SatelliteOrbitModel](
+    constellation: Constellation[
+        tuple[int, int],
+        SatelliteNodeId,
+        OrbitType,
+    ],
     *,
-    dynamics_data: DynamicsData,
+    dynamics_data: DynamicsData[Satellite[Any]],
     inter_plane_offset: int = 0,
     last_to_first_plane_offset: int = 0,
     max_latitude: float = np.deg2rad(90.0),

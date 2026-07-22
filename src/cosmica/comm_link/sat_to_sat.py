@@ -7,7 +7,7 @@ __all__ = [
 import logging
 from collections.abc import Collection, Sequence
 from itertools import chain
-from typing import Annotated
+from typing import Annotated, Any
 
 import numpy as np
 import numpy.typing as npt
@@ -24,7 +24,9 @@ from .base import CommLinkCalculator, CommLinkPerformance, MemorylessCommLinkCal
 logger = logging.getLogger(__name__)
 
 
-class SatToSatBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Satellite, Satellite]):
+class SatToSatBinaryCommLinkCalculator(
+    MemorylessCommLinkCalculator[Satellite[Any], Satellite[Any]],
+):
     """Calculate satellite-to-satellite communication link performance for each directed edge.
 
     The link performance is calculated as a binary value, i.e., 1 if the link is available and 0 otherwise.
@@ -52,11 +54,11 @@ class SatToSatBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Satellite, S
 
     def calc(
         self,
-        edges: Collection[tuple[Satellite, Satellite]],
+        edges: Collection[tuple[Satellite[Any], Satellite[Any]]],
         *,
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
         rng: np.random.Generator,  # noqa: ARG002 For interface compatibility
-    ) -> dict[tuple[Satellite, Satellite], CommLinkPerformance]:
+    ) -> dict[tuple[Satellite[Any], Satellite[Any]], CommLinkPerformance]:
         return {
             edge: self._calc_satellite_to_satellite(
                 positions_eci=(
@@ -143,7 +145,9 @@ class SatToSatBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Satellite, S
         )
 
 
-class SatToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, Satellite]):
+class SatToSatBinaryMemoryCommLinkCalculator(
+    CommLinkCalculator[Satellite[Any], Satellite[Any]],
+):
     """Calculate satellite-to-satellite communication link performance for each directed edge in a network.
 
     The link performance is calculated as a binary value, i.e., 1 if the link is available and 0 otherwise.
@@ -158,7 +162,7 @@ class SatToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, Satel
     def __init__(
         self,
         *,
-        memoryless_calculator: MemorylessCommLinkCalculator[Satellite, Satellite],
+        memoryless_calculator: MemorylessCommLinkCalculator[Satellite[Any], Satellite[Any]],
         link_acquisition_time: float = 60.0,
         skip_link_acquisition_at_simulation_start: bool = True,
     ) -> None:
@@ -168,19 +172,19 @@ class SatToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, Satel
 
     def calc(
         self,
-        edges_time_series: Sequence[Collection[tuple[Satellite, Satellite]]],
+        edges_time_series: Sequence[Collection[tuple[Satellite[Any], Satellite[Any]]]],
         *,
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
         rng: np.random.Generator,
-    ) -> list[dict[tuple[Satellite, Satellite], CommLinkPerformance]]:
+    ) -> list[dict[tuple[Satellite[Any], Satellite[Any]], CommLinkPerformance]]:
         assert len(edges_time_series) == len(dynamics_data.time)
 
-        comm_link_time_series: list[dict[tuple[Satellite, Satellite], CommLinkPerformance]] = []
+        comm_link_time_series: list[dict[tuple[Satellite[Any], Satellite[Any]], CommLinkPerformance]] = []
 
         # ― per-directed-edge state ―
         # Link acquisition is tracked independently for each directed edge (src, dst).
-        link_acquisition_start_time: dict[tuple[Satellite, Satellite], np.datetime64] = {}
-        prev_edges: frozenset[tuple[Satellite, Satellite]] = frozenset()
+        link_acquisition_start_time: dict[tuple[Satellite[Any], Satellite[Any]], np.datetime64] = {}
+        prev_edges: frozenset[tuple[Satellite[Any], Satellite[Any]]] = frozenset()
 
         for time_index, edges_snapshot in enumerate(edges_time_series):
             current_time: np.datetime64 = dynamics_data.time[time_index]
@@ -235,7 +239,9 @@ class SatToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, Satel
         return comm_link_time_series
 
 
-class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, SatelliteTerminal]):
+class OTC2OTCBinaryCommLinkCalculator(
+    CommLinkCalculator[SatelliteTerminal[Any], SatelliteTerminal[Any]],
+):
     """Calculate satellite-to-satellite communication link performance for each terminal in a network.
 
     The link performance is calculated as a binary value, i.e., 1 if the link is available and 0 otherwise.
@@ -258,12 +264,12 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
 
     def calc(
         self,
-        edges_time_series: Sequence[Collection[tuple[SatelliteTerminal, SatelliteTerminal]]],
+        edges_time_series: Sequence[Collection[tuple[SatelliteTerminal[Any], SatelliteTerminal[Any]]]],
         *,
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
         rng: Generator,  # noqa: ARG002
-    ) -> list[dict[tuple[SatelliteTerminal, SatelliteTerminal], CommLinkPerformance]]:
-        terminal_memo: dict[tuple[SatelliteTerminal, SatelliteTerminal], list[tuple[float, float]]] = {}
+    ) -> list[dict[tuple[SatelliteTerminal[Any], SatelliteTerminal[Any]], CommLinkPerformance]]:
+        terminal_memo: dict[tuple[SatelliteTerminal[Any], SatelliteTerminal[Any]], list[tuple[float, float]]] = {}
         comm_link_time_series = []
         prev_time = dynamics_data.time[0]
 
@@ -329,7 +335,7 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
             Doc("Sun direction vector in ECI frame. Shape: (3,)"),
         ],
         terminals: Annotated[
-            tuple[OpticalCommunicationTerminal, OpticalCommunicationTerminal],
+            tuple[OpticalCommunicationTerminal[Any], OpticalCommunicationTerminal[Any]],
             Doc("Optical Communication Terminals of pair of satellites"),
         ],
         previous_terminal_directions: Annotated[
@@ -416,7 +422,10 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
             terminal_directions,
         )
 
-    def _calc_terminal_directions(self, relative_position: npt.NDArray) -> list[tuple[float, float]]:
+    def _calc_terminal_directions(
+        self,
+        relative_position: npt.NDArray[np.floating],
+    ) -> list[tuple[float, float]]:
         unitary_direction = normalize(relative_position)
         terminal_a = unit_vector_to_azimuth_elevation(unitary_direction)
         terminal_b = unit_vector_to_azimuth_elevation(

@@ -47,7 +47,7 @@ class TemporaryCommunicationDemand[T: Hashable](Demand[T]):
         self,
         current_time: np.datetime64,
     ) -> np.bool:
-        return self.start_time <= current_time < self.end_time
+        return np.bool_(self.start_time <= current_time < self.end_time)
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)

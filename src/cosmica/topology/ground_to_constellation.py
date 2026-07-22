@@ -10,6 +10,7 @@ import logging
 from abc import ABC, abstractmethod
 from collections.abc import Collection, Hashable
 from itertools import product
+from typing import Any
 
 import networkx as nx
 import numpy as np
@@ -21,6 +22,7 @@ from cosmica.models import (
     ConstellationSatellite,
     Gateway,
     Node,
+    Satellite,
     SatelliteOrbitModel,
     StationaryOnGroundUser,
 )
@@ -29,26 +31,34 @@ from cosmica.utils.coordinates import ecef2aer
 logger = logging.getLogger(__name__)
 
 
-class GroundToConstellationTopologyBuilder[TConstellation: Constellation, TNode: Node, TGraph: nx.Graph](ABC):
+class GroundToConstellationTopologyBuilder[
+    TConstellation: Constellation[Any, Any, Any],
+    TNode: Node[Any],
+    TGraph: nx.Graph,
+](ABC):
     @abstractmethod
     def build(
         self,
         *,
         constellation: TConstellation,
         ground_nodes: Collection[TNode],
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
     ) -> list[TGraph]: ...
 
 
 class ElevationBasedG2CTopologyBuilder(
-    GroundToConstellationTopologyBuilder[Constellation, Gateway | StationaryOnGroundUser, nx.DiGraph],
+    GroundToConstellationTopologyBuilder[
+        Constellation[Any, Any, Any],
+        Gateway[Any] | StationaryOnGroundUser[Any],
+        nx.DiGraph,
+    ],
 ):
     def build(
         self,
         *,
-        constellation: Constellation,
-        ground_nodes: Collection[Gateway | StationaryOnGroundUser],
-        dynamics_data: DynamicsData,
+        constellation: Constellation[Any, Any, Any],
+        ground_nodes: Collection[Gateway[Any] | StationaryOnGroundUser[Any]],
+        dynamics_data: DynamicsData[Satellite[Any]],
     ) -> list[nx.DiGraph]:
         return build_elevation_based_g2c_topology(
             constellation,
@@ -58,17 +68,27 @@ class ElevationBasedG2CTopologyBuilder(
 
 
 class ManualG2CTopologyBuilder(
-    GroundToConstellationTopologyBuilder[Constellation, Gateway | StationaryOnGroundUser, nx.DiGraph],
+    GroundToConstellationTopologyBuilder[
+        Constellation[Any, Any, Any],
+        Gateway[Any] | StationaryOnGroundUser[Any],
+        nx.DiGraph,
+    ],
 ):
-    def __init__(self, custom_connections: dict[Gateway | StationaryOnGroundUser, ConstellationSatellite]) -> None:
-        self.custom_connections: dict[Gateway | StationaryOnGroundUser, ConstellationSatellite] = custom_connections
+    def __init__(
+        self,
+        custom_connections: dict[
+            Gateway[Any] | StationaryOnGroundUser[Any],
+            ConstellationSatellite[Any, Any],
+        ],
+    ) -> None:
+        self.custom_connections = custom_connections
 
     def build(
         self,
         *,
-        constellation: Constellation,
-        ground_nodes: Collection[Gateway | StationaryOnGroundUser],
-        dynamics_data: DynamicsData,
+        constellation: Constellation[Any, Any, Any],
+        ground_nodes: Collection[Gateway[Any] | StationaryOnGroundUser[Any]],
+        dynamics_data: DynamicsData[Satellite[Any]],
     ) -> list[nx.DiGraph]:
         return build_manual_g2c_topology(
             constellation,
@@ -79,14 +99,18 @@ class ManualG2CTopologyBuilder(
 
 
 class MaxVisibilityHandOverG2CTopologyBuilder(
-    GroundToConstellationTopologyBuilder[Constellation, Gateway | StationaryOnGroundUser, nx.DiGraph],
+    GroundToConstellationTopologyBuilder[
+        Constellation[Any, Any, Any],
+        Gateway[Any] | StationaryOnGroundUser[Any],
+        nx.DiGraph,
+    ],
 ):
     def build(
         self,
         *,
-        constellation: Constellation,
-        ground_nodes: Collection[Gateway | StationaryOnGroundUser],
-        dynamics_data: DynamicsData,
+        constellation: Constellation[Any, Any, Any],
+        ground_nodes: Collection[Gateway[Any] | StationaryOnGroundUser[Any]],
+        dynamics_data: DynamicsData[Satellite[Any]],
     ) -> list[nx.DiGraph]:
         return build_max_visibility_handover_g2c_topology(
             constellation,
@@ -104,12 +128,11 @@ def build_elevation_based_g2c_topology[
     SatelliteId: Hashable,
     SatelliteNodeId: Hashable,
     OrbitType: SatelliteOrbitModel,
-    GroundNodeId: Hashable,
 ](
     constellation: Constellation[SatelliteId, SatelliteNodeId, OrbitType],
     *,
-    ground_nodes: Collection[Gateway[GroundNodeId] | StationaryOnGroundUser[GroundNodeId]],
-    dynamics_data: DynamicsData,
+    ground_nodes: Collection[Gateway[Any] | StationaryOnGroundUser[Any]],
+    dynamics_data: DynamicsData[Satellite[Any]],
 ) -> list[nx.DiGraph]:
     """Build ground-to-constellation topology based on elevation angle.
 
@@ -152,7 +175,7 @@ def build_elevation_based_g2c_topology[
         visibility[ground_node_idx, sat_idx, :] = elevation >= ground_node.minimum_elevation
 
     def construct_graph(visibility: npt.NDArray[np.bool_]) -> nx.DiGraph:
-        graph: nx.Graph[Hashable] = nx.Graph()
+        graph: nx.Graph[Node[Any]] = nx.Graph()
         graph.add_nodes_from(satellites)
         graph.add_nodes_from(ground_nodes_list)
 
@@ -173,14 +196,13 @@ def build_manual_g2c_topology[
     SatelliteId: Hashable,
     SatelliteNodeId: Hashable,
     OrbitType: SatelliteOrbitModel,
-    GroundNodeId: Hashable,
 ](
     constellation: Constellation[SatelliteId, SatelliteNodeId, OrbitType],
     *,
-    ground_nodes: Collection[Gateway[GroundNodeId] | StationaryOnGroundUser[GroundNodeId]],
-    dynamics_data: DynamicsData,
+    ground_nodes: Collection[Gateway[Any] | StationaryOnGroundUser[Any]],
+    dynamics_data: DynamicsData[Satellite[Any]],
     custom_connections: dict[
-        Gateway[GroundNodeId] | StationaryOnGroundUser[GroundNodeId],
+        Gateway[Any] | StationaryOnGroundUser[Any],
         ConstellationSatellite[SatelliteNodeId, OrbitType],
     ],
 ) -> list[nx.DiGraph]:
@@ -205,7 +227,7 @@ def build_manual_g2c_topology[
     satellites = list(constellation.satellites.values())
 
     def construct_graph() -> nx.DiGraph:
-        graph: nx.Graph[Hashable] = nx.Graph()
+        graph: nx.Graph[Node[Any]] = nx.Graph()
         graph.add_nodes_from(satellites)
         graph.add_nodes_from(ground_nodes_list)
 
@@ -222,12 +244,11 @@ def build_max_visibility_handover_g2c_topology[  # noqa: C901
     SatelliteId: Hashable,
     SatelliteNodeId: Hashable,
     OrbitType: SatelliteOrbitModel,
-    GroundNodeId: Hashable,
 ](
     constellation: Constellation[SatelliteId, SatelliteNodeId, OrbitType],
     *,
-    ground_nodes: Collection[Gateway[GroundNodeId] | StationaryOnGroundUser[GroundNodeId]],
-    dynamics_data: DynamicsData,
+    ground_nodes: Collection[Gateway[Any] | StationaryOnGroundUser[Any]],
+    dynamics_data: DynamicsData[Satellite[Any]],
 ) -> list[nx.DiGraph]:
     """Build ground-to-constellation topology with maximum-visibility handover.
 

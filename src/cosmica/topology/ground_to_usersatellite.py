@@ -5,41 +5,50 @@ __all__ = [
 ]
 import logging
 from abc import ABC, abstractmethod
-from collections.abc import Collection, Hashable
+from collections.abc import Collection
 from itertools import product
+from typing import Any
 
 import networkx as nx
 import numpy as np
 import numpy.typing as npt
 
 from cosmica.dtos import DynamicsData
-from cosmica.models import Gateway, Node, StationaryOnGroundUser
+from cosmica.models import Gateway, Node, Satellite, StationaryOnGroundUser
 from cosmica.models.satellite import UserSatellite
 from cosmica.utils.coordinates import ecef2aer
 
 logger = logging.getLogger(__name__)
 
 
-class GroundToUserSatelliteTopologyBuilder[TUserSatellite: UserSatellite, TNode: Node, TGraph: nx.Graph](ABC):
+class GroundToUserSatelliteTopologyBuilder[
+    TUserSatellite: UserSatellite[Any, Any],
+    TNode: Node[Any],
+    TGraph: nx.Graph,
+](ABC):
     @abstractmethod
     def build(
         self,
         *,
         user_satellites: Collection[TUserSatellite],
         ground_nodes: Collection[TNode],
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
     ) -> list[TGraph]: ...
 
 
 class ElevationBasedG2USTopologyBuilder(
-    GroundToUserSatelliteTopologyBuilder[UserSatellite, Gateway | StationaryOnGroundUser, nx.DiGraph],
+    GroundToUserSatelliteTopologyBuilder[
+        UserSatellite[Any, Any],
+        Gateway[Any] | StationaryOnGroundUser[Any],
+        nx.DiGraph,
+    ],
 ):
     def build(
         self,
         *,
-        user_satellites: Collection[UserSatellite],
-        ground_nodes: Collection[Gateway | StationaryOnGroundUser],
-        dynamics_data: DynamicsData,
+        user_satellites: Collection[UserSatellite[Any, Any]],
+        ground_nodes: Collection[Gateway[Any] | StationaryOnGroundUser[Any]],
+        dynamics_data: DynamicsData[Satellite[Any]],
     ) -> list[nx.DiGraph]:
         logger.info(f"Number of time steps: {len(dynamics_data.time)}")
         ground_nodes = list(ground_nodes)
@@ -62,7 +71,7 @@ class ElevationBasedG2USTopologyBuilder(
             visibility[ground_node_idx, sat_idx, :] = elevation >= ground_node.minimum_elevation
 
         def construct_graph(visibility: npt.NDArray[np.bool_]) -> nx.DiGraph:
-            graph: nx.Graph[Node[Hashable]] = nx.Graph()
+            graph: nx.Graph[Node[Any]] = nx.Graph()
             graph.add_nodes_from(user_satellites)
             graph.add_nodes_from(ground_nodes)
 
@@ -80,23 +89,33 @@ class ElevationBasedG2USTopologyBuilder(
 
 
 class ManualG2USTopologyBuilder(
-    GroundToUserSatelliteTopologyBuilder[UserSatellite, Gateway | StationaryOnGroundUser, nx.DiGraph],
+    GroundToUserSatelliteTopologyBuilder[
+        UserSatellite[Any, Any],
+        Gateway[Any] | StationaryOnGroundUser[Any],
+        nx.DiGraph,
+    ],
 ):
-    def __init__(self, custom_connections: dict[Gateway | StationaryOnGroundUser, UserSatellite]) -> None:
-        self.custom_connections: dict[Gateway | StationaryOnGroundUser, UserSatellite] = custom_connections
+    def __init__(
+        self,
+        custom_connections: dict[
+            Gateway[Any] | StationaryOnGroundUser[Any],
+            UserSatellite[Any, Any],
+        ],
+    ) -> None:
+        self.custom_connections = custom_connections
 
     def build(
         self,
         *,
-        user_satellites: Collection[UserSatellite],
-        ground_nodes: Collection[Gateway | StationaryOnGroundUser],
-        dynamics_data: DynamicsData,
+        user_satellites: Collection[UserSatellite[Any, Any]],
+        ground_nodes: Collection[Gateway[Any] | StationaryOnGroundUser[Any]],
+        dynamics_data: DynamicsData[Satellite[Any]],
     ) -> list[nx.DiGraph]:
         logger.info(f"Number of time steps: {len(dynamics_data.time)}")
         ground_nodes = list(ground_nodes)
 
         def construct_graph() -> nx.DiGraph:
-            graph: nx.Graph[Node[Hashable]] = nx.Graph()
+            graph: nx.Graph[Node[Any]] = nx.Graph()
             graph.add_nodes_from(user_satellites)
             graph.add_nodes_from(ground_nodes)
 

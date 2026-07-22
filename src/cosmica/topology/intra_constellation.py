@@ -9,19 +9,23 @@ __all__ = [
 from abc import ABC, abstractmethod
 from collections import defaultdict
 from collections.abc import Hashable
+from typing import Any
 
 import networkx as nx
 import numpy as np
 
 from cosmica.dtos import DynamicsData
-from cosmica.models import Constellation, ConstellationSatellite, SatelliteOrbitModel
+from cosmica.models import Constellation, ConstellationSatellite, Satellite, SatelliteOrbitModel
 from cosmica.utils.vector import normalize, unit_vector_to_azimuth_elevation
 
 type PlaneId = int
 type InPlaneIndex = int
 
 
-class ConstellationTopologyBuilder[TConstellation, TGraph: nx.Graph](ABC):
+class ConstellationTopologyBuilder[
+    TConstellation: Constellation[Any, Any, Any],
+    TGraph: nx.Graph,
+](ABC):
     @abstractmethod
     def build(
         self,
@@ -30,13 +34,16 @@ class ConstellationTopologyBuilder[TConstellation, TGraph: nx.Graph](ABC):
     ) -> TGraph: ...
 
 
-class ConstellationTimeSeriesTopologyBuilder[TConstellation, TGraph: nx.Graph](ABC):
+class ConstellationTimeSeriesTopologyBuilder[
+    TConstellation: Constellation[Any, Any, Any],
+    TGraph: nx.Graph,
+](ABC):
     @abstractmethod
     def build(
         self,
         *,
         constellation: TConstellation,
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
     ) -> list[TGraph]: ...
 
 
@@ -82,7 +89,7 @@ class ManhattanTimeSeriesTopologyBuilder(
         self,
         *,
         constellation: Constellation[tuple[PlaneId, InPlaneIndex]],
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
     ) -> list[nx.DiGraph]:
         return build_manhattan_time_series_topology(
             constellation,
@@ -212,7 +219,7 @@ def build_manhattan_time_series_topology[SatelliteNodeId: Hashable, OrbitType: S
         OrbitType,
     ],
     *,
-    dynamics_data: DynamicsData,
+    dynamics_data: DynamicsData[Satellite[Any]],
     inter_plane_offset: int = 0,
     last_to_first_plane_offset: int = 0,
     max_latitude: float = np.deg2rad(90.0),

@@ -4,7 +4,7 @@ __all__ = [
 ]
 
 from collections.abc import Collection, Sequence
-from typing import Annotated
+from typing import Annotated, Any
 
 import numpy as np
 import numpy.typing as npt
@@ -19,7 +19,9 @@ from cosmica.utils.vector import angle_between
 from .base import CommLinkCalculator, CommLinkPerformance, MemorylessCommLinkCalculator
 
 
-class GatewayToSatBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Gateway, Satellite]):
+class GatewayToSatBinaryCommLinkCalculator(
+    MemorylessCommLinkCalculator[Gateway[Any], Satellite[Any]],
+):
     """Calculate gateway-to-satellite (uplink) communication link performance.
 
     The link performance is calculated as a binary value, i.e., 1 if the link is available and 0 otherwise.
@@ -39,11 +41,11 @@ class GatewayToSatBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Gateway,
 
     def calc(
         self,
-        edges: Collection[tuple[Gateway, Satellite]],
+        edges: Collection[tuple[Gateway[Any], Satellite[Any]]],
         *,
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
         rng: np.random.Generator,  # noqa: ARG002 For interface compatibility
-    ) -> dict[tuple[Gateway, Satellite], CommLinkPerformance]:
+    ) -> dict[tuple[Gateway[Any], Satellite[Any]], CommLinkPerformance]:
         return {
             edge: self._calc_gateway_to_satellite(
                 gateway=edge[0],
@@ -55,7 +57,7 @@ class GatewayToSatBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Gateway,
 
     def _calc_gateway_to_satellite(
         self,
-        gateway: Gateway,
+        gateway: Gateway[Any],
         satellite_position_ecef: npt.NDArray[np.floating],
         sun_direction_ecef: npt.NDArray[np.floating],
     ) -> CommLinkPerformance:
@@ -87,7 +89,9 @@ class GatewayToSatBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Gateway,
         )
 
 
-class GatewayToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Gateway, Satellite]):
+class GatewayToSatBinaryMemoryCommLinkCalculator(
+    CommLinkCalculator[Gateway[Any], Satellite[Any]],
+):
     """Calculate gateway-to-satellite (uplink) communication link performance with link acquisition delay.
 
     The link performance is calculated as a binary value, i.e., 1 if the link is available and 0 otherwise.
@@ -103,7 +107,7 @@ class GatewayToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Gateway, Sat
     def __init__(
         self,
         *,
-        memoryless_calculator: MemorylessCommLinkCalculator[Gateway, Satellite],
+        memoryless_calculator: MemorylessCommLinkCalculator[Gateway[Any], Satellite[Any]],
         link_acquisition_time: float = 60.0,
         skip_link_acquisition_at_simulation_start: bool = True,
     ) -> None:
@@ -113,19 +117,19 @@ class GatewayToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Gateway, Sat
 
     def calc(
         self,
-        edges_time_series: Sequence[Collection[tuple[Gateway, Satellite]]],
+        edges_time_series: Sequence[Collection[tuple[Gateway[Any], Satellite[Any]]]],
         *,
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
         rng: np.random.Generator,
-    ) -> list[dict[tuple[Gateway, Satellite], CommLinkPerformance]]:
+    ) -> list[dict[tuple[Gateway[Any], Satellite[Any]], CommLinkPerformance]]:
         assert len(edges_time_series) == len(dynamics_data.time)
 
-        comm_link_time_series: list[dict[tuple[Gateway, Satellite], CommLinkPerformance]] = []
+        comm_link_time_series: list[dict[tuple[Gateway[Any], Satellite[Any]], CommLinkPerformance]] = []
 
         # ― per-directed-edge state ―
         # Link acquisition is tracked independently for each directed edge (gateway, satellite).
-        link_acquisition_start_time: dict[tuple[Gateway, Satellite], np.datetime64] = {}
-        prev_edges: frozenset[tuple[Gateway, Satellite]] = frozenset()
+        link_acquisition_start_time: dict[tuple[Gateway[Any], Satellite[Any]], np.datetime64] = {}
+        prev_edges: frozenset[tuple[Gateway[Any], Satellite[Any]]] = frozenset()
 
         for time_index, edges_snapshot in enumerate(edges_time_series):
             current_time: np.datetime64 = dynamics_data.time[time_index]

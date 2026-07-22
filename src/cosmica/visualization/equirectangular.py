@@ -33,6 +33,7 @@ from cosmica.models import (
     Gateway,
     Internet,
     Node,
+    Satellite,
     SatelliteOrbitModel,
     StationaryOnGroundUser,
     UserSatellite,
@@ -100,7 +101,7 @@ def _dummy_class_creator(class_: type) -> type:
 
         # Copying the `from_real` method
         @classmethod
-        def from_real(cls, real_obj: Node) -> "DummyClass[T]":
+        def from_real(cls, real_obj: Node[Any]) -> "DummyClass[T]":
             # Create a new instance with attributes copied from the real object
             assert isinstance(real_obj, class_), f"{real_obj} is not an instance of {class_}"
             class_field_names = [fld.name for fld in fields(class_)]
@@ -140,10 +141,10 @@ def draw_snapshot[SatelliteNodeId: Hashable, OrbitType: SatelliteOrbitModel](  #
         SatelliteNodeId,
         OrbitType,
     ],
-    dynamics_data: DynamicsData[Hashable],
+    dynamics_data: DynamicsData[Satellite[Any]],
     ax: Axes,
     with_labels: bool = False,
-    focus_edges_list: list[set[tuple[Node, Node]]] | None = None,
+    focus_edges_list: list[set[tuple[Node[Any], Node[Any]]]] | None = None,
     focus_edges_label_list: list[str] | None = None,
 ) -> Axes:
     # None のときのデフォルト値設定
@@ -186,7 +187,7 @@ def draw_snapshot[SatelliteNodeId: Hashable, OrbitType: SatelliteOrbitModel](  #
     pos_internets = {internet: [np.nan, np.nan] for internet in internets}
 
     pos = pos_constellation | pos_user_satellites | pos_gateways | pos_ogu | pos_internets
-    nodes_to_draw: set[Node] = {
+    nodes_to_draw: set[Node[Any]] = {
         *constellation_satellites_to_draw,
         *user_satellites_to_draw,
         *gateways,
@@ -484,7 +485,7 @@ def draw_snapshot[SatelliteNodeId: Hashable, OrbitType: SatelliteOrbitModel](  #
     return ax
 
 
-def draw_coverage_area[SatelliteType: Hashable](
+def draw_coverage_area[SatelliteType: ConstellationSatellite[Any, Any]](
     *,
     dynamics_data: Annotated[
         DynamicsData[SatelliteType],
@@ -570,7 +571,7 @@ def draw_snapshot_movie(
     graph: list[nx.Graph],
     constellation: Constellation[tuple[PlaneId, InPlaneIndex]],
     time_array: npt.NDArray[np.datetime64],
-    dynamics_data: DynamicsData[Hashable],
+    dynamics_data: DynamicsData[Satellite[Any]],
     time_index_for_plot: npt.NDArray[np.integer],
     fig: Figure,
     ax: Axes,

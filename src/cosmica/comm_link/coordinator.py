@@ -1,9 +1,11 @@
 __all__ = [
     "CommLinkCalculationCoordinator",
+    "CommLinkCalculatorAssignment",
 ]
 import logging
 from collections import defaultdict
-from collections.abc import Collection, Mapping, Sequence
+from collections.abc import Collection, Sequence
+from dataclasses import dataclass
 from itertools import product
 from typing import Any
 
@@ -11,13 +13,26 @@ import numpy as np
 from tqdm import tqdm
 
 from cosmica.dtos import DynamicsData
-from cosmica.models import Node
+from cosmica.models import Node, Satellite
 
 from .base import CommLinkCalculator, CommLinkPerformance
 
-type EdgeType = tuple[type[Node], type[Node]]
+type EdgeType = tuple[type[Node[Any]], type[Node[Any]]]
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass(frozen=True, slots=True)
+class CommLinkCalculatorAssignment[T: Node[Any], U: Node[Any]]:
+    """Bind a directed pair of node classes to a compatible calculator."""
+
+    source_type: type[T]
+    destination_type: type[U]
+    calculator: CommLinkCalculator[T, U]
+
+    @property
+    def edge_type(self) -> EdgeType:
+        return self.source_type, self.destination_type
 
 
 class CommLinkCalculationCoordinator:
@@ -33,19 +48,22 @@ class CommLinkCalculationCoordinator:
     def __init__(
         self,
         *,
-        calculator_assignment: Mapping[EdgeType, CommLinkCalculator[Any, Any]],
+        calculator_assignments: Collection[CommLinkCalculatorAssignment[Any, Any]],
     ) -> None:
-        # The registry intentionally erases each calculator's node type parameters:
-        # runtime edge-type keys restore that information when dispatching below.
-        self.calculator_assignment = dict(calculator_assignment)
+        self.calculator_assignment = {
+            assignment.edge_type: assignment.calculator for assignment in calculator_assignments
+        }
+        if len(self.calculator_assignment) != len(calculator_assignments):
+            msg = "Calculator assignments must have unique directed edge types."
+            raise ValueError(msg)
 
     def calc(
         self,
-        edges_time_series: Sequence[Collection[tuple[Node, Node]]],
+        edges_time_series: Sequence[Collection[tuple[Node[Any], Node[Any]]]],
         *,
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
         rng: np.random.Generator,
-    ) -> list[dict[tuple[Node, Node], CommLinkPerformance]]:
+    ) -> list[dict[tuple[Node[Any], Node[Any]], CommLinkPerformance]]:
         assert len(dynamics_data.time) == len(edges_time_series)
 
         # Categorize edges by (source type, destination type), keeping edge direction as-is
@@ -62,7 +80,7 @@ class CommLinkCalculationCoordinator:
 
         edges_time_series_by_type_dd: defaultdict[
             EdgeType,
-            list[set[tuple[Node, Node]]],
+            list[set[tuple[Node[Any], Node[Any]]]],
         ] = defaultdict(list)
         for edges, edge_type in product(edges_time_series, all_edge_types):
             # Match on the exact node types (consistent with the registration check above) so that
@@ -74,7 +92,7 @@ class CommLinkCalculationCoordinator:
 
         performance_time_series_by_type: dict[
             EdgeType,
-            list[dict[tuple[Node, Node], CommLinkPerformance]],
+            list[dict[tuple[Node[Any], Node[Any]], CommLinkPerformance]],
         ] = {}
         for edge_type, edges_time_series_of_type in edges_time_series_by_type.items():
             logger.info(
@@ -90,7 +108,7 @@ class CommLinkCalculationCoordinator:
         # Merge the results
         performance_time_series = []
         for time_index in tqdm(range(len(dynamics_data.time)), desc="Merging performance results"):
-            performance: dict[tuple[Node, Node], CommLinkPerformance] = {}
+            performance: dict[tuple[Node[Any], Node[Any]], CommLinkPerformance] = {}
             for perf_of_type in performance_time_series_by_type.values():
                 performance.update(perf_of_type[time_index])
             performance_time_series.append(performance)

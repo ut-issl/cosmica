@@ -7,21 +7,22 @@ import logging
 from abc import ABC, abstractmethod
 from collections.abc import Collection, Hashable
 from itertools import product
+from typing import Any
 
 import networkx as nx
 import numpy as np
 import numpy.typing as npt
 
 from cosmica.dtos import DynamicsData
-from cosmica.models import Constellation, SatelliteOrbitModel, UserSatellite
+from cosmica.models import Constellation, Satellite, SatelliteOrbitModel, UserSatellite
 from cosmica.utils.vector import angle_between
 
 logger = logging.getLogger(__name__)
 
 
 class UserSatelliteToConstellationTopologyBuilder[
-    TConstellation: Constellation,
-    TUserSatellite: UserSatellite,
+    TConstellation: Constellation[Any, Any, Any],
+    TUserSatellite: UserSatellite[Any, Any],
     TGraph: nx.Graph,
 ](ABC):
     @abstractmethod
@@ -30,14 +31,18 @@ class UserSatelliteToConstellationTopologyBuilder[
         *,
         constellation: TConstellation,
         user_satellites: Collection[TUserSatellite],
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
     ) -> list[TGraph]:
         """Build time-varying topology connecting user satellites to constellation."""
         ...
 
 
 class MaxConnectionTimeUS2CTopologyBuilder(
-    UserSatelliteToConstellationTopologyBuilder[Constellation, UserSatellite, nx.DiGraph],
+    UserSatelliteToConstellationTopologyBuilder[
+        Constellation[Any, Any, Any],
+        UserSatellite[Any, Any],
+        nx.DiGraph,
+    ],
 ):
     """Topology builder connecting user satellites to constellation with longest connection time.
 
@@ -61,9 +66,9 @@ class MaxConnectionTimeUS2CTopologyBuilder(
     def build(
         self,
         *,
-        constellation: Constellation,
-        user_satellites: Collection[UserSatellite],
-        dynamics_data: DynamicsData,
+        constellation: Constellation[Any, Any, Any],
+        user_satellites: Collection[UserSatellite[Any, Any]],
+        dynamics_data: DynamicsData[Satellite[Any]],
     ) -> list[nx.DiGraph]:
         return build_max_connection_time_us2c_topology(
             constellation=constellation,
@@ -90,7 +95,7 @@ def build_max_connection_time_us2c_topology[  # noqa: C901, PLR0912, PLR0915
     constellation: Constellation[SatelliteId, SatelliteNodeId, ConstellationOrbitType],
     *,
     user_satellites: Collection[UserSatellite[UserSatelliteId, UserOrbitType]],
-    dynamics_data: DynamicsData,
+    dynamics_data: DynamicsData[Satellite[Any]],
     max_distance: float = float("inf"),
     max_relative_angular_velocity: float = float("inf"),
     sun_exclusion_angle: float = 0.0,

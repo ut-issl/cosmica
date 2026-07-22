@@ -9,7 +9,7 @@ import numpy as np
 from cosmica.models import Gateway
 
 
-def build_default_gateway_network() -> list[Gateway]:
+def build_default_gateway_network() -> list[Gateway[int]]:
     """Build a list of default gateways."""
     return [
         Gateway(id=0, latitude=np.deg2rad(36.0), longitude=np.deg2rad(139.0), minimum_elevation=np.deg2rad(30.0)),

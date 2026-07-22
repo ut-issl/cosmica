@@ -5,6 +5,7 @@ __all__ = [
     "CloudStates",
     "CommLinkCalculationCoordinator",
     "CommLinkCalculator",
+    "CommLinkCalculatorAssignment",
     "CommLinkPerformance",
     "EdgeFailureModel",
     "ExpEdgeModel",
@@ -31,7 +32,7 @@ from .base import (
     MemorylessCommLinkCalculator,
     MemorylessCommLinkCalculatorWrapper,
 )
-from .coordinator import CommLinkCalculationCoordinator
+from .coordinator import CommLinkCalculationCoordinator, CommLinkCalculatorAssignment
 from .gateway_to_gateway import GatewayToGatewayCommLinkCalculator
 from .gateway_to_internet import GatewayToInternetCommLinkCalculator
 from .gateway_to_sat import (

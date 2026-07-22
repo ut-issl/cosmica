@@ -21,6 +21,7 @@ use the dict key for structural queries and the satellite object itself
 
 from collections.abc import Hashable
 from dataclasses import dataclass
+from typing import Any
 
 import numpy as np
 
@@ -30,9 +31,9 @@ from .satellite import ConstellationSatellite
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class Constellation[
-    SatelliteId: Hashable = Hashable,
-    SatelliteNodeId: Hashable = Hashable,
-    SatelliteOrbitType: SatelliteOrbitModel = SatelliteOrbitModel,
+    SatelliteId: Hashable,
+    SatelliteNodeId: Hashable = Any,
+    SatelliteOrbitType: SatelliteOrbitModel = Any,
 ]:
     """A constellation of satellites.
 

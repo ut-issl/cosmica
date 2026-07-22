@@ -13,12 +13,17 @@ logger = logging.getLogger(__name__)
 
 
 @cache
-def _load_numpy_array_from_assets_dir(filename: str) -> npt.NDArray[np.floating]:
+def _load_numpy_array_from_assets_dir(filename: str) -> npt.NDArray[np.float64]:
     rel_path = f"assets/{filename}"
     resource = importlib.resources.files("cosmica.scenario").joinpath(rel_path)
     with importlib.resources.as_file(resource) as f:
         logger.debug(f"Loading NumPy array from {f}")
-        return np.asarray(np.load(f), dtype=np.float64)
+        loaded = np.load(f, allow_pickle=False)
+        if not isinstance(loaded, np.ndarray) or loaded.dtype != np.dtype(np.float64):
+            msg = f"Expected a float64 NumPy array in {f}."
+            raise TypeError(msg)
+        data: npt.NDArray[np.float64] = loaded
+        return data
 
 
 def get_ais_density_data() -> Annotated[

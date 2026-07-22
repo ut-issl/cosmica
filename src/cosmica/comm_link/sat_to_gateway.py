@@ -6,7 +6,7 @@ __all__ = [
 ]
 
 from collections.abc import Callable, Collection, Mapping, Sequence
-from typing import Annotated
+from typing import Annotated, Any
 
 import numpy as np
 import numpy.typing as npt
@@ -24,7 +24,9 @@ from .base import CommLinkCalculator, CommLinkPerformance, MemorylessCommLinkCal
 from .uncertainty import ApertureAveragedLogNormalScintillationModel, AtmosphericScintillationModel
 
 
-class SatToGatewayBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Satellite, Gateway]):
+class SatToGatewayBinaryCommLinkCalculator(
+    MemorylessCommLinkCalculator[Satellite[Any], Gateway[Any]],
+):
     """Calculate satellite-to-gateway (downlink) communication link performance.
 
     The link performance is calculated as a binary value, i.e., 1 if the link is available and 0 otherwise.
@@ -44,11 +46,11 @@ class SatToGatewayBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Satellit
 
     def calc(
         self,
-        edges: Collection[tuple[Satellite, Gateway]],
+        edges: Collection[tuple[Satellite[Any], Gateway[Any]]],
         *,
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
         rng: np.random.Generator,  # noqa: ARG002 For interface compatibility
-    ) -> dict[tuple[Satellite, Gateway], CommLinkPerformance]:
+    ) -> dict[tuple[Satellite[Any], Gateway[Any]], CommLinkPerformance]:
         return {
             edge: self._calc_satellite_to_gateway(
                 satellite_position_ecef=dynamics_data.satellite_position_ecef[edge[0]],
@@ -61,7 +63,7 @@ class SatToGatewayBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Satellit
     def _calc_satellite_to_gateway(
         self,
         satellite_position_ecef: npt.NDArray[np.floating],
-        gateway: Gateway,
+        gateway: Gateway[Any],
         sun_direction_ecef: npt.NDArray[np.floating],
     ) -> CommLinkPerformance:
         assert satellite_position_ecef.shape == (3,)
@@ -92,7 +94,9 @@ class SatToGatewayBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Satellit
         )
 
 
-class SatToGatewayBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, Gateway]):
+class SatToGatewayBinaryMemoryCommLinkCalculator(
+    CommLinkCalculator[Satellite[Any], Gateway[Any]],
+):
     """Calculate satellite-to-gateway (downlink) communication link performance with link acquisition delay.
 
     The link performance is calculated as a binary value, i.e., 1 if the link is available and 0 otherwise.
@@ -108,7 +112,7 @@ class SatToGatewayBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, G
     def __init__(
         self,
         *,
-        memoryless_calculator: MemorylessCommLinkCalculator[Satellite, Gateway],
+        memoryless_calculator: MemorylessCommLinkCalculator[Satellite[Any], Gateway[Any]],
         link_acquisition_time: float = 60.0,
         skip_link_acquisition_at_simulation_start: bool = True,
     ) -> None:
@@ -118,19 +122,19 @@ class SatToGatewayBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, G
 
     def calc(
         self,
-        edges_time_series: Sequence[Collection[tuple[Satellite, Gateway]]],
+        edges_time_series: Sequence[Collection[tuple[Satellite[Any], Gateway[Any]]]],
         *,
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
         rng: np.random.Generator,
-    ) -> list[dict[tuple[Satellite, Gateway], CommLinkPerformance]]:
+    ) -> list[dict[tuple[Satellite[Any], Gateway[Any]], CommLinkPerformance]]:
         assert len(edges_time_series) == len(dynamics_data.time)
 
-        comm_link_time_series: list[dict[tuple[Satellite, Gateway], CommLinkPerformance]] = []
+        comm_link_time_series: list[dict[tuple[Satellite[Any], Gateway[Any]], CommLinkPerformance]] = []
 
         # ― per-directed-edge state ―
         # Link acquisition is tracked independently for each directed edge (satellite, gateway).
-        link_acquisition_start_time: dict[tuple[Satellite, Gateway], np.datetime64] = {}
-        prev_edges: frozenset[tuple[Satellite, Gateway]] = frozenset()
+        link_acquisition_start_time: dict[tuple[Satellite[Any], Gateway[Any]], np.datetime64] = {}
+        prev_edges: frozenset[tuple[Satellite[Any], Gateway[Any]]] = frozenset()
 
         for time_index, edges_snapshot in enumerate(edges_time_series):
             current_time: np.datetime64 = dynamics_data.time[time_index]
@@ -185,23 +189,25 @@ class SatToGatewayBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, G
         return comm_link_time_series
 
 
-class SatToGatewayStochasticBinaryCommLinkCalculator(CommLinkCalculator[Satellite, Gateway]):
+class SatToGatewayStochasticBinaryCommLinkCalculator(
+    CommLinkCalculator[Satellite[Any], Gateway[Any]],
+):
     def __init__(
         self,
         *,
-        memoryless_calculator: MemorylessCommLinkCalculator[Satellite, Gateway],
-        stochastic_model_factory: Callable[[Node, Node], CloudStates[np.bool_]],
+        memoryless_calculator: MemorylessCommLinkCalculator[Satellite[Any], Gateway[Any]],
+        stochastic_model_factory: Callable[[Node[Any], Node[Any]], CloudStates[np.bool_]],
     ) -> None:
         self.memoryless_calculator = memoryless_calculator
         self.stochastic_model_factory = stochastic_model_factory
 
     def calc(
         self,
-        edges_time_series: Sequence[Collection[tuple[Satellite, Gateway]]],
+        edges_time_series: Sequence[Collection[tuple[Satellite[Any], Gateway[Any]]]],
         *,
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
         rng: np.random.Generator,
-    ) -> list[dict[tuple[Satellite, Gateway], CommLinkPerformance]]:
+    ) -> list[dict[tuple[Satellite[Any], Gateway[Any]], CommLinkPerformance]]:
         assert len(edges_time_series) == len(dynamics_data.time)
         all_edges = {edge for edges_snapshot in edges_time_series for edge in edges_snapshot}
         edge_interrupted = {
@@ -224,7 +230,9 @@ class SatToGatewayStochasticBinaryCommLinkCalculator(CommLinkCalculator[Satellit
         return comm_link_performance
 
 
-class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCalculator[Satellite, GatewayOGS]):
+class SatToGatewayBinaryCommLinkCalculatorWithScintillation(
+    MemorylessCommLinkCalculator[Satellite[Any], GatewayOGS[Any]],
+):
     """Calculate satellite-to-gateway communication link performance for each edge in a network with turbulence.
 
     The link performance is calculated as a binary value, i.e., 1 if the link is available and 0 otherwise.
@@ -239,7 +247,7 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
         lna_gain: float,
         lct_p0: float,
         turbulence_model_factory: Callable[
-            [GatewayOGS],
+            [GatewayOGS[Any]],
             AtmosphericScintillationModel,
         ] = lambda gateway: ApertureAveragedLogNormalScintillationModel(
             default_rytov_variance=gateway.rytov_variance,
@@ -256,11 +264,11 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
 
     def calc(
         self,
-        edges: Collection[tuple[Satellite, GatewayOGS]],
+        edges: Collection[tuple[Satellite[Any], GatewayOGS[Any]]],
         *,
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
         rng: np.random.Generator,
-    ) -> dict[tuple[Satellite, GatewayOGS], CommLinkPerformance]:
+    ) -> dict[tuple[Satellite[Any], GatewayOGS[Any]], CommLinkPerformance]:
         gateway_turbulence_map = self._map_turbulence2gateway(edges)
         return {
             edge: self._calc_satellite_to_gateway(
@@ -276,9 +284,9 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
 
     def _map_turbulence2gateway(
         self,
-        edges: Collection[tuple[Satellite, GatewayOGS]],
-    ) -> dict[GatewayOGS, AtmosphericScintillationModel]:
-        gateway_turbulence_map: dict[GatewayOGS, AtmosphericScintillationModel] = {}
+        edges: Collection[tuple[Satellite[Any], GatewayOGS[Any]]],
+    ) -> dict[GatewayOGS[Any], AtmosphericScintillationModel]:
+        gateway_turbulence_map: dict[GatewayOGS[Any], AtmosphericScintillationModel] = {}
         for edge in edges:
             if gateway_turbulence_map.get(edge[1]) is None:
                 gateway_turbulence_map[edge[1]] = self.turbulence_model_factory(edge[1])
@@ -291,11 +299,11 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
             Doc("Distance between satellite and OGS"),
         ],
         gateway: Annotated[
-            GatewayOGS,
+            GatewayOGS[Any],
             Doc("Gateway instance in the satellite-gateway link"),
         ],
         turbulence_map: Annotated[
-            Mapping[GatewayOGS, AtmosphericScintillationModel],
+            Mapping[GatewayOGS[Any], AtmosphericScintillationModel],
             Doc("Dictionary mapping each OGS to its respective turbulence model."),
         ],
         rng: np.random.Generator,
@@ -321,8 +329,8 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
     def _calc_satellite_to_gateway(
         self,
         satellite_position_ecef: npt.NDArray[np.floating],
-        gateway: GatewayOGS,
-        gateway_turbulence_map: Mapping[GatewayOGS, AtmosphericScintillationModel],
+        gateway: GatewayOGS[Any],
+        gateway_turbulence_map: Mapping[GatewayOGS[Any], AtmosphericScintillationModel],
         sun_direction_ecef: npt.NDArray[np.floating],
         rng: np.random.Generator,
         sun_exclusion_angle: float = 0.0,

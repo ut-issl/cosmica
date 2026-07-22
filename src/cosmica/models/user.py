@@ -11,7 +11,7 @@ from .terminal import CommunicationTerminal
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class User[T: Hashable = Hashable](Node[T], ABC):
+class User[T: Hashable](Node[T], ABC):
     """Base model for a user."""
 
     id: T
@@ -19,7 +19,7 @@ class User[T: Hashable = Hashable](Node[T], ABC):
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class StationaryOnGroundUser[T: Hashable = Hashable](User[T]):
+class StationaryOnGroundUser[T: Hashable](User[T]):
     """Model for a stationary user on the ground."""
 
     id: T

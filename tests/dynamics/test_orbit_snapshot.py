@@ -28,6 +28,21 @@ if TYPE_CHECKING:
     from syrupy.types import SerializableData
 
 
+def _datetime_range(start: np.datetime64, step: np.timedelta64, count: int) -> npt.NDArray[np.datetime64]:
+    return np.arange(start, start + step * count, step)
+
+
+def _timedelta_range(step: np.timedelta64, count: int) -> npt.NDArray[np.timedelta64]:
+    return np.arange(step * 0, step * count, step)
+
+
+def _datetimes_from_second_offsets(
+    start: np.datetime64,
+    offsets: npt.NDArray[np.integer],
+) -> npt.NDArray[np.datetime64]:
+    return np.array([start + np.timedelta64(int(offset), "s") for offset in offsets])
+
+
 class NumpySnapshotExtension(AmberSnapshotExtension):
     """Snapshot extension for NumPy arrays with human-readable format and tolerance-based comparison."""
 
@@ -80,7 +95,7 @@ class NumpySnapshotExtension(AmberSnapshotExtension):
 def test_circular_equatorial_orbit_snapshot(snapshot: SnapshotAssertion) -> None:
     """Snapshot test for equatorial circular orbit."""
     epoch = np.datetime64("2026-01-01T00:00:00")
-    time_array = epoch + np.timedelta64(60, "s") * np.arange(10)
+    time_array = _datetime_range(epoch, np.timedelta64(60, "s"), 10)
 
     model = CircularSatelliteOrbitModel(
         semi_major_axis=7000e3,  # 7000 km
@@ -99,7 +114,7 @@ def test_circular_equatorial_orbit_snapshot(snapshot: SnapshotAssertion) -> None
 def test_circular_polar_orbit_snapshot(snapshot: SnapshotAssertion) -> None:
     """Snapshot test for polar circular orbit."""
     epoch = np.datetime64("2026-01-01T00:00:00")
-    time_array = epoch + np.timedelta64(120, "s") * np.arange(10)
+    time_array = _datetime_range(epoch, np.timedelta64(120, "s"), 10)
 
     model = CircularSatelliteOrbitModel(
         semi_major_axis=7000e3,
@@ -118,7 +133,7 @@ def test_circular_polar_orbit_snapshot(snapshot: SnapshotAssertion) -> None:
 def test_circular_inclined_orbit_snapshot(snapshot: SnapshotAssertion) -> None:
     """Snapshot test for inclined circular orbit (ISS-like)."""
     epoch = np.datetime64("2026-01-01T12:00:00")
-    time_array = epoch + np.timedelta64(90, "s") * np.arange(15)
+    time_array = _datetime_range(epoch, np.timedelta64(90, "s"), 15)
 
     model = CircularSatelliteOrbitModel(
         semi_major_axis=6793e3,  # ~420 km altitude
@@ -151,7 +166,7 @@ def test_circular_full_orbit_period_snapshot(snapshot: SnapshotAssertion) -> Non
 
     # Calculate orbital period and sample at 20 points
     period_seconds = 2 * np.pi / propagator.mean_motion
-    time_array = epoch + np.timedelta64(1, "s") * np.linspace(0, period_seconds, 20).astype(int)
+    time_array = _datetimes_from_second_offsets(epoch, np.linspace(0, period_seconds, 20).astype(int))
     states = propagator.propagate(time_array)
 
     assert states == snapshot(extension_class=NumpySnapshotExtension)
@@ -161,7 +176,7 @@ def test_circular_geostationary_orbit_snapshot(snapshot: SnapshotAssertion) -> N
     """Snapshot test for geostationary orbit altitude."""
     epoch = np.datetime64("2026-01-01T00:00:00")
     # GEO altitude: ~35,786 km, so semi-major axis = 42,164 km
-    time_array = epoch + np.timedelta64(600, "s") * np.arange(10)
+    time_array = _datetime_range(epoch, np.timedelta64(600, "s"), 10)
 
     model = CircularSatelliteOrbitModel(
         semi_major_axis=42164e3,
@@ -180,7 +195,7 @@ def test_circular_geostationary_orbit_snapshot(snapshot: SnapshotAssertion) -> N
 def test_circular_leo_constellation_snapshot(snapshot: SnapshotAssertion) -> None:
     """Snapshot test for LEO constellation-like orbit."""
     epoch = np.datetime64("2026-01-01T06:00:00")
-    time_array = epoch + np.timedelta64(100, "s") * np.arange(12)
+    time_array = _datetime_range(epoch, np.timedelta64(100, "s"), 12)
 
     model = CircularSatelliteOrbitModel(
         semi_major_axis=6928e3,  # ~550 km altitude (Starlink-like)
@@ -199,7 +214,7 @@ def test_circular_leo_constellation_snapshot(snapshot: SnapshotAssertion) -> Non
 def test_circular_propagate_from_epoch_snapshot(snapshot: SnapshotAssertion) -> None:
     """Snapshot test for propagate_from_epoch method."""
     epoch = np.datetime64("2026-01-01T00:00:00")
-    time_deltas = np.timedelta64(60, "s") * np.arange(10)
+    time_deltas = _timedelta_range(np.timedelta64(60, "s"), 10)
 
     model = CircularSatelliteOrbitModel(
         semi_major_axis=7000e3,
@@ -221,7 +236,7 @@ def test_circular_propagate_from_epoch_snapshot(snapshot: SnapshotAssertion) -> 
 def test_elliptical_circular_case_snapshot(snapshot: SnapshotAssertion) -> None:
     """Snapshot test for elliptical propagator with zero eccentricity."""
     epoch = np.datetime64("2026-01-01T00:00:00")
-    time_array = epoch + np.timedelta64(60, "s") * np.arange(10)
+    time_array = _datetime_range(epoch, np.timedelta64(60, "s"), 10)
 
     model = EllipticalSatelliteOrbitModel(
         semi_major_axis=7000e3,
@@ -245,7 +260,7 @@ def test_elliptical_circular_case_snapshot(snapshot: SnapshotAssertion) -> None:
 def test_elliptical_eccentric_orbit_snapshot(snapshot: SnapshotAssertion) -> None:
     """Snapshot test for moderately eccentric orbit."""
     epoch = np.datetime64("2026-01-01T00:00:00")
-    time_array = epoch + np.timedelta64(120, "s") * np.arange(15)
+    time_array = _datetime_range(epoch, np.timedelta64(120, "s"), 15)
 
     model = EllipticalSatelliteOrbitModel(
         semi_major_axis=10000e3,
@@ -269,7 +284,7 @@ def test_elliptical_eccentric_orbit_snapshot(snapshot: SnapshotAssertion) -> Non
 def test_elliptical_highly_eccentric_orbit_snapshot(snapshot: SnapshotAssertion) -> None:
     """Snapshot test for highly eccentric orbit (Molniya-like)."""
     epoch = np.datetime64("2026-01-01T00:00:00")
-    time_array = epoch + np.timedelta64(300, "s") * np.arange(20)
+    time_array = _datetime_range(epoch, np.timedelta64(300, "s"), 20)
 
     model = EllipticalSatelliteOrbitModel(
         semi_major_axis=26600e3,  # Molniya orbit
@@ -293,7 +308,7 @@ def test_elliptical_highly_eccentric_orbit_snapshot(snapshot: SnapshotAssertion)
 def test_elliptical_iss_like_orbit_snapshot(snapshot: SnapshotAssertion) -> None:
     """Snapshot test for ISS-like orbit parameters."""
     epoch = np.datetime64("2026-01-01T12:00:00")
-    time_array = epoch + np.timedelta64(90, "s") * np.arange(10)
+    time_array = _datetime_range(epoch, np.timedelta64(90, "s"), 10)
 
     model = EllipticalSatelliteOrbitModel(
         semi_major_axis=6793e3,  # ~420 km altitude
@@ -317,7 +332,7 @@ def test_elliptical_iss_like_orbit_snapshot(snapshot: SnapshotAssertion) -> None
 def test_elliptical_teme_reference_frame_snapshot(snapshot: SnapshotAssertion) -> None:
     """Snapshot test for TEME reference frame."""
     epoch = np.datetime64("2026-01-01T00:00:00")
-    time_array = epoch + np.timedelta64(60, "s") * np.arange(10)
+    time_array = _datetime_range(epoch, np.timedelta64(60, "s"), 10)
 
     model = EllipticalSatelliteOrbitModel(
         semi_major_axis=7000e3,
@@ -343,7 +358,7 @@ def test_elliptical_teme_reference_frame_snapshot(snapshot: SnapshotAssertion) -
 def test_elliptical_j2000_reference_frame_snapshot(snapshot: SnapshotAssertion) -> None:
     """Snapshot test for J2000 reference frame."""
     epoch = np.datetime64("2026-01-01T00:00:00")
-    time_array = epoch + np.timedelta64(60, "s") * np.arange(10)
+    time_array = _datetime_range(epoch, np.timedelta64(60, "s"), 10)
 
     model = EllipticalSatelliteOrbitModel(
         semi_major_axis=7000e3,
@@ -367,7 +382,7 @@ def test_elliptical_j2000_reference_frame_snapshot(snapshot: SnapshotAssertion) 
 def test_elliptical_gto_orbit_snapshot(snapshot: SnapshotAssertion) -> None:
     """Snapshot test for Geostationary Transfer Orbit (GTO)."""
     epoch = np.datetime64("2026-01-01T00:00:00")
-    time_array = epoch + np.timedelta64(200, "s") * np.arange(15)
+    time_array = _datetime_range(epoch, np.timedelta64(200, "s"), 15)
 
     # GTO typical parameters
     model = EllipticalSatelliteOrbitModel(
@@ -404,7 +419,7 @@ def test_sun_direction_daily_snapshot(snapshot: SnapshotAssertion) -> None:
     """Snapshot test for sun direction over 24 hours."""
     start_time = np.datetime64("2026-01-01T00:00:00")
     # Sample every 2 hours for 24 hours
-    time_array = start_time + np.timedelta64(2, "h") * np.arange(13)
+    time_array = _datetime_range(start_time, np.timedelta64(2, "h"), 13)
     sun_dir = get_sun_direction_eci(time_array)
 
     assert snapshot(extension_class=NumpySnapshotExtension) == sun_dir
@@ -429,7 +444,7 @@ def test_sun_direction_yearly_snapshot(snapshot: SnapshotAssertion) -> None:
     """Snapshot test for sun direction over a full year."""
     start_time = np.datetime64("2026-01-01T00:00:00")
     # Sample every 30 days for a year
-    time_array = start_time + np.timedelta64(30, "D") * np.arange(13)
+    time_array = _datetime_range(start_time, np.timedelta64(30, "D"), 13)
     sun_dir = get_sun_direction_eci(time_array)
 
     assert snapshot(extension_class=NumpySnapshotExtension) == sun_dir
@@ -453,7 +468,7 @@ def test_sun_direction_equinox_solstice_snapshot(snapshot: SnapshotAssertion) ->
 def test_sun_direction_intraday_snapshot(snapshot: SnapshotAssertion) -> None:
     """Snapshot test for sun direction at different times of day."""
     base_date = np.datetime64("2026-06-15")
-    times = base_date + np.timedelta64(1, "h") * np.arange(0, 24, 3)
+    times = _datetime_range(base_date, np.timedelta64(3, "h"), 8)
     sun_dir = get_sun_direction_eci(times)
 
     assert snapshot(extension_class=NumpySnapshotExtension) == sun_dir

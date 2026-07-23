@@ -275,12 +275,12 @@ def build_max_visibility_handover_g2c_topology(  # noqa: C901
     for time_idx in range(n_time):
         for ground_node_idx, _ground_node in enumerate(ground_nodes_list):
             if time_idx == 0:
-                if left_visibility_time_step[ground_node_idx, :, time_idx].sum == 0:
+                if left_visibility_time_step[ground_node_idx, :, time_idx].sum() == 0:
                     select_sat_idx[ground_node_idx] = -1
                     continue
                 select_max_visibility_satellite(ground_node_idx, time_idx)
             else:
-                if left_visibility_time_step[ground_node_idx, :, time_idx].sum == 0:
+                if left_visibility_time_step[ground_node_idx, :, time_idx].sum() == 0:
                     select_sat_idx[ground_node_idx] = -1
                     continue
                 if select_sat_idx[ground_node_idx] >= 0:

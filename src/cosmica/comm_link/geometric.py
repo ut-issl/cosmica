@@ -12,6 +12,7 @@ from cosmica.dtos import DynamicsData
 from cosmica.models import ConstellationSatellite, Gateway
 from cosmica.utils.constants import SPEED_OF_LIGHT
 from cosmica.utils.coordinates import ecef2aer
+from cosmica.utils.vector import is_line_segment_clear_of_earth
 
 from .base import CommLinkPerformance, MemorylessCommLinkCalculator
 
@@ -116,9 +117,17 @@ class GeometricCommLinkCalculator(MemorylessCommLinkCalculator[_NodeType, _NodeT
             -relative_angular_velocity_translational_eci - attitude_angular_velocities_eci[1],
         )
 
-        link_available = distance < self.max_inter_satellite_distance and all(
-            np.linalg.norm(relative_angular_velocity) < self.max_relative_angular_velocity
-            for relative_angular_velocity in relative_angular_velocities
+        link_available = (
+            distance < self.max_inter_satellite_distance
+            and is_line_segment_clear_of_earth(
+                positions_eci[0],
+                positions_eci[1],
+                lowest_altitude=self.lowest_altitude,
+            )
+            and all(
+                np.linalg.norm(relative_angular_velocity) < self.max_relative_angular_velocity
+                for relative_angular_velocity in relative_angular_velocities
+            )
         )
 
         return CommLinkPerformance(

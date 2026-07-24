@@ -5,6 +5,7 @@ __all__ = [
     "decompose_wrt_reference_vector",
     "generate_normal_vectors",
     "is_column_vector",
+    "is_line_segment_clear_of_earth",
     "is_satellite_in_eclipse",
     "normalize",
     "perturb_vector",
@@ -226,6 +227,26 @@ def closest_point_to_origin_on_line(
 
     # Compute r*
     return r1 + t * (r2 - r1)
+
+
+def is_line_segment_clear_of_earth(
+    r1: Annotated[npt.NDArray[np.floating], Doc("Position vector of the first segment endpoint.")],
+    r2: Annotated[npt.NDArray[np.floating], Doc("Position vector of the second segment endpoint.")],
+    *,
+    lowest_altitude: Annotated[float, Doc("Minimum permitted altitude above Earth's radius.")] = 0.0,
+) -> bool:
+    """Check whether a finite line segment maintains the required Earth clearance.
+
+    A segment whose closest point is exactly ``EARTH_RADIUS + lowest_altitude``
+    from Earth's center is considered clear.
+    """
+    closest_point = closest_point_to_origin_on_line(
+        r1,
+        r2,
+        extend_at_r1=False,
+        extend_at_r2=False,
+    )
+    return bool(np.linalg.norm(closest_point) >= EARTH_RADIUS + lowest_altitude)
 
 
 def azimuth_elevation_to_unit_vector(

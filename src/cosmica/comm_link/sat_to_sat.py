@@ -17,7 +17,13 @@ from typing_extensions import Doc
 from cosmica.dtos import DynamicsData
 from cosmica.models import OpticalCommunicationTerminal, Satellite, SatelliteTerminal
 from cosmica.utils.constants import SPEED_OF_LIGHT
-from cosmica.utils.vector import angle_between, is_satellite_in_eclipse, normalize, unit_vector_to_azimuth_elevation
+from cosmica.utils.vector import (
+    angle_between,
+    is_line_segment_clear_of_earth,
+    is_satellite_in_eclipse,
+    normalize,
+    unit_vector_to_azimuth_elevation,
+)
 
 from .base import CommLinkCalculator, CommLinkPerformance, MemorylessCommLinkCalculator
 
@@ -129,6 +135,11 @@ class SatToSatBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Satellite, S
 
         link_available = bool(
             distance < self.max_inter_satellite_distance
+            and is_line_segment_clear_of_earth(
+                positions_eci[0],
+                positions_eci[1],
+                lowest_altitude=self.lowest_altitude,
+            )
             and all(
                 float(np.linalg.norm(relative_angular_velocity)) < self.max_relative_angular_velocity
                 for relative_angular_velocity in relative_angular_velocities
@@ -389,6 +400,11 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
         ]
         link_available = bool(
             distance < self.max_inter_satellite_distance
+            and is_line_segment_clear_of_earth(
+                positions_eci[0],
+                positions_eci[1],
+                lowest_altitude=self.lowest_altitude,
+            )
             and all(
                 float(np.linalg.norm(relative_angular_velocity)) < self.max_relative_angular_velocity
                 for relative_angular_velocity in relative_angular_velocities

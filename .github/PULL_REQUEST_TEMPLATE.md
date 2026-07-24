@@ -1,22 +1,15 @@
-## Related issues
-<!-- Mention any issues that this pull request is related (e.g., #1). Consider using the `development` field if you want to close the issue automatically when this pull request is merged. -->
+## Summary
 
-## Description
-<!-- Provide a detailed description of this pull request. -->
+<!-- What changed and why? -->
 
-## Test results
-<!-- Provide the test results and a link to the detailed results log. -->
+## AI assistance
 
-## Impact
-<!-- Describe the scope of influence of the changes, e.g., `The behavior of feature ** changes.` -->
+<!-- This disclosure is intended to help reviewers understand how the change was produced. AI use is allowed; please describe it openly. -->
 
-## Supplementary information
-<!-- Provide any supplementary information. -->
+- AI used: <!-- no / yes — briefly describe how -->
+- Human review of AI-assisted code: <!-- complete / partial / pending -->
 
-<!--
-## Notes
-- _Link the issue to any related projects if applicable._
-- _Assign the appropriate member(s) to this pull request as `Assignees`._
-- _Select `Reviewers` for this pull request._
-- _Apply the `priority` label._
--->
+## Breaking changes
+
+- [ ] No breaking changes
+- [ ] Breaking changes; the `breaking change` label is applied

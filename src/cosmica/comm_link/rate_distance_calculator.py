@@ -2,7 +2,7 @@ __all__ = ["SatToSatBinaryCommLinkCalculatorWithRateCalc"]
 
 from collections.abc import Collection
 from itertools import chain
-from typing import Annotated
+from typing import Annotated, Any
 
 import numpy as np
 import numpy.typing as npt
@@ -16,7 +16,9 @@ from cosmica.utils.vector import angle_between, is_satellite_in_eclipse
 from .base import CommLinkPerformance, MemorylessCommLinkCalculator
 
 
-class SatToSatBinaryCommLinkCalculatorWithRateCalc(MemorylessCommLinkCalculator[Satellite, Satellite]):
+class SatToSatBinaryCommLinkCalculatorWithRateCalc(
+    MemorylessCommLinkCalculator[Satellite[Any], Satellite[Any]],
+):
     """Calculate satellite-to-satellite communication link performance for each directed edge.
 
     The link performance is calculated as a binary value, i.e., 1 if the link is available and 0 otherwise.
@@ -50,11 +52,11 @@ class SatToSatBinaryCommLinkCalculatorWithRateCalc(MemorylessCommLinkCalculator[
 
     def calc(
         self,
-        edges: Collection[tuple[Satellite, Satellite]],
+        edges: Collection[tuple[Satellite[Any], Satellite[Any]]],
         *,
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
         rng: np.random.Generator,  # noqa: ARG002 For interface compatibility
-    ) -> dict[tuple[Satellite, Satellite], CommLinkPerformance]:
+    ) -> dict[tuple[Satellite[Any], Satellite[Any]], CommLinkPerformance]:
         return {
             edge: self._calc_satellite_to_satellite(
                 positions_eci=(
@@ -87,7 +89,7 @@ class SatToSatBinaryCommLinkCalculatorWithRateCalc(MemorylessCommLinkCalculator[
         noise = t_sys * self.link_capacity * BOLTZ_CONST * noise_factor
         gain = 10 ** (self.lna_gain / 10)  # convert from dB to W
         snr = gain * power / noise
-        return self.link_capacity * np.log2(1 + snr)
+        return float(self.link_capacity * np.log2(1 + snr))
 
     def _calc_satellite_to_satellite(
         self,

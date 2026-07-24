@@ -51,7 +51,12 @@ class SatelliteOrbitState:
         )
 
     def calc_position_ecef(self, dcm_eci_to_ecef: npt.NDArray[np.floating]) -> npt.NDArray[np.floating]:
-        return np.einsum("ijk,ik->ij", dcm_eci_to_ecef, self.position_eci)
+        position_ecef: npt.NDArray[np.floating] = np.einsum(
+            "ijk,ik->ij",
+            dcm_eci_to_ecef,
+            self.position_eci,
+        )
+        return position_ecef
 
 
 class SatelliteOrbitPropagator(ABC):
@@ -122,7 +127,7 @@ class EllipticalSatelliteOrbitPropagator(SatelliteOrbitPropagator):
 
     @cached_property
     def mean_motion(self) -> float:
-        return np.sqrt(EARTH_MU / self._model.semi_major_axis**3)
+        return float(np.sqrt(EARTH_MU / self._model.semi_major_axis**3))
 
     def datetime64_utc_to_skytime(self, t_datetime64: npt.NDArray[np.datetime64]) -> Time:
         t_datetimes = [time.astype(datetime).replace(tzinfo=utc) for time in t_datetime64]

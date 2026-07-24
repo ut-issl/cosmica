@@ -2,6 +2,7 @@ __all__ = [
     "Scenario",
 ]
 from dataclasses import dataclass, field
+from typing import Any
 
 import numpy as np
 import numpy.typing as npt
@@ -17,10 +18,10 @@ class Scenario:
     """The simulation scenario."""
 
     time: npt.NDArray[np.datetime64]
-    constellation: Constellation
-    gateways: list[Gateway] = field(default_factory=list)
-    users: list[User] = field(default_factory=list)
-    demands: list[Demand] = field(default_factory=list)
+    constellation: Constellation[Any, Any, Any]
+    gateways: list[Gateway[Any]] = field(default_factory=list)
+    users: list[User[Any]] = field(default_factory=list)
+    demands: list[Demand[Any]] = field(default_factory=list)
 
     def build_topology(self) -> None:
         """Build the topology of the scenario."""

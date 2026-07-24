@@ -6,12 +6,12 @@ __all__ = [
 ]
 from abc import ABC, abstractmethod
 from collections.abc import Collection, Sequence
-from typing import TypedDict
+from typing import Any, TypedDict
 
 import numpy as np
 
 from cosmica.dtos import DynamicsData
-from cosmica.models import Node
+from cosmica.models import Node, Satellite
 
 
 # Use TypedDict instead of dataclass so it can be treated nicely by nx.set_edge_attributes
@@ -22,33 +22,33 @@ class CommLinkPerformance(TypedDict):
     link_available: bool
 
 
-class MemorylessCommLinkCalculator[T: Node, U: Node](ABC):
+class MemorylessCommLinkCalculator[T: Node[Any], U: Node[Any]](ABC):
     @abstractmethod
     def calc(
         self,
         edges: Collection[tuple[T, U]],
         *,
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
         rng: np.random.Generator,
     ) -> dict[tuple[T, U], CommLinkPerformance]:
         """Calculate communication link performance for each directed edge in a network."""
         raise NotImplementedError
 
 
-class CommLinkCalculator[T: Node, U: Node](ABC):
+class CommLinkCalculator[T: Node[Any], U: Node[Any]](ABC):
     @abstractmethod
     def calc(
         self,
         edges_time_series: Sequence[Collection[tuple[T, U]]],
         *,
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
         rng: np.random.Generator,
     ) -> list[dict[tuple[T, U], CommLinkPerformance]]:
         """Calculate communication link performance for each directed edge in a network."""
         raise NotImplementedError
 
 
-class MemorylessCommLinkCalculatorWrapper[T: Node, U: Node](CommLinkCalculator[T, U]):
+class MemorylessCommLinkCalculatorWrapper[T: Node[Any], U: Node[Any]](CommLinkCalculator[T, U]):
     """Convert a memoryless calculator to a time series calculator by calling the memoryless one at each time step."""
 
     def __init__(
@@ -62,7 +62,7 @@ class MemorylessCommLinkCalculatorWrapper[T: Node, U: Node](CommLinkCalculator[T
         self,
         edges_time_series: Sequence[Collection[tuple[T, U]]],
         *,
-        dynamics_data: DynamicsData,
+        dynamics_data: DynamicsData[Satellite[Any]],
         rng: np.random.Generator,
     ) -> list[dict[tuple[T, U], CommLinkPerformance]]:
         assert len(edges_time_series) == len(

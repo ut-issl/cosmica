@@ -54,6 +54,7 @@ class Constellation[
 
 
 def build_walker_delta_constellation(
+    *,
     semi_major_axis: float,
     inclination: float,
     n_total_sats: int,

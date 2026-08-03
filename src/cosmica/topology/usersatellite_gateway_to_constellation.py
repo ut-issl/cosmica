@@ -62,6 +62,7 @@ class HybridUS2CG2CTopologyBuilder:
 
 
 def _handle_user_satellite_connection(
+    *,
     user_idx: int,
     user_satellites: list[UserSatellite],
     constellation_satellites: list[ConstellationSatellite],
@@ -118,6 +119,7 @@ def _handle_user_satellite_connection(
 
 
 def _handle_ground_node_connection(
+    *,
     ground_idx: int,
     ground_nodes: list[Gateway | StationaryOnGroundUser],
     constellation_satellites: list[ConstellationSatellite],
@@ -306,6 +308,7 @@ def _calculate_remaining_connection_time(
 
 
 def _assign_connection(
+    *,
     node_idx: int,
     node: UserSatellite | Gateway | StationaryOnGroundUser,
     constellation_satellites: list[ConstellationSatellite],
@@ -365,29 +368,29 @@ def _build_topology_graphs(
         # Phase 1: Handle user satellites (priority)
         for user_idx, user_sat in enumerate(user_satellites):
             _assign_connection(
-                user_idx,
-                user_sat,
-                constellation_satellites,
-                user_visibility,
-                user_remaining,
-                time_idx,
-                user_connections,
-                assigned_satellites,
-                graph,
+                node_idx=user_idx,
+                node=user_sat,
+                constellation_satellites=constellation_satellites,
+                visibility=user_visibility,
+                remaining=user_remaining,
+                time_idx=time_idx,
+                connections=user_connections,
+                assigned_satellites=assigned_satellites,
+                graph=graph,
             )
 
         # Phase 2: Handle ground nodes
         for ground_idx, ground_node in enumerate(ground_nodes):
             _assign_connection(
-                ground_idx,
-                ground_node,
-                constellation_satellites,
-                ground_visibility,
-                ground_remaining,
-                time_idx,
-                ground_connections,
-                assigned_satellites,
-                graph,
+                node_idx=ground_idx,
+                node=ground_node,
+                constellation_satellites=constellation_satellites,
+                visibility=ground_visibility,
+                remaining=ground_remaining,
+                time_idx=time_idx,
+                connections=ground_connections,
+                assigned_satellites=assigned_satellites,
+                graph=graph,
             )
 
         # Each physical link is bidirectional: represent it as two directed edges

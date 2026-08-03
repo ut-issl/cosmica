@@ -2,7 +2,6 @@ __all__ = [
     "ConstellationTimeSeriesTopologyBuilder",
     "ConstellationTopologyBuilder",
     "ElevationBasedG2CTopologyBuilder",
-    "ElevationBasedG2CTopologyBuilder",
     "GatewayToGatewayTopologyBuilder",
     "GatewayToInternetTopologyBuilder",
     "GroundToConstellationTopologyBuilder",

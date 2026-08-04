@@ -5,6 +5,7 @@ __all__ = [
     "decompose_wrt_reference_vector",
     "generate_normal_vectors",
     "is_column_vector",
+    "is_line_segment_clear_of_earth",
     "is_satellite_in_eclipse",
     "normalize",
     "perturb_vector",
@@ -21,7 +22,6 @@ from typing import Annotated, Any, Literal, overload
 import numpy as np
 import numpy.typing as npt
 from numpy import linalg as LA  # noqa: N812
-from numpy._typing import _64Bit
 from typing_extensions import Doc
 
 from .constants import EARTH_RADIUS
@@ -76,34 +76,42 @@ def rowwise_innerdot(
 
 
 @overload
-def normalize[S: npt.NBitBase](
-    x: npt.NDArray[np.integer[S]],
+def normalize[IntegerType: np.integer](
+    x: npt.NDArray[IntegerType],
     ord: float | Literal["fro", "nuc"] | None = None,
     axis: int | None = None,
-) -> npt.NDArray[np.floating[S]]: ...
+) -> npt.NDArray[np.floating]: ...
 
 
 @overload
-def normalize[S: npt.NBitBase](
-    x: npt.NDArray[np.floating[S]],
+def normalize[FloatType: np.floating](
+    x: npt.NDArray[FloatType],
     ord: float | Literal["fro", "nuc"] | None = None,
     axis: int | None = None,
-) -> npt.NDArray[np.floating[S]]: ...
+) -> npt.NDArray[FloatType]: ...
 
 
-def normalize[S: npt.NBitBase](
-    x,
-    ord=None,  # noqa: A002
-    axis=None,
-):
+@overload
+def normalize(
+    x: npt.NDArray[np.number],
+    ord: float | Literal["fro", "nuc"] | None = None,
+    axis: int | None = None,
+) -> npt.NDArray[np.floating]: ...
+
+
+def normalize(
+    x: npt.NDArray[np.number],
+    ord: float | Literal["fro", "nuc"] | None = None,  # noqa: A002
+    axis: int | None = None,
+) -> npt.NDArray[np.floating]:
     norm = LA.norm(x, ord=ord, axis=axis, keepdims=True)
     return np.where(norm == 0.0, x, x / norm)
 
 
-def angle_between[S: npt.NBitBase, T: npt.NBitBase](
-    x1: npt.NDArray[np.floating[S]] | npt.NDArray[np.integer[S]],
-    x2: npt.NDArray[np.floating[T]] | npt.NDArray[np.integer[T]],
-) -> npt.NDArray[np.floating[S | T | _64Bit]]:
+def angle_between[NumberType1: (np.floating, np.integer), NumberType2: (np.floating, np.integer)](
+    x1: npt.NDArray[NumberType1],
+    x2: npt.NDArray[NumberType2],
+) -> npt.NDArray[np.floating]:
     """Return the angle in radians between vectors x1 and x2.
 
     Ref: https://stackoverflow.com/questions/2827393/angles-between-two-n-dimensional-vectors-in-python/13849249#13849249.
@@ -187,10 +195,10 @@ def project_vector[NumberType: (np.floating, np.integer)](
     return projected_vec.reshape(returned_shape)
 
 
-def decompose_wrt_reference_vector[S: npt.NBitBase, T: npt.NBitBase](
-    vec: npt.NDArray[np.floating[S]],
-    ref: npt.NDArray[np.floating[T]],
-) -> tuple[npt.NDArray[np.floating[S | T]], npt.NDArray[np.floating[S | T]]]:
+def decompose_wrt_reference_vector[FloatType1: np.floating, FloatType2: np.floating](
+    vec: npt.NDArray[FloatType1],
+    ref: npt.NDArray[FloatType2],
+) -> tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]]:
     ref = normalize(ref, axis=-1)
 
     parallel_element = np.sum(vec * ref, axis=-1)
@@ -226,6 +234,26 @@ def closest_point_to_origin_on_line(
 
     # Compute r*
     return r1 + t * (r2 - r1)
+
+
+def is_line_segment_clear_of_earth(
+    r1: Annotated[npt.NDArray[np.floating], Doc("Position vector of the first segment endpoint.")],
+    r2: Annotated[npt.NDArray[np.floating], Doc("Position vector of the second segment endpoint.")],
+    *,
+    lowest_altitude: Annotated[float, Doc("Minimum permitted altitude above Earth's radius.")] = 0.0,
+) -> bool:
+    """Check whether a finite line segment maintains the required Earth clearance.
+
+    A segment whose closest point is exactly ``EARTH_RADIUS + lowest_altitude``
+    from Earth's center is considered clear.
+    """
+    closest_point = closest_point_to_origin_on_line(
+        r1,
+        r2,
+        extend_at_r1=False,
+        extend_at_r2=False,
+    )
+    return bool(np.linalg.norm(closest_point) >= EARTH_RADIUS + lowest_altitude)
 
 
 def azimuth_elevation_to_unit_vector(

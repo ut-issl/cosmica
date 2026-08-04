@@ -4031,14 +4031,14 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/comm_link/uncertainty.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">170</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">169</span>
+<span class="normal">170</span>
 <span class="normal">171</span>
 <span class="normal">172</span>
 <span class="normal">173</span>
 <span class="normal">174</span>
 <span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sample</span><span class="p">(</span>
+<span class="normal">176</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sample</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">rng</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span><span class="p">,</span>
     <span class="n">link_distance</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -4087,7 +4087,7 @@
 </h4>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">sigma2_scintillation</span><span class="p">(</span>
     <span class="n">link_distance</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
-    <span class="n">ryotv_variance</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">rytov_variance</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="float">float</span></span>
 </code></pre></div>
 
@@ -4139,11 +4139,10 @@
 <span class="normal">164</span>
 <span class="normal">165</span>
 <span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sigma2_scintillation</span><span class="p">(</span>
+<span class="normal">167</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sigma2_scintillation</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">link_distance</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">ryotv_variance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">rytov_variance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="nb">float</span><span class="p">,</span>
     <span class="n">Doc</span><span class="p">(</span>
@@ -4152,13 +4151,12 @@
         <span class="s1">&#39;Propagation through Random Media&quot; Chapter 10.&#39;</span><span class="p">,</span>
     <span class="p">),</span>
 <span class="p">]:</span>
-    <span class="k">if</span> <span class="n">ryotv_variance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_rytov_variance</span> <span class="o">!=</span> <span class="n">ryotv_variance</span><span class="p">:</span>
-        <span class="n">ryotv_variance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_rytov_variance</span>
+    <span class="n">variance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_rytov_variance</span> <span class="k">if</span> <span class="n">rytov_variance</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">rytov_variance</span>
     <span class="n">scaled_aperture</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scaled_aperture</span><span class="p">(</span><span class="n">link_distance</span><span class="o">=</span><span class="n">link_distance</span><span class="p">)</span>
-    <span class="n">num1</span> <span class="o">=</span> <span class="mf">0.49</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_rytov_variance</span>
-    <span class="n">den1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.65</span> <span class="o">*</span> <span class="n">scaled_aperture</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mf">1.11</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_rytov_variance</span> <span class="o">**</span> <span class="p">(</span><span class="mi">6</span> <span class="o">/</span> <span class="mi">5</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="mi">7</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)</span>
-    <span class="n">num2</span> <span class="o">=</span> <span class="mf">0.51</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_rytov_variance</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.69</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_rytov_variance</span> <span class="o">**</span> <span class="p">(</span><span class="mi">6</span> <span class="o">/</span> <span class="mi">5</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)</span>
-    <span class="n">den2</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">0.90</span> <span class="o">*</span> <span class="n">scaled_aperture</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mf">0.62</span> <span class="o">*</span> <span class="n">scaled_aperture</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_rytov_variance</span> <span class="o">**</span> <span class="p">(</span><span class="mi">6</span> <span class="o">/</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="n">num1</span> <span class="o">=</span> <span class="mf">0.49</span> <span class="o">*</span> <span class="n">variance</span>
+    <span class="n">den1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.65</span> <span class="o">*</span> <span class="n">scaled_aperture</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mf">1.11</span> <span class="o">*</span> <span class="n">variance</span> <span class="o">**</span> <span class="p">(</span><span class="mi">6</span> <span class="o">/</span> <span class="mi">5</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="mi">7</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)</span>
+    <span class="n">num2</span> <span class="o">=</span> <span class="mf">0.51</span> <span class="o">*</span> <span class="n">variance</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.69</span> <span class="o">*</span> <span class="n">variance</span> <span class="o">**</span> <span class="p">(</span><span class="mi">6</span> <span class="o">/</span> <span class="mi">5</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)</span>
+    <span class="n">den2</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">0.90</span> <span class="o">*</span> <span class="n">scaled_aperture</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mf">0.62</span> <span class="o">*</span> <span class="n">scaled_aperture</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">variance</span> <span class="o">**</span> <span class="p">(</span><span class="mi">6</span> <span class="o">/</span> <span class="mi">5</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">num1</span> <span class="o">/</span> <span class="n">den1</span> <span class="o">+</span> <span class="n">num2</span> <span class="o">/</span> <span class="n">den2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
 </code></pre></div></td></tr></table></div>
             </details>

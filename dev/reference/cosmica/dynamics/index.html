@@ -2787,9 +2787,11 @@
               <summary>Source code in <code>src/cosmica/dynamics/orbit.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">88</span>
 <span class="normal">89</span>
-<span class="normal">90</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">propagate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">SatelliteOrbitState</span><span class="p">:</span>
+<span class="normal">90</span>
+<span class="normal">91</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">propagate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">SatelliteOrbitState</span><span class="p">:</span>
     <span class="n">time_from_epoch</span> <span class="o">=</span> <span class="n">time</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">epoch</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">propagate_from_epoch</span><span class="p">(</span><span class="n">time_from_epoch</span><span class="p">)</span>
+    <span class="c1"># ty currently preserves the datetime64 dtype after datetime64 subtraction.</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">propagate_from_epoch</span><span class="p">(</span><span class="n">time_from_epoch</span><span class="p">)</span>  <span class="c1"># ty:ignore[invalid-argument-type]</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2819,8 +2821,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/dynamics/orbit.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 92</span>
-<span class="normal"> 93</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 93</span>
 <span class="normal"> 94</span>
 <span class="normal"> 95</span>
 <span class="normal"> 96</span>
@@ -2832,7 +2833,8 @@
 <span class="normal">102</span>
 <span class="normal">103</span>
 <span class="normal">104</span>
-<span class="normal">105</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">propagate_from_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_from_epoch</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">SatelliteOrbitState</span><span class="p">:</span>
+<span class="normal">105</span>
+<span class="normal">106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">propagate_from_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_from_epoch</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">SatelliteOrbitState</span><span class="p">:</span>
     <span class="n">time_from_epoch_in_seconds</span> <span class="o">=</span> <span class="n">time_from_epoch</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">)</span>
     <span class="n">phase</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">phase_at_epoch</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_motion</span> <span class="o">*</span> <span class="n">time_from_epoch_in_seconds</span>
     <span class="n">in_plane_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">semi_major_axis</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phase</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phase</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">phase</span><span class="p">)])</span>
@@ -2900,14 +2902,14 @@
 
                   <details class="mkdocstrings-source">
                     <summary>Source code in <code>src/cosmica/dynamics/orbit.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
-<span class="normal">110</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
-<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">EllipticalSatelliteOrbitModel</span><span class="p">,</span> <span class="n">reference_frame</span><span class="p">:</span> <span class="n">ReferenceFrame</span> <span class="o">=</span> <span class="s2">&quot;gcrs&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">116</span>
+<span class="normal">117</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">EllipticalSatelliteOrbitModel</span><span class="p">,</span> <span class="n">reference_frame</span><span class="p">:</span> <span class="n">ReferenceFrame</span> <span class="o">=</span> <span class="s2">&quot;gcrs&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="n">model</span>
     <span class="n">rf</span> <span class="o">=</span> <span class="n">reference_frame</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">rf</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;teme&quot;</span><span class="p">,</span> <span class="s2">&quot;j2000&quot;</span><span class="p">,</span> <span class="s2">&quot;gcrs&quot;</span><span class="p">}:</span>
@@ -3040,9 +3042,9 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/dynamics/orbit.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">datetime64_utc_to_skytime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_datetime64</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Time</span><span class="p">:</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">datetime64_utc_to_skytime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_datetime64</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Time</span><span class="p">:</span>
     <span class="n">t_datetimes</span> <span class="o">=</span> <span class="p">[</span><span class="n">time</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">datetime</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">utc</span><span class="p">)</span> <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">t_datetime64</span><span class="p">]</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">from_datetimes</span><span class="p">(</span><span class="n">t_datetimes</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -3072,8 +3074,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/dynamics/orbit.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">153</span>
-<span class="normal">154</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">154</span>
 <span class="normal">155</span>
 <span class="normal">156</span>
 <span class="normal">157</span>
@@ -3082,7 +3083,8 @@
 <span class="normal">160</span>
 <span class="normal">161</span>
 <span class="normal">162</span>
-<span class="normal">163</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@override</span>
+<span class="normal">163</span>
+<span class="normal">164</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">propagate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">SatelliteOrbitState</span><span class="p">:</span>
     <span class="n">time_from_epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime64_utc_to_skytime</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_frame</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;j2000&quot;</span><span class="p">,</span> <span class="s2">&quot;gcrs&quot;</span><span class="p">}:</span>
@@ -3428,7 +3430,10 @@ JERG-2-510-HB001.</p>
 <span class="normal">65</span>
 <span class="normal">66</span>
 <span class="normal">67</span>
-<span class="normal">68</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_sun_direction_eci</span><span class="p">(</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_sun_direction_eci</span><span class="p">(</span>
     <span class="n">time</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span> <span class="o">|</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">],</span>
         <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;single element or array of UTC time values in np.datetime64 format.&quot;</span><span class="p">),</span>
@@ -3464,13 +3469,16 @@ JERG-2-510-HB001.</p>
     <span class="n">epsilon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">epsilon_deg</span><span class="p">)</span>
 
     <span class="c1"># Compute Sun Vector @ J2000. Shape: (3,) or (3, len(time))</span>
-    <span class="n">sun_vec_eci</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">epsilon</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">sun_vec_eci</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">epsilon</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)],</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="c1"># normalize</span>
     <span class="n">sun_vec_eci</span> <span class="o">=</span> <span class="n">sun_vec_eci</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># shape: (3,) or (len(time), 3)</span>
 
     <span class="c1"># shape: (3,) or (len(time), 3)</span>
-    <span class="k">return</span> <span class="n">normalize</span><span class="p">(</span><span class="n">sun_vec_eci</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># type: ignore[return-value]</span>
+    <span class="k">return</span> <span class="n">normalize</span><span class="p">(</span><span class="n">sun_vec_eci</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

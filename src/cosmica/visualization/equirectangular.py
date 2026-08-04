@@ -8,9 +8,10 @@ __all__ = [
 ]
 import importlib.resources
 import logging
+from collections.abc import Mapping
 from dataclasses import dataclass, fields
 from functools import cache
-from typing import Annotated, Any
+from typing import Annotated, Any, Literal
 
 import geopandas as gpd
 import matplotlib.lines as mlines
@@ -126,8 +127,120 @@ def _add_legend_to_edges(handler: Any, label: str, ax: Axes) -> None:
         ax.add_artist(lin1)
 
 
+def _add_line_legend(*, color: ColorType, label: str, ax: Axes) -> None:
+    """Add a dummy legend handle for edges drawn as a LineCollection (arrows=False).
+
+    `_add_legend_to_edges` assumes FancyArrowPatch, so it does not work for arrowless edges.
+    """
+    ax.add_artist(mlines.Line2D([], [], color=color, label=label))
+
+
 type PlaneId = int
 type InPlaneIndex = int
+
+
+def _draw_base_edges_by_category(
+    *,
+    graph_pos_corrected: nx.Graph,
+    pos: Mapping[Any, Any],
+    ax: Axes,
+    nodes_to_draw: set[Node],
+    sat_to_in_constellation_id: dict[ConstellationSatellite, tuple[PlaneId, InPlaneIndex]],
+) -> None:
+    """Draw the base links colored by link type, with bidirectional arrows."""
+    intra_plane_edges = {
+        (u, v)
+        for u, v in graph_pos_corrected.edges()
+        if isinstance(u, ConstellationSatellite)
+        and isinstance(v, ConstellationSatellite)
+        and sat_to_in_constellation_id[u][0] == sat_to_in_constellation_id[v][0]  # same plane_id
+    }
+    inter_plane_edges = {
+        (u, v)
+        for u, v in graph_pos_corrected.edges()
+        if isinstance(u, ConstellationSatellite)
+        and isinstance(v, ConstellationSatellite)
+        and sat_to_in_constellation_id[u][0] != sat_to_in_constellation_id[v][0]  # different plane_id
+    }
+    constellation_gateway_edges = {
+        (u, v)
+        for u, v in graph_pos_corrected.edges()
+        if (isinstance(u, ConstellationSatellite) and isinstance(v, Gateway))
+        or (isinstance(u, Gateway) and isinstance(v, ConstellationSatellite))
+    }
+    constellation_usersatellite_edges = {
+        (u, v)
+        for u, v in graph_pos_corrected.edges()
+        if (isinstance(u, ConstellationSatellite) and isinstance(v, UserSatellite))
+        or (isinstance(u, UserSatellite) and isinstance(v, ConstellationSatellite))
+    }
+    inter_gateways_edges = {
+        (u, v) for u, v in graph_pos_corrected.edges() if isinstance(u, Gateway) and isinstance(v, Gateway)
+    }
+    other_edges_to_draw = (
+        {(u, v) for u, v in graph_pos_corrected.edges() if u in nodes_to_draw and v in nodes_to_draw}
+        - intra_plane_edges
+        - inter_plane_edges
+        - constellation_gateway_edges
+        - constellation_usersatellite_edges
+        - inter_gateways_edges
+    )
+
+    # set is invariant, so a set of a concrete node type does not fit set[tuple[Node, Node]].
+    # These are only forwarded to the drawing call, so Any is enough here.
+    edge_groups: list[tuple[Any, ColorType, str]] = [
+        (intra_plane_edges, "tab:purple", "Intra-plane links"),
+        (inter_plane_edges, "tab:green", "Inter-plane links"),
+        (constellation_gateway_edges, "tab:brown", "Feeder links"),
+        (constellation_usersatellite_edges, "tab:cyan", "Service links"),
+        (inter_gateways_edges, "tab:olive", "Gateway links"),
+        (other_edges_to_draw, "tab:gray", "Other links"),
+    ]
+    for edgelist, color, label in edge_groups:
+        handler = nx.draw_networkx_edges(
+            graph_pos_corrected,
+            pos,
+            edgelist=edgelist,
+            width=1,
+            edge_color=color,
+            ax=ax,
+            arrows=True,
+            alpha=0.7,
+            arrowstyle="<|-|>",
+            label=label,
+        )
+        _add_legend_to_edges(handler, label, ax=ax)
+
+
+def _draw_base_edges_mono(
+    *,
+    graph_pos_corrected: nx.Graph,
+    pos: Mapping[Any, Any],
+    ax: Axes,
+    nodes_to_draw: set[Node],
+) -> None:
+    """Draw every base link as a thin black line without arrows.
+
+    Per-type colors become background noise when the focus edges are colored by a continuous
+    value such as data flow or link utilization.
+    """
+    edgelist = {(u, v) for u, v in graph_pos_corrected.edges() if u in nodes_to_draw and v in nodes_to_draw}
+    nx.draw_networkx_edges(
+        graph_pos_corrected,
+        pos,
+        edgelist=edgelist,
+        width=0.5,
+        edge_color="black",
+        ax=ax,
+        arrows=False,
+        alpha=0.15,
+        # No label here: the LineCollection would show up in the legend on its own and
+        # duplicate the dummy handle added below.
+    )
+    # arrows=False returns a LineCollection, so _add_legend_to_edges (which assumes
+    # FancyArrowPatch) cannot be used. The thin, translucent line is hard to see in the
+    # legend, so add a clearer dummy handle instead.
+    _add_line_legend(color="black", label="Links", ax=ax)
 
 
 def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
@@ -139,16 +252,39 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
     with_labels: bool = False,
     focus_edges_list: list[set[tuple[Node, Node]]] | None = None,
     focus_edges_label_list: list[str] | None = None,
+    base_edge_style: Literal["category", "mono"] = "category",
+    focus_edge_colors_list: list[dict[tuple[Node, Node], ColorType] | None] | None = None,
 ) -> Axes:
+    """Draw a snapshot of the network graph on an equirectangular map.
+
+    `base_edge_style` selects how the links that are not focus edges are drawn:
+    - "category": color each link by its type (intra-plane ISL, inter-plane ISL, feeder, ...)
+      and add bidirectional arrows.
+    - "mono": draw every link as a thin black line without arrows. Use this when the focus
+      edge colors should be easy to read.
+
+    `focus_edge_colors_list` has the same length as `focus_edges_list`, and each element is a
+    dict mapping a focus edge to its color (or None). Edges with a color are drawn in that
+    color, and edges without one keep the default "tab:red". Choosing the colormap and the
+    normalization is the caller's responsibility; this function only paints the given colors,
+    which keeps arbitrary normalizations (e.g. logarithmic scales) possible. The insertion
+    order of the dict is the drawing order, so passing the edges in ascending value order
+    draws the largest values on top.
+    """
     # None のときのデフォルト値設定
     if focus_edges_list is None:
         focus_edges_list = []
     if focus_edges_label_list is None:
         # focus_edges と同じ数だけデフォルトのラベルを作成する
         focus_edges_label_list = [f"Focus edges {i}" for i in range(len(focus_edges_list))]
+    if focus_edge_colors_list is None:
+        focus_edge_colors_list = [None] * len(focus_edges_list)
 
     if len(focus_edges_list) != len(focus_edges_label_list):
         msg = "focus_edges と focus_edges_label の要素数が一致していません。"
+        raise ValueError(msg)
+    if len(focus_edges_list) != len(focus_edge_colors_list):
+        msg = "focus_edges and focus_edge_colors must have the same number of elements."
         raise ValueError(msg)
 
     constellation_satellites_to_draw = {node for node in graph.nodes if isinstance(node, ConstellationSatellite)}
@@ -191,6 +327,15 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
         satellite: (plane_id, in_plane_idx) for (plane_id, in_plane_idx), satellite in constellation.satellites.items()
     }
 
+    # In the mono style the focus edge colors carry the information, so the nodes are drawn in a
+    # faint black as well; otherwise their category colors compete with the colored edges.
+    mono_style = base_edge_style == "mono"
+    node_alpha = 0.25 if mono_style else 0.7
+    constellation_node_color: ColorType = "black" if mono_style else "tab:blue"
+    user_satellite_node_color: ColorType = "black" if mono_style else "tab:purple"
+    gateway_node_color: ColorType = "black" if mono_style else "tab:orange"
+    on_ground_user_node_color: ColorType = "black" if mono_style else "tab:green"
+
     with preserve_tick_params(ax):
         # Draw nodes
         # Draw constellation satellites
@@ -200,9 +345,9 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
             ax=ax,
             nodelist=set(pos_constellation),
             node_size=100,
-            node_color="tab:blue",
+            node_color=constellation_node_color,
             node_shape="s",
-            alpha=0.7,
+            alpha=node_alpha,
             label="Constellation satellite",
         )
         # Draw user satellites
@@ -212,9 +357,9 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
             ax=ax,
             nodelist=set(pos_user_satellites),
             node_size=120,
-            node_color="tab:purple",
+            node_color=user_satellite_node_color,
             node_shape="D",
-            alpha=0.7,
+            alpha=node_alpha,
             label="User satellite",
         )
         # Draw gateways
@@ -223,9 +368,9 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
             pos,
             nodelist=gateways,
             node_shape="^",
-            node_color="tab:orange",
+            node_color=gateway_node_color,
             node_size=150,
-            alpha=0.7,
+            alpha=node_alpha,
             label="Gateway",
             ax=ax,
         )
@@ -235,9 +380,9 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
             pos,
             nodelist=on_ground_users,
             node_shape="o",
-            node_color="tab:green",
+            node_color=on_ground_user_node_color,
             node_size=150,
-            alpha=0.7,
+            alpha=node_alpha,
             label="On-ground user",
             ax=ax,
         )
@@ -286,7 +431,21 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
         # to_undirected() returns a deep copy, so it is safe to mutate below.
         graph_pos_corrected = graph.to_undirected()
 
-        focus_edges_corrected_list = [focus_edges.copy() for focus_edges in focus_edges_list]
+        # Normalize to a dict of "edge -> color (None means the default tab:red)".
+        # focus_edges is a set and therefore unordered, so when a color dict is given its
+        # insertion order is kept as the drawing order.
+        focus_edges_corrected_list: list[dict[tuple[Node, Node], ColorType | None]] = []
+        for focus_edges, focus_edge_colors in zip(focus_edges_list, focus_edge_colors_list, strict=True):
+            colors = focus_edge_colors or {}
+            corrected: dict[tuple[Node, Node], ColorType | None] = {
+                edge: colors[edge] for edge in colors if edge in focus_edges
+            }
+            corrected.update({edge: None for edge in focus_edges if edge not in corrected})
+            focus_edges_corrected_list.append(corrected)
+
+        # Dummy nodes created for edges crossing the antimeridian (used to collect the edges
+        # to draw in the mono style)
+        dummy_nodes: set[Node] = set()
 
         # Re-draw the edges with the correct direction around the globe
         # (snapshot the edge list first: the loop mutates graph_pos_corrected)
@@ -311,6 +470,7 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
 
                 graph_pos_corrected.add_edge(u, dummy_v)
                 graph_pos_corrected.add_edge(dummy_u, v)
+                dummy_nodes |= {dummy_u, dummy_v}
 
                 for focus_edges, focus_edges_corrected in zip(
                     focus_edges_list,
@@ -319,137 +479,26 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
                 ):
                     for edge in focus_edges:
                         if (u, v) == edge or (u, v) == edge[::-1]:
-                            focus_edges_corrected.remove(edge)
-                            focus_edges_corrected.add((u, dummy_v))
-                            focus_edges_corrected.add((dummy_u, v))
+                            # Carry the original color over to both split halves
+                            color = focus_edges_corrected.pop(edge, None)
+                            focus_edges_corrected[(u, dummy_v)] = color
+                            focus_edges_corrected[(dummy_u, v)] = color
 
-        intra_plane_edges = {
-            (u, v)
-            for u, v in graph_pos_corrected.edges()
-            if isinstance(u, ConstellationSatellite)
-            and isinstance(v, ConstellationSatellite)
-            and sat_to_in_constellation_id[u][0] == sat_to_in_constellation_id[v][0]  # same plane_id
-        }
-        inter_plane_edges = {
-            (u, v)
-            for u, v in graph_pos_corrected.edges()
-            if isinstance(u, ConstellationSatellite)
-            and isinstance(v, ConstellationSatellite)
-            and sat_to_in_constellation_id[u][0] != sat_to_in_constellation_id[v][0]  # different plane_id
-        }
-        constellation_gateway_edges = {
-            (u, v)
-            for u, v in graph_pos_corrected.edges()
-            if (isinstance(u, ConstellationSatellite) and isinstance(v, Gateway))
-            or (isinstance(u, Gateway) and isinstance(v, ConstellationSatellite))
-        }
-        constellation_usersatellite_edges = {
-            (u, v)
-            for u, v in graph_pos_corrected.edges()
-            if (isinstance(u, ConstellationSatellite) and isinstance(v, UserSatellite))
-            or (isinstance(u, UserSatellite) and isinstance(v, ConstellationSatellite))
-        }
-        inter_gateways_edges = {
-            (u, v) for u, v in graph_pos_corrected.edges() if isinstance(u, Gateway) and isinstance(v, Gateway)
-        }
-        other_edges_to_draw = (
-            {(u, v) for u, v in graph_pos_corrected.edges() if u in nodes_to_draw and v in nodes_to_draw}
-            - intra_plane_edges
-            - inter_plane_edges
-            - constellation_gateway_edges
-            - constellation_usersatellite_edges
-            - inter_gateways_edges
-        )
-
-        # Draw intra-plane edges
-        h1 = nx.draw_networkx_edges(
-            graph_pos_corrected,
-            pos,
-            edgelist=intra_plane_edges,
-            width=1,
-            edge_color="tab:purple",
-            ax=ax,
-            arrows=True,
-            alpha=0.7,
-            arrowstyle="<|-|>",
-            label="Intra-plane links",
-        )
-        _add_legend_to_edges(h1, "Intra-plane links", ax=ax)
-
-        # Draw inter-plane edges
-        h2 = nx.draw_networkx_edges(
-            graph_pos_corrected,
-            pos,
-            edgelist=inter_plane_edges,
-            width=1,
-            edge_color="tab:green",
-            ax=ax,
-            arrows=True,
-            alpha=0.7,
-            arrowstyle="<|-|>",
-            label="Inter-plane links",
-        )
-        _add_legend_to_edges(h2, "Inter-plane links", ax=ax)
-
-        # Draw constellation-gateway edges
-        h3 = nx.draw_networkx_edges(
-            graph_pos_corrected,
-            pos,
-            edgelist=constellation_gateway_edges,
-            width=1,
-            edge_color="tab:brown",
-            ax=ax,
-            arrows=True,
-            alpha=0.7,
-            arrowstyle="<|-|>",
-            label="Feeder links",
-        )
-        _add_legend_to_edges(h3, "Feeder links", ax=ax)
-
-        # Draw constellation-usersatellite edges
-        h4 = nx.draw_networkx_edges(
-            graph_pos_corrected,
-            pos,
-            edgelist=constellation_usersatellite_edges,
-            width=1,
-            edge_color="tab:cyan",
-            ax=ax,
-            arrows=True,
-            alpha=0.7,
-            arrowstyle="<|-|>",
-            label="Service links",
-        )
-        _add_legend_to_edges(h4, "Service links", ax=ax)
-
-        # Draw inter-gateways edges
-        h5 = nx.draw_networkx_edges(
-            graph_pos_corrected,
-            pos,
-            edgelist=inter_gateways_edges,
-            width=1,
-            edge_color="tab:olive",
-            ax=ax,
-            arrows=True,
-            alpha=0.7,
-            arrowstyle="<|-|>",
-            label="Gateway links",
-        )
-        _add_legend_to_edges(h5, "Gateway links", ax=ax)
-
-        # Draw other edges
-        h6 = nx.draw_networkx_edges(
-            graph_pos_corrected,
-            pos,
-            edgelist=other_edges_to_draw,
-            width=1,
-            edge_color="tab:gray",
-            ax=ax,
-            arrows=True,
-            alpha=0.7,
-            arrowstyle="<|-|>",
-            label="Other links",
-        )
-        _add_legend_to_edges(h6, "Other links", ax=ax)
+        if base_edge_style == "category":
+            _draw_base_edges_by_category(
+                graph_pos_corrected=graph_pos_corrected,
+                pos=pos,
+                ax=ax,
+                nodes_to_draw=nodes_to_draw,
+                sat_to_in_constellation_id=sat_to_in_constellation_id,
+            )
+        else:
+            _draw_base_edges_mono(
+                graph_pos_corrected=graph_pos_corrected,
+                pos=pos,
+                ax=ax,
+                nodes_to_draw=nodes_to_draw | dummy_nodes,
+            )
 
         for focus_edges_corrected, focus_edges_label in zip(
             focus_edges_corrected_list,
@@ -457,20 +506,40 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
             strict=False,
         ):
             if not focus_edges_corrected:
-                continue  # 空集合ならスキップ
-            h7 = nx.draw_networkx_edges(
-                graph_pos_corrected,
-                pos,
-                edgelist=focus_edges_corrected,
-                width=3,
-                edge_color="tab:red",
-                ax=ax,
-                arrows=True,
-                alpha=0.7,
-                arrowstyle="-",
-                label=focus_edges_label,
-            )
-            _add_legend_to_edges(h7, focus_edges_label, ax=ax)
+                continue  # Skip if empty
+            # Edges without an explicit color are drawn together in tab:red as before,
+            # and get a legend entry.
+            default_color_edges = [edge for edge, color in focus_edges_corrected.items() if color is None]
+            if default_color_edges:
+                h7 = nx.draw_networkx_edges(
+                    graph_pos_corrected,
+                    pos,
+                    edgelist=default_color_edges,
+                    width=3,
+                    edge_color="tab:red",
+                    ax=ax,
+                    arrows=True,
+                    alpha=0.7,
+                    arrowstyle="-",
+                    label=focus_edges_label,
+                )
+                _add_legend_to_edges(h7, focus_edges_label, ax=ax)
+
+            # Explicitly colored edges use a continuous scale, so they are left out of the
+            # legend (drawing a colorbar is the caller's responsibility).
+            colored_edges = {edge: color for edge, color in focus_edges_corrected.items() if color is not None}
+            if colored_edges:
+                nx.draw_networkx_edges(
+                    graph_pos_corrected,
+                    pos,
+                    edgelist=list(colored_edges),
+                    width=3,
+                    edge_color=list(colored_edges.values()),
+                    ax=ax,
+                    arrows=True,
+                    alpha=0.7,
+                    arrowstyle="-",
+                )
 
     return ax
 

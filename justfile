@@ -7,6 +7,8 @@ ruff:
 typecheck:
     uv sync --quiet --frozen --no-dev --group typing
     uv run --no-sync -- mypy .
+    uv run --no-sync -- ty check
+    uv run --no-sync -- pyrefly check
 
 lint-imports:
     uv sync --quiet --frozen --dev
@@ -21,11 +23,11 @@ license:
     uv run --quiet --no-sync -- pip-licenses
 
 lint:
-    -just --justfile {{ justfile() }} ruff
-    -just --justfile {{ justfile() }} typecheck
-    -just --justfile {{ justfile() }} lint-imports
-    -just --justfile {{ justfile() }} deptry
-    -just --justfile {{ justfile() }} license
+    just --justfile {{ justfile() }} ruff
+    just --justfile {{ justfile() }} typecheck
+    just --justfile {{ justfile() }} lint-imports
+    just --justfile {{ justfile() }} deptry
+    just --justfile {{ justfile() }} license
 
 test:
     uv sync --quiet --frozen --no-dev --group test

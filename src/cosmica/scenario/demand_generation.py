@@ -64,12 +64,24 @@ class ConstantTrafficProfile:
     traffic_class: str
     total_rate: Annotated[float, Doc("Total worldwide transmission rate of this traffic class in bit/s.")]
     distribution: Literal["uniform", "poisson"] = "uniform"
+    weight_model: Annotated[
+        DemandWeightModel,
+        Doc(
+            "Gateway attractiveness model of this traffic class, i.e. how its demand is distributed over"
+            " gateways (see `compute_gateway_demand_weights`). Each traffic class can use its own model.",
+        ),
+    ] = "population"
+    top_k: Annotated[
+        int | None,
+        Doc("Keep only the largest `top_k` OD pairs to bound the number of demands. None keeps all pairs."),
+    ] = 50
     priority: int = 0
     start_time: np.datetime64 | None = None
     end_time: np.datetime64 | None = None
 
     def __post_init__(self) -> None:
         assert self.total_rate > 0, f"total_rate must be positive, but got {self.total_rate}"
+        assert self.top_k is None or self.top_k > 0, f"top_k must be positive or None, but got {self.top_k}"
         assert (self.start_time is None) == (self.end_time is None), (
             "start_time and end_time must be either both set or both None"
         )
@@ -87,6 +99,13 @@ class OneTimeTrafficProfile:
         Doc("Half-open time window [start, end) in which generation times are drawn."),
     ]
     deadline_offset: Annotated[np.timedelta64, Doc("Deadline of each event relative to its generation time.")]
+    weight_model: Annotated[
+        DemandWeightModel,
+        Doc(
+            "Gateway attractiveness model of this traffic class, used to draw the destination gateway"
+            " of each event (see `compute_gateway_demand_weights`).",
+        ),
+    ] = "population"
     priority: int = 0
 
     def __post_init__(self) -> None:
@@ -290,15 +309,6 @@ def generate_gateway_od_demands(
         ),
     ] = "deterministic",
     n_samples: Annotated[int, Doc('Number of sampled demand locations (used only when method="sampling").')] = 500,
-    top_k: Annotated[
-        int | None,
-        Doc("Keep only the largest `top_k` OD pairs to bound the number of demands. None keeps all pairs."),
-    ] = 50,
-    weight_model: Annotated[
-        DemandWeightModel,
-        Doc('Gateway attractiveness model. "population" is population gravity; "gdp"/"penetration"/'
-            '"subscriber" reshape it by the region\'s economy (see `compute_gateway_demand_weights`).'),
-    ] = "population",
     rng: Annotated[np.random.Generator | None, Doc("NumPy random number generator. If None, use default.")] = None,
 ) -> Annotated[
     list[ConstantCommunicationDemand | TemporaryCommunicationDemand],
@@ -306,19 +316,22 @@ def generate_gateway_od_demands(
 ]:
     """Generate gateway-to-gateway OD demands from the geographic demand distribution.
 
-    Gateway weights `w` are computed from `weight_model` (population gravity by default), the OD
-    share of a pair (i, j), i != j, is proportional to `w_i * w_j`, and `profile.total_rate` is
-    split over the kept pairs in proportion to their shares.
+    Gateway weights `w` are computed from `profile.weight_model` (population gravity by default),
+    the OD share of a pair (i, j), i != j, is proportional to `w_i * w_j`, and `profile.total_rate`
+    is split over the kept pairs in proportion to their shares. What the traffic class *is*
+    (volume, time profile, spatial model `weight_model`, number of kept pairs `top_k`) is carried by
+    `profile`, so different traffic classes can use different models; the keyword arguments only
+    control *how* the weights are computed numerically.
     """
-    weights = _compute_gateway_weights(gateways, method, n_samples, rng, weight_model)
+    weights = _compute_gateway_weights(gateways, method, n_samples, rng, profile.weight_model)
 
     od_matrix = np.outer(weights, weights)
     np.fill_diagonal(od_matrix, 0.0)
 
     flat_shares = od_matrix.flatten()
     pair_indices = np.argsort(flat_shares)[::-1]
-    if top_k is not None:
-        pair_indices = pair_indices[:top_k]
+    if profile.top_k is not None:
+        pair_indices = pair_indices[: profile.top_k]
     pair_indices = pair_indices[flat_shares[pair_indices] > 0]
     dropped_share = 1 - flat_shares[pair_indices].sum() / flat_shares.sum()
     if dropped_share > 0:
@@ -370,10 +383,6 @@ def generate_downlink_demands(
     gateways: Annotated[Sequence[Gateway], Doc("Candidate destination gateways.")],
     profile: Annotated[OneTimeTrafficProfile, Doc("Traffic profile shared by all generated demands.")],
     *,
-    weight_model: Annotated[
-        DemandWeightModel,
-        Doc("Gateway attractiveness model for the destination distribution (see `generate_gateway_od_demands`)."),
-    ] = "population",
     rng: Annotated[np.random.Generator | None, Doc("NumPy random number generator. If None, use default.")] = None,
 ) -> Annotated[
     list[OneTimeCommunicationDemand],
@@ -382,11 +391,11 @@ def generate_downlink_demands(
     """Generate one-time bulk-transfer demands from a source node to gateways.
 
     The destination gateway of each event is drawn with probability proportional to the gateway
-    demand weights for `weight_model` (population gravity by default), and the generation time is
-    drawn uniformly from `profile.generation_window`.
+    demand weights for `profile.weight_model` (population gravity by default), and the generation
+    time is drawn uniformly from `profile.generation_window`.
     """
     rng = rng if rng is not None else np.random.default_rng()
-    weights = compute_gateway_demand_weights(gateways, weight_model)
+    weights = compute_gateway_demand_weights(gateways, profile.weight_model)
 
     window_start, window_end = profile.generation_window
     window_ns = (window_end - window_start) / np.timedelta64(1, "ns")

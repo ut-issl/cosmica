@@ -115,9 +115,9 @@ def test_generate_gateway_od_demands_total_rate_and_endpoints() -> None:
 
 def test_generate_gateway_od_demands_top_k_limits_pairs() -> None:
     gateways = _make_test_gateways()
-    profile = ConstantTrafficProfile(traffic_class="video", total_rate=10e9)
+    profile = ConstantTrafficProfile(traffic_class="video", total_rate=10e9, top_k=2)
 
-    demands = generate_gateway_od_demands(gateways, profile, top_k=2)
+    demands = generate_gateway_od_demands(gateways, profile)
 
     assert len(demands) == 2
     assert np.isclose(sum(demand.transmission_rate for demand in demands), 10e9)
@@ -147,12 +147,32 @@ def test_build_gdp_gateway_network_rejects_too_many_gateways() -> None:
 
 def test_generate_gateway_od_demands_gdp_model_preserves_total_rate() -> None:
     gateways = build_city_gateway_network(11)
-    profile = ConstantTrafficProfile(traffic_class="video", total_rate=10e9)
+    profile = ConstantTrafficProfile(traffic_class="video", total_rate=10e9, weight_model="gdp")
 
-    demands = generate_gateway_od_demands(gateways, profile, weight_model="gdp")
+    demands = generate_gateway_od_demands(gateways, profile)
 
     assert np.isclose(sum(demand.transmission_rate for demand in demands), 10e9)
     assert len({demand.id for demand in demands}) == len(demands)
+
+
+def test_generate_gateway_od_demands_weight_model_is_per_traffic_class() -> None:
+    # 同じ GW 集合でも, プロファイルごとに異なる weight_model を指定すれば OD 配分が変わる。
+    gateways = build_city_gateway_network(11)
+    population_profile = ConstantTrafficProfile(
+        traffic_class="population-class", total_rate=10e9, weight_model="population",
+    )
+    gdp_profile = ConstantTrafficProfile(traffic_class="gdp-class", total_rate=10e9, weight_model="gdp")
+
+    population_demands = generate_gateway_od_demands(gateways, population_profile)
+    gdp_demands = generate_gateway_od_demands(gateways, gdp_profile)
+
+    population_rates = {
+        (str(demand.source), str(demand.destination)): demand.transmission_rate for demand in population_demands
+    }
+    gdp_rates = {(str(demand.source), str(demand.destination)): demand.transmission_rate for demand in gdp_demands}
+    assert population_rates != gdp_rates
+    assert np.isclose(sum(population_rates.values()), 10e9)
+    assert np.isclose(sum(gdp_rates.values()), 10e9)
 
 
 def test_generate_gateway_od_demands_temporary_when_window_given() -> None:

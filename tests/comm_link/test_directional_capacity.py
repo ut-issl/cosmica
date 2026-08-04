@@ -5,8 +5,10 @@ directed edge to the calculator registered for the exact (source type, destinati
 """
 
 from collections.abc import Callable
+from typing import Any, Literal
 
 import numpy as np
+import numpy.typing as npt
 import pytest
 
 from cosmica.comm_link import (
@@ -14,6 +16,7 @@ from cosmica.comm_link import (
     GatewayToSatBinaryCommLinkCalculator,
     MemorylessCommLinkCalculator,
     MemorylessCommLinkCalculatorWrapper,
+    OTC2OTCBinaryCommLinkCalculator,
     SatToGatewayBinaryCommLinkCalculator,
     SatToSatBinaryCommLinkCalculator,
     SatToSatBinaryCommLinkCalculatorWithRateCalc,
@@ -25,6 +28,7 @@ from cosmica.models import (
     ConstellationSatellite,
     Gateway,
     Satellite,
+    SatelliteTerminal,
 )
 from cosmica.utils.constants import EARTH_RADIUS
 
@@ -41,6 +45,18 @@ def _make_satellite(sat_id: int, phase_deg: float = 0.0) -> ConstellationSatelli
             phase_at_epoch=np.deg2rad(phase_deg),
             epoch=EPOCH,
         ),
+    )
+
+
+def _make_satellite_terminal(sat_id: int) -> SatelliteTerminal[int]:
+    return SatelliteTerminal(
+        id=sat_id,
+        terminal_id=sat_id,
+        azimuth_min=-np.pi,
+        azimuth_max=np.pi,
+        elevation_min=-np.pi / 2,
+        elevation_max=np.pi / 2,
+        angular_velocity_max=float("inf"),
     )
 
 
@@ -229,6 +245,131 @@ class TestSatToSatDirectionalDispatch:
         # Geometry (delay / availability) is direction-independent
         assert performance[(sat_a, sat_b)]["delay"] == performance[(sat_b, sat_a)]["delay"]
         assert performance[(sat_a, sat_b)]["link_available"] == performance[(sat_b, sat_a)]["link_available"]
+
+
+type _SatToSatCalculatorKind = Literal["binary", "rate_calc", "geometric"]
+
+
+_EARTH_CLEARANCE_CASES = [
+    pytest.param(
+        (
+            np.array([EARTH_RADIUS + 1000e3, 0.0, 0.0]),
+            np.array([-(EARTH_RADIUS + 1000e3), 0.0, 0.0]),
+        ),
+        0.0,
+        False,
+        id="opposite-sides-of-earth",
+    ),
+    pytest.param(
+        (
+            np.array([-1000e3, EARTH_RADIUS + 500e3, 0.0]),
+            np.array([1000e3, EARTH_RADIUS + 500e3, 0.0]),
+        ),
+        500e3,
+        True,
+        id="exact-threshold-is-clear",
+    ),
+    pytest.param(
+        (
+            np.array([-1000e3, EARTH_RADIUS + 500e3, 0.0]),
+            np.array([1000e3, EARTH_RADIUS + 500e3, 0.0]),
+        ),
+        500e3 + 1.0,
+        False,
+        id="below-configured-threshold",
+    ),
+    pytest.param(
+        (
+            np.array([EARTH_RADIUS + 200e3, 0.0, 0.0]),
+            np.array([EARTH_RADIUS + 300e3, 0.0, 0.0]),
+        ),
+        100e3,
+        True,
+        id="finite-segment-does-not-extend-through-earth",
+    ),
+]
+
+
+def _make_sat_to_sat_calculator(
+    kind: _SatToSatCalculatorKind,
+    *,
+    lowest_altitude: float,
+) -> MemorylessCommLinkCalculator[Any, Any]:
+    match kind:
+        case "binary":
+            return SatToSatBinaryCommLinkCalculator(
+                link_capacity=10e9,
+                lowest_altitude=lowest_altitude,
+            )
+        case "rate_calc":
+            return SatToSatBinaryCommLinkCalculatorWithRateCalc(
+                available_link_capacity=10e9,
+                lna_gain=30.0,
+                lowest_altitude=lowest_altitude,
+            )
+        case "geometric":
+            with pytest.warns(DeprecationWarning, match="GeometricCommLinkCalculator is deprecated"):
+                return GeometricCommLinkCalculator(
+                    inter_satellite_link_capacity=10e9,
+                    satellite_to_gateway_link_capacity=5e9,
+                    lowest_altitude=lowest_altitude,
+                )
+
+
+@pytest.mark.parametrize("kind", ["binary", "rate_calc", "geometric"])
+@pytest.mark.parametrize(("positions_eci", "lowest_altitude", "expected_available"), _EARTH_CLEARANCE_CASES)
+def test_memoryless_calculators_enforce_finite_segment_clearance(
+    kind: _SatToSatCalculatorKind,
+    positions_eci: tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]],
+    lowest_altitude: float,
+    *,
+    expected_available: bool,
+) -> None:
+    sat_a = _make_satellite(1)
+    sat_b = _make_satellite(2)
+    dynamics_data = _make_snapshot_dynamics_data(
+        position_eci={sat_a: positions_eci[0], sat_b: positions_eci[1]},
+    )
+    calculator = _make_sat_to_sat_calculator(kind, lowest_altitude=lowest_altitude)
+
+    performance = calculator.calc(
+        edges=[(sat_a, sat_b)],
+        dynamics_data=dynamics_data,
+        rng=np.random.default_rng(0),
+    )[(sat_a, sat_b)]
+
+    assert performance["link_available"] is expected_available
+    assert bool(performance["link_capacity"] > 0.0) is expected_available
+
+
+@pytest.mark.parametrize(("positions_eci", "lowest_altitude", "expected_available"), _EARTH_CLEARANCE_CASES)
+def test_terminal_calculator_enforces_finite_segment_clearance(
+    positions_eci: tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]],
+    lowest_altitude: float,
+    *,
+    expected_available: bool,
+) -> None:
+    sat_a = _make_satellite_terminal(1)
+    sat_b = _make_satellite_terminal(2)
+    calculator = OTC2OTCBinaryCommLinkCalculator(
+        link_capacity=10e9,
+        lowest_altitude=lowest_altitude,
+    )
+    zero = np.zeros(3)
+
+    # Exercise the snapshot kernel directly; separate time-series wrapper defects are tracked in GH issue #210.
+    performance, _ = calculator._calc_satellite_to_satellite(  # noqa: SLF001
+        positions_eci=positions_eci,
+        velocities_eci=(zero, zero),
+        attitude_angular_velocities_eci=(zero, zero),
+        sun_direction_eci=np.array([0.0, 0.0, 1.0]),
+        terminals=(sat_a.terminal, sat_b.terminal),
+        previous_terminal_directions=[(0.0, 0.0), (0.0, 0.0)],
+        time_delta=1.0,
+    )
+
+    assert performance["link_available"] is expected_available
+    assert bool(performance["link_capacity"] > 0.0) is expected_available
 
 
 class TestSatToSatDirectionalSunExclusion:

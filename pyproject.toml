@@ -154,6 +154,19 @@ allow-only = """\
   MPL-2.0 AND MIT;\
 """
 
+[tool.pyrefly]
+preset = "legacy"
+ignore-missing-imports = [
+  "networkx",
+  "matplotlib.*",
+  "pymap3d.*",
+  "mpl_toolkits.*",
+  "geopandas.*",
+  "pgmpy.*",
+  "skyfield.*",
+  "sgp4.*",
+]
+
 [tool.pytest]
 addopts = [
   "--capture=no",
@@ -191,6 +204,7 @@ ignore = [
   "FIX002",  # Line contains TODO
   "ERA001",  # commented-out-code
   "PLR0913",  # Too many arguments in function definition
+  "CPY001",  # Missing copyright notice at top of file
 ]
 unfixable = [
   "F401",  # Prevent auto-fix for unused imports
@@ -204,16 +218,3 @@ unfixable = [
 
 [tool.uv]
 exclude-newer = "7 days"
-
-[tool.pyrefly]
-preset = "legacy"
-ignore-missing-imports = [
-    "networkx",
-    "matplotlib.*",
-    "pymap3d.*",
-    "mpl_toolkits.*",
-    "geopandas.*",
-    "pgmpy.*",
-    "skyfield.*",
-    "sgp4.*",
-]

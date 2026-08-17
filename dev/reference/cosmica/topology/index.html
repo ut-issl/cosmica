@@ -2999,7 +2999,6 @@
     <span class="s2">&quot;ConstellationTimeSeriesTopologyBuilder&quot;</span><span class="p">,</span>
     <span class="s2">&quot;ConstellationTopologyBuilder&quot;</span><span class="p">,</span>
     <span class="s2">&quot;ElevationBasedG2CTopologyBuilder&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ElevationBasedG2CTopologyBuilder&quot;</span><span class="p">,</span>
     <span class="s2">&quot;GatewayToGatewayTopologyBuilder&quot;</span><span class="p">,</span>
     <span class="s2">&quot;GatewayToInternetTopologyBuilder&quot;</span><span class="p">,</span>
     <span class="s2">&quot;GroundToConstellationTopologyBuilder&quot;</span><span class="p">,</span>
@@ -5475,10 +5474,7 @@ with any <code>SatelliteId</code> type.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/topology/usersatellite_gateway_to_constellation.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">399</span>
-<span class="normal">400</span>
-<span class="normal">401</span>
-<span class="normal">402</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">402</span>
 <span class="normal">403</span>
 <span class="normal">404</span>
 <span class="normal">405</span>
@@ -5554,7 +5550,10 @@ with any <code>SatelliteId</code> type.</p>
 <span class="normal">475</span>
 <span class="normal">476</span>
 <span class="normal">477</span>
-<span class="normal">478</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_hybrid_us2c_g2c_topology</span><span class="p">(</span>
+<span class="normal">478</span>
+<span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_hybrid_us2c_g2c_topology</span><span class="p">(</span>
     <span class="n">constellation</span><span class="p">:</span> <span class="n">Constellation</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">user_satellites</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">UserSatellite</span><span class="p">],</span>

@@ -320,6 +320,7 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
 
     def _calc_satellite_to_gateway(
         self,
+        *,
         satellite_position_ecef: npt.NDArray[np.floating],
         gateway: GatewayOGS,
         gateway_turbulence_map: Mapping[GatewayOGS, AtmosphericScintillationModel],
@@ -350,7 +351,12 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
         edge_sun_angle = angle_between(gateway_to_satellite_ecef, sun_direction_ecef)
         link_available = bool(elevation >= gateway.minimum_elevation and edge_sun_angle >= sun_exclusion_angle)
         return CommLinkPerformance(
-            link_capacity=self._calc_capacity(float(distance), gateway, gateway_turbulence_map, rng)
+            link_capacity=self._calc_capacity(
+                distance=float(distance),
+                gateway=gateway,
+                turbulence_map=gateway_turbulence_map,
+                rng=rng,
+            )
             if link_available
             else 0.0,
             delay=float(srange / SPEED_OF_LIGHT),

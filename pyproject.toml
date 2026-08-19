@@ -40,16 +40,7 @@ Issues = "https://github.com/ut-issl/cosmica/issues"
 Repository = "https://github.com/ut-issl/cosmica"
 
 [dependency-groups]
-dev = [
-  "pre-commit>=4.3.0",
-  "pydeps>=3.0.1",
-  { include-group = "docs" },
-  { include-group = "examples" },
-  { include-group = "license" },
-  { include-group = "lint" },
-  { include-group = "test" },
-  { include-group = "typing" }
-]
+dev = ["pre-commit>=4.3.0", "pydeps>=3.0.1", { include-group = "docs" }, { include-group = "examples" }, { include-group = "license" }, { include-group = "lint" }, { include-group = "test" }, { include-group = "typing" }]
 docs = [
   "black>=25.1.0",
   "griffe-typingdoc>=0.2.8",

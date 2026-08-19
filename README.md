@@ -31,7 +31,7 @@ COSMICA is a Python package for simulating optical communication satellite const
 
 ### Prerequisites
 
-- Python 3.12 or higher
+- Python 3.13 or higher
 
 ### Installation
 

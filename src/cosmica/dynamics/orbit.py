@@ -87,8 +87,7 @@ class CircularSatelliteOrbitPropagator(SatelliteOrbitPropagator):
 
     def propagate(self, time: npt.NDArray[np.datetime64]) -> SatelliteOrbitState:
         time_from_epoch = time - self._model.epoch
-        # ty currently preserves the datetime64 dtype after datetime64 subtraction.
-        return self.propagate_from_epoch(time_from_epoch)  # ty:ignore[invalid-argument-type]
+        return self.propagate_from_epoch(time_from_epoch)
 
     def propagate_from_epoch(self, time_from_epoch: npt.NDArray[np.timedelta64]) -> SatelliteOrbitState:
         time_from_epoch_in_seconds = time_from_epoch / np.timedelta64(1, "s")

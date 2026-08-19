@@ -8,7 +8,7 @@ __all__ = [
 ]
 import logging
 from abc import ABC, abstractmethod
-from collections.abc import Collection, Hashable
+from collections.abc import Collection
 from itertools import product
 
 import networkx as nx
@@ -140,7 +140,7 @@ def build_elevation_based_g2c_topology(
         visibility[ground_node_idx, sat_idx, :] = elevation >= ground_node.minimum_elevation
 
     def construct_graph(visibility: npt.NDArray[np.bool_]) -> nx.DiGraph:
-        graph: nx.Graph[Node[Hashable]] = nx.Graph()
+        graph: nx.Graph = nx.Graph()
         graph.add_nodes_from(satellites)
         graph.add_nodes_from(ground_nodes_list)
 
@@ -185,7 +185,7 @@ def build_manual_g2c_topology(
     satellites = list(constellation.satellites.values())
 
     def construct_graph() -> nx.DiGraph:
-        graph: nx.Graph[Node[Hashable]] = nx.Graph()
+        graph: nx.Graph = nx.Graph()
         graph.add_nodes_from(satellites)
         graph.add_nodes_from(ground_nodes_list)
 

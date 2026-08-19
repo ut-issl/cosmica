@@ -8,6 +8,7 @@ __all__ = [
 ]
 import importlib.resources
 import logging
+from collections.abc import Hashable
 from dataclasses import dataclass, fields
 from functools import cache
 from typing import Annotated, Any
@@ -475,7 +476,7 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
     return ax
 
 
-def draw_coverage_area[T](
+def draw_coverage_area[T: Hashable](
     *,
     dynamics_data: Annotated[
         DynamicsData[ConstellationSatellite[T]],

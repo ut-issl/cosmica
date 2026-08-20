@@ -23,7 +23,7 @@ def calc_gauss_rx_power(
     wavelength: Annotated[float, Doc("Float value with the wavelength of the beam in meters.")] = 1550 * 1e-9,
     beam_waist: Annotated[float, Doc("Float value with the beam waist radius in meters.")] = 0.04,
 ) -> float:
-    return power_tx * (1 - np.exp(-(2 * aperture**2) / calc_gauss_beam_radius(beam_waist, wavelength, distance) ** 2))
+    return power_tx * (1 - np.exp(-(aperture**2) / 2 / calc_gauss_beam_radius(beam_waist, wavelength, distance) ** 2))
 
 
 def calc_gauss_beam_radius(

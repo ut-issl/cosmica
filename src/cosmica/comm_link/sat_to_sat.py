@@ -335,9 +335,7 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
 
             for edge in edges_snapshot:
                 missing_attitudes = tuple(
-                    endpoint
-                    for endpoint in edge
-                    if endpoint not in snapshot_dynamics.satellite_attitude_dcm_eci2body
+                    endpoint for endpoint in edge if endpoint not in snapshot_dynamics.satellite_attitude_dcm_eci2body
                 )
                 if missing_attitudes:
                     msg = (

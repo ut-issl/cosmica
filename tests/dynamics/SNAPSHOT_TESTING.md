@@ -162,9 +162,9 @@ Example snapshot format:
 
 ### Numerical precision issues
 
-- Arrays are rounded to 7 decimal places before serialization
-- This prevents platform-specific floating-point precision differences between local and CI environments
-- The rounding ensures snapshots are identical across different platforms while maintaining sufficient precision for orbit calculations
+- Arrays are normally rounded to six decimal places before serialization.
+- The J2000 snapshot uses five decimal places because its frame transformation can differ slightly across numerical libraries and CPU architectures.
+- This normalization prevents insignificant platform-specific floating-point differences while retaining sufficient precision for orbit calculations.
 
 ## Additional Resources
 

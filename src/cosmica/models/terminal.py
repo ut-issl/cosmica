@@ -15,6 +15,8 @@ from typing_extensions import Doc
 
 from .node import Node
 
+# Terminal models are frozen, hashable graph nodes and dictionary keys, so mounting
+# matrices use immutable value-equality tuples rather than mutable, unhashable NumPy arrays.
 type DirectionCosineMatrix = tuple[
     tuple[float, float, float],
     tuple[float, float, float],

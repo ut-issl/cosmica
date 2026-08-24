@@ -198,7 +198,7 @@ def build_manual_g2c_topology(
     return [construct_graph() for _ in range(len(dynamics_data.time))]
 
 
-def build_max_visibility_handover_g2c_topology(  # noqa: C901
+def build_max_visibility_handover_g2c_topology(  # noqa: C901, PLR0912
     constellation: Constellation,
     *,
     ground_nodes: Collection[Gateway | StationaryOnGroundUser],
@@ -270,7 +270,9 @@ def build_max_visibility_handover_g2c_topology(  # noqa: C901
             if sat_idx == -1:
                 continue
             masked_left_visibility_time_step[sat_idx] = 0
-        select_sat_idx[ground_node_idx] = np.argmax(masked_left_visibility_time_step)
+        select_sat_idx[ground_node_idx] = (
+            np.argmax(masked_left_visibility_time_step) if np.any(masked_left_visibility_time_step > 0) else -1
+        )
 
     for time_idx in range(n_time):
         for ground_node_idx, _ground_node in enumerate(ground_nodes_list):
@@ -290,7 +292,8 @@ def build_max_visibility_handover_g2c_topology(  # noqa: C901
                         select_max_visibility_satellite(ground_node_idx, time_idx)
                 else:
                     select_max_visibility_satellite(ground_node_idx, time_idx)
-            link_available[ground_node_idx, select_sat_idx[ground_node_idx], time_idx] = True
+            if select_sat_idx[ground_node_idx] >= 0:
+                link_available[ground_node_idx, select_sat_idx[ground_node_idx], time_idx] = True
 
     def construct_graph(link_available: npt.NDArray[np.bool_]) -> nx.DiGraph:
         graph = nx.Graph()

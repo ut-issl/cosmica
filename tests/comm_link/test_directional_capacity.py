@@ -362,9 +362,10 @@ def test_terminal_calculator_enforces_finite_segment_clearance(
         positions_eci=positions_eci,
         velocities_eci=(zero, zero),
         attitude_angular_velocities_eci=(zero, zero),
+        attitude_dcms_eci2body=(np.eye(3), np.eye(3)),
         sun_direction_eci=np.array([0.0, 0.0, 1.0]),
         terminals=(sat_a.terminal, sat_b.terminal),
-        previous_terminal_directions=[(0.0, 0.0), (0.0, 0.0)],
+        previous_terminal_directions=None,
         time_delta=1.0,
     )
 

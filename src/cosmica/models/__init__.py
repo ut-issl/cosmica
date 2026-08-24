@@ -5,6 +5,7 @@ __all__ = [
     "Constellation",
     "ConstellationSatellite",
     "Demand",
+    "DirectionCosineMatrix",
     "EllipticalSatelliteOrbitModel",
     "Gateway",
     "GatewayOGS",
@@ -35,6 +36,7 @@ from .satellite import ConstellationSatellite, Satellite, SatelliteTerminal, Use
 from .scenario import Scenario
 from .terminal import (
     CommunicationTerminal,
+    DirectionCosineMatrix,
     OpticalCommunicationTerminal,
     RFCommunicationTerminal,
     UserOpticalCommunicationTerminal,

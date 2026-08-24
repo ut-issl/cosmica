@@ -252,9 +252,11 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
 
     For each endpoint, the ECI line of sight is transformed first by the snapshot's
     ECI-to-body attitude from :class:`~cosmica.dtos.DynamicsData`, then by the
-    terminal's fixed body-to-terminal mounting transform. In terminal coordinates,
-    ``+x`` has zero azimuth and elevation, azimuth rotates toward ``+y``, and
-    elevation rotates toward ``+z``.
+    terminal's fixed body-to-terminal mounting transform:
+    ``u_terminal = C_body2terminal @ C_eci2body @ u_eci``. The two endpoints use
+    opposite ECI line-of-sight vectors and their own transforms. In terminal
+    coordinates, ``+x`` has zero azimuth and elevation, azimuth rotates toward
+    ``+y``, and elevation rotates toward ``+z``.
 
     A link is available only when its distance, Earth clearance, relative angular
     velocity, two-ended Sun exclusion, both terminals' fields of regard, and both

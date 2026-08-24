@@ -274,39 +274,45 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
         dynamics_data: DynamicsData,
         rng: Generator,  # noqa: ARG002
     ) -> list[dict[tuple[SatelliteTerminal, SatelliteTerminal], CommLinkPerformance]]:
+        if len(edges_time_series) != len(dynamics_data.time):
+            msg = "edges_time_series must have the same length as dynamics_data.time"
+            raise ValueError(msg)
+        if not edges_time_series:
+            return []
+
+        time_deltas = np.diff(dynamics_data.time) / np.timedelta64(1, "s")
+        if not np.all(np.isfinite(time_deltas)) or np.any(time_deltas <= 0.0):
+            msg = "dynamics_data.time must be strictly increasing"
+            raise ValueError(msg)
+
         terminal_memo: dict[tuple[SatelliteTerminal, SatelliteTerminal], list[tuple[float, float]]] = {}
         comm_link_time_series = []
-        prev_time = dynamics_data.time[0]
 
-        for i, snapshot in enumerate(edges_time_series):
+        for time_index, edges_snapshot in enumerate(edges_time_series):
+            snapshot_dynamics = dynamics_data[time_index]
+            time_delta = 1.0 if time_index == 0 else float(time_deltas[time_index - 1])
             edges_performance = {}
-            current_time = dynamics_data.time[i]
-            time_delta = current_time - prev_time if i != 0 else 1
-            if time_delta == 0:
-                msg = "time_delta must be non-zero"
-                raise ValueError(msg)
-            # Note: the terminal angular velocity and pointing verifications in the first iteration will return
-            # meaningless results and should be disconsidered during analysis.
+            current_terminal_memo: dict[
+                tuple[SatelliteTerminal, SatelliteTerminal],
+                list[tuple[float, float]],
+            ] = {}
 
-            for edge in snapshot:
-                # TODO(): エッジがtupleとして定義されているので、順序を考慮して調べる必要がある
+            for edge in edges_snapshot:
                 previous_terminal_directions = terminal_memo.get(edge, [(0.0, 0.0), (0.0, 0.0)])
-
-                # TODO(): おそらく dynamics_data の中で各タイムステップの値を取ってくる必要がある
                 comm_link_performance, terminal_directions = self._calc_satellite_to_satellite(
                     positions_eci=(
-                        dynamics_data.satellite_position_eci[edge[0]],
-                        dynamics_data.satellite_position_eci[edge[1]],
+                        snapshot_dynamics.satellite_position_eci[edge[0]],
+                        snapshot_dynamics.satellite_position_eci[edge[1]],
                     ),
                     velocities_eci=(
-                        dynamics_data.satellite_velocity_eci[edge[0]],
-                        dynamics_data.satellite_velocity_eci[edge[1]],
+                        snapshot_dynamics.satellite_velocity_eci[edge[0]],
+                        snapshot_dynamics.satellite_velocity_eci[edge[1]],
                     ),
                     attitude_angular_velocities_eci=(
-                        dynamics_data.satellite_attitude_angular_velocity_eci[edge[0]],
-                        dynamics_data.satellite_attitude_angular_velocity_eci[edge[1]],
+                        snapshot_dynamics.satellite_attitude_angular_velocity_eci[edge[0]],
+                        snapshot_dynamics.satellite_attitude_angular_velocity_eci[edge[1]],
                     ),
-                    sun_direction_eci=dynamics_data.sun_direction_eci,
+                    sun_direction_eci=snapshot_dynamics.sun_direction_eci,
                     terminals=(
                         edge[0].terminal,
                         edge[1].terminal,
@@ -316,10 +322,10 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
                 )
 
                 edges_performance[edge] = comm_link_performance
-                terminal_memo[edge] = terminal_directions
+                current_terminal_memo[edge] = terminal_directions
 
             comm_link_time_series.append(edges_performance)
-            prev_time = current_time
+            terminal_memo = current_terminal_memo
 
         return comm_link_time_series
 

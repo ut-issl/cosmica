@@ -4299,7 +4299,10 @@ longer visible.</p>
 <span class="normal">309</span>
 <span class="normal">310</span>
 <span class="normal">311</span>
-<span class="normal">312</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_max_visibility_handover_g2c_topology</span><span class="p">(</span>  <span class="c1"># noqa: C901</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_max_visibility_handover_g2c_topology</span><span class="p">(</span>  <span class="c1"># noqa: C901, PLR0912</span>
     <span class="n">constellation</span><span class="p">:</span> <span class="n">Constellation</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">ground_nodes</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Gateway</span> <span class="o">|</span> <span class="n">StationaryOnGroundUser</span><span class="p">],</span>
@@ -4371,7 +4374,9 @@ longer visible.</p>
             <span class="k">if</span> <span class="n">sat_idx</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">masked_left_visibility_time_step</span><span class="p">[</span><span class="n">sat_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">select_sat_idx</span><span class="p">[</span><span class="n">ground_node_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">masked_left_visibility_time_step</span><span class="p">)</span>
+        <span class="n">select_sat_idx</span><span class="p">[</span><span class="n">ground_node_idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">masked_left_visibility_time_step</span><span class="p">)</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">masked_left_visibility_time_step</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="p">)</span>
 
     <span class="k">for</span> <span class="n">time_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_time</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">ground_node_idx</span><span class="p">,</span> <span class="n">_ground_node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ground_nodes_list</span><span class="p">):</span>
@@ -4391,7 +4396,8 @@ longer visible.</p>
                         <span class="n">select_max_visibility_satellite</span><span class="p">(</span><span class="n">ground_node_idx</span><span class="p">,</span> <span class="n">time_idx</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">select_max_visibility_satellite</span><span class="p">(</span><span class="n">ground_node_idx</span><span class="p">,</span> <span class="n">time_idx</span><span class="p">)</span>
-            <span class="n">link_available</span><span class="p">[</span><span class="n">ground_node_idx</span><span class="p">,</span> <span class="n">select_sat_idx</span><span class="p">[</span><span class="n">ground_node_idx</span><span class="p">],</span> <span class="n">time_idx</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">select_sat_idx</span><span class="p">[</span><span class="n">ground_node_idx</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">link_available</span><span class="p">[</span><span class="n">ground_node_idx</span><span class="p">,</span> <span class="n">select_sat_idx</span><span class="p">[</span><span class="n">ground_node_idx</span><span class="p">],</span> <span class="n">time_idx</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">construct_graph</span><span class="p">(</span><span class="n">link_available</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
         <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>

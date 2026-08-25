@@ -14,8 +14,8 @@ import numpy.typing as npt
 from numpy.random import Generator
 from typing_extensions import Doc
 
-from cosmica.dtos import DynamicsData
-from cosmica.models import OpticalCommunicationTerminal, Satellite, SatelliteTerminal
+from cosmica.dtos import DirectedCommunicationLink, DynamicsData
+from cosmica.models import OpticalCommunicationTerminal, Satellite
 from cosmica.utils.constants import SPEED_OF_LIGHT
 from cosmica.utils.vector import (
     angle_between,
@@ -25,9 +25,16 @@ from cosmica.utils.vector import (
     unit_vector_to_azimuth_elevation,
 )
 
-from .base import CommLinkCalculator, CommLinkPerformance, MemorylessCommLinkCalculator
+from .base import AssignedCommLinkCalculator, CommLinkCalculator, CommLinkPerformance, MemorylessCommLinkCalculator
 
 logger = logging.getLogger(__name__)
+
+type OpticalSatelliteLink = DirectedCommunicationLink[
+    Satellite,
+    OpticalCommunicationTerminal,
+    Satellite,
+    OpticalCommunicationTerminal,
+]
 
 
 class SatToSatBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Satellite, Satellite]):
@@ -246,8 +253,8 @@ class SatToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, Satel
         return comm_link_time_series
 
 
-class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, SatelliteTerminal]):
-    """Calculate satellite-to-satellite communication link performance for each terminal in a network.
+class OTC2OTCBinaryCommLinkCalculator(AssignedCommLinkCalculator[OpticalSatelliteLink]):
+    """Calculate performance for optical links with explicitly assigned satellite terminals.
 
     The link performance is calculated as a binary value, i.e., 1 if the link is available and 0 otherwise.
     """
@@ -269,17 +276,17 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
 
     def calc(
         self,
-        edges_time_series: Sequence[Collection[tuple[SatelliteTerminal, SatelliteTerminal]]],
+        links_time_series: Sequence[Collection[OpticalSatelliteLink]],
         *,
         dynamics_data: DynamicsData,
         rng: Generator,  # noqa: ARG002
-    ) -> list[dict[tuple[SatelliteTerminal, SatelliteTerminal], CommLinkPerformance]]:
-        terminal_memo: dict[tuple[SatelliteTerminal, SatelliteTerminal], list[tuple[float, float]]] = {}
+    ) -> list[dict[OpticalSatelliteLink, CommLinkPerformance]]:
+        terminal_memo: dict[OpticalSatelliteLink, list[tuple[float, float]]] = {}
         comm_link_time_series = []
         prev_time = dynamics_data.time[0]
 
-        for i, snapshot in enumerate(edges_time_series):
-            edges_performance = {}
+        for i, links in enumerate(links_time_series):
+            links_performance = {}
             current_time = dynamics_data.time[i]
             time_delta = current_time - prev_time if i != 0 else 1
             if time_delta == 0:
@@ -288,37 +295,38 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
             # Note: the terminal angular velocity and pointing verifications in the first iteration will return
             # meaningless results and should be disconsidered during analysis.
 
-            for edge in snapshot:
-                # TODO(): エッジがtupleとして定義されているので、順序を考慮して調べる必要がある
-                previous_terminal_directions = terminal_memo.get(edge, [(0.0, 0.0), (0.0, 0.0)])
+            for link in links:
+                source_satellite = link.source.node
+                destination_satellite = link.destination.node
+                previous_terminal_directions = terminal_memo.get(link, [(0.0, 0.0), (0.0, 0.0)])
 
                 # TODO(): おそらく dynamics_data の中で各タイムステップの値を取ってくる必要がある
                 comm_link_performance, terminal_directions = self._calc_satellite_to_satellite(
                     positions_eci=(
-                        dynamics_data.satellite_position_eci[edge[0]],
-                        dynamics_data.satellite_position_eci[edge[1]],
+                        dynamics_data.satellite_position_eci[source_satellite],
+                        dynamics_data.satellite_position_eci[destination_satellite],
                     ),
                     velocities_eci=(
-                        dynamics_data.satellite_velocity_eci[edge[0]],
-                        dynamics_data.satellite_velocity_eci[edge[1]],
+                        dynamics_data.satellite_velocity_eci[source_satellite],
+                        dynamics_data.satellite_velocity_eci[destination_satellite],
                     ),
                     attitude_angular_velocities_eci=(
-                        dynamics_data.satellite_attitude_angular_velocity_eci[edge[0]],
-                        dynamics_data.satellite_attitude_angular_velocity_eci[edge[1]],
+                        dynamics_data.satellite_attitude_angular_velocity_eci[source_satellite],
+                        dynamics_data.satellite_attitude_angular_velocity_eci[destination_satellite],
                     ),
                     sun_direction_eci=dynamics_data.sun_direction_eci,
                     terminals=(
-                        edge[0].terminal,
-                        edge[1].terminal,
+                        link.source.terminal,
+                        link.destination.terminal,
                     ),
                     previous_terminal_directions=previous_terminal_directions,
                     time_delta=time_delta,
                 )
 
-                edges_performance[edge] = comm_link_performance
-                terminal_memo[edge] = terminal_directions
+                links_performance[link] = comm_link_performance
+                terminal_memo[link] = terminal_directions
 
-            comm_link_time_series.append(edges_performance)
+            comm_link_time_series.append(links_performance)
             prev_time = current_time
 
         return comm_link_time_series

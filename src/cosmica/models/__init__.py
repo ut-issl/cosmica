@@ -16,9 +16,9 @@ __all__ = [
     "OpticalCommunicationTerminal",
     "RFCommunicationTerminal",
     "Satellite",
-    "SatelliteTerminal",
     "Scenario",
     "StationaryOnGroundUser",
+    "TerminalOwner",
     "User",
     "UserOpticalCommunicationTerminal",
     "UserSatellite",
@@ -31,12 +31,13 @@ from .gateway import Gateway, GatewayOGS
 from .internet import Internet
 from .node import Node, NodeGID
 from .orbit import CircularSatelliteOrbitModel, EllipticalSatelliteOrbitModel, GravityModel
-from .satellite import ConstellationSatellite, Satellite, SatelliteTerminal, UserSatellite
+from .satellite import ConstellationSatellite, Satellite, UserSatellite
 from .scenario import Scenario
 from .terminal import (
     CommunicationTerminal,
     OpticalCommunicationTerminal,
     RFCommunicationTerminal,
+    TerminalOwner,
     UserOpticalCommunicationTerminal,
 )
 from .user import StationaryOnGroundUser, User

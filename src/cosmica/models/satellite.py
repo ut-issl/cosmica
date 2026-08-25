@@ -1,7 +1,6 @@
 __all__ = [
     "ConstellationSatellite",
     "Satellite",
-    "SatelliteTerminal",
     "UserSatellite",
 ]
 from abc import ABC
@@ -11,16 +10,29 @@ from typing import Any, override
 
 from .node import Node
 from .orbit import SatelliteOrbitModel
-from .terminal import OpticalCommunicationTerminal
+from .terminal import CommunicationTerminal
 
 
-class Satellite[T: Hashable](Node[T], ABC): ...
+@dataclass(frozen=True, kw_only=True, slots=True)
+class Satellite[T: Hashable](Node[T], ABC):
+    """Physical satellite that owns communication-terminal resources."""
+
+    id: T
+    terminals: tuple[CommunicationTerminal, ...] = field(
+        default_factory=tuple,
+        compare=False,
+        hash=False,
+    )
+
+    def __post_init__(self) -> None:
+        terminal_ids = tuple(terminal.global_id for terminal in self.terminals)
+        if len(terminal_ids) != len(set(terminal_ids)):
+            msg = "satellite terminal global IDs must be unique"
+            raise ValueError(msg)
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
 class ConstellationSatellite[T: Hashable, O: SatelliteOrbitModel = Any](Satellite[T]):
-    id: T
-
     orbit: O = field(hash=False, compare=False)
 
     @classmethod
@@ -31,33 +43,9 @@ class ConstellationSatellite[T: Hashable, O: SatelliteOrbitModel = Any](Satellit
 
 @dataclass(frozen=True, kw_only=True, slots=True)
 class UserSatellite[T: Hashable, O: SatelliteOrbitModel = Any](Satellite[T]):
-    id: T
-
     orbit: O = field(hash=False, compare=False)
 
     @classmethod
     @override
     def class_name(cls) -> str:
         return "USAT"
-
-
-@dataclass(frozen=True, kw_only=True, slots=True)
-class SatelliteTerminal[T: Hashable](Satellite[T]):
-    id: T
-    terminal_id: T
-    azimuth_min: float
-    azimuth_max: float
-    elevation_min: float
-    elevation_max: float
-    angular_velocity_max: float
-
-    @property
-    def terminal(self) -> OpticalCommunicationTerminal[T]:
-        return OpticalCommunicationTerminal(
-            id=self.terminal_id,
-            azimuth_min=self.azimuth_min,
-            azimuth_max=self.azimuth_max,
-            elevation_min=self.elevation_min,
-            elevation_max=self.elevation_max,
-            angular_velocity_max=self.angular_velocity_max,
-        )

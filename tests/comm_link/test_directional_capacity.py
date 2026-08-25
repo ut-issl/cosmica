@@ -27,8 +27,8 @@ from cosmica.models import (
     CircularSatelliteOrbitModel,
     ConstellationSatellite,
     Gateway,
+    OpticalCommunicationTerminal,
     Satellite,
-    SatelliteTerminal,
 )
 from cosmica.utils.constants import EARTH_RADIUS
 
@@ -48,10 +48,9 @@ def _make_satellite(sat_id: int, phase_deg: float = 0.0) -> ConstellationSatelli
     )
 
 
-def _make_satellite_terminal(sat_id: int) -> SatelliteTerminal[int]:
-    return SatelliteTerminal(
-        id=sat_id,
-        terminal_id=sat_id,
+def _make_optical_terminal(terminal_id: int) -> OpticalCommunicationTerminal[int]:
+    return OpticalCommunicationTerminal(
+        id=terminal_id,
         azimuth_min=-np.pi,
         azimuth_max=np.pi,
         elevation_min=-np.pi / 2,
@@ -349,8 +348,8 @@ def test_terminal_calculator_enforces_finite_segment_clearance(
     *,
     expected_available: bool,
 ) -> None:
-    sat_a = _make_satellite_terminal(1)
-    sat_b = _make_satellite_terminal(2)
+    terminal_a = _make_optical_terminal(1)
+    terminal_b = _make_optical_terminal(2)
     calculator = OTC2OTCBinaryCommLinkCalculator(
         link_capacity=10e9,
         lowest_altitude=lowest_altitude,
@@ -363,7 +362,7 @@ def test_terminal_calculator_enforces_finite_segment_clearance(
         velocities_eci=(zero, zero),
         attitude_angular_velocities_eci=(zero, zero),
         sun_direction_eci=np.array([0.0, 0.0, 1.0]),
-        terminals=(sat_a.terminal, sat_b.terminal),
+        terminals=(terminal_a, terminal_b),
         previous_terminal_directions=[(0.0, 0.0), (0.0, 0.0)],
         time_delta=1.0,
     )

@@ -6,6 +6,7 @@ __all__ = [
 
 import logging
 from collections.abc import Collection, Sequence
+from dataclasses import dataclass
 from itertools import chain
 from typing import Annotated
 
@@ -40,6 +41,30 @@ type OpticalSatelliteLink[
     DestinationSatellite,
     DestinationTerminal,
 ]
+
+
+@dataclass(frozen=True, slots=True)
+class _TerminalDirection:
+    azimuth: float
+    elevation: float
+
+
+type _TerminalDirections = tuple[_TerminalDirection, _TerminalDirection]
+
+
+@dataclass(frozen=True, slots=True)
+class _TerminalAngularVelocity:
+    azimuth: float
+    elevation: float
+
+
+type _TerminalAngularVelocities = tuple[_TerminalAngularVelocity, _TerminalAngularVelocity]
+
+
+@dataclass(frozen=True, slots=True)
+class _TerminalState:
+    observed_at: np.datetime64
+    directions: _TerminalDirections
 
 
 class SatToSatBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Satellite, Satellite]):
@@ -304,17 +329,13 @@ class OTC2OTCBinaryCommLinkCalculator(
     ]:
         latest_terminal_state_by_link: dict[
             OpticalSatelliteLink[SourceSatellite, SourceTerminal, DestinationSatellite, DestinationTerminal],
-            tuple[np.datetime64, list[tuple[float, float]]],
+            _TerminalState,
         ] = {}
         comm_link_time_series = []
 
-        for links_snapshot, current_time, dynamics_snapshot in zip(
-            links_time_series,
-            dynamics_data.time,
-            dynamics_data,
-            strict=True,
-        ):
+        for links_snapshot, dynamics_snapshot in zip(links_time_series, dynamics_data, strict=True):
             links_performance_snapshot = {}
+            current_time = dynamics_snapshot.time
 
             for link in links_snapshot:
                 source_satellite = link.source.node
@@ -324,8 +345,8 @@ class OTC2OTCBinaryCommLinkCalculator(
                     None
                     if previous_terminal_state is None
                     else (
-                        previous_terminal_state[1],
-                        float((current_time - previous_terminal_state[0]) / np.timedelta64(1, "s")),
+                        previous_terminal_state.directions,
+                        float((current_time - previous_terminal_state.observed_at) / np.timedelta64(1, "s")),
                     )
                 )
 
@@ -351,7 +372,10 @@ class OTC2OTCBinaryCommLinkCalculator(
                 )
 
                 links_performance_snapshot[link] = comm_link_performance
-                latest_terminal_state_by_link[link] = current_time, terminal_directions
+                latest_terminal_state_by_link[link] = _TerminalState(
+                    observed_at=current_time,
+                    directions=terminal_directions,
+                )
 
             comm_link_time_series.append(links_performance_snapshot)
 
@@ -378,10 +402,10 @@ class OTC2OTCBinaryCommLinkCalculator(
             Doc("Optical Communication Terminals of pair of satellites"),
         ],
         previous_terminal_observation: Annotated[
-            tuple[list[tuple[float, float]], float] | None,
+            tuple[_TerminalDirections, float] | None,
             Doc("Previous terminal directions and elapsed time in seconds, or None for a first observation"),
         ],
-    ) -> tuple[CommLinkPerformance, list[tuple[float, float]]]:
+    ) -> tuple[CommLinkPerformance, _TerminalDirections]:
         """Calculate binary communication link performance between two satellites."""
         for vec in chain(positions_eci, velocities_eci):
             assert vec.shape == (3,), f"Position and velocity vectors must be 3-dimensional, but got shape {vec.shape}"
@@ -424,6 +448,7 @@ class OTC2OTCBinaryCommLinkCalculator(
                 sun_exclusion_satisfied = False
 
         terminal_directions = self._calc_terminal_directions(relative_position_eci)
+        terminal_angular_velocity: _TerminalAngularVelocities | None
         match previous_terminal_observation:
             case None:
                 terminal_angular_velocity = None
@@ -431,17 +456,21 @@ class OTC2OTCBinaryCommLinkCalculator(
                 if elapsed_time_seconds <= 0.0:
                     msg = "elapsed time since the previous terminal observation must be positive"
                     raise ValueError(msg)
-                terminal_angular_velocity = [
-                    [
-                        (terminal[0] - previous_terminal[0]) / elapsed_time_seconds,
-                        (terminal[1] - previous_terminal[1]) / elapsed_time_seconds,
-                    ]
-                    for terminal, previous_terminal in zip(
-                        terminal_directions,
-                        previous_terminal_directions,
-                        strict=True,
-                    )
-                ]
+                source_direction, destination_direction = terminal_directions
+                previous_source_direction, previous_destination_direction = previous_terminal_directions
+                terminal_angular_velocity = (
+                    _TerminalAngularVelocity(
+                        azimuth=(source_direction.azimuth - previous_source_direction.azimuth) / elapsed_time_seconds,
+                        elevation=(source_direction.elevation - previous_source_direction.elevation)
+                        / elapsed_time_seconds,
+                    ),
+                    _TerminalAngularVelocity(
+                        azimuth=(destination_direction.azimuth - previous_destination_direction.azimuth)
+                        / elapsed_time_seconds,
+                        elevation=(destination_direction.elevation - previous_destination_direction.elevation)
+                        / elapsed_time_seconds,
+                    ),
+                )
         link_available = bool(
             distance < self.max_inter_satellite_distance
             and is_line_segment_clear_of_earth(
@@ -463,9 +492,9 @@ class OTC2OTCBinaryCommLinkCalculator(
                     # and terminal_directions[i][0] > terminal.azimuth_min
                     # and terminal_directions[i][1] > terminal.elevation_min
                     # and terminal_directions[i][1] < terminal.elevation_max
-                    terminal_angular_velocity[i][0] < terminal.angular_velocity_max
-                    and terminal_angular_velocity[i][1] < terminal.angular_velocity_max
-                    for i, terminal in enumerate(terminals)
+                    angular_velocity.azimuth < terminal.angular_velocity_max
+                    and angular_velocity.elevation < terminal.angular_velocity_max
+                    for angular_velocity, terminal in zip(terminal_angular_velocity, terminals, strict=True)
                 )
             ),
         )
@@ -479,12 +508,15 @@ class OTC2OTCBinaryCommLinkCalculator(
             terminal_directions,
         )
 
-    def _calc_terminal_directions(self, relative_position: npt.NDArray) -> list[tuple[float, float]]:
+    def _calc_terminal_directions(self, relative_position: npt.NDArray) -> _TerminalDirections:
         unitary_direction = normalize(relative_position)
-        terminal_a = unit_vector_to_azimuth_elevation(unitary_direction)
-        terminal_b = unit_vector_to_azimuth_elevation(
+        source_azimuth, source_elevation = unit_vector_to_azimuth_elevation(unitary_direction)
+        destination_azimuth, destination_elevation = unit_vector_to_azimuth_elevation(
             np.concatenate((unitary_direction[:-1], [-unitary_direction[-1]])),
         )
         # Note: Here we only inverted the z component of the unit vector, as it is assumed the terminals are located
         # at opposite faces
-        return [terminal_a, terminal_b]
+        return (
+            _TerminalDirection(azimuth=source_azimuth, elevation=source_elevation),
+            _TerminalDirection(azimuth=destination_azimuth, elevation=destination_elevation),
+        )

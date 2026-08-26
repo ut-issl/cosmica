@@ -6,6 +6,7 @@ __all__ = [
 
 import logging
 from collections.abc import Collection, Sequence
+from dataclasses import dataclass
 from itertools import chain
 from typing import Annotated
 
@@ -14,20 +15,42 @@ import numpy.typing as npt
 from numpy.random import Generator
 from typing_extensions import Doc
 
-from cosmica.dtos import DynamicsData
-from cosmica.models import OpticalCommunicationTerminal, Satellite, SatelliteTerminal
+from cosmica.dtos import DirectedCommunicationLink, DynamicsData
+from cosmica.models import OpticalCommunicationTerminal, Satellite
 from cosmica.utils.constants import SPEED_OF_LIGHT
-from cosmica.utils.vector import (
-    angle_between,
-    is_line_segment_clear_of_earth,
-    is_satellite_in_eclipse,
-    normalize,
-    unit_vector_to_azimuth_elevation,
+from cosmica.utils.vector import angle_between, is_line_segment_clear_of_earth, is_satellite_in_eclipse
+
+from .base import AssignedCommLinkCalculator, CommLinkCalculator, CommLinkPerformance, MemorylessCommLinkCalculator
+from .terminal_geometry import (
+    TerminalPointing,
+    calc_terminal_angular_rate,
+    calc_terminal_pointing,
+    is_pointing_rate_within_limit,
+    is_pointing_within_field_of_regard,
 )
 
-from .base import CommLinkCalculator, CommLinkPerformance, MemorylessCommLinkCalculator
-
 logger = logging.getLogger(__name__)
+
+type OpticalSatelliteLink[
+    SourceSatellite: Satellite,
+    SourceTerminal: OpticalCommunicationTerminal,
+    DestinationSatellite: Satellite,
+    DestinationTerminal: OpticalCommunicationTerminal,
+] = DirectedCommunicationLink[
+    SourceSatellite,
+    SourceTerminal,
+    DestinationSatellite,
+    DestinationTerminal,
+]
+
+
+type _TerminalPointings = tuple[TerminalPointing, TerminalPointing]
+
+
+@dataclass(frozen=True, slots=True)
+class _TerminalState:
+    observed_at: np.datetime64
+    pointings: _TerminalPointings
 
 
 class SatToSatBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Satellite, Satellite]):
@@ -246,20 +269,49 @@ class SatToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, Satel
         return comm_link_time_series
 
 
-class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, SatelliteTerminal]):
-    """Calculate satellite-to-satellite communication link performance for each terminal in a network.
+class OTC2OTCBinaryCommLinkCalculator(
+    AssignedCommLinkCalculator[
+        OpticalSatelliteLink[Satellite, OpticalCommunicationTerminal, Satellite, OpticalCommunicationTerminal]
+    ],
+):
+    """Calculate performance for optical links with explicitly assigned satellite terminals.
 
-    The link performance is calculated as a binary value, i.e., 1 if the link is available and 0 otherwise.
+    For each endpoint, the ECI line of sight is transformed first by the snapshot's
+    ECI-to-body attitude from :class:`~cosmica.dtos.DynamicsData`, then by the
+    terminal's fixed body-to-terminal mounting transform:
+    ``u_terminal = C_body2terminal @ C_eci2body @ u_eci``. The two endpoints use
+    opposite ECI line-of-sight vectors and their own transforms. In terminal
+    coordinates, ``+x`` has zero azimuth and elevation, azimuth rotates toward
+    ``+y``, and elevation rotates toward ``+z``.
+
+    A link is available only when its distance, Earth clearance, relative angular
+    velocity, two-ended Sun exclusion, both terminals' fields of regard, and both
+    terminals' axis slew rates satisfy their configured limits. Slew is estimated
+    only across consecutive snapshots containing the same directed edge. Therefore,
+    the first appearance after simulation start or an absence skips the slew-rate
+    constraint while still applying every instantaneous constraint.
     """
 
     def __init__(
         self,
         *,
-        link_capacity: float,
-        max_inter_satellite_distance: float = float("inf"),
-        lowest_altitude: float = 0.0,
-        max_relative_angular_velocity: float = float("inf"),
-        sun_exclusion_angle: float = 0.0,
+        link_capacity: Annotated[float, Doc("Available-link capacity in bits per second.")],
+        max_inter_satellite_distance: Annotated[
+            float,
+            Doc("Exclusive maximum terminal separation in meters."),
+        ] = float("inf"),
+        lowest_altitude: Annotated[
+            float,
+            Doc("Minimum line-of-sight altitude above Earth's surface in meters, inclusive."),
+        ] = 0.0,
+        max_relative_angular_velocity: Annotated[
+            float,
+            Doc("Exclusive maximum line-of-sight angular velocity at either satellite in radians per second."),
+        ] = float("inf"),
+        sun_exclusion_angle: Annotated[
+            float,
+            Doc("Minimum angle from either illuminated terminal's line of sight to the Sun, in radians."),
+        ] = 0.0,
     ) -> None:
         self.link_capacity = link_capacity
         self.max_inter_satellite_distance = max_inter_satellite_distance
@@ -267,59 +319,97 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
         self.max_relative_angular_velocity = max_relative_angular_velocity
         self.sun_exclusion_angle = sun_exclusion_angle
 
-    def calc(
+    def calc[
+        SourceSatellite: Satellite,
+        SourceTerminal: OpticalCommunicationTerminal,
+        DestinationSatellite: Satellite,
+        DestinationTerminal: OpticalCommunicationTerminal,
+    ](
         self,
-        edges_time_series: Sequence[Collection[tuple[SatelliteTerminal, SatelliteTerminal]]],
+        links_time_series: Sequence[
+            Collection[OpticalSatelliteLink[SourceSatellite, SourceTerminal, DestinationSatellite, DestinationTerminal]]
+        ],
         *,
         dynamics_data: DynamicsData,
         rng: Generator,  # noqa: ARG002
-    ) -> list[dict[tuple[SatelliteTerminal, SatelliteTerminal], CommLinkPerformance]]:
-        terminal_memo: dict[tuple[SatelliteTerminal, SatelliteTerminal], list[tuple[float, float]]] = {}
+    ) -> list[
+        dict[
+            OpticalSatelliteLink[SourceSatellite, SourceTerminal, DestinationSatellite, DestinationTerminal],
+            CommLinkPerformance,
+        ]
+    ]:
+        previous_terminal_state_by_link: dict[
+            OpticalSatelliteLink[SourceSatellite, SourceTerminal, DestinationSatellite, DestinationTerminal],
+            _TerminalState,
+        ] = {}
         comm_link_time_series = []
-        prev_time = dynamics_data.time[0]
 
-        for i, snapshot in enumerate(edges_time_series):
-            edges_performance = {}
-            current_time = dynamics_data.time[i]
-            time_delta = current_time - prev_time if i != 0 else 1
-            if time_delta == 0:
-                msg = "time_delta must be non-zero"
-                raise ValueError(msg)
-            # Note: the terminal angular velocity and pointing verifications in the first iteration will return
-            # meaningless results and should be disconsidered during analysis.
+        for links_snapshot, dynamics_snapshot in zip(links_time_series, dynamics_data, strict=True):
+            links_performance_snapshot = {}
+            current_terminal_state_by_link: dict[
+                OpticalSatelliteLink[SourceSatellite, SourceTerminal, DestinationSatellite, DestinationTerminal],
+                _TerminalState,
+            ] = {}
+            current_time = dynamics_snapshot.time
 
-            for edge in snapshot:
-                # TODO(): エッジがtupleとして定義されているので、順序を考慮して調べる必要がある
-                previous_terminal_directions = terminal_memo.get(edge, [(0.0, 0.0), (0.0, 0.0)])
+            for link in links_snapshot:
+                source_satellite = link.source.node
+                destination_satellite = link.destination.node
+                missing_attitudes = tuple(
+                    satellite
+                    for satellite in (source_satellite, destination_satellite)
+                    if satellite not in dynamics_snapshot.satellite_attitude_dcm_eci2body
+                )
+                if missing_attitudes:
+                    msg = (
+                        "satellite_attitude_dcm_eci2body must contain an ECI-to-body "
+                        f"attitude for every link endpoint; missing {missing_attitudes!r}"
+                    )
+                    raise ValueError(msg)
 
-                # TODO(): おそらく dynamics_data の中で各タイムステップの値を取ってくる必要がある
-                comm_link_performance, terminal_directions = self._calc_satellite_to_satellite(
-                    positions_eci=(
-                        dynamics_data.satellite_position_eci[edge[0]],
-                        dynamics_data.satellite_position_eci[edge[1]],
-                    ),
-                    velocities_eci=(
-                        dynamics_data.satellite_velocity_eci[edge[0]],
-                        dynamics_data.satellite_velocity_eci[edge[1]],
-                    ),
-                    attitude_angular_velocities_eci=(
-                        dynamics_data.satellite_attitude_angular_velocity_eci[edge[0]],
-                        dynamics_data.satellite_attitude_angular_velocity_eci[edge[1]],
-                    ),
-                    sun_direction_eci=dynamics_data.sun_direction_eci,
-                    terminals=(
-                        edge[0].terminal,
-                        edge[1].terminal,
-                    ),
-                    previous_terminal_directions=previous_terminal_directions,
-                    time_delta=time_delta,
+                previous_terminal_state = previous_terminal_state_by_link.get(link)
+                previous_terminal_observation = (
+                    None
+                    if previous_terminal_state is None
+                    else (
+                        previous_terminal_state.pointings,
+                        float((current_time - previous_terminal_state.observed_at) / np.timedelta64(1, "s")),
+                    )
                 )
 
-                edges_performance[edge] = comm_link_performance
-                terminal_memo[edge] = terminal_directions
+                comm_link_performance, terminal_pointings = self._calc_satellite_to_satellite(
+                    positions_eci=(
+                        dynamics_snapshot.satellite_position_eci[source_satellite],
+                        dynamics_snapshot.satellite_position_eci[destination_satellite],
+                    ),
+                    velocities_eci=(
+                        dynamics_snapshot.satellite_velocity_eci[source_satellite],
+                        dynamics_snapshot.satellite_velocity_eci[destination_satellite],
+                    ),
+                    attitude_angular_velocities_eci=(
+                        dynamics_snapshot.satellite_attitude_angular_velocity_eci[source_satellite],
+                        dynamics_snapshot.satellite_attitude_angular_velocity_eci[destination_satellite],
+                    ),
+                    attitude_dcms_eci2body=(
+                        dynamics_snapshot.satellite_attitude_dcm_eci2body[source_satellite],
+                        dynamics_snapshot.satellite_attitude_dcm_eci2body[destination_satellite],
+                    ),
+                    sun_direction_eci=dynamics_snapshot.sun_direction_eci,
+                    terminals=(
+                        link.source.terminal,
+                        link.destination.terminal,
+                    ),
+                    previous_terminal_observation=previous_terminal_observation,
+                )
 
-            comm_link_time_series.append(edges_performance)
-            prev_time = current_time
+                links_performance_snapshot[link] = comm_link_performance
+                current_terminal_state_by_link[link] = _TerminalState(
+                    observed_at=current_time,
+                    pointings=terminal_pointings,
+                )
+
+            comm_link_time_series.append(links_performance_snapshot)
+            previous_terminal_state_by_link = current_terminal_state_by_link
 
         return comm_link_time_series
 
@@ -334,7 +424,14 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
             tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]],
             Doc("Velocity vectors in ECI frame. Shape: (3,)"),
         ],
-        attitude_angular_velocities_eci: tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]],
+        attitude_angular_velocities_eci: Annotated[
+            tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]],
+            Doc("Satellite body angular-velocity vectors in ECI coordinates. Shape per endpoint: (3,)."),
+        ],
+        attitude_dcms_eci2body: Annotated[
+            tuple[npt.NDArray[np.floating], npt.NDArray[np.floating]],
+            Doc("Direction-cosine matrices transforming ECI components to body components. Shape: (3, 3)."),
+        ],
         sun_direction_eci: Annotated[
             npt.NDArray[np.floating],
             Doc("Sun direction vector in ECI frame. Shape: (3,)"),
@@ -343,15 +440,11 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
             tuple[OpticalCommunicationTerminal, OpticalCommunicationTerminal],
             Doc("Optical Communication Terminals of pair of satellites"),
         ],
-        previous_terminal_directions: Annotated[
-            list[tuple[float, float]],
-            Doc("Azimuth and elevation values for each terminal in the previous time step"),
+        previous_terminal_observation: Annotated[
+            tuple[_TerminalPointings, float] | None,
+            Doc("Previous terminal pointings and elapsed time in seconds, or None for a first observation"),
         ],
-        time_delta: Annotated[
-            float,
-            Doc("Float representing time difference to previous configuration in the time series"),
-        ],
-    ) -> tuple[CommLinkPerformance, list[tuple[float, float]]]:
+    ) -> tuple[CommLinkPerformance, _TerminalPointings]:
         """Calculate binary communication link performance between two satellites."""
         for vec in chain(positions_eci, velocities_eci):
             assert vec.shape == (3,), f"Position and velocity vectors must be 3-dimensional, but got shape {vec.shape}"
@@ -393,11 +486,42 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
             if edge_sun_angle_b_to_a < self.sun_exclusion_angle:
                 sun_exclusion_satisfied = False
 
-        terminal_directions = self._calc_terminal_directions(relative_position_eci)
-        terminal_angular_velocity = [
-            [(terminal[0] - previous_terminal[0]) / time_delta, (terminal[1] - previous_terminal[1]) / time_delta]
-            for terminal, previous_terminal in zip(terminal_directions, previous_terminal_directions, strict=False)
-        ]
+        terminal_pointings = (
+            calc_terminal_pointing(
+                relative_position_eci,
+                dcm_eci2body=attitude_dcms_eci2body[0],
+                terminal=terminals[0],
+            ),
+            calc_terminal_pointing(
+                -relative_position_eci,
+                dcm_eci2body=attitude_dcms_eci2body[1],
+                terminal=terminals[1],
+            ),
+        )
+        field_of_regard_satisfied = all(
+            is_pointing_within_field_of_regard(pointing, terminal)
+            for pointing, terminal in zip(terminal_pointings, terminals, strict=True)
+        )
+        match previous_terminal_observation:
+            case None:
+                slew_rate_satisfied = True
+            case (previous_terminal_pointings, elapsed_time_seconds):
+                slew_rate_satisfied = all(
+                    is_pointing_rate_within_limit(
+                        calc_terminal_angular_rate(
+                            pointing,
+                            previous_pointing,
+                            time_delta=elapsed_time_seconds,
+                        ),
+                        terminal,
+                    )
+                    for pointing, previous_pointing, terminal in zip(
+                        terminal_pointings,
+                        previous_terminal_pointings,
+                        terminals,
+                        strict=True,
+                    )
+                )
         link_available = bool(
             distance < self.max_inter_satellite_distance
             and is_line_segment_clear_of_earth(
@@ -410,17 +534,8 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
                 for relative_angular_velocity in relative_angular_velocities
             )
             and sun_exclusion_satisfied
-            and all(
-                # For terminal direction checks, a more careful implementation is required
-                # using the appropriate coordinate frame transformations
-                # terminal_directions[i][0] < terminal.azimuth_max
-                # and terminal_directions[i][0] > terminal.azimuth_min
-                # and terminal_directions[i][1] > terminal.elevation_min
-                # and terminal_directions[i][1] < terminal.elevation_max
-                terminal_angular_velocity[i][0] < terminal.angular_velocity_max
-                and terminal_angular_velocity[i][1] < terminal.angular_velocity_max
-                for i, terminal in enumerate(terminals)
-            ),
+            and field_of_regard_satisfied
+            and slew_rate_satisfied,
         )
 
         return (
@@ -429,15 +544,5 @@ class OTC2OTCBinaryCommLinkCalculator(CommLinkCalculator[SatelliteTerminal, Sate
                 delay=float(distance / SPEED_OF_LIGHT),
                 link_available=link_available,
             ),
-            terminal_directions,
+            terminal_pointings,
         )
-
-    def _calc_terminal_directions(self, relative_position: npt.NDArray) -> list[tuple[float, float]]:
-        unitary_direction = normalize(relative_position)
-        terminal_a = unit_vector_to_azimuth_elevation(unitary_direction)
-        terminal_b = unit_vector_to_azimuth_elevation(
-            np.concatenate((unitary_direction[:-1], [-unitary_direction[-1]])),
-        )
-        # Note: Here we only inverted the z component of the unit vector, as it is assumed the terminals are located
-        # at opposite faces
-        return [terminal_a, terminal_b]

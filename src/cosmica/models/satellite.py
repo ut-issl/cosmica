@@ -17,7 +17,6 @@ from .terminal import CommunicationTerminal, TerminalOwner
 class Satellite[T: Hashable](Node[T], TerminalOwner, ABC):
     """Physical satellite that owns communication-terminal resources."""
 
-    id: T
     terminals: tuple[CommunicationTerminal, ...] = field(
         default_factory=tuple,
         compare=False,

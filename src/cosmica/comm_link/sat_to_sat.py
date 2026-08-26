@@ -285,8 +285,8 @@ class OTC2OTCBinaryCommLinkCalculator(AssignedCommLinkCalculator[OpticalSatellit
         comm_link_time_series = []
         prev_time = dynamics_data.time[0]
 
-        for i, links in enumerate(links_time_series):
-            links_performance = {}
+        for i, links_snapshot in enumerate(links_time_series):
+            links_performance_snapshot = {}
             current_time = dynamics_data.time[i]
             time_delta = current_time - prev_time if i != 0 else 1
             if time_delta == 0:
@@ -295,7 +295,7 @@ class OTC2OTCBinaryCommLinkCalculator(AssignedCommLinkCalculator[OpticalSatellit
             # Note: the terminal angular velocity and pointing verifications in the first iteration will return
             # meaningless results and should be disconsidered during analysis.
 
-            for link in links:
+            for link in links_snapshot:
                 source_satellite = link.source.node
                 destination_satellite = link.destination.node
                 previous_terminal_directions = terminal_memo.get(link, [(0.0, 0.0), (0.0, 0.0)])
@@ -323,10 +323,10 @@ class OTC2OTCBinaryCommLinkCalculator(AssignedCommLinkCalculator[OpticalSatellit
                     time_delta=time_delta,
                 )
 
-                links_performance[link] = comm_link_performance
+                links_performance_snapshot[link] = comm_link_performance
                 terminal_memo[link] = terminal_directions
 
-            comm_link_time_series.append(links_performance)
+            comm_link_time_series.append(links_performance_snapshot)
             prev_time = current_time
 
         return comm_link_time_series

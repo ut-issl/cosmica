@@ -281,53 +281,61 @@ class OTC2OTCBinaryCommLinkCalculator(AssignedCommLinkCalculator[OpticalSatellit
         dynamics_data: DynamicsData,
         rng: Generator,  # noqa: ARG002
     ) -> list[dict[OpticalSatelliteLink, CommLinkPerformance]]:
-        terminal_memo: dict[OpticalSatelliteLink, list[tuple[float, float]]] = {}
-        comm_link_time_series = []
-        prev_time = dynamics_data.time[0]
+        assert len(links_time_series) == len(dynamics_data.time)
 
-        for i, links_snapshot in enumerate(links_time_series):
+        terminal_memo: dict[
+            OpticalSatelliteLink,
+            tuple[np.datetime64, list[tuple[float, float]]],
+        ] = {}
+        comm_link_time_series = []
+
+        for time_index, links_snapshot in enumerate(links_time_series):
             links_performance_snapshot = {}
-            current_time = dynamics_data.time[i]
-            time_delta = current_time - prev_time if i != 0 else 1
-            if time_delta == 0:
-                msg = "time_delta must be non-zero"
+            current_time = dynamics_data.time[time_index]
+            dynamics_snapshot = dynamics_data[time_index]
+
+            if time_index > 0 and current_time <= dynamics_data.time[time_index - 1]:
+                msg = "dynamics_data.time must be strictly increasing"
                 raise ValueError(msg)
-            # Note: the terminal angular velocity and pointing verifications in the first iteration will return
-            # meaningless results and should be disconsidered during analysis.
 
             for link in links_snapshot:
                 source_satellite = link.source.node
                 destination_satellite = link.destination.node
-                previous_terminal_directions = terminal_memo.get(link, [(0.0, 0.0), (0.0, 0.0)])
+                previous_state = terminal_memo.get(link)
+                previous_terminal_observation = (
+                    None
+                    if previous_state is None
+                    else (
+                        previous_state[1],
+                        float((current_time - previous_state[0]) / np.timedelta64(1, "s")),
+                    )
+                )
 
-                # TODO(): おそらく dynamics_data の中で各タイムステップの値を取ってくる必要がある
                 comm_link_performance, terminal_directions = self._calc_satellite_to_satellite(
                     positions_eci=(
-                        dynamics_data.satellite_position_eci[source_satellite],
-                        dynamics_data.satellite_position_eci[destination_satellite],
+                        dynamics_snapshot.satellite_position_eci[source_satellite],
+                        dynamics_snapshot.satellite_position_eci[destination_satellite],
                     ),
                     velocities_eci=(
-                        dynamics_data.satellite_velocity_eci[source_satellite],
-                        dynamics_data.satellite_velocity_eci[destination_satellite],
+                        dynamics_snapshot.satellite_velocity_eci[source_satellite],
+                        dynamics_snapshot.satellite_velocity_eci[destination_satellite],
                     ),
                     attitude_angular_velocities_eci=(
-                        dynamics_data.satellite_attitude_angular_velocity_eci[source_satellite],
-                        dynamics_data.satellite_attitude_angular_velocity_eci[destination_satellite],
+                        dynamics_snapshot.satellite_attitude_angular_velocity_eci[source_satellite],
+                        dynamics_snapshot.satellite_attitude_angular_velocity_eci[destination_satellite],
                     ),
-                    sun_direction_eci=dynamics_data.sun_direction_eci,
+                    sun_direction_eci=dynamics_snapshot.sun_direction_eci,
                     terminals=(
                         link.source.terminal,
                         link.destination.terminal,
                     ),
-                    previous_terminal_directions=previous_terminal_directions,
-                    time_delta=time_delta,
+                    previous_terminal_observation=previous_terminal_observation,
                 )
 
                 links_performance_snapshot[link] = comm_link_performance
-                terminal_memo[link] = terminal_directions
+                terminal_memo[link] = current_time, terminal_directions
 
             comm_link_time_series.append(links_performance_snapshot)
-            prev_time = current_time
 
         return comm_link_time_series
 
@@ -351,13 +359,9 @@ class OTC2OTCBinaryCommLinkCalculator(AssignedCommLinkCalculator[OpticalSatellit
             tuple[OpticalCommunicationTerminal, OpticalCommunicationTerminal],
             Doc("Optical Communication Terminals of pair of satellites"),
         ],
-        previous_terminal_directions: Annotated[
-            list[tuple[float, float]],
-            Doc("Azimuth and elevation values for each terminal in the previous time step"),
-        ],
-        time_delta: Annotated[
-            float,
-            Doc("Float representing time difference to previous configuration in the time series"),
+        previous_terminal_observation: Annotated[
+            tuple[list[tuple[float, float]], float] | None,
+            Doc("Previous terminal directions and elapsed time in seconds, or None for a first observation"),
         ],
     ) -> tuple[CommLinkPerformance, list[tuple[float, float]]]:
         """Calculate binary communication link performance between two satellites."""
@@ -402,10 +406,24 @@ class OTC2OTCBinaryCommLinkCalculator(AssignedCommLinkCalculator[OpticalSatellit
                 sun_exclusion_satisfied = False
 
         terminal_directions = self._calc_terminal_directions(relative_position_eci)
-        terminal_angular_velocity = [
-            [(terminal[0] - previous_terminal[0]) / time_delta, (terminal[1] - previous_terminal[1]) / time_delta]
-            for terminal, previous_terminal in zip(terminal_directions, previous_terminal_directions, strict=False)
-        ]
+        match previous_terminal_observation:
+            case None:
+                terminal_angular_velocity = None
+            case (previous_terminal_directions, elapsed_time_seconds):
+                if elapsed_time_seconds <= 0.0:
+                    msg = "elapsed time since the previous terminal observation must be positive"
+                    raise ValueError(msg)
+                terminal_angular_velocity = [
+                    [
+                        (terminal[0] - previous_terminal[0]) / elapsed_time_seconds,
+                        (terminal[1] - previous_terminal[1]) / elapsed_time_seconds,
+                    ]
+                    for terminal, previous_terminal in zip(
+                        terminal_directions,
+                        previous_terminal_directions,
+                        strict=True,
+                    )
+                ]
         link_available = bool(
             distance < self.max_inter_satellite_distance
             and is_line_segment_clear_of_earth(
@@ -418,16 +436,19 @@ class OTC2OTCBinaryCommLinkCalculator(AssignedCommLinkCalculator[OpticalSatellit
                 for relative_angular_velocity in relative_angular_velocities
             )
             and sun_exclusion_satisfied
-            and all(
-                # For terminal direction checks, a more careful implementation is required
-                # using the appropriate coordinate frame transformations
-                # terminal_directions[i][0] < terminal.azimuth_max
-                # and terminal_directions[i][0] > terminal.azimuth_min
-                # and terminal_directions[i][1] > terminal.elevation_min
-                # and terminal_directions[i][1] < terminal.elevation_max
-                terminal_angular_velocity[i][0] < terminal.angular_velocity_max
-                and terminal_angular_velocity[i][1] < terminal.angular_velocity_max
-                for i, terminal in enumerate(terminals)
+            and (
+                terminal_angular_velocity is None
+                or all(
+                    # For terminal direction checks, a more careful implementation is required
+                    # using the appropriate coordinate frame transformations
+                    # terminal_directions[i][0] < terminal.azimuth_max
+                    # and terminal_directions[i][0] > terminal.azimuth_min
+                    # and terminal_directions[i][1] > terminal.elevation_min
+                    # and terminal_directions[i][1] < terminal.elevation_max
+                    terminal_angular_velocity[i][0] < terminal.angular_velocity_max
+                    and terminal_angular_velocity[i][1] < terminal.angular_velocity_max
+                    for i, terminal in enumerate(terminals)
+                )
             ),
         )
 

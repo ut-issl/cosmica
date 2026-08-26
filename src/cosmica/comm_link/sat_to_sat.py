@@ -302,22 +302,19 @@ class OTC2OTCBinaryCommLinkCalculator(
             CommLinkPerformance,
         ]
     ]:
-        assert len(links_time_series) == len(dynamics_data.time)
-
         terminal_memo: dict[
             OpticalSatelliteLink[SourceSatellite, SourceTerminal, DestinationSatellite, DestinationTerminal],
             tuple[np.datetime64, list[tuple[float, float]]],
         ] = {}
         comm_link_time_series = []
 
-        for time_index, links_snapshot in enumerate(links_time_series):
+        for links_snapshot, current_time, dynamics_snapshot in zip(
+            links_time_series,
+            dynamics_data.time,
+            dynamics_data,
+            strict=True,
+        ):
             links_performance_snapshot = {}
-            current_time = dynamics_data.time[time_index]
-            dynamics_snapshot = dynamics_data[time_index]
-
-            if time_index > 0 and current_time <= dynamics_data.time[time_index - 1]:
-                msg = "dynamics_data.time must be strictly increasing"
-                raise ValueError(msg)
 
             for link in links_snapshot:
                 source_satellite = link.source.node

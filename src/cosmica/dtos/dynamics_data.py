@@ -5,9 +5,12 @@ __all__ = [
 ]
 
 from dataclasses import dataclass
+from itertools import pairwise
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
+
     import numpy as np
     import numpy.typing as npt
 
@@ -42,6 +45,10 @@ class DynamicsData[T: Satellite]:
         return self.time.shape
 
     def __post_init__(self) -> None:
+        if any(current_time <= previous_time for previous_time, current_time in pairwise(self.time.flat)):
+            msg = "time must be strictly increasing"
+            raise ValueError(msg)
+
         data_shape = self.time.shape
         assert self.dcm_eci2ecef.shape[:-2] == data_shape
         assert _check_item_shape_if_any(self.satellite_position_eci, data_shape, slice(-1))
@@ -50,6 +57,9 @@ class DynamicsData[T: Satellite]:
         assert _check_item_shape_if_any(self.satellite_attitude_angular_velocity_eci, data_shape, slice(-1))
         assert self.sun_direction_eci.shape[:-1] == data_shape
         assert self.sun_direction_ecef.shape[:-1] == data_shape
+
+    def __iter__(self) -> Iterator[DynamicsData[T]]:
+        return (self[index] for index in range(len(self.time)))
 
     def __getitem__(self, item: int | slice) -> DynamicsData[T]:
         return DynamicsData(

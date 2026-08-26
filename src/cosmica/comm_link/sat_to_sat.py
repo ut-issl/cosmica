@@ -29,11 +29,16 @@ from .base import AssignedCommLinkCalculator, CommLinkCalculator, CommLinkPerfor
 
 logger = logging.getLogger(__name__)
 
-type OpticalSatelliteLink = DirectedCommunicationLink[
-    Satellite,
-    OpticalCommunicationTerminal,
-    Satellite,
-    OpticalCommunicationTerminal,
+type OpticalSatelliteLink[
+    SourceSatellite: Satellite,
+    SourceTerminal: OpticalCommunicationTerminal,
+    DestinationSatellite: Satellite,
+    DestinationTerminal: OpticalCommunicationTerminal,
+] = DirectedCommunicationLink[
+    SourceSatellite,
+    SourceTerminal,
+    DestinationSatellite,
+    DestinationTerminal,
 ]
 
 
@@ -253,7 +258,11 @@ class SatToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, Satel
         return comm_link_time_series
 
 
-class OTC2OTCBinaryCommLinkCalculator(AssignedCommLinkCalculator[OpticalSatelliteLink]):
+class OTC2OTCBinaryCommLinkCalculator(
+    AssignedCommLinkCalculator[
+        OpticalSatelliteLink[Satellite, OpticalCommunicationTerminal, Satellite, OpticalCommunicationTerminal]
+    ],
+):
     """Calculate performance for optical links with explicitly assigned satellite terminals.
 
     The link performance is calculated as a binary value, i.e., 1 if the link is available and 0 otherwise.
@@ -274,17 +283,29 @@ class OTC2OTCBinaryCommLinkCalculator(AssignedCommLinkCalculator[OpticalSatellit
         self.max_relative_angular_velocity = max_relative_angular_velocity
         self.sun_exclusion_angle = sun_exclusion_angle
 
-    def calc(
+    def calc[
+        SourceSatellite: Satellite,
+        SourceTerminal: OpticalCommunicationTerminal,
+        DestinationSatellite: Satellite,
+        DestinationTerminal: OpticalCommunicationTerminal,
+    ](
         self,
-        links_time_series: Sequence[Collection[OpticalSatelliteLink]],
+        links_time_series: Sequence[
+            Collection[OpticalSatelliteLink[SourceSatellite, SourceTerminal, DestinationSatellite, DestinationTerminal]]
+        ],
         *,
         dynamics_data: DynamicsData,
         rng: Generator,  # noqa: ARG002
-    ) -> list[dict[OpticalSatelliteLink, CommLinkPerformance]]:
+    ) -> list[
+        dict[
+            OpticalSatelliteLink[SourceSatellite, SourceTerminal, DestinationSatellite, DestinationTerminal],
+            CommLinkPerformance,
+        ]
+    ]:
         assert len(links_time_series) == len(dynamics_data.time)
 
         terminal_memo: dict[
-            OpticalSatelliteLink,
+            OpticalSatelliteLink[SourceSatellite, SourceTerminal, DestinationSatellite, DestinationTerminal],
             tuple[np.datetime64, list[tuple[float, float]]],
         ] = {}
         comm_link_time_series = []

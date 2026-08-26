@@ -2,11 +2,13 @@ __all__ = [
     "CommunicationTerminal",
     "OpticalCommunicationTerminal",
     "RFCommunicationTerminal",
+    "TerminalOwner",
     "UserOpticalCommunicationTerminal",
 ]
-from collections.abc import Hashable
+from abc import abstractmethod
+from collections.abc import Collection, Hashable
 from dataclasses import dataclass
-from typing import override
+from typing import Protocol, override, runtime_checkable
 
 from .node import Node
 
@@ -49,3 +51,12 @@ class RFCommunicationTerminal[T: Hashable](CommunicationTerminal[T]):
     @override
     def class_name(cls) -> str:
         return "RFCT"
+
+
+@runtime_checkable
+class TerminalOwner(Protocol):
+    """Forwarding entity that owns communication-terminal resources."""
+
+    @property
+    @abstractmethod
+    def terminals(self) -> Collection[CommunicationTerminal]: ...

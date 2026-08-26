@@ -1,5 +1,6 @@
 __all__ = [
     "ApertureAveragedLogNormalScintillationModel",
+    "AssignedCommLinkCalculator",
     "AtmosphericScintillationModel",
     "BinaryCloudModel",
     "CloudStates",
@@ -26,6 +27,7 @@ __all__ = [
     "SatToSatBinaryMemoryCommLinkCalculator",
 ]
 from .base import (
+    AssignedCommLinkCalculator,
     CommLinkCalculator,
     CommLinkPerformance,
     MemorylessCommLinkCalculator,

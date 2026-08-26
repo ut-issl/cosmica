@@ -302,7 +302,7 @@ class OTC2OTCBinaryCommLinkCalculator(
             CommLinkPerformance,
         ]
     ]:
-        terminal_memo: dict[
+        latest_terminal_state_by_link: dict[
             OpticalSatelliteLink[SourceSatellite, SourceTerminal, DestinationSatellite, DestinationTerminal],
             tuple[np.datetime64, list[tuple[float, float]]],
         ] = {}
@@ -319,13 +319,13 @@ class OTC2OTCBinaryCommLinkCalculator(
             for link in links_snapshot:
                 source_satellite = link.source.node
                 destination_satellite = link.destination.node
-                previous_state = terminal_memo.get(link)
+                previous_terminal_state = latest_terminal_state_by_link.get(link)
                 previous_terminal_observation = (
                     None
-                    if previous_state is None
+                    if previous_terminal_state is None
                     else (
-                        previous_state[1],
-                        float((current_time - previous_state[0]) / np.timedelta64(1, "s")),
+                        previous_terminal_state[1],
+                        float((current_time - previous_terminal_state[0]) / np.timedelta64(1, "s")),
                     )
                 )
 
@@ -351,7 +351,7 @@ class OTC2OTCBinaryCommLinkCalculator(
                 )
 
                 links_performance_snapshot[link] = comm_link_performance
-                terminal_memo[link] = current_time, terminal_directions
+                latest_terminal_state_by_link[link] = current_time, terminal_directions
 
             comm_link_time_series.append(links_performance_snapshot)
 

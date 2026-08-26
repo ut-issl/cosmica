@@ -5,6 +5,7 @@ __all__ = [
     "TerminalOwner",
     "UserOpticalCommunicationTerminal",
 ]
+from abc import abstractmethod
 from collections.abc import Collection, Hashable
 from dataclasses import dataclass
 from typing import Protocol, override, runtime_checkable
@@ -56,4 +57,6 @@ class RFCommunicationTerminal[T: Hashable](CommunicationTerminal[T]):
 class TerminalOwner(Protocol):
     """Forwarding entity that owns communication-terminal resources."""
 
-    terminals: Collection[CommunicationTerminal]
+    @property
+    @abstractmethod
+    def terminals(self) -> Collection[CommunicationTerminal]: ...

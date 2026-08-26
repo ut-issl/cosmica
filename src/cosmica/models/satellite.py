@@ -10,11 +10,11 @@ from typing import Any, override
 
 from .node import Node
 from .orbit import SatelliteOrbitModel
-from .terminal import CommunicationTerminal
+from .terminal import CommunicationTerminal, TerminalOwner
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class Satellite[T: Hashable](Node[T], ABC):
+class Satellite[T: Hashable](Node[T], TerminalOwner, ABC):
     """Physical satellite that owns communication-terminal resources."""
 
     id: T

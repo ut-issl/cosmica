@@ -2,8 +2,7 @@ import numpy as np
 import pytest
 
 from cosmica.dtos import DynamicsData
-from cosmica.models import CircularSatelliteOrbitModel, ConstellationSatellite
-from cosmica.utils.constants import EARTH_RADIUS
+from tests.factories import make_satellite
 
 EPOCH = np.datetime64("2026-01-01T00:00:00")
 
@@ -24,16 +23,7 @@ def _make_dynamics_data(time: np.ndarray) -> DynamicsData:
 
 
 def _make_attitude_dynamics_data(attitude_dcm: np.ndarray) -> DynamicsData:
-    satellite = ConstellationSatellite(
-        id=1,
-        orbit=CircularSatelliteOrbitModel(
-            semi_major_axis=EARTH_RADIUS + 1000e3,
-            inclination=0.0,
-            raan=0.0,
-            phase_at_epoch=0.0,
-            epoch=EPOCH,
-        ),
-    )
+    satellite = make_satellite(1)
     sample_count = len(attitude_dcm)
     vectors = np.zeros((sample_count, 3))
     return DynamicsData(

@@ -30,10 +30,10 @@ class TerminalPointing:
 
 @dataclass(frozen=True, slots=True)
 class TerminalAngularRate:
-    """Absolute terminal-axis slew rates between consecutive snapshots."""
+    """Signed terminal-axis slew rates between consecutive snapshots."""
 
-    azimuth: Annotated[float, Doc("Absolute azimuth slew rate in radians per second.")]
-    elevation: Annotated[float, Doc("Absolute elevation slew rate in radians per second.")]
+    azimuth: Annotated[float, Doc("Signed azimuth slew rate in radians per second.")]
+    elevation: Annotated[float, Doc("Signed elevation slew rate in radians per second.")]
 
 
 def calc_terminal_pointing(
@@ -84,15 +84,15 @@ def calc_terminal_angular_rate(
     previous: Annotated[TerminalPointing, Doc("Terminal pointing angles at the preceding snapshot.")],
     *,
     time_delta: Annotated[float, Doc("Positive elapsed time between snapshots in seconds.")],
-) -> Annotated[TerminalAngularRate, Doc("Absolute azimuth and elevation slew rates.")]:
-    """Calculate absolute terminal-axis rates using a wrapped azimuth difference."""
+) -> Annotated[TerminalAngularRate, Doc("Signed azimuth and elevation slew rates.")]:
+    """Calculate signed terminal-axis rates using a wrapped azimuth difference."""
     if not np.isfinite(time_delta) or time_delta <= 0.0:
         msg = "time_delta must be finite and positive"
         raise ValueError(msg)
 
     return TerminalAngularRate(
-        azimuth=abs(shortest_angular_difference(current.azimuth, previous.azimuth)) / time_delta,
-        elevation=abs(current.elevation - previous.elevation) / time_delta,
+        azimuth=shortest_angular_difference(current.azimuth, previous.azimuth) / time_delta,
+        elevation=(current.elevation - previous.elevation) / time_delta,
     )
 
 
@@ -108,8 +108,10 @@ def is_pointing_within_field_of_regard(
 
 
 def is_pointing_rate_within_limit(
-    rate: Annotated[TerminalAngularRate, Doc("Absolute terminal-axis slew rates.")],
+    rate: Annotated[TerminalAngularRate, Doc("Signed terminal-axis slew rates.")],
     terminal: Annotated[OpticalCommunicationTerminal, Doc("Terminal providing the inclusive slew-rate limit.")],
 ) -> bool:
-    """Check both terminal-axis rates against the terminal slew-rate limit."""
-    return bool(rate.azimuth <= terminal.angular_velocity_max and rate.elevation <= terminal.angular_velocity_max)
+    """Check both terminal-axis rate magnitudes against the terminal slew-rate limit."""
+    return bool(
+        abs(rate.azimuth) <= terminal.angular_velocity_max and abs(rate.elevation) <= terminal.angular_velocity_max,
+    )

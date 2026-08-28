@@ -43,15 +43,15 @@ def test_shortest_angular_difference_unwraps_pi_boundary() -> None:
     assert np.isclose(difference, np.deg2rad(2.0))
 
 
-def test_calc_terminal_angular_rate_uses_absolute_axis_rates() -> None:
+def test_calc_terminal_angular_rate_preserves_axis_directions() -> None:
     rate = calc_terminal_angular_rate(
         TerminalPointing(azimuth=np.deg2rad(-10.0), elevation=np.deg2rad(-20.0)),
         TerminalPointing(azimuth=0.0, elevation=0.0),
         time_delta=2.0,
     )
 
-    assert np.isclose(rate.azimuth, np.deg2rad(5.0))
-    assert np.isclose(rate.elevation, np.deg2rad(10.0))
+    assert np.isclose(rate.azimuth, np.deg2rad(-5.0))
+    assert np.isclose(rate.elevation, np.deg2rad(-10.0))
 
 
 def test_terminal_constraints_use_inclusive_bounds() -> None:

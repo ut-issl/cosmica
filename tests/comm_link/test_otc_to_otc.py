@@ -1,17 +1,25 @@
 from collections.abc import Collection, Sequence
-from dataclasses import dataclass
 
 import numpy as np
-import numpy.typing as npt
 import pytest
 
 from cosmica.comm_link import CommLinkPerformance, OTC2OTCBinaryCommLinkCalculator
-from cosmica.dtos import CommunicationLinkEndpoint, DirectedCommunicationLink, DynamicsData
-from cosmica.models import ConstellationSatellite, DirectionCosineMatrix, OpticalCommunicationTerminal
-from cosmica.utils.constants import EARTH_RADIUS
-from tests.factories import make_satellite, make_terminal
+from cosmica.dtos import DynamicsData
+from cosmica.models import ConstellationSatellite, DirectionCosineMatrix
+from tests.factories import (
+    TEST_EPOCH,
+    OpticalSatelliteLink,
+    make_link_from_endpoints,
+    make_optical_link_dynamics_data,
+    make_optical_satellite_endpoint,
+)
 
-EPOCH = np.datetime64("2026-01-01T00:00:00")
+EPOCH = TEST_EPOCH
+type _TestLink = OpticalSatelliteLink
+_make_link = make_link_from_endpoints
+_make_dynamics_data = make_optical_link_dynamics_data
+_make_endpoint = make_optical_satellite_endpoint
+
 _IDENTITY_DCM: DirectionCosineMatrix = (
     (1.0, 0.0, 0.0),
     (0.0, 1.0, 0.0),
@@ -22,98 +30,6 @@ _ROTATE_Z_NEGATIVE_90_DCM: DirectionCosineMatrix = (
     (-1.0, 0.0, 0.0),
     (0.0, 0.0, 1.0),
 )
-
-
-@dataclass(frozen=True, slots=True)
-class _Endpoint:
-    satellite: ConstellationSatellite[int]
-    terminal: OpticalCommunicationTerminal[int]
-
-
-type _TestLink = DirectedCommunicationLink[
-    ConstellationSatellite[int],
-    OpticalCommunicationTerminal[int],
-    ConstellationSatellite[int],
-    OpticalCommunicationTerminal[int],
-]
-
-
-def _make_endpoint(
-    satellite_id: int,
-    *,
-    angular_velocity_max: float = float("inf"),
-    azimuth_min: float = -np.pi,
-    azimuth_max: float = np.pi,
-    elevation_min: float = -np.pi / 2,
-    elevation_max: float = np.pi / 2,
-    dcm_body2terminal: DirectionCosineMatrix = _IDENTITY_DCM,
-) -> _Endpoint:
-    terminal = make_terminal(
-        satellite_id,
-        azimuth_min=azimuth_min,
-        azimuth_max=azimuth_max,
-        elevation_min=elevation_min,
-        elevation_max=elevation_max,
-        angular_velocity_max=angular_velocity_max,
-        dcm_body2terminal=dcm_body2terminal,
-    )
-    satellite = make_satellite(satellite_id, terminals=(terminal,))
-    return _Endpoint(satellite=satellite, terminal=terminal)
-
-
-def _make_link(source: _Endpoint, destination: _Endpoint) -> _TestLink:
-    return DirectedCommunicationLink(
-        source=CommunicationLinkEndpoint(node=source.satellite, terminal=source.terminal),
-        destination=CommunicationLinkEndpoint(node=destination.satellite, terminal=destination.terminal),
-    )
-
-
-def _repeat_dcm(dcm: DirectionCosineMatrix, sample_count: int) -> npt.NDArray[np.floating]:
-    return np.repeat(np.asarray(dcm)[None, :, :], sample_count, axis=0)
-
-
-def _make_dynamics_data(
-    endpoint_a: _Endpoint,
-    endpoint_b: _Endpoint,
-    *,
-    time: npt.NDArray[np.datetime64],
-    line_of_sight_azimuths: Sequence[float] | npt.NDArray[np.floating] | None = None,
-    dcm_eci2body_a: DirectionCosineMatrix = _IDENTITY_DCM,
-    dcm_eci2body_b: DirectionCosineMatrix = _IDENTITY_DCM,
-    include_endpoint_b_attitude: bool = True,
-    sun_direction_eci: npt.NDArray[np.floating] | None = None,
-) -> DynamicsData[ConstellationSatellite[int]]:
-    sample_count = len(time)
-    azimuths = np.asarray(
-        line_of_sight_azimuths if line_of_sight_azimuths is not None else [np.pi / 2] * sample_count,
-    )
-    position_a = np.repeat(np.array([[EARTH_RADIUS + 1_000e3, 0.0, 0.0]]), sample_count, axis=0)
-    line_of_sight = 100e3 * np.column_stack((np.cos(azimuths), np.sin(azimuths), np.zeros(sample_count)))
-    position_b = position_a + line_of_sight
-    zero = np.zeros((sample_count, 3))
-    identity = _repeat_dcm(_IDENTITY_DCM, sample_count)
-    satellite_a = endpoint_a.satellite
-    satellite_b = endpoint_b.satellite
-    positions = {satellite_a: position_a, satellite_b: position_b}
-    attitudes = {satellite_a: _repeat_dcm(dcm_eci2body_a, sample_count)}
-    if include_endpoint_b_attitude:
-        attitudes[satellite_b] = _repeat_dcm(dcm_eci2body_b, sample_count)
-    sun_direction = (
-        np.repeat(np.array([[0.0, 0.0, 1.0]]), sample_count, axis=0)
-        if sun_direction_eci is None
-        else np.repeat(sun_direction_eci[None, :], sample_count, axis=0)
-    )
-    return DynamicsData(
-        time=time,
-        dcm_eci2ecef=identity,
-        satellite_position_eci=positions,
-        satellite_velocity_eci={satellite_a: zero, satellite_b: zero},
-        satellite_position_ecef=positions,
-        satellite_attitude_angular_velocity_eci={satellite_a: zero, satellite_b: zero},
-        sun_direction_eci=sun_direction,
-        sun_direction_ecef=sun_direction,
-        satellite_attitude_dcm_eci2body=attitudes,
-    )
 
 
 def _calculate(

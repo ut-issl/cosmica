@@ -21,12 +21,12 @@ __all__ = [
     "build_manual_g2c_topology",
     "build_max_connection_time_us2c_topology",
     "build_max_visibility_handover_g2c_topology",
-    "get_assigned_communication_links",
+    "get_terminal_assigned_communication_links",
 ]
 from .communication_link import (
     COMMUNICATION_LINK_ATTRIBUTE,
     assign_communication_link,
-    get_assigned_communication_links,
+    get_terminal_assigned_communication_links,
 )
 from .gateway_to_gateway import GatewayToGatewayTopologyBuilder
 from .gateway_to_internet import GatewayToInternetTopologyBuilder

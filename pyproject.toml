@@ -156,6 +156,7 @@ allow-only = """\
 
 [tool.pyrefly]
 preset = "legacy"
+search-path = ["."]
 ignore-missing-imports = [
   "networkx",
   "matplotlib.*",

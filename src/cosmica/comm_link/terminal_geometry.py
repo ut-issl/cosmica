@@ -8,6 +8,7 @@ __all__ = [
     "shortest_angular_difference",
 ]
 
+import math
 from dataclasses import dataclass
 from typing import Annotated
 
@@ -75,7 +76,7 @@ def shortest_angular_difference(
     previous: Annotated[float, Doc("Previous angle in radians.")],
 ) -> Annotated[float, Doc("Signed shortest rotation from the previous angle to the current angle, in radians.")]:
     """Return the signed shortest angular difference in ``[-pi, pi]``."""
-    return float(np.arctan2(np.sin(current - previous), np.cos(current - previous)))
+    return math.remainder(current - previous, math.tau)
 
 
 def calc_terminal_angular_rate(

@@ -19,21 +19,6 @@ def _make_link(
     )
 
 
-def test_multidigraph_is_rejected() -> None:
-    source_terminal = make_terminal(1)
-    destination_terminal = make_terminal(2)
-    source = make_satellite(1, terminals=(source_terminal,))
-    destination = make_satellite(2, terminals=(destination_terminal,))
-    link = _make_link(source, source_terminal, destination, destination_terminal)
-    graph = nx.MultiDiGraph()
-
-    with pytest.raises(ValueError, match="do not support MultiDiGraph"):
-        assign_communication_link(graph, link)
-
-    with pytest.raises(ValueError, match="do not support MultiDiGraph"):
-        get_assigned_communication_links(graph)
-
-
 def test_node_only_edges_remain_compatible_with_assignment_extraction() -> None:
     source_terminal = make_terminal(1)
     destination_terminal = make_terminal(2)

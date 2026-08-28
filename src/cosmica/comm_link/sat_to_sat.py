@@ -53,6 +53,12 @@ class _TerminalState:
     pointings: _TerminalPointings
 
 
+@dataclass(frozen=True, slots=True)
+class _PreviousTerminalObservation:
+    pointings: _TerminalPointings
+    elapsed_time_seconds: float
+
+
 class SatToSatBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Satellite, Satellite]):
     """Calculate satellite-to-satellite communication link performance for each directed edge.
 
@@ -355,12 +361,11 @@ class OTC2OTCBinaryCommLinkCalculator(
             for link in links_snapshot:
                 source_satellite = link.source.node
                 destination_satellite = link.destination.node
-                missing_attitudes = tuple(
+                if missing_attitudes := tuple(
                     satellite
                     for satellite in (source_satellite, destination_satellite)
                     if satellite not in dynamics_snapshot.satellite_attitude_dcm_eci2body
-                )
-                if missing_attitudes:
+                ):
                     msg = (
                         "satellite_attitude_dcm_eci2body must contain an ECI-to-body "
                         f"attitude for every link endpoint; missing {missing_attitudes!r}"
@@ -371,9 +376,11 @@ class OTC2OTCBinaryCommLinkCalculator(
                 previous_terminal_observation = (
                     None
                     if previous_terminal_state is None
-                    else (
-                        previous_terminal_state.pointings,
-                        float((current_time - previous_terminal_state.observed_at) / np.timedelta64(1, "s")),
+                    else _PreviousTerminalObservation(
+                        pointings=previous_terminal_state.pointings,
+                        elapsed_time_seconds=float(
+                            (current_time - previous_terminal_state.observed_at) / np.timedelta64(1, "s"),
+                        ),
                     )
                 )
 
@@ -441,7 +448,7 @@ class OTC2OTCBinaryCommLinkCalculator(
             Doc("Optical Communication Terminals of pair of satellites"),
         ],
         previous_terminal_observation: Annotated[
-            tuple[_TerminalPointings, float] | None,
+            _PreviousTerminalObservation | None,
             Doc("Previous terminal pointings and elapsed time in seconds, or None for a first observation"),
         ],
     ) -> tuple[CommLinkPerformance, _TerminalPointings]:
@@ -505,7 +512,10 @@ class OTC2OTCBinaryCommLinkCalculator(
         match previous_terminal_observation:
             case None:
                 slew_rate_satisfied = True
-            case (previous_terminal_pointings, elapsed_time_seconds):
+            case _PreviousTerminalObservation(
+                pointings=previous_terminal_pointings,
+                elapsed_time_seconds=elapsed_time_seconds,
+            ):
                 slew_rate_satisfied = all(
                     is_pointing_rate_within_limit(
                         calc_terminal_angular_rate(

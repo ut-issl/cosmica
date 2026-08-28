@@ -42,7 +42,7 @@ class DynamicsDataSnapshot[T: Satellite]:
     satellite_attitude_angular_velocity_eci: dict[T, npt.NDArray[np.floating]]
     sun_direction_eci: npt.NDArray[np.floating]
     sun_direction_ecef: npt.NDArray[np.floating]
-    satellite_attitude_dcm_eci2body: dict[T, npt.NDArray[np.floating]]
+    satellite_attitude_dcm_eci2body: dict[T, npt.NDArray[np.floating]] = field(default_factory=dict)
 
     @property
     def data_shape(self) -> tuple[()]:

@@ -11,10 +11,8 @@ from cosmica.dtos import DirectedCommunicationLink
 COMMUNICATION_LINK_ATTRIBUTE = "communication_link"
 """NetworkX edge attribute containing the assigned directed communication link."""
 
-type CommunicationLinkGraph = nx.DiGraph
 
-
-def _validate_directed_graph(graph: CommunicationLinkGraph) -> None:
+def _validate_directed_graph(graph: nx.DiGraph) -> None:
     if graph.is_multigraph():
         msg = "communication-link assignments do not support MultiDiGraph topologies"
         raise ValueError(msg)
@@ -24,7 +22,7 @@ def _validate_directed_graph(graph: CommunicationLinkGraph) -> None:
 
 
 def assign_communication_link(
-    graph: CommunicationLinkGraph,
+    graph: nx.DiGraph,
     link: DirectedCommunicationLink,
 ) -> None:
     """Add one terminal assignment to a directed edge.
@@ -45,7 +43,7 @@ def assign_communication_link(
 
 
 def get_assigned_communication_links(
-    graph: CommunicationLinkGraph,
+    graph: nx.DiGraph,
 ) -> tuple[DirectedCommunicationLink, ...]:
     """Recover terminal assignments from a directed topology graph.
 

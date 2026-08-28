@@ -14,12 +14,6 @@ from tests.factories import (
     make_optical_satellite_endpoint,
 )
 
-EPOCH = TEST_EPOCH
-type _TestLink = OpticalSatelliteLink
-_make_link = make_link_from_endpoints
-_make_dynamics_data = make_optical_link_dynamics_data
-_make_endpoint = make_optical_satellite_endpoint
-
 _IDENTITY_DCM: DirectionCosineMatrix = (
     (1.0, 0.0, 0.0),
     (0.0, 1.0, 0.0),
@@ -34,21 +28,21 @@ _ROTATE_Z_NEGATIVE_90_DCM: DirectionCosineMatrix = (
 
 def _calculate(
     calculator: OTC2OTCBinaryCommLinkCalculator,
-    link: _TestLink,
+    link: OpticalSatelliteLink,
     dynamics_data: DynamicsData[ConstellationSatellite[int]],
     *,
-    links_time_series: Sequence[Collection[_TestLink]] | None = None,
-) -> list[dict[_TestLink, CommLinkPerformance]]:
+    links_time_series: Sequence[Collection[OpticalSatelliteLink]] | None = None,
+) -> list[dict[OpticalSatelliteLink, CommLinkPerformance]]:
     links = links_time_series if links_time_series is not None else [{link} for _ in dynamics_data.time]
     return calculator.calc(links_time_series=links, dynamics_data=dynamics_data, rng=np.random.default_rng(0))
 
 
 def test_calc_processes_each_time_step_as_a_dynamics_snapshot() -> None:
-    endpoint_a = _make_endpoint(1)
-    endpoint_b = _make_endpoint(2)
-    link = _make_link(endpoint_a, endpoint_b)
-    time = EPOCH + np.arange(2).astype("timedelta64[s]")
-    dynamics_data = _make_dynamics_data(endpoint_a, endpoint_b, time=time)
+    endpoint_a = make_optical_satellite_endpoint(1)
+    endpoint_b = make_optical_satellite_endpoint(2)
+    link = make_link_from_endpoints(endpoint_a, endpoint_b)
+    time = TEST_EPOCH + np.arange(2).astype("timedelta64[s]")
+    dynamics_data = make_optical_link_dynamics_data(endpoint_a, endpoint_b, time=time)
 
     performance = _calculate(OTC2OTCBinaryCommLinkCalculator(link_capacity=10e9), link, dynamics_data)
 
@@ -58,11 +52,11 @@ def test_calc_processes_each_time_step_as_a_dynamics_snapshot() -> None:
 
 
 def test_calc_rejects_link_and_dynamics_series_length_mismatch() -> None:
-    endpoint_a = _make_endpoint(1)
-    endpoint_b = _make_endpoint(2)
-    link = _make_link(endpoint_a, endpoint_b)
-    time = EPOCH + np.arange(2).astype("timedelta64[s]")
-    dynamics_data = _make_dynamics_data(endpoint_a, endpoint_b, time=time)
+    endpoint_a = make_optical_satellite_endpoint(1)
+    endpoint_b = make_optical_satellite_endpoint(2)
+    link = make_link_from_endpoints(endpoint_a, endpoint_b)
+    time = TEST_EPOCH + np.arange(2).astype("timedelta64[s]")
+    dynamics_data = make_optical_link_dynamics_data(endpoint_a, endpoint_b, time=time)
 
     with pytest.raises(ValueError, match=r"zip\(\) argument 2 is longer"):
         _calculate(
@@ -74,13 +68,13 @@ def test_calc_rejects_link_and_dynamics_series_length_mismatch() -> None:
 
 
 def test_calc_requires_body_attitudes_for_both_link_endpoints() -> None:
-    endpoint_a = _make_endpoint(1)
-    endpoint_b = _make_endpoint(2)
-    link = _make_link(endpoint_a, endpoint_b)
-    dynamics_data = _make_dynamics_data(
+    endpoint_a = make_optical_satellite_endpoint(1)
+    endpoint_b = make_optical_satellite_endpoint(2)
+    link = make_link_from_endpoints(endpoint_a, endpoint_b)
+    dynamics_data = make_optical_link_dynamics_data(
         endpoint_a,
         endpoint_b,
-        time=np.array([EPOCH]),
+        time=np.array([TEST_EPOCH]),
         include_endpoint_b_attitude=False,
     )
 
@@ -100,18 +94,18 @@ def test_calc_transforms_pointing_through_body_and_terminal_frames(
     dcm_body2terminal: DirectionCosineMatrix,
     dcm_eci2body: DirectionCosineMatrix,
 ) -> None:
-    endpoint_a = _make_endpoint(
+    endpoint_a = make_optical_satellite_endpoint(
         1,
         azimuth_min=np.deg2rad(-1.0),
         azimuth_max=np.deg2rad(1.0),
         dcm_body2terminal=dcm_body2terminal,
     )
-    endpoint_b = _make_endpoint(2)
-    link = _make_link(endpoint_a, endpoint_b)
-    dynamics_data = _make_dynamics_data(
+    endpoint_b = make_optical_satellite_endpoint(2)
+    link = make_link_from_endpoints(endpoint_a, endpoint_b)
+    dynamics_data = make_optical_link_dynamics_data(
         endpoint_a,
         endpoint_b,
-        time=np.array([EPOCH]),
+        time=np.array([TEST_EPOCH]),
         dcm_eci2body_a=dcm_eci2body,
     )
 
@@ -123,13 +117,16 @@ def test_calc_transforms_pointing_through_body_and_terminal_frames(
 @pytest.mark.parametrize("restricted_endpoint", ["source", "destination"])
 def test_calc_enforces_field_of_regard_at_both_endpoints(restricted_endpoint: str) -> None:
     restricted_bounds = {"azimuth_min": np.deg2rad(-10.0), "azimuth_max": np.deg2rad(10.0)}
-    endpoint_a = _make_endpoint(1, **(restricted_bounds if restricted_endpoint == "source" else {}))
-    endpoint_b = _make_endpoint(2, **(restricted_bounds if restricted_endpoint == "destination" else {}))
-    link = _make_link(endpoint_a, endpoint_b)
-    dynamics_data = _make_dynamics_data(
+    endpoint_a = make_optical_satellite_endpoint(1, **(restricted_bounds if restricted_endpoint == "source" else {}))
+    endpoint_b = make_optical_satellite_endpoint(
+        2,
+        **(restricted_bounds if restricted_endpoint == "destination" else {}),
+    )
+    link = make_link_from_endpoints(endpoint_a, endpoint_b)
+    dynamics_data = make_optical_link_dynamics_data(
         endpoint_a,
         endpoint_b,
-        time=np.array([EPOCH]),
+        time=np.array([TEST_EPOCH]),
         line_of_sight_azimuths=[np.deg2rad(30.0)],
     )
 
@@ -140,13 +137,13 @@ def test_calc_enforces_field_of_regard_at_both_endpoints(restricted_endpoint: st
 
 def test_calc_unwraps_azimuth_rate_across_pi_boundary() -> None:
     max_rate = np.deg2rad(3.0)
-    endpoint_a = _make_endpoint(1, angular_velocity_max=max_rate)
-    endpoint_b = _make_endpoint(2, angular_velocity_max=max_rate)
-    link = _make_link(endpoint_a, endpoint_b)
-    dynamics_data = _make_dynamics_data(
+    endpoint_a = make_optical_satellite_endpoint(1, angular_velocity_max=max_rate)
+    endpoint_b = make_optical_satellite_endpoint(2, angular_velocity_max=max_rate)
+    link = make_link_from_endpoints(endpoint_a, endpoint_b)
+    dynamics_data = make_optical_link_dynamics_data(
         endpoint_a,
         endpoint_b,
-        time=EPOCH + np.arange(2).astype("timedelta64[s]"),
+        time=TEST_EPOCH + np.arange(2).astype("timedelta64[s]"),
         line_of_sight_azimuths=np.deg2rad([179.0, -179.0]),
     )
 
@@ -157,13 +154,13 @@ def test_calc_unwraps_azimuth_rate_across_pi_boundary() -> None:
 
 def test_calc_rejects_large_negative_terminal_rate() -> None:
     max_rate = np.deg2rad(5.0)
-    endpoint_a = _make_endpoint(1, angular_velocity_max=max_rate)
-    endpoint_b = _make_endpoint(2, angular_velocity_max=max_rate)
-    link = _make_link(endpoint_a, endpoint_b)
-    dynamics_data = _make_dynamics_data(
+    endpoint_a = make_optical_satellite_endpoint(1, angular_velocity_max=max_rate)
+    endpoint_b = make_optical_satellite_endpoint(2, angular_velocity_max=max_rate)
+    link = make_link_from_endpoints(endpoint_a, endpoint_b)
+    dynamics_data = make_optical_link_dynamics_data(
         endpoint_a,
         endpoint_b,
-        time=EPOCH + np.arange(2).astype("timedelta64[s]"),
+        time=TEST_EPOCH + np.arange(2).astype("timedelta64[s]"),
         line_of_sight_azimuths=np.deg2rad([10.0, 0.0]),
     )
 
@@ -174,13 +171,13 @@ def test_calc_rejects_large_negative_terminal_rate() -> None:
 
 def test_calc_converts_time_delta_to_seconds_for_terminal_rate() -> None:
     max_rate = np.deg2rad(5.0)
-    endpoint_a = _make_endpoint(1, angular_velocity_max=max_rate)
-    endpoint_b = _make_endpoint(2, angular_velocity_max=max_rate)
-    link = _make_link(endpoint_a, endpoint_b)
-    dynamics_data = _make_dynamics_data(
+    endpoint_a = make_optical_satellite_endpoint(1, angular_velocity_max=max_rate)
+    endpoint_b = make_optical_satellite_endpoint(2, angular_velocity_max=max_rate)
+    link = make_link_from_endpoints(endpoint_a, endpoint_b)
+    dynamics_data = make_optical_link_dynamics_data(
         endpoint_a,
         endpoint_b,
-        time=EPOCH + np.array([0, 2]).astype("timedelta64[s]"),
+        time=TEST_EPOCH + np.array([0, 2]).astype("timedelta64[s]"),
         line_of_sight_azimuths=np.deg2rad([0.0, 8.0]),
     )
 
@@ -190,13 +187,13 @@ def test_calc_converts_time_delta_to_seconds_for_terminal_rate() -> None:
 
 
 def test_calc_skips_slew_check_when_link_reappears_after_absence() -> None:
-    endpoint_a = _make_endpoint(1, angular_velocity_max=0.0)
-    endpoint_b = _make_endpoint(2, angular_velocity_max=0.0)
-    link = _make_link(endpoint_a, endpoint_b)
-    dynamics_data = _make_dynamics_data(
+    endpoint_a = make_optical_satellite_endpoint(1, angular_velocity_max=0.0)
+    endpoint_b = make_optical_satellite_endpoint(2, angular_velocity_max=0.0)
+    link = make_link_from_endpoints(endpoint_a, endpoint_b)
+    dynamics_data = make_optical_link_dynamics_data(
         endpoint_a,
         endpoint_b,
-        time=EPOCH + np.arange(3).astype("timedelta64[s]"),
+        time=TEST_EPOCH + np.arange(3).astype("timedelta64[s]"),
         line_of_sight_azimuths=np.deg2rad([0.0, 90.0, 179.0]),
     )
 
@@ -212,13 +209,13 @@ def test_calc_skips_slew_check_when_link_reappears_after_absence() -> None:
 
 
 def test_calc_applies_sun_exclusion_at_both_terminals() -> None:
-    endpoint_a = _make_endpoint(1)
-    endpoint_b = _make_endpoint(2)
-    link = _make_link(endpoint_a, endpoint_b)
-    dynamics_data = _make_dynamics_data(
+    endpoint_a = make_optical_satellite_endpoint(1)
+    endpoint_b = make_optical_satellite_endpoint(2)
+    link = make_link_from_endpoints(endpoint_a, endpoint_b)
+    dynamics_data = make_optical_link_dynamics_data(
         endpoint_a,
         endpoint_b,
-        time=np.array([EPOCH]),
+        time=np.array([TEST_EPOCH]),
         sun_direction_eci=np.array([0.0, 1.0, 0.0]),
     )
 

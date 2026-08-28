@@ -12,25 +12,15 @@ COMMUNICATION_LINK_ATTRIBUTE = "communication_link"
 """NetworkX edge attribute containing the assigned directed communication link."""
 
 
-def _validate_directed_graph(graph: nx.DiGraph) -> None:
-    if graph.is_multigraph():
-        msg = "communication-link assignments do not support MultiDiGraph topologies"
-        raise ValueError(msg)
-    if not graph.is_directed():
-        msg = "communication links can only be assigned to a directed topology graph"
-        raise ValueError(msg)
-
-
 def assign_communication_link(
     graph: nx.DiGraph,
     link: DirectedCommunicationLink,
 ) -> None:
-    """Add one terminal assignment to a directed edge.
+    """Add one terminal assignment to an edge in a simple directed graph.
 
     Assigning the same link again is idempotent, while assigning a different terminal
     pair to the same directed node pair is rejected.
     """
-    _validate_directed_graph(graph)
     source, destination = link.node_pair
     existing_data = graph.get_edge_data(source, destination)
     if existing_data is not None:
@@ -45,12 +35,11 @@ def assign_communication_link(
 def get_assigned_communication_links(
     graph: nx.DiGraph,
 ) -> tuple[DirectedCommunicationLink, ...]:
-    """Recover terminal assignments from a directed topology graph.
+    """Recover terminal assignments from a simple directed topology graph.
 
     Ordinary node-only edges are ignored, preserving compatibility with existing
     topology builders and communication-link calculators.
     """
-    _validate_directed_graph(graph)
     links = []
 
     for source, destination, data in graph.edges(data=True):

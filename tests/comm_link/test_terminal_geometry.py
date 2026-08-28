@@ -8,32 +8,17 @@ from cosmica.comm_link.terminal_geometry import (
     is_pointing_within_field_of_regard,
     shortest_angular_difference,
 )
-from cosmica.models import OpticalCommunicationTerminal
+from tests.factories import make_terminal
 
-
-def _make_terminal(
-    *,
-    angular_velocity_max: float = 1.0,
-    azimuth_min: float = -np.pi,
-    azimuth_max: float = np.pi,
-) -> OpticalCommunicationTerminal[int]:
-    return OpticalCommunicationTerminal(
-        id=1,
-        azimuth_min=azimuth_min,
-        azimuth_max=azimuth_max,
-        elevation_min=-np.pi / 2,
-        elevation_max=np.pi / 2,
-        angular_velocity_max=angular_velocity_max,
-        dcm_body2terminal=(
-            (0.0, 1.0, 0.0),
-            (-1.0, 0.0, 0.0),
-            (0.0, 0.0, 1.0),
-        ),
-    )
+_ROTATE_Z_NEGATIVE_90_DCM = (
+    (0.0, 1.0, 0.0),
+    (-1.0, 0.0, 0.0),
+    (0.0, 0.0, 1.0),
+)
 
 
 def test_calc_terminal_pointing_applies_body_attitude_and_terminal_mounting() -> None:
-    terminal = _make_terminal()
+    terminal = make_terminal(1, dcm_body2terminal=_ROTATE_Z_NEGATIVE_90_DCM)
     dcm_eci2body = np.array(
         [
             [0.0, 1.0, 0.0],
@@ -70,10 +55,12 @@ def test_calc_terminal_angular_rate_uses_absolute_axis_rates() -> None:
 
 
 def test_terminal_constraints_use_inclusive_bounds() -> None:
-    terminal = _make_terminal(
+    terminal = make_terminal(
+        1,
         angular_velocity_max=np.deg2rad(5.0),
         azimuth_min=np.deg2rad(-10.0),
         azimuth_max=np.deg2rad(10.0),
+        dcm_body2terminal=_ROTATE_Z_NEGATIVE_90_DCM,
     )
     pointing = TerminalPointing(azimuth=np.deg2rad(10.0), elevation=0.0)
     rate = calc_terminal_angular_rate(

@@ -23,48 +23,11 @@ from cosmica.comm_link import (
 )
 from cosmica.comm_link.geometric import GeometricCommLinkCalculator
 from cosmica.dtos import CommunicationLinkEndpoint, DirectedCommunicationLink, DynamicsData
-from cosmica.models import (
-    CircularSatelliteOrbitModel,
-    ConstellationSatellite,
-    Gateway,
-    OpticalCommunicationTerminal,
-    Satellite,
-)
+from cosmica.models import ConstellationSatellite, Gateway, Satellite
 from cosmica.utils.constants import EARTH_RADIUS
+from tests.factories import make_satellite, make_terminal
 
 EPOCH = np.datetime64("2026-01-01T00:00:00")
-
-
-def _make_satellite(
-    sat_id: int,
-    phase_deg: float = 0.0,
-    terminals: tuple[OpticalCommunicationTerminal[int], ...] = (),
-) -> ConstellationSatellite[int]:
-    return ConstellationSatellite(
-        id=sat_id,
-        terminals=terminals,
-        orbit=CircularSatelliteOrbitModel(
-            semi_major_axis=EARTH_RADIUS + 1000e3,
-            inclination=0.0,
-            raan=0.0,
-            phase_at_epoch=np.deg2rad(phase_deg),
-            epoch=EPOCH,
-        ),
-    )
-
-
-def _make_optical_terminal(
-    terminal_id: int,
-    angular_velocity_max: float = float("inf"),
-) -> OpticalCommunicationTerminal[int]:
-    return OpticalCommunicationTerminal(
-        id=terminal_id,
-        azimuth_min=-np.pi,
-        azimuth_max=np.pi,
-        elevation_min=-np.pi / 2,
-        elevation_max=np.pi / 2,
-        angular_velocity_max=angular_velocity_max,
-    )
 
 
 def _make_snapshot_dynamics_data(
@@ -89,7 +52,7 @@ def _make_snapshot_dynamics_data(
 
 @pytest.fixture
 def satellite() -> ConstellationSatellite[int]:
-    return _make_satellite(1)
+    return make_satellite(1)
 
 
 @pytest.fixture
@@ -196,7 +159,7 @@ class TestSatGatewayDirectionalCalculators:
 class TestSatToSatDirectionalDispatch:
     @pytest.fixture
     def sat_pair(self) -> tuple[ConstellationSatellite[int], ConstellationSatellite[int]]:
-        return _make_satellite(1), _make_satellite(2, phase_deg=10.0)
+        return make_satellite(1), make_satellite(2, phase_at_epoch=np.deg2rad(10.0))
 
     @pytest.fixture
     def dynamics_data(
@@ -332,8 +295,8 @@ def test_memoryless_calculators_enforce_finite_segment_clearance(
     *,
     expected_available: bool,
 ) -> None:
-    sat_a = _make_satellite(1)
-    sat_b = _make_satellite(2)
+    sat_a = make_satellite(1)
+    sat_b = make_satellite(2)
     dynamics_data = _make_snapshot_dynamics_data(
         position_eci={sat_a: positions_eci[0], sat_b: positions_eci[1]},
     )
@@ -356,8 +319,8 @@ def test_terminal_calculator_enforces_finite_segment_clearance(
     *,
     expected_available: bool,
 ) -> None:
-    terminal_a = _make_optical_terminal(1)
-    terminal_b = _make_optical_terminal(2)
+    terminal_a = make_terminal(1, angular_velocity_max=float("inf"))
+    terminal_b = make_terminal(2, angular_velocity_max=float("inf"))
     calculator = OTC2OTCBinaryCommLinkCalculator(
         link_capacity=10e9,
         lowest_altitude=lowest_altitude,
@@ -380,10 +343,10 @@ def test_terminal_calculator_enforces_finite_segment_clearance(
 
 
 def test_terminal_calculator_skips_angular_velocity_check_for_first_observation() -> None:
-    terminal_a = _make_optical_terminal(1, angular_velocity_max=1.0)
-    terminal_b = _make_optical_terminal(2, angular_velocity_max=1.0)
-    satellite_a = _make_satellite(1, terminals=(terminal_a,))
-    satellite_b = _make_satellite(2, terminals=(terminal_b,))
+    terminal_a = make_terminal(1, angular_velocity_max=1.0)
+    terminal_b = make_terminal(2, angular_velocity_max=1.0)
+    satellite_a = make_satellite(1, terminals=(terminal_a,))
+    satellite_b = make_satellite(2, terminals=(terminal_b,))
     link = DirectedCommunicationLink(
         source=CommunicationLinkEndpoint(node=satellite_a, terminal=terminal_a),
         destination=CommunicationLinkEndpoint(node=satellite_b, terminal=terminal_b),
@@ -424,7 +387,7 @@ class TestSatToSatDirectionalSunExclusion:
 
     @pytest.fixture
     def sat_pair(self) -> tuple[ConstellationSatellite[int], ConstellationSatellite[int]]:
-        return _make_satellite(1), _make_satellite(2, phase_deg=10.0)
+        return make_satellite(1), make_satellite(2, phase_at_epoch=np.deg2rad(10.0))
 
     @pytest.fixture(params=["binary", "rate_calc"])
     def make_calculator(
@@ -557,8 +520,8 @@ class TestGeometricCalculatorDirectedEdges:
         self,
         gateway: Gateway[int],
     ) -> None:
-        sat_a = _make_satellite(1)
-        sat_b = _make_satellite(2, phase_deg=10.0)
+        sat_a = make_satellite(1)
+        sat_b = make_satellite(2, phase_at_epoch=np.deg2rad(10.0))
         dynamics_data = _make_snapshot_dynamics_data(
             position_eci={
                 sat_a: np.array([EARTH_RADIUS + 1000e3, 0.0, 0.0]),

@@ -7,13 +7,9 @@ import pytest
 
 from cosmica.comm_link import CommLinkPerformance, OTC2OTCBinaryCommLinkCalculator
 from cosmica.dtos import CommunicationLinkEndpoint, DirectedCommunicationLink, DynamicsData
-from cosmica.models import (
-    CircularSatelliteOrbitModel,
-    ConstellationSatellite,
-    DirectionCosineMatrix,
-    OpticalCommunicationTerminal,
-)
+from cosmica.models import ConstellationSatellite, DirectionCosineMatrix, OpticalCommunicationTerminal
 from cosmica.utils.constants import EARTH_RADIUS
+from tests.factories import make_satellite, make_terminal
 
 EPOCH = np.datetime64("2026-01-01T00:00:00")
 _IDENTITY_DCM: DirectionCosineMatrix = (
@@ -52,8 +48,8 @@ def _make_endpoint(
     elevation_max: float = np.pi / 2,
     dcm_body2terminal: DirectionCosineMatrix = _IDENTITY_DCM,
 ) -> _Endpoint:
-    terminal = OpticalCommunicationTerminal(
-        id=satellite_id,
+    terminal = make_terminal(
+        satellite_id,
         azimuth_min=azimuth_min,
         azimuth_max=azimuth_max,
         elevation_min=elevation_min,
@@ -61,17 +57,7 @@ def _make_endpoint(
         angular_velocity_max=angular_velocity_max,
         dcm_body2terminal=dcm_body2terminal,
     )
-    satellite = ConstellationSatellite(
-        id=satellite_id,
-        terminals=(terminal,),
-        orbit=CircularSatelliteOrbitModel(
-            semi_major_axis=EARTH_RADIUS + 1000e3,
-            inclination=0.0,
-            raan=0.0,
-            phase_at_epoch=0.0,
-            epoch=EPOCH,
-        ),
-    )
+    satellite = make_satellite(satellite_id, terminals=(terminal,))
     return _Endpoint(satellite=satellite, terminal=terminal)
 
 

@@ -1,6 +1,6 @@
 import numpy as np
 
-from cosmica.dtos import CommunicationLinkEndpoint, DirectedCommunicationLink
+from cosmica.dtos import CommunicationLinkEndpoint, DirectedCommunicationLink, DynamicsData
 from cosmica.models import (
     CircularSatelliteOrbitModel,
     ConstellationSatellite,
@@ -59,6 +59,38 @@ def make_satellite(
         id=satellite_id,
         orbit=make_orbit(phase_at_epoch=phase_at_epoch),
         terminals=terminals,
+    )
+
+
+def make_dynamics_data(time: np.ndarray) -> DynamicsData:
+    sample_count = len(time)
+    sun_direction = np.zeros((sample_count, 3))
+    return DynamicsData(
+        time=time,
+        dcm_eci2ecef=np.repeat(np.eye(3)[None, :, :], sample_count, axis=0),
+        satellite_position_eci={},
+        satellite_velocity_eci={},
+        satellite_position_ecef={},
+        satellite_attitude_angular_velocity_eci={},
+        sun_direction_eci=sun_direction,
+        sun_direction_ecef=sun_direction,
+    )
+
+
+def make_attitude_dynamics_data(attitude_dcm: np.ndarray) -> DynamicsData:
+    satellite = make_satellite(1)
+    sample_count = len(attitude_dcm)
+    vectors = np.zeros((sample_count, 3))
+    return DynamicsData(
+        time=TEST_EPOCH + np.arange(sample_count).astype("timedelta64[s]"),
+        dcm_eci2ecef=np.repeat(np.eye(3)[None, :, :], sample_count, axis=0),
+        satellite_position_eci={satellite: vectors},
+        satellite_velocity_eci={satellite: vectors},
+        satellite_position_ecef={satellite: vectors},
+        satellite_attitude_angular_velocity_eci={satellite: vectors},
+        sun_direction_eci=vectors,
+        sun_direction_ecef=vectors,
+        satellite_attitude_dcm_eci2body={satellite: attitude_dcm},
     )
 
 

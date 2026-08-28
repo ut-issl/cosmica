@@ -1,7 +1,7 @@
 __all__ = [
     "COMMUNICATION_LINK_ATTRIBUTE",
     "assign_communication_link",
-    "get_assigned_communication_links",
+    "get_terminal_assigned_communication_links",
 ]
 
 import networkx as nx
@@ -32,7 +32,7 @@ def assign_communication_link(
     graph.add_edge(source, destination, **{COMMUNICATION_LINK_ATTRIBUTE: link})
 
 
-def get_assigned_communication_links(
+def get_terminal_assigned_communication_links(
     graph: nx.DiGraph,
 ) -> list[DirectedCommunicationLink]:
     """Recover terminal assignments from a simple directed topology graph.

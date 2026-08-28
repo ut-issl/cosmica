@@ -1,25 +1,31 @@
 import networkx as nx
 import pytest
 
-from cosmica.topology import assign_communication_link, get_assigned_communication_links
+from cosmica.topology import assign_communication_link, get_terminal_assigned_communication_links
 from tests.factories import make_link, make_satellite, make_terminal
 
 
-def test_node_only_edges_remain_compatible_with_assignment_extraction() -> None:
+def test_terminal_assignment_extraction_ignores_node_only_edges() -> None:
+    source = make_satellite(1)
+    destination = make_satellite(2)
+    graph = nx.DiGraph([(source, destination)])
+
+    assert get_terminal_assigned_communication_links(graph) == []
+
+
+def test_terminal_assigned_link_round_trips_through_graph() -> None:
     source_terminal = make_terminal(1)
     destination_terminal = make_terminal(2)
     source = make_satellite(1, terminals=(source_terminal,))
     destination = make_satellite(2, terminals=(destination_terminal,))
-    graph = nx.DiGraph([(source, destination)])
-
-    assert get_assigned_communication_links(graph) == []
-
+    graph = nx.DiGraph()
     link = make_link(source, source_terminal, destination, destination_terminal)
+
     assign_communication_link(graph, link)
     assign_communication_link(graph, link)
 
     assert graph.number_of_edges(source, destination) == 1
-    assert get_assigned_communication_links(graph) == [link]
+    assert get_terminal_assigned_communication_links(graph) == [link]
 
 
 def test_digraph_rejects_a_second_assignment_for_the_same_node_pair() -> None:

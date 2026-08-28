@@ -34,7 +34,7 @@ def assign_communication_link(
 
 def get_assigned_communication_links(
     graph: nx.DiGraph,
-) -> tuple[DirectedCommunicationLink, ...]:
+) -> list[DirectedCommunicationLink]:
     """Recover terminal assignments from a simple directed topology graph.
 
     Ordinary node-only edges are ignored, preserving compatibility with existing
@@ -54,4 +54,4 @@ def get_assigned_communication_links(
             raise ValueError(msg)
         links.append(link)
 
-    return tuple(links)
+    return links

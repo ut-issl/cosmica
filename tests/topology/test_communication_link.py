@@ -26,14 +26,14 @@ def test_node_only_edges_remain_compatible_with_assignment_extraction() -> None:
     destination = make_satellite(2, terminals=(destination_terminal,))
     graph = nx.DiGraph([(source, destination)])
 
-    assert get_assigned_communication_links(graph) == ()
+    assert get_assigned_communication_links(graph) == []
 
     link = _make_link(source, source_terminal, destination, destination_terminal)
     assign_communication_link(graph, link)
     assign_communication_link(graph, link)
 
     assert graph.number_of_edges(source, destination) == 1
-    assert get_assigned_communication_links(graph) == (link,)
+    assert get_assigned_communication_links(graph) == [link]
 
 
 def test_digraph_rejects_a_second_assignment_for_the_same_node_pair() -> None:

@@ -1,22 +1,8 @@
 import networkx as nx
 import pytest
 
-from cosmica.dtos import CommunicationLinkEndpoint, DirectedCommunicationLink
-from cosmica.models import ConstellationSatellite, OpticalCommunicationTerminal
 from cosmica.topology import assign_communication_link, get_assigned_communication_links
-from tests.factories import make_satellite, make_terminal
-
-
-def _make_link(
-    source: ConstellationSatellite[int],
-    source_terminal: OpticalCommunicationTerminal[int],
-    destination: ConstellationSatellite[int],
-    destination_terminal: OpticalCommunicationTerminal[int],
-) -> DirectedCommunicationLink:
-    return DirectedCommunicationLink(
-        source=CommunicationLinkEndpoint(node=source, terminal=source_terminal),
-        destination=CommunicationLinkEndpoint(node=destination, terminal=destination_terminal),
-    )
+from tests.factories import make_link, make_satellite, make_terminal
 
 
 def test_node_only_edges_remain_compatible_with_assignment_extraction() -> None:
@@ -28,7 +14,7 @@ def test_node_only_edges_remain_compatible_with_assignment_extraction() -> None:
 
     assert get_assigned_communication_links(graph) == []
 
-    link = _make_link(source, source_terminal, destination, destination_terminal)
+    link = make_link(source, source_terminal, destination, destination_terminal)
     assign_communication_link(graph, link)
     assign_communication_link(graph, link)
 
@@ -44,11 +30,11 @@ def test_digraph_rejects_a_second_assignment_for_the_same_node_pair() -> None:
     graph = nx.DiGraph()
     assign_communication_link(
         graph,
-        _make_link(source, source_terminals[0], destination, destination_terminals[0]),
+        make_link(source, source_terminals[0], destination, destination_terminals[0]),
     )
 
     with pytest.raises(ValueError, match="already has a different terminal assignment"):
         assign_communication_link(
             graph,
-            _make_link(source, source_terminals[1], destination, destination_terminals[1]),
+            make_link(source, source_terminals[1], destination, destination_terminals[1]),
         )

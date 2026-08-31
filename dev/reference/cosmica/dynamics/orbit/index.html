@@ -3025,7 +3025,7 @@
   </span>
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">ReferenceFrame</span> <span class="o">=</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="s1">&#39;teme&#39;</span><span class="p">,</span> <span class="s1">&#39;j2000&#39;</span><span class="p">,</span> <span class="s1">&#39;gcrs&#39;</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">ReferenceFrame</span> <span class="o">=</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="s1">'teme'</span><span class="p">,</span> <span class="s1">'j2000'</span><span class="p">,</span> <span class="s1">'gcrs'</span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3048,9 +3048,9 @@
 
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;CircularSatelliteOrbitPropagator&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;EllipticalSatelliteOrbitPropagator&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;SatelliteOrbitState&quot;</span><span class="p">,</span>
+    <span class="s2">"CircularSatelliteOrbitPropagator"</span><span class="p">,</span>
+    <span class="s2">"EllipticalSatelliteOrbitPropagator"</span><span class="p">,</span>
+    <span class="s2">"SatelliteOrbitState"</span><span class="p">,</span>
 <span class="p">]</span>
 </code></pre></div>
 
@@ -3252,7 +3252,7 @@
 <span class="normal">103</span>
 <span class="normal">104</span>
 <span class="normal">105</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">propagate_from_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_from_epoch</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">SatelliteOrbitState</span><span class="p">:</span>
-    <span class="n">time_from_epoch_in_seconds</span> <span class="o">=</span> <span class="n">time_from_epoch</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">)</span>
+    <span class="n">time_from_epoch_in_seconds</span> <span class="o">=</span> <span class="n">time_from_epoch</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"s"</span><span class="p">)</span>
     <span class="n">phase</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">phase_at_epoch</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_motion</span> <span class="o">*</span> <span class="n">time_from_epoch_in_seconds</span>
     <span class="n">in_plane_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">semi_major_axis</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phase</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phase</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">phase</span><span class="p">)])</span>
     <span class="n">in_plane_velocity</span> <span class="o">=</span> <span class="p">(</span>
@@ -3300,7 +3300,7 @@
 
   
       module-attribute
-   (cosmica.dynamics.orbit.ReferenceFrame)" href="#cosmica.dynamics.orbit.ReferenceFrame">ReferenceFrame</a></span> <span class="o">=</span> <span class="s2">&quot;gcrs&quot;</span><span class="p">,</span>
+   (cosmica.dynamics.orbit.ReferenceFrame)" href="#cosmica.dynamics.orbit.ReferenceFrame">ReferenceFrame</a></span> <span class="o">=</span> <span class="s2">"gcrs"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -3326,12 +3326,12 @@
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
-<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">EllipticalSatelliteOrbitModel</span><span class="p">,</span> <span class="n">reference_frame</span><span class="p">:</span> <span class="n">ReferenceFrame</span> <span class="o">=</span> <span class="s2">&quot;gcrs&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">EllipticalSatelliteOrbitModel</span><span class="p">,</span> <span class="n">reference_frame</span><span class="p">:</span> <span class="n">ReferenceFrame</span> <span class="o">=</span> <span class="s2">"gcrs"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="n">model</span>
     <span class="n">rf</span> <span class="o">=</span> <span class="n">reference_frame</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">rf</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;teme&quot;</span><span class="p">,</span> <span class="s2">&quot;j2000&quot;</span><span class="p">,</span> <span class="s2">&quot;gcrs&quot;</span><span class="p">}:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Invalid reference frame: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">reference_frame</span><span class="p">)</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Invalid reference_frame: </span><span class="si">{</span><span class="n">reference_frame</span><span class="si">!r}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">rf</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"teme"</span><span class="p">,</span> <span class="s2">"j2000"</span><span class="p">,</span> <span class="s2">"gcrs"</span><span class="p">}:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Invalid reference frame: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">reference_frame</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Invalid reference_frame: </span><span class="si">{</span><span class="n">reference_frame</span><span class="si">!r}</span><span class="s2">"</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">reference_frame</span> <span class="o">=</span> <span class="n">rf</span>
 </code></pre></div></td></tr></table></div>
@@ -3504,7 +3504,7 @@
 <span class="normal">163</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">propagate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">SatelliteOrbitState</span><span class="p">:</span>
     <span class="n">time_from_epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime64_utc_to_skytime</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_frame</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;j2000&quot;</span><span class="p">,</span> <span class="s2">&quot;gcrs&quot;</span><span class="p">}:</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_frame</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"j2000"</span><span class="p">,</span> <span class="s2">"gcrs"</span><span class="p">}:</span>
         <span class="n">geoc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">satellite</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">time_from_epoch</span><span class="p">)</span>  <span class="c1"># Geocentric position in GCRS/ICRF axes</span>
         <span class="n">position_eci_km</span> <span class="o">=</span> <span class="n">geoc</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">km</span>
         <span class="n">velocity_eci_km_s</span> <span class="o">=</span> <span class="n">geoc</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">km_per_s</span>
@@ -3786,7 +3786,7 @@
               <summary>Source code in <code>src/cosmica/dynamics/orbit.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">53</span>
 <span class="normal">54</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc_position_ecef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dcm_eci_to_ecef</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]:</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ijk,ik-&gt;ij&quot;</span><span class="p">,</span> <span class="n">dcm_eci_to_ecef</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">position_eci</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"ijk,ik-&gt;ij"</span><span class="p">,</span> <span class="n">dcm_eci_to_ecef</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">position_eci</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

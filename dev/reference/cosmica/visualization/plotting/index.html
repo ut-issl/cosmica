@@ -2559,7 +2559,7 @@
   </span>
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;visualize_grouped_constellation&#39;</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'visualize_grouped_constellation'</span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2806,7 +2806,7 @@ plane) and marks all satellite positions at the given <code>time_index</code>.</
     <span class="o">*</span><span class="p">,</span>
     <span class="n">time_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Visualize a grouped constellation in 3D.</span>
+<span class="w">    </span><span class="sd">"""Visualize a grouped constellation in 3D.</span>
 
 <span class="sd">    The constellation must be parameterized as `Constellation[tuple[int, int]]`</span>
 <span class="sd">    where each key is `(plane_id, in_plane_index)`. Plane structure is derived</span>
@@ -2820,14 +2820,14 @@ plane) and marks all satellite positions at the given <code>time_index</code>.</
 <span class="sd">        propagation_result: Mapping from satellite objects to propagation results.</span>
 <span class="sd">        time_index: Time step index at which to plot satellite positions.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-    <span class="n">ax</span><span class="p">:</span> <span class="n">Axes3D</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;3d&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">:</span> <span class="n">Axes3D</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">"3d"</span><span class="p">)</span>
 
-    <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">colormaps</span><span class="p">[</span><span class="s2">&quot;tab20&quot;</span><span class="p">]</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">colormaps</span><span class="p">[</span><span class="s2">"tab20"</span><span class="p">]</span>
 
     <span class="c1"># Plot the Earth</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="o">*</span><span class="n">_ms</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">EARTH_RADIUS</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="o">*</span><span class="n">_ms</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">EARTH_RADIUS</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">"blue"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 
     <span class="c1"># Group satellites by plane_id (first element of the structural key).</span>
     <span class="c1"># All structural information comes from dict keys, not from satellite.id.</span>
@@ -2849,7 +2849,7 @@ plane) and marks all satellite positions at the given <code>time_index</code>.</
             <span class="n">propagation_result</span><span class="p">[</span><span class="n">first_satellite</span><span class="p">]</span><span class="o">.</span><span class="n">position_eci</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
             <span class="n">color</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
             <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Plane </span><span class="si">{</span><span class="n">plane_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Plane </span><span class="si">{</span><span class="n">plane_id</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="c1"># Plot all satellite positions at the given time index</span>
@@ -2858,13 +2858,13 @@ plane) and marks all satellite positions at the given <code>time_index</code>.</
             <span class="n">propagation_result</span><span class="p">[</span><span class="n">satellite</span><span class="p">]</span><span class="o">.</span><span class="n">position_eci</span><span class="p">[</span><span class="n">time_index</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
             <span class="n">propagation_result</span><span class="p">[</span><span class="n">satellite</span><span class="p">]</span><span class="o">.</span><span class="n">position_eci</span><span class="p">[</span><span class="n">time_index</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
             <span class="n">propagation_result</span><span class="p">[</span><span class="n">satellite</span><span class="p">]</span><span class="o">.</span><span class="n">position_eci</span><span class="p">[</span><span class="n">time_index</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
-            <span class="s2">&quot;ro&quot;</span><span class="p">,</span>
+            <span class="s2">"ro"</span><span class="p">,</span>
             <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;X (km)&quot;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Y (km)&quot;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;Z (km)&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"X (km)"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Y (km)"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">"Z (km)"</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_box_aspect</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 
     <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>

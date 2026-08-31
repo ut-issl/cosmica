@@ -3378,10 +3378,10 @@
 
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;ConstellationSatellite&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Satellite&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;SatelliteTerminal&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;UserSatellite&quot;</span><span class="p">,</span>
+    <span class="s2">"ConstellationSatellite"</span><span class="p">,</span>
+    <span class="s2">"Satellite"</span><span class="p">,</span>
+    <span class="s2">"SatelliteTerminal"</span><span class="p">,</span>
+    <span class="s2">"UserSatellite"</span><span class="p">,</span>
 <span class="p">]</span>
 </code></pre></div>
 
@@ -3578,7 +3578,7 @@
 <span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">terminal_ids</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">terminal</span><span class="o">.</span><span class="n">global_id</span> <span class="k">for</span> <span class="n">terminal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminals</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">terminal_ids</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">terminal_ids</span><span class="p">)):</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;satellite terminal global IDs must be unique&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">"satellite terminal global IDs must be unique"</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -3637,7 +3637,7 @@
 <span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="k">return</span> <span class="s2">&quot;CSAT&quot;</span>
+    <span class="k">return</span> <span class="s2">"CSAT"</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3815,7 +3815,7 @@
 <span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">terminal_ids</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">terminal</span><span class="o">.</span><span class="n">global_id</span> <span class="k">for</span> <span class="n">terminal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminals</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">terminal_ids</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">terminal_ids</span><span class="p">)):</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;satellite terminal global IDs must be unique&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">"satellite terminal global IDs must be unique"</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -3879,10 +3879,10 @@
 <span class="normal">22</span>
 <span class="normal">23</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class name as a string used for the key generation.</span>
+<span class="w">    </span><span class="sd">"""Class name as a string used for the key generation.</span>
 
 <span class="sd">    Override this method if you want to use a different class name for the key generation.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4320,10 +4320,10 @@
 <span class="normal">22</span>
 <span class="normal">23</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class name as a string used for the key generation.</span>
+<span class="w">    </span><span class="sd">"""Class name as a string used for the key generation.</span>
 
 <span class="sd">    Override this method if you want to use a different class name for the key generation.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4524,7 +4524,7 @@
 <span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">terminal_ids</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">terminal</span><span class="o">.</span><span class="n">global_id</span> <span class="k">for</span> <span class="n">terminal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminals</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">terminal_ids</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">terminal_ids</span><span class="p">)):</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;satellite terminal global IDs must be unique&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">"satellite terminal global IDs must be unique"</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4583,7 +4583,7 @@
 <span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@override</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="k">return</span> <span class="s2">&quot;USAT&quot;</span>
+    <span class="k">return</span> <span class="s2">"USAT"</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

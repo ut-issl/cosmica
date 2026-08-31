@@ -2716,8 +2716,8 @@
 
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;GatewayToSatBinaryCommLinkCalculator&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;GatewayToSatBinaryMemoryCommLinkCalculator&quot;</span><span class="p">,</span>
+    <span class="s2">"GatewayToSatBinaryCommLinkCalculator"</span><span class="p">,</span>
+    <span class="s2">"GatewayToSatBinaryMemoryCommLinkCalculator"</span><span class="p">,</span>
 <span class="p">]</span>
 </code></pre></div>
 
@@ -2814,7 +2814,7 @@ for the satellite -&gt; gateway (downlink) direction.</p>
 <span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">link_capacity</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Capacity of the gateway -&gt; satellite (uplink) in bps.&quot;</span><span class="p">)],</span>
+    <span class="n">link_capacity</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"Capacity of the gateway -&gt; satellite (uplink) in bps."</span><span class="p">)],</span>
     <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">link_capacity</span> <span class="o">=</span> <span class="n">link_capacity</span>
@@ -3282,7 +3282,7 @@ for the satellite -&gt; gateway (downlink) direction.</p>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">skip_link_acquisition_at_simulation_start</span> <span class="ow">and</span> <span class="n">time_index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">link_acquisition_start_time</span><span class="p">[</span><span class="n">edge</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_time</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span>
                     <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">link_acquisition_time</span><span class="p">),</span>
-                    <span class="s2">&quot;s&quot;</span><span class="p">,</span>
+                    <span class="s2">"s"</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">link_acquisition_start_time</span><span class="p">[</span><span class="n">edge</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_time</span>
@@ -3294,13 +3294,13 @@ for the satellite -&gt; gateway (downlink) direction.</p>
         <span class="c1"># ───────────────────────────────────────────────────────</span>
 
         <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges_snapshot_set</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">comm_link</span><span class="p">[</span><span class="n">edge</span><span class="p">][</span><span class="s2">&quot;link_available&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">comm_link</span><span class="p">[</span><span class="n">edge</span><span class="p">][</span><span class="s2">"link_available"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
                 <span class="n">link_acquisition_start_time</span><span class="p">[</span><span class="n">edge</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_time</span>
 
             <span class="c1"># --- link acquisition delay ------------ ★</span>
             <span class="n">within_link_acquisition</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="nb">float</span><span class="p">(</span>
-                    <span class="p">(</span><span class="n">current_time</span> <span class="o">-</span> <span class="n">link_acquisition_start_time</span><span class="p">[</span><span class="n">edge</span><span class="p">])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">current_time</span> <span class="o">-</span> <span class="n">link_acquisition_start_time</span><span class="p">[</span><span class="n">edge</span><span class="p">])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"s"</span><span class="p">),</span>
                 <span class="p">)</span>
                 <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">link_acquisition_time</span>
             <span class="p">)</span>

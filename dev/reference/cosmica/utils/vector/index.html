@@ -2846,20 +2846,20 @@
 
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;angle_between&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;as_column_vector&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;azimuth_elevation_to_unit_vector&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;decompose_wrt_reference_vector&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;generate_normal_vectors&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;is_column_vector&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;is_line_segment_clear_of_earth&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;is_satellite_in_eclipse&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;normalize&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;perturb_vector&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;project_vector&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;rowwise_innerdot&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;rowwise_matmul&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;unit_vector_to_azimuth_elevation&quot;</span><span class="p">,</span>
+    <span class="s2">"angle_between"</span><span class="p">,</span>
+    <span class="s2">"as_column_vector"</span><span class="p">,</span>
+    <span class="s2">"azimuth_elevation_to_unit_vector"</span><span class="p">,</span>
+    <span class="s2">"decompose_wrt_reference_vector"</span><span class="p">,</span>
+    <span class="s2">"generate_normal_vectors"</span><span class="p">,</span>
+    <span class="s2">"is_column_vector"</span><span class="p">,</span>
+    <span class="s2">"is_line_segment_clear_of_earth"</span><span class="p">,</span>
+    <span class="s2">"is_satellite_in_eclipse"</span><span class="p">,</span>
+    <span class="s2">"normalize"</span><span class="p">,</span>
+    <span class="s2">"perturb_vector"</span><span class="p">,</span>
+    <span class="s2">"project_vector"</span><span class="p">,</span>
+    <span class="s2">"rowwise_innerdot"</span><span class="p">,</span>
+    <span class="s2">"rowwise_matmul"</span><span class="p">,</span>
+    <span class="s2">"unit_vector_to_azimuth_elevation"</span><span class="p">,</span>
 <span class="p">]</span>
 </code></pre></div>
 
@@ -2930,10 +2930,10 @@
     <span class="n">x1</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">NumberType1</span><span class="p">],</span>
     <span class="n">x2</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">NumberType2</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the angle in radians between vectors x1 and x2.</span>
+<span class="w">    </span><span class="sd">"""Return the angle in radians between vectors x1 and x2.</span>
 
 <span class="sd">    Ref: https://stackoverflow.com/questions/2827393/angles-between-two-n-dimensional-vectors-in-python/13849249#13849249.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">x1_unit</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">x2_unit</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
@@ -3075,11 +3075,11 @@
 <span class="normal">267</span>
 <span class="normal">268</span>
 <span class="normal">269</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">azimuth_elevation_to_unit_vector</span><span class="p">(</span>
-    <span class="n">az</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Float value with azimuth angle in radians&quot;</span><span class="p">)],</span>
-    <span class="n">el</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Float value with elevation angle in radians&quot;</span><span class="p">)],</span>
+    <span class="n">az</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"Float value with azimuth angle in radians"</span><span class="p">)],</span>
+    <span class="n">el</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"Float value with elevation angle in radians"</span><span class="p">)],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span>
-    <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Numpy array with unitary x,y,z directions&quot;</span><span class="p">),</span>
+    <span class="n">Doc</span><span class="p">(</span><span class="s2">"Numpy array with unitary x,y,z directions"</span><span class="p">),</span>
 <span class="p">]:</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">el</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">az</span><span class="p">)</span>
@@ -3250,22 +3250,22 @@
 <span class="normal">234</span>
 <span class="normal">235</span>
 <span class="normal">236</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">closest_point_to_origin_on_line</span><span class="p">(</span>
-    <span class="n">r1</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Numpy arrays representing the position vectors of the first point.&quot;</span><span class="p">)],</span>
-    <span class="n">r2</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Numpy arrays representing the position vectors of the second point.&quot;</span><span class="p">)],</span>
+    <span class="n">r1</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"Numpy arrays representing the position vectors of the first point."</span><span class="p">)],</span>
+    <span class="n">r2</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"Numpy arrays representing the position vectors of the second point."</span><span class="p">)],</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">extend_at_r1</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">bool</span><span class="p">,</span>
-        <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;If True, extend the line segment at r1. Otherwise, do not extend the line segment at r1.&quot;</span><span class="p">),</span>
+        <span class="n">Doc</span><span class="p">(</span><span class="s2">"If True, extend the line segment at r1. Otherwise, do not extend the line segment at r1."</span><span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">extend_at_r2</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">bool</span><span class="p">,</span>
-        <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;If True, extend the line segment at r2. Otherwise, do not extend the line segment at r2.&quot;</span><span class="p">),</span>
+        <span class="n">Doc</span><span class="p">(</span><span class="s2">"If True, extend the line segment at r2. Otherwise, do not extend the line segment at r2."</span><span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span>
-    <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Numpy array representing the position vector of the point on the line segment closest to the origin.&quot;</span><span class="p">),</span>
+    <span class="n">Doc</span><span class="p">(</span><span class="s2">"Numpy array representing the position vector of the point on the line segment closest to the origin."</span><span class="p">),</span>
 <span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the point on the line segment between r1 and r2 that is closest to the origin.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Compute the point on the line segment between r1 and r2 that is closest to the origin."""</span>
     <span class="c1"># Compute t</span>
     <span class="n">numerator</span> <span class="o">=</span> <span class="n">rowwise_innerdot</span><span class="p">(</span><span class="n">r2</span> <span class="o">-</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">denominator</span> <span class="o">=</span> <span class="n">rowwise_innerdot</span><span class="p">(</span><span class="n">r2</span> <span class="o">-</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span> <span class="o">-</span> <span class="n">r1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -3513,16 +3513,16 @@ from Earth's center is considered clear.</p>
 <span class="normal">254</span>
 <span class="normal">255</span>
 <span class="normal">256</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_line_segment_clear_of_earth</span><span class="p">(</span>
-    <span class="n">r1</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Position vector of the first segment endpoint.&quot;</span><span class="p">)],</span>
-    <span class="n">r2</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Position vector of the second segment endpoint.&quot;</span><span class="p">)],</span>
+    <span class="n">r1</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"Position vector of the first segment endpoint."</span><span class="p">)],</span>
+    <span class="n">r2</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"Position vector of the second segment endpoint."</span><span class="p">)],</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">lowest_altitude</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Minimum permitted altitude above Earth&#39;s radius.&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">lowest_altitude</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"Minimum permitted altitude above Earth's radius."</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check whether a finite line segment maintains the required Earth clearance.</span>
+<span class="w">    </span><span class="sd">"""Check whether a finite line segment maintains the required Earth clearance.</span>
 
 <span class="sd">    A segment whose closest point is exactly ``EARTH_RADIUS + lowest_altitude``</span>
-<span class="sd">    from Earth&#39;s center is considered clear.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    from Earth's center is considered clear.</span>
+<span class="sd">    """</span>
     <span class="n">closest_point</span> <span class="o">=</span> <span class="n">closest_point_to_origin_on_line</span><span class="p">(</span>
         <span class="n">r1</span><span class="p">,</span>
         <span class="n">r2</span><span class="p">,</span>
@@ -3667,16 +3667,16 @@ from Earth's center is considered clear.</p>
     <span class="n">satellite_position_eci</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span>
     <span class="n">sun_direction_eci</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a single satellite is in Earth&#39;s shadow (eclipse).</span>
+<span class="w">    </span><span class="sd">"""Check if a single satellite is in Earth's shadow (eclipse).</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        satellite_position_eci: Position of satellite in ECI frame. Shape: (3,)</span>
 <span class="sd">        sun_direction_eci: Sun direction vector (from the Earth towards the sun) in ECI frame. Shape: (3,)</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        True if the satellite is in Earth&#39;s eclipse</span>
+<span class="sd">        True if the satellite is in Earth's eclipse</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Vector from satellite towards the sun (the sun is effectively at infinity, so the</span>
     <span class="c1"># direction seen from the satellite equals the direction seen from the Earth)</span>
     <span class="n">sat_to_sun</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">sun_direction_eci</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">satellite_position_eci</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
@@ -3700,7 +3700,7 @@ from Earth's center is considered clear.</p>
     <span class="n">closest_point</span> <span class="o">=</span> <span class="n">satellite_position_eci</span> <span class="o">+</span> <span class="n">proj_length</span> <span class="o">*</span> <span class="n">sat_to_sun_unit</span>
     <span class="n">distance_to_earth_center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">closest_point</span><span class="p">)</span>
 
-    <span class="c1"># If this distance is less than Earth radius, there&#39;s an eclipse</span>
+    <span class="c1"># If this distance is less than Earth radius, there's an eclipse</span>
     <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">distance_to_earth_center</span> <span class="o">&lt;</span> <span class="n">EARTH_RADIUS</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -3719,23 +3719,23 @@ from Earth's center is considered clear.</p>
           <div class="doc-overloads">
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">normalize</span><span class="p">(</span>
     <span class="n">x</span><span class="p">:</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="IntegerType">IntegerType</span></span><span class="p">],</span>
-    <span class="nb">ord</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="s2">&quot;fro&quot;</span><span class="p">,</span> <span class="s2">&quot;nuc&quot;</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="nb">ord</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="s2">"fro"</span><span class="p">,</span> <span class="s2">"nuc"</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">axis</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.floating">floating</span></span><span class="p">]</span>
 </code></pre></div><div class="doc-signature highlight"><pre><span></span><code><span class="nf">normalize</span><span class="p">(</span>
     <span class="n">x</span><span class="p">:</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="FloatType">FloatType</span></span><span class="p">],</span>
-    <span class="nb">ord</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="s2">&quot;fro&quot;</span><span class="p">,</span> <span class="s2">&quot;nuc&quot;</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="nb">ord</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="s2">"fro"</span><span class="p">,</span> <span class="s2">"nuc"</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">axis</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="FloatType">FloatType</span></span><span class="p">]</span>
 </code></pre></div><div class="doc-signature highlight"><pre><span></span><code><span class="nf">normalize</span><span class="p">(</span>
     <span class="n">x</span><span class="p">:</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.number">number</span></span><span class="p">],</span>
-    <span class="nb">ord</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="s2">&quot;fro&quot;</span><span class="p">,</span> <span class="s2">&quot;nuc&quot;</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="nb">ord</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="s2">"fro"</span><span class="p">,</span> <span class="s2">"nuc"</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">axis</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.floating">floating</span></span><span class="p">]</span>
 </code></pre></div>          </div>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">normalize</span><span class="p">(</span>
     <span class="n">x</span><span class="p">:</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.number">number</span></span><span class="p">],</span>
-    <span class="nb">ord</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="s2">&quot;fro&quot;</span><span class="p">,</span> <span class="s2">&quot;nuc&quot;</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="nb">ord</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="s2">"fro"</span><span class="p">,</span> <span class="s2">"nuc"</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">axis</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.floating">floating</span></span><span class="p">]</span>
 </code></pre></div>
@@ -3753,7 +3753,7 @@ from Earth's center is considered clear.</p>
 <span class="normal">107</span>
 <span class="normal">108</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">normalize</span><span class="p">(</span>
     <span class="n">x</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">],</span>
-    <span class="nb">ord</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;fro&quot;</span><span class="p">,</span> <span class="s2">&quot;nuc&quot;</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: A002</span>
+    <span class="nb">ord</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"fro"</span><span class="p">,</span> <span class="s2">"nuc"</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: A002</span>
     <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]:</span>
     <span class="n">norm</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="nb">ord</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -3905,7 +3905,7 @@ from Earth's center is considered clear.</p>
         <span class="n">n_data</span><span class="p">,</span> <span class="n">dim</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">returned_shape</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">shape</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;vec should be either 2- or 1-dimensional vector.&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">"vec should be either 2- or 1-dimensional vector."</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="p">(</span><span class="n">n_data</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
     <span class="n">onto</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">onto</span><span class="p">,</span> <span class="p">(</span><span class="n">n_data</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
@@ -4087,12 +4087,12 @@ from Earth's center is considered clear.</p>
 <span class="normal">288</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">unit_vector_to_azimuth_elevation</span><span class="p">(</span>
     <span class="n">u</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span>
-        <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Numpy array of floats with the coordinates of a unit vector in three dimensions&quot;</span><span class="p">),</span>
+        <span class="n">Doc</span><span class="p">(</span><span class="s2">"Numpy array of floats with the coordinates of a unit vector in three dimensions"</span><span class="p">),</span>
     <span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
     <span class="n">Doc</span><span class="p">(</span>
-        <span class="s2">&quot;Tuple with two floats. The first one represents the corresponding azimuth value in radians, and the second the elevation value in radians&quot;</span><span class="p">,</span>  <span class="c1"># noqa: E501</span>
+        <span class="s2">"Tuple with two floats. The first one represents the corresponding azimuth value in radians, and the second the elevation value in radians"</span><span class="p">,</span>  <span class="c1"># noqa: E501</span>
     <span class="p">),</span>
 <span class="p">]:</span>
     <span class="k">assert</span> <span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span>

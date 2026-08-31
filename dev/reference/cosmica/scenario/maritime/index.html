@@ -2603,13 +2603,13 @@
 <span class="normal">33</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_ais_density_data</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span>
     <span class="n">Doc</span><span class="p">(</span>
-        <span class="s2">&quot;AIS density data [seconds/m2] in Oct 2023 as a NumPy array with shape (180, 359).&quot;</span>
-        <span class="s2">&quot; The rows are latitude (+90 deg to -90 deg) and the columns are longitude (-179.5 deg to +179.5 deg).&quot;</span><span class="p">,</span>
+        <span class="s2">"AIS density data [seconds/m2] in Oct 2023 as a NumPy array with shape (180, 359)."</span>
+        <span class="s2">" The rows are latitude (+90 deg to -90 deg) and the columns are longitude (-179.5 deg to +179.5 deg)."</span><span class="p">,</span>
     <span class="p">),</span>
 <span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get AIS density data.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Get AIS density data."""</span>
     <span class="c1"># Conversion [hours/km2] -&gt; [seconds/m2]</span>
-    <span class="k">return</span> <span class="n">_load_numpy_array_from_assets_dir</span><span class="p">(</span><span class="s2">&quot;maritime_20231001_non-loitering.npy&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3600</span> <span class="o">/</span> <span class="mf">1e6</span>
+    <span class="k">return</span> <span class="n">_load_numpy_array_from_assets_dir</span><span class="p">(</span><span class="s2">"maritime_20231001_non-loitering.npy"</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3600</span> <span class="o">/</span> <span class="mf">1e6</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2744,18 +2744,18 @@ with the correction for the area difference between the lower and higher latitud
 <span class="normal">67</span>
 <span class="normal">68</span>
 <span class="normal">69</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sample_demand_locations</span><span class="p">(</span>
-    <span class="n">n_samples</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Number of demand locations to sample.&quot;</span><span class="p">)],</span>
+    <span class="n">n_samples</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"Number of demand locations to sample."</span><span class="p">)],</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">rng</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;NumPy random number generator. If None, use default.&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">rng</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"NumPy random number generator. If None, use default."</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="nb">tuple</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]],</span>
-    <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Sampled demand locations as a tuple of (longitude, latitude) in radians, each with shape (n_samples,).&quot;</span><span class="p">),</span>
+    <span class="n">Doc</span><span class="p">(</span><span class="s2">"Sampled demand locations as a tuple of (longitude, latitude) in radians, each with shape (n_samples,)."</span><span class="p">),</span>
 <span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sample maritime demand locations based on AIS density data.</span>
+<span class="w">    </span><span class="sd">"""Sample maritime demand locations based on AIS density data.</span>
 
 <span class="sd">    The probability of sampling a location is proportional to the AIS density at that location,</span>
 <span class="sd">    with the correction for the area difference between the lower and higher latitudes.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">rng</span> <span class="o">=</span> <span class="n">rng</span> <span class="k">if</span> <span class="n">rng</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
 
     <span class="n">data</span> <span class="o">=</span> <span class="n">get_ais_density_data</span><span class="p">()</span>

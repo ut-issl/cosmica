@@ -2750,16 +2750,16 @@ e.g., <code>Constellation[tuple[int, int]]</code>.</p>
     <span class="n">phasing_factor</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">epoch</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Constellation</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a multi-plane Walker Delta constellation.&quot;&quot;&quot;</span>
-    <span class="k">assert</span> <span class="n">semi_major_axis</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Semi-major axis must be positive.&quot;</span>
-    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">inclination</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="s2">&quot;Inclination must be between 0 and pi radians.&quot;</span>
-    <span class="k">assert</span> <span class="n">n_total_sats</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Total number of satellites must be positive.&quot;</span>
+<span class="w">    </span><span class="sd">"""Create a multi-plane Walker Delta constellation."""</span>
+    <span class="k">assert</span> <span class="n">semi_major_axis</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"Semi-major axis must be positive."</span>
+    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">inclination</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="s2">"Inclination must be between 0 and pi radians."</span>
+    <span class="k">assert</span> <span class="n">n_total_sats</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"Total number of satellites must be positive."</span>
     <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">n_geometry_planes</span> <span class="o">&lt;=</span> <span class="n">n_total_sats</span><span class="p">,</span> <span class="p">(</span>
-        <span class="s2">&quot;Number of geometry planes must be positive and less than or equal to total number of satellites.&quot;</span>
+        <span class="s2">"Number of geometry planes must be positive and less than or equal to total number of satellites."</span>
     <span class="p">)</span>
-    <span class="k">assert</span> <span class="n">n_total_sats</span> <span class="o">%</span> <span class="n">n_geometry_planes</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Total number of satellites must be divisible by number of planes.&quot;</span>
+    <span class="k">assert</span> <span class="n">n_total_sats</span> <span class="o">%</span> <span class="n">n_geometry_planes</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"Total number of satellites must be divisible by number of planes."</span>
     <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">phasing_factor</span> <span class="o">&lt;</span> <span class="n">n_geometry_planes</span><span class="p">,</span> <span class="p">(</span>
-        <span class="s2">&quot;Phasing factor must be less than number of planes and non-negative.&quot;</span>
+        <span class="s2">"Phasing factor must be less than number of planes and non-negative."</span>
     <span class="p">)</span>
 
     <span class="n">n_sats_per_plane</span> <span class="o">=</span> <span class="n">n_total_sats</span> <span class="o">//</span> <span class="n">n_geometry_planes</span>

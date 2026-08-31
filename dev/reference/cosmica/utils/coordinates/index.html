@@ -2716,11 +2716,11 @@
 
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;calc_dcm_eci2ecef&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ecef2aer&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;geodetic2ecef&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;greenwichsrt&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;juliandate&quot;</span><span class="p">,</span>
+    <span class="s2">"calc_dcm_eci2ecef"</span><span class="p">,</span>
+    <span class="s2">"ecef2aer"</span><span class="p">,</span>
+    <span class="s2">"geodetic2ecef"</span><span class="p">,</span>
+    <span class="s2">"greenwichsrt"</span><span class="p">,</span>
+    <span class="s2">"juliandate"</span><span class="p">,</span>
 <span class="p">]</span>
 </code></pre></div>
 
@@ -2802,12 +2802,12 @@ If the input is an array of times, the output is a Nx3x3 array.</p>
 <span class="normal">85</span>
 <span class="normal">86</span>
 <span class="normal">87</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc_dcm_eci2ecef</span><span class="p">(</span><span class="n">time</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span> <span class="o">|</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the direction cosine matrix from ECI to ECEF.</span>
+<span class="w">    </span><span class="sd">"""Calculate the direction cosine matrix from ECI to ECEF.</span>
 
 <span class="sd">    Input is UTC time.</span>
 <span class="sd">    If the input is a single time, the output is a 3x3 matrix.</span>
 <span class="sd">    If the input is an array of times, the output is a Nx3x3 array.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">gst</span> <span class="o">=</span> <span class="n">greenwichsrt</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gst</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
@@ -2907,7 +2907,7 @@ srange : float
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>.venv/lib/python3.14/site-packages/pymap3d/aer.py</code></summary>
+              <summary>Source code in <code>pymap3d/aer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">25</span>
 <span class="normal">26</span>
 <span class="normal">27</span>
@@ -2965,7 +2965,7 @@ srange : float
     <span class="n">ell</span><span class="p">:</span> <span class="n">Ellipsoid</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">deg</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    compute azimuth, elevation and slant range from an Observer to a Point with ECEF coordinates.</span>
 
 <span class="sd">    ECEF input location is with units of meters</span>
@@ -2998,7 +2998,7 @@ srange : float
 <span class="sd">         elevation to target</span>
 <span class="sd">    srange : float</span>
 <span class="sd">         slant range [meters]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">xEast</span><span class="p">,</span> <span class="n">yNorth</span><span class="p">,</span> <span class="n">zUp</span> <span class="o">=</span> <span class="n">ecef2enu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">ell</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="n">deg</span><span class="p">)</span>
 
@@ -3051,7 +3051,7 @@ z
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>.venv/lib/python3.14/site-packages/pymap3d/ecef.py</code></summary>
+              <summary>Source code in <code>pymap3d/ecef.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">32</span>
 <span class="normal">33</span>
 <span class="normal">34</span>
@@ -3111,7 +3111,7 @@ z
     <span class="n">ell</span><span class="p">:</span> <span class="n">Ellipsoid</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">deg</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    point transformation from Geodetic of specified ellipsoid (default WGS-84) to ECEF</span>
 
 <span class="sd">    Parameters</span>
@@ -3140,14 +3140,14 @@ z
 <span class="sd">        target y ECEF coordinate (meters)</span>
 <span class="sd">    z</span>
 <span class="sd">        target z ECEF coordinate (meters)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">if</span> <span class="n">deg</span><span class="p">:</span>
         <span class="n">lat</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
         <span class="n">lon</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">ell</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ell</span> <span class="o">=</span> <span class="n">Ellipsoid</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s2">&quot;wgs84&quot;</span><span class="p">)</span>
+        <span class="n">ell</span> <span class="o">=</span> <span class="n">Ellipsoid</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s2">"wgs84"</span><span class="p">)</span>
 
     <span class="c1"># radius of curvature of the prime vertical section</span>
     <span class="n">N</span> <span class="o">=</span> <span class="n">ell</span><span class="o">.</span><span class="n">semimajor_axis</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">hypot</span><span class="p">(</span><span class="n">ell</span><span class="o">.</span><span class="n">semimajor_axis</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">lat</span><span class="p">),</span> <span class="n">ell</span><span class="o">.</span><span class="n">semiminor_axis</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span>

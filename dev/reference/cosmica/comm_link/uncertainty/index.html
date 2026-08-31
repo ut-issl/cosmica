@@ -3074,12 +3074,12 @@
 
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;ApertureAveragedLogNormalScintillationModel&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;AtmosphericScintillationModel&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;BinaryCloudModel&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;CloudStates&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;EdgeFailureModel&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ExpEdgeModel&quot;</span><span class="p">,</span>
+    <span class="s2">"ApertureAveragedLogNormalScintillationModel"</span><span class="p">,</span>
+    <span class="s2">"AtmosphericScintillationModel"</span><span class="p">,</span>
+    <span class="s2">"BinaryCloudModel"</span><span class="p">,</span>
+    <span class="s2">"CloudStates"</span><span class="p">,</span>
+    <span class="s2">"EdgeFailureModel"</span><span class="p">,</span>
+    <span class="s2">"ExpEdgeModel"</span><span class="p">,</span>
 <span class="p">]</span>
 </code></pre></div>
 
@@ -3363,9 +3363,9 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="nb">float</span><span class="p">,</span>
     <span class="n">Doc</span><span class="p">(</span>
-        <span class="s2">&quot;Float approximation for aperture averaged scintillation for a plane-wave in the absence of inner scale and&quot;</span>
-        <span class="s1">&#39;outer scale effects as described by Larry C. Andrews and Ronald L. Phillips in the book &quot;Laser Beam&#39;</span>
-        <span class="s1">&#39;Propagation through Random Media&quot; Chapter 10.&#39;</span><span class="p">,</span>
+        <span class="s2">"Float approximation for aperture averaged scintillation for a plane-wave in the absence of inner scale and"</span>
+        <span class="s1">'outer scale effects as described by Larry C. Andrews and Ronald L. Phillips in the book "Laser Beam'</span>
+        <span class="s1">'Propagation through Random Media" Chapter 10.'</span><span class="p">,</span>
     <span class="p">),</span>
 <span class="p">]:</span>
     <span class="n">variance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_rytov_variance</span> <span class="k">if</span> <span class="n">rytov_variance</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">rytov_variance</span>
@@ -3709,12 +3709,12 @@
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">time</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">],</span>
-        <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;time_array as a np.ndarray with elements in the np.datetime64 format&quot;</span><span class="p">),</span>
+        <span class="n">Doc</span><span class="p">(</span><span class="s2">"time_array as a np.ndarray with elements in the np.datetime64 format"</span><span class="p">),</span>
     <span class="p">],</span>
-    <span class="n">rng</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;NumPy random number generator.&quot;</span><span class="p">)],</span>
+    <span class="n">rng</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"NumPy random number generator."</span><span class="p">)],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">],</span>
-    <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;time series of cloud states on given time frame (1|True = cloudy, 0|False = Free-of-clouds)&quot;</span><span class="p">),</span>
+    <span class="n">Doc</span><span class="p">(</span><span class="s2">"time series of cloud states on given time frame (1|True = cloudy, 0|False = Free-of-clouds)"</span><span class="p">),</span>
 <span class="p">]:</span>
     <span class="n">sampled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
     <span class="n">current_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_cloud</span>
@@ -3908,10 +3908,10 @@
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">ExpEdgeModel</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">reliability</span><span class="p">:</span> <span class="n"><span title="numpy.timedelta64">timedelta64</span></span> <span class="o">=</span> <span class="p">(</span>
-        <span class="k">lambda</span><span class="p">:</span> <span class="n"><span title="numpy.timedelta64">timedelta64</span></span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">)</span>
+        <span class="k">lambda</span><span class="p">:</span> <span class="n"><span title="numpy.timedelta64">timedelta64</span></span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s2">"D"</span><span class="p">)</span>
     <span class="p">)(),</span>
     <span class="n">recovery_time</span><span class="p">:</span> <span class="n"><span title="numpy.timedelta64">timedelta64</span></span> <span class="o">=</span> <span class="p">(</span>
-        <span class="k">lambda</span><span class="p">:</span> <span class="n"><span title="numpy.timedelta64">timedelta64</span></span><span class="p">(</span><span class="mi">1800</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">)</span>
+        <span class="k">lambda</span><span class="p">:</span> <span class="n"><span title="numpy.timedelta64">timedelta64</span></span><span class="p">(</span><span class="mi">1800</span><span class="p">,</span> <span class="s2">"s"</span><span class="p">)</span>
     <span class="p">)()</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -3959,7 +3959,7 @@ An edge can be thought as the link between two nodes (e.g. terminals, satellites
 
 </h4>
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">recovery_time</span><span class="p">:</span> <span class="n"><span title="numpy.timedelta64">timedelta64</span></span> <span class="o">=</span> <span class="n"><span title="dataclasses.field">field</span></span><span class="p">(</span>
-    <span class="n"><span title="dataclasses.field(default_factory)">default_factory</span></span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n"><span title="numpy">np</span></span><span class="o">.</span><span class="n"><span title="numpy.timedelta64">timedelta64</span></span><span class="p">(</span><span class="mi">1800</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">)</span>
+    <span class="n"><span title="dataclasses.field(default_factory)">default_factory</span></span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n"><span title="numpy">np</span></span><span class="o">.</span><span class="n"><span title="numpy.timedelta64">timedelta64</span></span><span class="p">(</span><span class="mi">1800</span><span class="p">,</span> <span class="s2">"s"</span><span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -3986,7 +3986,7 @@ An edge can be thought as the link between two nodes (e.g. terminals, satellites
 
 </h4>
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">reliability</span><span class="p">:</span> <span class="n"><span title="numpy.timedelta64">timedelta64</span></span> <span class="o">=</span> <span class="n"><span title="dataclasses.field">field</span></span><span class="p">(</span>
-    <span class="n"><span title="dataclasses.field(default_factory)">default_factory</span></span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n"><span title="numpy">np</span></span><span class="o">.</span><span class="n"><span title="numpy.timedelta64">timedelta64</span></span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">)</span>
+    <span class="n"><span title="dataclasses.field(default_factory)">default_factory</span></span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n"><span title="numpy">np</span></span><span class="o">.</span><span class="n"><span title="numpy.timedelta64">timedelta64</span></span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s2">"D"</span><span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -4117,12 +4117,12 @@ An edge can be thought as the link between two nodes (e.g. terminals, satellites
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">time</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">],</span>
-        <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;time_array as a np.ndarray with elements in the np.datetime64 format&quot;</span><span class="p">),</span>
+        <span class="n">Doc</span><span class="p">(</span><span class="s2">"time_array as a np.ndarray with elements in the np.datetime64 format"</span><span class="p">),</span>
     <span class="p">],</span>
-    <span class="n">rng</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;NumPy random number generator&quot;</span><span class="p">)],</span>
+    <span class="n">rng</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"NumPy random number generator"</span><span class="p">)],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">],</span>
-    <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;time series of edge states on given time frame (True = Failure, False= No-failure)&quot;</span><span class="p">),</span>
+    <span class="n">Doc</span><span class="p">(</span><span class="s2">"time series of edge states on given time frame (True = Failure, False= No-failure)"</span><span class="p">),</span>
 <span class="p">]:</span>
     <span class="n">state_changed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">)</span>
     <span class="n">time_step</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>

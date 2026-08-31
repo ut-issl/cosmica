@@ -2615,7 +2615,7 @@
   </span>
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CommLinkCalculationCoordinator&#39;</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'CommLinkCalculationCoordinator'</span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2873,10 +2873,10 @@ edges, a calculator must be registered for BOTH orientations of each link type â
     <span class="n">unsupported_edge_types</span> <span class="o">=</span> <span class="n">all_edge_types</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculator_assignment</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">unsupported_edge_types</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;No calculator registered for edge types: &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">sorted</span><span class="p">((</span><span class="n">t1</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span><span class="w"> </span><span class="n">t2</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">t1</span><span class="p">,</span><span class="w"> </span><span class="n">t2</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">unsupported_edge_types</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
-            <span class="s2">&quot;Note that both directions of a physical link need a registered calculator &quot;</span>
-            <span class="s2">&quot;(e.g. (Satellite, Gateway) for the downlink and (Gateway, Satellite) for the uplink).&quot;</span>
+            <span class="sa">f</span><span class="s2">"No calculator registered for edge types: "</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">sorted</span><span class="p">((</span><span class="n">t1</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span><span class="w"> </span><span class="n">t2</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">t1</span><span class="p">,</span><span class="w"> </span><span class="n">t2</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">unsupported_edge_types</span><span class="p">)</span><span class="si">}</span><span class="s2">. "</span>
+            <span class="s2">"Note that both directions of a physical link need a registered calculator "</span>
+            <span class="s2">"(e.g. (Satellite, Gateway) for the downlink and (Gateway, Satellite) for the uplink)."</span>
         <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
@@ -2892,7 +2892,7 @@ edges, a calculator must be registered for BOTH orientations of each link type â
     <span class="n">performance_time_series_by_type</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">EdgeType</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">Node</span><span class="p">],</span> <span class="n">CommLinkPerformance</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">edge_type</span><span class="p">,</span> <span class="n">edges_time_series_of_type</span> <span class="ow">in</span> <span class="n">edges_time_series_by_type</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Calculating performance for edge type </span><span class="si">{</span><span class="n">edge_type</span><span class="si">}</span><span class="s2"> with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">edges_time_series_of_type</span><span class="p">)</span><span class="si">}</span><span class="s2"> time steps.&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"Calculating performance for edge type </span><span class="si">{</span><span class="n">edge_type</span><span class="si">}</span><span class="s2"> with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">edges_time_series_of_type</span><span class="p">)</span><span class="si">}</span><span class="s2"> time steps."</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">calculator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculator_assignment</span><span class="p">[</span><span class="n">edge_type</span><span class="p">]</span>
         <span class="n">performance_time_series_by_type</span><span class="p">[</span><span class="n">edge_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span>
@@ -2903,7 +2903,7 @@ edges, a calculator must be registered for BOTH orientations of each link type â
 
     <span class="c1"># Merge the results</span>
     <span class="n">performance_time_series</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">time_index</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">)),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Merging performance results&quot;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">time_index</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">)),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Merging performance results"</span><span class="p">):</span>
         <span class="n">performance</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">Node</span><span class="p">],</span> <span class="n">CommLinkPerformance</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">perf_of_type</span> <span class="ow">in</span> <span class="n">performance_time_series_by_type</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="n">performance</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">perf_of_type</span><span class="p">[</span><span class="n">time_index</span><span class="p">])</span>

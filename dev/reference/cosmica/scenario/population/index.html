@@ -2603,13 +2603,13 @@
 <span class="normal">31</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_population_data</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span>
     <span class="n">Doc</span><span class="p">(</span>
-        <span class="s2">&quot;Global population count data with shape (180, 360).&quot;</span>
-        <span class="s2">&quot; The rows are latitude (+90 deg to -90 deg) and the columns are longitude (-180 deg to +180 deg).&quot;</span>
-        <span class="s2">&quot; The data is based on the Global Human Settlement Layer (GHSL) population grid data (GHS-POP) for 2025.&quot;</span><span class="p">,</span>
+        <span class="s2">"Global population count data with shape (180, 360)."</span>
+        <span class="s2">" The rows are latitude (+90 deg to -90 deg) and the columns are longitude (-180 deg to +180 deg)."</span>
+        <span class="s2">" The data is based on the Global Human Settlement Layer (GHSL) population grid data (GHS-POP) for 2025."</span><span class="p">,</span>
     <span class="p">),</span>
 <span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get population data.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">_load_numpy_array_from_assets_dir</span><span class="p">(</span><span class="s2">&quot;aggregated_population_data.npy&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Get population data."""</span>
+    <span class="k">return</span> <span class="n">_load_numpy_array_from_assets_dir</span><span class="p">(</span><span class="s2">"aggregated_population_data.npy"</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2734,17 +2734,17 @@
 <span class="normal">56</span>
 <span class="normal">57</span>
 <span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sample_demand_locations</span><span class="p">(</span>
-    <span class="n">n_samples</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Number of demand locations to sample.&quot;</span><span class="p">)],</span>
+    <span class="n">n_samples</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"Number of demand locations to sample."</span><span class="p">)],</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">rng</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;NumPy random number generator. If None, use default.&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">rng</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"NumPy random number generator. If None, use default."</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="nb">tuple</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]],</span>
-    <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Sampled demand locations as a tuple of (longitude, latitude) in radians, each with shape (n_samples,).&quot;</span><span class="p">),</span>
+    <span class="n">Doc</span><span class="p">(</span><span class="s2">"Sampled demand locations as a tuple of (longitude, latitude) in radians, each with shape (n_samples,)."</span><span class="p">),</span>
 <span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sample on-ground demand locations based on global population distribution data.</span>
+<span class="w">    </span><span class="sd">"""Sample on-ground demand locations based on global population distribution data.</span>
 
 <span class="sd">    The probability of sampling a location is proportional to the population count at that location.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">rng</span> <span class="o">=</span> <span class="n">rng</span> <span class="k">if</span> <span class="n">rng</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
 
     <span class="n">population</span> <span class="o">=</span> <span class="n">get_population_data</span><span class="p">()</span>

@@ -2828,12 +2828,12 @@
 
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;ElevationBasedG2CTopologyBuilder&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;GroundToConstellationTopologyBuilder&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ManualG2CTopologyBuilder&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;build_elevation_based_g2c_topology&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;build_manual_g2c_topology&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;build_max_visibility_handover_g2c_topology&quot;</span><span class="p">,</span>
+    <span class="s2">"ElevationBasedG2CTopologyBuilder"</span><span class="p">,</span>
+    <span class="s2">"GroundToConstellationTopologyBuilder"</span><span class="p">,</span>
+    <span class="s2">"ManualG2CTopologyBuilder"</span><span class="p">,</span>
+    <span class="s2">"build_elevation_based_g2c_topology"</span><span class="p">,</span>
+    <span class="s2">"build_manual_g2c_topology"</span><span class="p">,</span>
+    <span class="s2">"build_max_visibility_handover_g2c_topology"</span><span class="p">,</span>
 <span class="p">]</span>
 </code></pre></div>
 
@@ -3666,10 +3666,10 @@ with any <code>SatelliteId</code> type.</p>
     <span class="n">ground_nodes</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Gateway</span> <span class="o">|</span> <span class="n">StationaryOnGroundUser</span><span class="p">],</span>
     <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">DynamicsData</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build ground-to-constellation topology based on elevation angle.</span>
+<span class="w">    </span><span class="sd">"""Build ground-to-constellation topology based on elevation angle.</span>
 
-<span class="sd">    Connects ground nodes to constellation satellites when the satellite&#39;s</span>
-<span class="sd">    elevation angle (as seen from the ground node) exceeds the ground node&#39;s</span>
+<span class="sd">    Connects ground nodes to constellation satellites when the satellite's</span>
+<span class="sd">    elevation angle (as seen from the ground node) exceeds the ground node's</span>
 <span class="sd">    minimum elevation threshold.</span>
 
 <span class="sd">    This function only needs the satellite set, so it accepts `Constellation`</span>
@@ -3684,8 +3684,8 @@ with any <code>SatelliteId</code> type.</p>
 <span class="sd">        A list of networkx DiGraphs, one per time step.</span>
 <span class="sd">        Each physical link is represented by two directed edges (u, v) and (v, u).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of time steps: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Number of time steps: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="n">ground_nodes_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ground_nodes</span><span class="p">)</span>
     <span class="n">satellites</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">constellation</span><span class="o">.</span><span class="n">satellites</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
@@ -3986,7 +3986,7 @@ with any <code>SatelliteId</code> type.</p>
     <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">DynamicsData</span><span class="p">,</span>
     <span class="n">custom_connections</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Gateway</span> <span class="o">|</span> <span class="n">StationaryOnGroundUser</span><span class="p">,</span> <span class="n">ConstellationSatellite</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build ground-to-constellation topology with manually specified connections.</span>
+<span class="w">    </span><span class="sd">"""Build ground-to-constellation topology with manually specified connections.</span>
 
 <span class="sd">    Creates a static topology (same at every time step) based on the provided</span>
 <span class="sd">    `custom_connections` mapping.</span>
@@ -4001,8 +4001,8 @@ with any <code>SatelliteId</code> type.</p>
 <span class="sd">        A list of identical networkx DiGraphs, one per time step.</span>
 <span class="sd">        Each physical link is represented by two directed edges (u, v) and (v, u).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of time steps: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Number of time steps: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="n">ground_nodes_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ground_nodes</span><span class="p">)</span>
     <span class="n">satellites</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">constellation</span><span class="o">.</span><span class="n">satellites</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
@@ -4308,7 +4308,7 @@ longer visible.</p>
     <span class="n">ground_nodes</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Gateway</span> <span class="o">|</span> <span class="n">StationaryOnGroundUser</span><span class="p">],</span>
     <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">DynamicsData</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build ground-to-constellation topology with maximum-visibility handover.</span>
+<span class="w">    </span><span class="sd">"""Build ground-to-constellation topology with maximum-visibility handover.</span>
 
 <span class="sd">    Each ground node connects to the satellite with the longest remaining</span>
 <span class="sd">    visibility duration. Handover occurs when the current satellite is no</span>
@@ -4323,8 +4323,8 @@ longer visible.</p>
 <span class="sd">        A list of networkx DiGraphs, one per time step.</span>
 <span class="sd">        Each physical link is represented by two directed edges (u, v) and (v, u).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of time steps: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Number of time steps: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="n">ground_nodes_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ground_nodes</span><span class="p">)</span>
     <span class="n">satellites</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">constellation</span><span class="o">.</span><span class="n">satellites</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 

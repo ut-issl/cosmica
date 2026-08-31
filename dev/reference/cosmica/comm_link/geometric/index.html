@@ -2659,7 +2659,7 @@
   </span>
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GeometricCommLinkCalculator&#39;</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'GeometricCommLinkCalculator'</span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2683,9 +2683,9 @@
     <span class="o">*</span><span class="p">,</span>
     <span class="n">inter_satellite_link_capacity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">satellite_to_gateway_link_capacity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
-    <span class="n">max_inter_satellite_distance</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
+    <span class="n">max_inter_satellite_distance</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
     <span class="n">lowest_altitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+    <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -2730,12 +2730,12 @@
     <span class="o">*</span><span class="p">,</span>
     <span class="n">inter_satellite_link_capacity</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">satellite_to_gateway_link_capacity</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">max_inter_satellite_distance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
+    <span class="n">max_inter_satellite_distance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
     <span class="n">lowest_altitude</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
+    <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-        <span class="s2">&quot;GeometricCommLinkCalculator is deprecated.&quot;</span><span class="p">,</span>
+        <span class="s2">"GeometricCommLinkCalculator is deprecated."</span><span class="p">,</span>
         <span class="ne">DeprecationWarning</span><span class="p">,</span>
         <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
     <span class="p">)</span>
@@ -2949,7 +2949,7 @@
     <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">DynamicsData</span><span class="p">,</span>
     <span class="n">rng</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span><span class="p">,</span>  <span class="c1"># noqa: ARG002 For interface compatibility</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">_EdgeType</span><span class="p">,</span> <span class="n">CommLinkPerformance</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate geometric communication link performance for each directed edge in a network.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Calculate geometric communication link performance for each directed edge in a network."""</span>
     <span class="n">performance</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">_EdgeType</span><span class="p">,</span> <span class="n">CommLinkPerformance</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">node1</span><span class="p">,</span> <span class="n">node2</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node1</span><span class="p">,</span> <span class="n">ConstellationSatellite</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node2</span><span class="p">,</span> <span class="n">ConstellationSatellite</span><span class="p">):</span>
@@ -2978,7 +2978,7 @@
                 <span class="n">node1</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Invalid edge: </span><span class="si">{</span><span class="n">node1</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">node2</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Invalid edge: </span><span class="si">{</span><span class="n">node1</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">node2</span><span class="si">}</span><span class="s2">"</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">performance</span>
 </code></pre></div></td></tr></table></div>

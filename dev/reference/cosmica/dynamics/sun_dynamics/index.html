@@ -2515,7 +2515,7 @@
   </span>
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;get_sun_direction_eci&#39;</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'get_sun_direction_eci'</span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2658,24 +2658,24 @@ JERG-2-510-HB001.</p>
 <span class="normal">71</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_sun_direction_eci</span><span class="p">(</span>
     <span class="n">time</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span> <span class="o">|</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">],</span>
-        <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;single element or array of UTC time values in np.datetime64 format.&quot;</span><span class="p">),</span>
+        <span class="n">Doc</span><span class="p">(</span><span class="s2">"single element or array of UTC time values in np.datetime64 format."</span><span class="p">),</span>
     <span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Annotated</span><span class="p">[</span>
     <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
     <span class="n">Doc</span><span class="p">(</span>
-        <span class="s2">&quot;Corresponding Sun direction vector(s) (x,y,z) in eci.&quot;</span>
-        <span class="s2">&quot; If the input is a single element, the output is a 1D array.&quot;</span>
-        <span class="s2">&quot; If the input is an array, the output is a 2D array with the shape (len(time), 3).&quot;</span><span class="p">,</span>
+        <span class="s2">"Corresponding Sun direction vector(s) (x,y,z) in eci."</span>
+        <span class="s2">" If the input is a single element, the output is a 1D array."</span>
+        <span class="s2">" If the input is an array, the output is a 2D array with the shape (len(time), 3)."</span><span class="p">,</span>
     <span class="p">),</span>
 <span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sun direction approximation function.</span>
+<span class="w">    </span><span class="sd">"""Sun direction approximation function.</span>
 
 <span class="sd">    The approximation considers an unperturbed motion of the Earth around the Sun with mean orbital elements</span>
-<span class="sd">    that approximate the Sun&#39;s elliptic orbit wrt Earth around the year 2000.</span>
-<span class="sd">    The algorithm is based on Oliver Montenbruck, Eberhard Grill; &quot;Satellite Orbits: Models, Methods and Applications&quot;;</span>
-<span class="sd">    Springer-Verlag Berlin. The alterations to the original model follow JAXA&#39;s Attitude Control Handbook</span>
+<span class="sd">    that approximate the Sun's elliptic orbit wrt Earth around the year 2000.</span>
+<span class="sd">    The algorithm is based on Oliver Montenbruck, Eberhard Grill; "Satellite Orbits: Models, Methods and Applications";</span>
+<span class="sd">    Springer-Verlag Berlin. The alterations to the original model follow JAXA's Attitude Control Handbook</span>
 <span class="sd">    JERG-2-510-HB001.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># tdt: Number of Julian Centuries. J2000 epoch -&gt; 2451545.0 TT</span>
     <span class="n">tdt</span> <span class="o">=</span> <span class="p">(</span><span class="n">juliandate</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">-</span> <span class="mf">2451545.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">36525.0</span>
 
@@ -2683,7 +2683,7 @@ JERG-2-510-HB001.</p>
     <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mf">357.5256</span> <span class="o">+</span> <span class="mf">35999.045</span> <span class="o">*</span> <span class="n">tdt</span><span class="p">)</span>
 
     <span class="c1"># right-ascension + argument of perigee = 282.94 deg</span>
-    <span class="c1"># s: Sun&#39;s ecliptic longitude</span>
+    <span class="c1"># s: Sun's ecliptic longitude</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">m</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mf">282.94</span> <span class="o">+</span> <span class="p">(</span><span class="mf">6892.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">+</span> <span class="mf">72.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">m</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1250.09115</span> <span class="o">*</span> <span class="n">tdt</span><span class="p">)</span> <span class="o">/</span> <span class="mf">3600.0</span> <span class="o">-</span> <span class="mf">0.002652</span><span class="p">)</span>
 
     <span class="c1"># Obliquity of the ecliptic in radians</span>

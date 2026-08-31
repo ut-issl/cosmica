@@ -2916,12 +2916,12 @@
 
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;ConstellationTimeSeriesTopologyBuilder&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ConstellationTopologyBuilder&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ManhattanTimeSeriesTopologyBuilder&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ManhattanTopologyBuilder&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;build_manhattan_time_series_topology&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;build_manhattan_topology&quot;</span><span class="p">,</span>
+    <span class="s2">"ConstellationTimeSeriesTopologyBuilder"</span><span class="p">,</span>
+    <span class="s2">"ConstellationTopologyBuilder"</span><span class="p">,</span>
+    <span class="s2">"ManhattanTimeSeriesTopologyBuilder"</span><span class="p">,</span>
+    <span class="s2">"ManhattanTopologyBuilder"</span><span class="p">,</span>
+    <span class="s2">"build_manhattan_time_series_topology"</span><span class="p">,</span>
+    <span class="s2">"build_manhattan_topology"</span><span class="p">,</span>
 <span class="p">]</span>
 </code></pre></div>
 
@@ -3798,7 +3798,7 @@ links are disabled.</p>
     <span class="n">last_to_first_plane_offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">max_latitude</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mf">90.0</span><span class="p">),</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build time-varying Manhattan topology, disabling inter-plane links near poles.</span>
+<span class="w">    </span><span class="sd">"""Build time-varying Manhattan topology, disabling inter-plane links near poles.</span>
 
 <span class="sd">    Same as :func:`build_manhattan_topology`, but produces one graph per time</span>
 <span class="sd">    step. Inter-plane edges are omitted at time steps where both endpoints</span>
@@ -3817,7 +3817,7 @@ links are disabled.</p>
 <span class="sd">        A list of networkx DiGraphs, one per time step. Each physical link is</span>
 <span class="sd">        represented by two directed edges (u, v) and (v, u).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">planes</span> <span class="o">=</span> <span class="n">_group_by_plane</span><span class="p">(</span><span class="n">constellation</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">construct_graph</span><span class="p">(</span><span class="n">time_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
@@ -3840,8 +3840,8 @@ links are disabled.</p>
             <span class="n">next_plane</span> <span class="o">=</span> <span class="n">planes</span><span class="p">[</span><span class="n">next_plane_idx</span><span class="p">]</span>
 
             <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">next_plane</span><span class="p">),</span> <span class="p">(</span>
-                <span class="s2">&quot;Manhattan topology requires all planes to have the same number of satellites. &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Plane </span><span class="si">{</span><span class="n">plane_idx</span><span class="si">}</span><span class="s2"> has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span><span class="si">}</span><span class="s2">, plane </span><span class="si">{</span><span class="n">next_plane_idx</span><span class="si">}</span><span class="s2"> has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">next_plane</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="s2">"Manhattan topology requires all planes to have the same number of satellites. "</span>
+                <span class="sa">f</span><span class="s2">"Plane </span><span class="si">{</span><span class="n">plane_idx</span><span class="si">}</span><span class="s2"> has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span><span class="si">}</span><span class="s2">, plane </span><span class="si">{</span><span class="n">next_plane_idx</span><span class="si">}</span><span class="s2"> has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">next_plane</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
             <span class="p">)</span>
 
             <span class="n">offset</span> <span class="o">=</span> <span class="n">inter_plane_offset</span>
@@ -4089,7 +4089,7 @@ connection from the last plane back to the first.</p>
     <span class="n">inter_plane_offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">last_to_first_plane_offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a Manhattan (grid) topology for a multi-plane constellation.</span>
+<span class="w">    </span><span class="sd">"""Build a Manhattan (grid) topology for a multi-plane constellation.</span>
 
 <span class="sd">    The constellation must be parameterized as `Constellation[tuple[int, int]]`</span>
 <span class="sd">    where each key is `(plane_id, in_plane_index)`. All structural information</span>
@@ -4108,7 +4108,7 @@ connection from the last plane back to the first.</p>
 <span class="sd">        A networkx DiGraph with satellites as nodes and Manhattan grid edges.</span>
 <span class="sd">        Each physical link is represented by two directed edges (u, v) and (v, u).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">planes</span> <span class="o">=</span> <span class="n">_group_by_plane</span><span class="p">(</span><span class="n">constellation</span><span class="p">)</span>
 
     <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
@@ -4134,8 +4134,8 @@ connection from the last plane back to the first.</p>
         <span class="n">next_plane</span> <span class="o">=</span> <span class="n">planes</span><span class="p">[</span><span class="n">next_plane_idx</span><span class="p">]</span>
 
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">next_plane</span><span class="p">),</span> <span class="p">(</span>
-            <span class="s2">&quot;Manhattan topology requires all planes to have the same number of satellites. &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;Plane </span><span class="si">{</span><span class="n">plane_idx</span><span class="si">}</span><span class="s2"> has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span><span class="si">}</span><span class="s2">, plane </span><span class="si">{</span><span class="n">next_plane_idx</span><span class="si">}</span><span class="s2"> has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">next_plane</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="s2">"Manhattan topology requires all planes to have the same number of satellites. "</span>
+            <span class="sa">f</span><span class="s2">"Plane </span><span class="si">{</span><span class="n">plane_idx</span><span class="si">}</span><span class="s2"> has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span><span class="si">}</span><span class="s2">, plane </span><span class="si">{</span><span class="n">next_plane_idx</span><span class="si">}</span><span class="s2"> has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">next_plane</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
         <span class="p">)</span>
 
         <span class="n">offset</span> <span class="o">=</span> <span class="n">inter_plane_offset</span>

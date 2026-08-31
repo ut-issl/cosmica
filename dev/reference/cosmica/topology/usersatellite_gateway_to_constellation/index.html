@@ -2660,8 +2660,8 @@
 
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;HybridUS2CG2CTopologyBuilder&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;build_hybrid_us2c_g2c_topology&quot;</span><span class="p">,</span>
+    <span class="s2">"HybridUS2CG2CTopologyBuilder"</span><span class="p">,</span>
+    <span class="s2">"build_hybrid_us2c_g2c_topology"</span><span class="p">,</span>
 <span class="p">]</span>
 </code></pre></div>
 
@@ -2705,8 +2705,8 @@
 
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">HybridUS2CG2CTopologyBuilder</span><span class="p">(</span>
-    <span class="n">max_distance</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
-    <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
+    <span class="n">max_distance</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
+    <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
     <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -2741,8 +2741,8 @@ For ground stations, constraints include elevation angle and sun exclusion angle
 <span class="normal">41</span>
 <span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">max_distance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
-    <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
+    <span class="n">max_distance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
+    <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
     <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">max_distance</span> <span class="o">=</span> <span class="n">max_distance</span>
@@ -2908,7 +2908,7 @@ For ground stations, constraints include elevation angle and sun exclusion angle
     <span class="n">ground_nodes</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Gateway</span> <span class="o">|</span> <span class="n">StationaryOnGroundUser</span><span class="p">],</span>
     <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">DynamicsData</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build hybrid topology connecting user satellites and ground stations to constellation.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Build hybrid topology connecting user satellites and ground stations to constellation."""</span>
     <span class="k">return</span> <span class="n">build_hybrid_us2c_g2c_topology</span><span class="p">(</span>
         <span class="n">constellation</span><span class="o">=</span><span class="n">constellation</span><span class="p">,</span>
         <span class="n">user_satellites</span><span class="o">=</span><span class="n">user_satellites</span><span class="p">,</span>
@@ -2974,8 +2974,8 @@ For ground stations, constraints include elevation angle and sun exclusion angle
   
       dataclass
    (cosmica.dtos.DynamicsData)" href="../../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
-    <span class="n">max_distance</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
-    <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
+    <span class="n">max_distance</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
+    <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
     <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
@@ -3274,11 +3274,11 @@ with any <code>SatelliteId</code> type.</p>
     <span class="n">user_satellites</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">UserSatellite</span><span class="p">],</span>
     <span class="n">ground_nodes</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Gateway</span> <span class="o">|</span> <span class="n">StationaryOnGroundUser</span><span class="p">],</span>
     <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">DynamicsData</span><span class="p">,</span>
-    <span class="n">max_distance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
-    <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span>
+    <span class="n">max_distance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
+    <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
     <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build hybrid topology connecting user satellites and ground stations to constellation.</span>
+<span class="w">    </span><span class="sd">"""Build hybrid topology connecting user satellites and ground stations to constellation.</span>
 
 <span class="sd">    Combines user-satellite and ground-station connectivity. User satellite</span>
 <span class="sd">    connections are prioritized, then ground station connections are optimized</span>
@@ -3300,11 +3300,11 @@ with any <code>SatelliteId</code> type.</p>
 <span class="sd">        A list of networkx DiGraphs, one per time step.</span>
 <span class="sd">        Each physical link is represented by two directed edges (u, v) and (v, u).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Building hybrid topology for </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">user_satellites</span><span class="p">)</span><span class="si">}</span><span class="s2"> user satellites and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ground_nodes</span><span class="p">)</span><span class="si">}</span><span class="s2"> ground nodes&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">"Building hybrid topology for </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">user_satellites</span><span class="p">)</span><span class="si">}</span><span class="s2"> user satellites and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ground_nodes</span><span class="p">)</span><span class="si">}</span><span class="s2"> ground nodes"</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of time steps: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Number of time steps: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="n">user_satellites_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">user_satellites</span><span class="p">)</span>
     <span class="n">ground_nodes_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ground_nodes</span><span class="p">)</span>
@@ -3313,7 +3313,7 @@ with any <code>SatelliteId</code> type.</p>
     <span class="n">n_time</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
 
     <span class="c1"># Calculate user satellite visibility</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Calculating user satellite visibility...&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Calculating user satellite visibility..."</span><span class="p">)</span>
     <span class="n">user_visibility</span> <span class="o">=</span> <span class="n">_calculate_user_satellite_visibility</span><span class="p">(</span>
         <span class="n">user_satellites_list</span><span class="p">,</span>
         <span class="n">constellation_satellites</span><span class="p">,</span>
@@ -3324,7 +3324,7 @@ with any <code>SatelliteId</code> type.</p>
     <span class="p">)</span>
 
     <span class="c1"># Calculate ground node visibility</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Calculating ground node visibility...&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Calculating ground node visibility..."</span><span class="p">)</span>
     <span class="n">ground_visibility</span> <span class="o">=</span> <span class="n">_calculate_ground_visibility</span><span class="p">(</span>
         <span class="n">ground_nodes_list</span><span class="p">,</span>
         <span class="n">constellation_satellites</span><span class="p">,</span>
@@ -3337,7 +3337,7 @@ with any <code>SatelliteId</code> type.</p>
     <span class="n">ground_remaining</span> <span class="o">=</span> <span class="n">_calculate_remaining_connection_time</span><span class="p">(</span><span class="n">ground_visibility</span><span class="p">)</span>
 
     <span class="c1"># Build topology for each time step</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Building topology graphs for each time step...&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Building topology graphs for each time step..."</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_build_topology_graphs</span><span class="p">(</span>
         <span class="n">n_time</span><span class="o">=</span><span class="n">n_time</span><span class="p">,</span>
         <span class="n">constellation_satellites</span><span class="o">=</span><span class="n">constellation_satellites</span><span class="p">,</span>

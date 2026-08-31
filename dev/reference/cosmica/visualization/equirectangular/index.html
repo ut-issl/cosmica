@@ -2692,12 +2692,12 @@
 
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;draw_countries&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;draw_coverage_area&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;draw_lat_lon_grid&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;draw_snapshot&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;draw_snapshot_movie&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;draw_urban_areas&quot;</span><span class="p">,</span>
+    <span class="s2">"draw_countries"</span><span class="p">,</span>
+    <span class="s2">"draw_coverage_area"</span><span class="p">,</span>
+    <span class="s2">"draw_lat_lon_grid"</span><span class="p">,</span>
+    <span class="s2">"draw_snapshot"</span><span class="p">,</span>
+    <span class="s2">"draw_snapshot_movie"</span><span class="p">,</span>
+    <span class="s2">"draw_urban_areas"</span><span class="p">,</span>
 <span class="p">]</span>
 </code></pre></div>
 
@@ -2778,8 +2778,8 @@
     <span class="o">*</span><span class="p">,</span>
     <span class="n">ax</span><span class="p">:</span> <span class="n"><span title="matplotlib.axes.Axes">Axes</span></span><span class="p">,</span>
     <span class="n">zorder</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">ocean_color</span><span class="p">:</span> <span class="n"><span title="matplotlib.typing.ColorType">ColorType</span></span> <span class="o">=</span> <span class="s2">&quot;#caecfc&quot;</span><span class="p">,</span>
-    <span class="n">countries_color</span><span class="p">:</span> <span class="n"><span title="matplotlib.typing.ColorType">ColorType</span></span> <span class="o">=</span> <span class="s2">&quot;#fdfbe6&quot;</span>
+    <span class="n">ocean_color</span><span class="p">:</span> <span class="n"><span title="matplotlib.typing.ColorType">ColorType</span></span> <span class="o">=</span> <span class="s2">"#caecfc"</span><span class="p">,</span>
+    <span class="n">countries_color</span><span class="p">:</span> <span class="n"><span title="matplotlib.typing.ColorType">ColorType</span></span> <span class="o">=</span> <span class="s2">"#fdfbe6"</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="matplotlib.axes.Axes">Axes</span></span>
 </code></pre></div>
 
@@ -2803,13 +2803,13 @@
     <span class="o">*</span><span class="p">,</span>
     <span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">,</span>
     <span class="n">zorder</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">ocean_color</span><span class="p">:</span> <span class="n">ColorType</span> <span class="o">=</span> <span class="s2">&quot;#caecfc&quot;</span><span class="p">,</span>
-    <span class="n">countries_color</span><span class="p">:</span> <span class="n">ColorType</span> <span class="o">=</span> <span class="s2">&quot;#fdfbe6&quot;</span><span class="p">,</span>
+    <span class="n">ocean_color</span><span class="p">:</span> <span class="n">ColorType</span> <span class="o">=</span> <span class="s2">"#caecfc"</span><span class="p">,</span>
+    <span class="n">countries_color</span><span class="p">:</span> <span class="n">ColorType</span> <span class="o">=</span> <span class="s2">"#fdfbe6"</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Axes</span><span class="p">:</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">ocean_color</span><span class="p">)</span>
-    <span class="n">df_countries</span> <span class="o">=</span> <span class="n">_load_shapefile_from_assets_dir</span><span class="p">(</span><span class="s2">&quot;ne_50m_admin_0_countries_lakes.shp&quot;</span><span class="p">)</span>
-    <span class="n">df_countries</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">countries_color</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">zorder</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">df_countries</span> <span class="o">=</span> <span class="n">_load_shapefile_from_assets_dir</span><span class="p">(</span><span class="s2">"ne_50m_admin_0_countries_lakes.shp"</span><span class="p">)</span>
+    <span class="n">df_countries</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">countries_color</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"grey"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">zorder</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ax</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -2832,18 +2832,20 @@
 
   
       dataclass
-   (cosmica.dtos.DynamicsData)" href="../../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            ConstellationSatellite
+   (cosmica.dtos.DynamicsData)" href="../../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">[</span>
+        <span class="n"><a class="autorefs autorefs-internal" title="            ConstellationSatellite
 
 
   
       dataclass
-   (cosmica.models.ConstellationSatellite)" href="../../models/#cosmica.models.ConstellationSatellite">ConstellationSatellite</a></span><span class="p">[</span><span class="n"><span title="cosmica.visualization.equirectangular.draw_coverage_area[T]">T</span></span><span class="p">]],</span>
+   (cosmica.models.ConstellationSatellite)" href="../../models/#cosmica.models.ConstellationSatellite">ConstellationSatellite</a></span><span class="p">[</span><span class="n"><span title="cosmica.visualization.equirectangular.draw_coverage_area[T]">T</span></span><span class="p">]</span>
+    <span class="p">],</span>
     <span class="n">ax</span><span class="p">:</span> <span class="n"><span title="matplotlib.axes.Axes">Axes</span></span><span class="p">,</span>
     <span class="n">min_elevation</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
-    <span class="n">face_color</span><span class="p">:</span> <span class="n"><span title="str">str</span></span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="n">face_color</span><span class="p">:</span> <span class="n"><span title="str">str</span></span> <span class="o">=</span> <span class="s2">"red"</span><span class="p">,</span>
     <span class="n">face_alpha</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span>
     <span class="n">draw_edges</span><span class="p">:</span> <span class="n"><span title="bool">bool</span></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">edge_color</span><span class="p">:</span> <span class="n"><span title="str">str</span></span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="n">edge_color</span><span class="p">:</span> <span class="n"><span title="str">str</span></span> <span class="o">=</span> <span class="s2">"red"</span><span class="p">,</span>
     <span class="n">edge_alpha</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="n">edge_linewidth</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">edge_linestyle</span><span class="p">:</span> <span class="n"><span title="str">str</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
@@ -3174,40 +3176,40 @@
     <span class="o">*</span><span class="p">,</span>
     <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">DynamicsData</span><span class="p">[</span><span class="n">ConstellationSatellite</span><span class="p">[</span><span class="n">T</span><span class="p">]],</span>
-        <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Dynamics data with no time dimension.&quot;</span><span class="p">),</span>
+        <span class="n">Doc</span><span class="p">(</span><span class="s2">"Dynamics data with no time dimension."</span><span class="p">),</span>
     <span class="p">],</span>
-    <span class="n">ax</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Axes</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Matplotlib axes.&quot;</span><span class="p">)],</span>
-    <span class="n">min_elevation</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Minimum elevation angle in radians.&quot;</span><span class="p">)],</span>
+    <span class="n">ax</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Axes</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"Matplotlib axes."</span><span class="p">)],</span>
+    <span class="n">min_elevation</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"Minimum elevation angle in radians."</span><span class="p">)],</span>
     <span class="n">face_color</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
-        <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Color of the coverage area. Used as the `colors` parameter of `contourf` function.&quot;</span><span class="p">),</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+        <span class="n">Doc</span><span class="p">(</span><span class="s2">"Color of the coverage area. Used as the `colors` parameter of `contourf` function."</span><span class="p">),</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">"red"</span><span class="p">,</span>
     <span class="n">face_alpha</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">float</span><span class="p">,</span>
-        <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Transparency of the coverage area. Used as the `alpha` parameter of `contourf` function.&quot;</span><span class="p">),</span>
+        <span class="n">Doc</span><span class="p">(</span><span class="s2">"Transparency of the coverage area. Used as the `alpha` parameter of `contourf` function."</span><span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span>
-    <span class="n">draw_edges</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Whether to draw the edges of the coverage area&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">draw_edges</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"Whether to draw the edges of the coverage area"</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">edge_color</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
-        <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Color of the coverage area edge. Used as the `colors` parameter of `contour` function.&quot;</span><span class="p">),</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+        <span class="n">Doc</span><span class="p">(</span><span class="s2">"Color of the coverage area edge. Used as the `colors` parameter of `contour` function."</span><span class="p">),</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">"red"</span><span class="p">,</span>
     <span class="n">edge_alpha</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">float</span><span class="p">,</span>
-        <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Transparency of the coverage area edge. Used as the `alpha` parameter of `contour` function.&quot;</span><span class="p">),</span>
+        <span class="n">Doc</span><span class="p">(</span><span class="s2">"Transparency of the coverage area edge. Used as the `alpha` parameter of `contour` function."</span><span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="n">edge_linewidth</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Width of the coverage area edge. Used as the `linewidths` parameter of `contour` function.&quot;</span><span class="p">),</span>
+        <span class="n">Doc</span><span class="p">(</span><span class="s2">"Width of the coverage area edge. Used as the `linewidths` parameter of `contour` function."</span><span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">edge_linestyle</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Style of the coverage area edge. Used as the `linestyles` parameter of `contour` function.&quot;</span><span class="p">),</span>
+        <span class="n">Doc</span><span class="p">(</span><span class="s2">"Style of the coverage area edge. Used as the `linestyles` parameter of `contour` function."</span><span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Axes</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Matplotlib axes.&quot;</span><span class="p">)]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw the coverage area of the satellites in the constellation.</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Axes</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"Matplotlib axes."</span><span class="p">)]:</span>
+<span class="w">    </span><span class="sd">"""Draw the coverage area of the satellites in the constellation.</span>
 
 <span class="sd">    Note that this function is not optimized for performance, and may take a few minutes to complete.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">latitudes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">180</span><span class="p">))</span>
     <span class="n">longitudes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">360</span><span class="p">))</span>
     <span class="n">lat_grid</span><span class="p">,</span> <span class="n">lon_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">latitudes</span><span class="p">,</span> <span class="n">longitudes</span><span class="p">)</span>
@@ -3285,17 +3287,17 @@
 <span class="normal">86</span>
 <span class="normal">87</span>
 <span class="normal">88</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">draw_lat_lon_grid</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Axes</span><span class="p">:</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Latitude&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Latitude"</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ytick</span><span class="si">}</span><span class="s2">°&quot;</span> <span class="k">for</span> <span class="n">ytick</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">)])</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Longitude&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ytick</span><span class="si">}</span><span class="s2">°"</span> <span class="k">for</span> <span class="n">ytick</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">)])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Longitude"</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">xtick</span><span class="si">}</span><span class="s2">°&quot;</span> <span class="k">for</span> <span class="n">xtick</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">)])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">xtick</span><span class="si">}</span><span class="s2">°"</span> <span class="k">for</span> <span class="n">xtick</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">)])</span>
 
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
 
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">ax</span>
 </code></pre></div></td></tr></table></div>
@@ -3710,10 +3712,10 @@
         <span class="n">focus_edges_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">focus_edges_label_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># focus_edges と同じ数だけデフォルトのラベルを作成する</span>
-        <span class="n">focus_edges_label_list</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Focus edges </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">focus_edges_list</span><span class="p">))]</span>
+        <span class="n">focus_edges_label_list</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"Focus edges </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">focus_edges_list</span><span class="p">))]</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">focus_edges_list</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">focus_edges_label_list</span><span class="p">):</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;focus_edges と focus_edges_label の要素数が一致していません。&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">"focus_edges と focus_edges_label の要素数が一致していません。"</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="n">constellation_satellites_to_draw</span> <span class="o">=</span> <span class="p">{</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ConstellationSatellite</span><span class="p">)}</span>
@@ -3765,10 +3767,10 @@
             <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
             <span class="n">nodelist</span><span class="o">=</span><span class="nb">set</span><span class="p">(</span><span class="n">pos_constellation</span><span class="p">),</span>
             <span class="n">node_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-            <span class="n">node_color</span><span class="o">=</span><span class="s2">&quot;tab:blue&quot;</span><span class="p">,</span>
-            <span class="n">node_shape</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">,</span>
+            <span class="n">node_color</span><span class="o">=</span><span class="s2">"tab:blue"</span><span class="p">,</span>
+            <span class="n">node_shape</span><span class="o">=</span><span class="s2">"s"</span><span class="p">,</span>
             <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Constellation satellite&quot;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">"Constellation satellite"</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="c1"># Draw user satellites</span>
         <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span>
@@ -3777,21 +3779,21 @@
             <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
             <span class="n">nodelist</span><span class="o">=</span><span class="nb">set</span><span class="p">(</span><span class="n">pos_user_satellites</span><span class="p">),</span>
             <span class="n">node_size</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
-            <span class="n">node_color</span><span class="o">=</span><span class="s2">&quot;tab:purple&quot;</span><span class="p">,</span>
-            <span class="n">node_shape</span><span class="o">=</span><span class="s2">&quot;D&quot;</span><span class="p">,</span>
+            <span class="n">node_color</span><span class="o">=</span><span class="s2">"tab:purple"</span><span class="p">,</span>
+            <span class="n">node_shape</span><span class="o">=</span><span class="s2">"D"</span><span class="p">,</span>
             <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;User satellite&quot;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">"User satellite"</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="c1"># Draw gateways</span>
         <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span>
             <span class="n">graph</span><span class="p">,</span>
             <span class="n">pos</span><span class="p">,</span>
             <span class="n">nodelist</span><span class="o">=</span><span class="n">gateways</span><span class="p">,</span>
-            <span class="n">node_shape</span><span class="o">=</span><span class="s2">&quot;^&quot;</span><span class="p">,</span>
-            <span class="n">node_color</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span>
+            <span class="n">node_shape</span><span class="o">=</span><span class="s2">"^"</span><span class="p">,</span>
+            <span class="n">node_color</span><span class="o">=</span><span class="s2">"tab:orange"</span><span class="p">,</span>
             <span class="n">node_size</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
             <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Gateway&quot;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">"Gateway"</span><span class="p">,</span>
             <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="c1"># Draw on-ground users</span>
@@ -3799,11 +3801,11 @@
             <span class="n">graph</span><span class="p">,</span>
             <span class="n">pos</span><span class="p">,</span>
             <span class="n">nodelist</span><span class="o">=</span><span class="n">on_ground_users</span><span class="p">,</span>
-            <span class="n">node_shape</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span>
-            <span class="n">node_color</span><span class="o">=</span><span class="s2">&quot;tab:green&quot;</span><span class="p">,</span>
+            <span class="n">node_shape</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span>
+            <span class="n">node_color</span><span class="o">=</span><span class="s2">"tab:green"</span><span class="p">,</span>
             <span class="n">node_size</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
             <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;On-ground user&quot;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">"On-ground user"</span><span class="p">,</span>
             <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">with_labels</span><span class="p">:</span>
@@ -3811,11 +3813,11 @@
             <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_labels</span><span class="p">(</span>
                 <span class="n">graph</span><span class="p">,</span>
                 <span class="n">pos</span><span class="p">,</span>
-                <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">pos_constellation</span><span class="p">)},</span>
+                <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">pos_constellation</span><span class="p">)},</span>
                 <span class="n">font_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-                <span class="n">font_color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
-                <span class="n">font_family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span><span class="p">,</span>
-                <span class="n">font_weight</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span>
+                <span class="n">font_color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+                <span class="n">font_family</span><span class="o">=</span><span class="s2">"sans-serif"</span><span class="p">,</span>
+                <span class="n">font_weight</span><span class="o">=</span><span class="s2">"normal"</span><span class="p">,</span>
                 <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
                 <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
             <span class="p">)</span>
@@ -3823,11 +3825,11 @@
             <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_labels</span><span class="p">(</span>
                 <span class="n">graph</span><span class="p">,</span>
                 <span class="n">pos</span><span class="p">,</span>
-                <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">pos_user_satellites</span><span class="p">)},</span>
+                <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">pos_user_satellites</span><span class="p">)},</span>
                 <span class="n">font_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-                <span class="n">font_color</span><span class="o">=</span><span class="s2">&quot;purple&quot;</span><span class="p">,</span>
-                <span class="n">font_family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span><span class="p">,</span>
-                <span class="n">font_weight</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span>
+                <span class="n">font_color</span><span class="o">=</span><span class="s2">"purple"</span><span class="p">,</span>
+                <span class="n">font_family</span><span class="o">=</span><span class="s2">"sans-serif"</span><span class="p">,</span>
+                <span class="n">font_weight</span><span class="o">=</span><span class="s2">"normal"</span><span class="p">,</span>
                 <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
                 <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
             <span class="p">)</span>
@@ -3835,11 +3837,11 @@
             <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_labels</span><span class="p">(</span>
                 <span class="n">graph</span><span class="p">,</span>
                 <span class="n">pos</span><span class="p">,</span>
-                <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">gateways</span><span class="p">},</span>
+                <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">gateways</span><span class="p">},</span>
                 <span class="n">font_size</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
-                <span class="n">font_color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
-                <span class="n">font_family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span><span class="p">,</span>
-                <span class="n">font_weight</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span>
+                <span class="n">font_color</span><span class="o">=</span><span class="s2">"blue"</span><span class="p">,</span>
+                <span class="n">font_family</span><span class="o">=</span><span class="s2">"sans-serif"</span><span class="p">,</span>
+                <span class="n">font_weight</span><span class="o">=</span><span class="s2">"normal"</span><span class="p">,</span>
                 <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
                 <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
             <span class="p">)</span>
@@ -3932,14 +3934,14 @@
             <span class="n">pos</span><span class="p">,</span>
             <span class="n">edgelist</span><span class="o">=</span><span class="n">intra_plane_edges</span><span class="p">,</span>
             <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">edge_color</span><span class="o">=</span><span class="s2">&quot;tab:purple&quot;</span><span class="p">,</span>
+            <span class="n">edge_color</span><span class="o">=</span><span class="s2">"tab:purple"</span><span class="p">,</span>
             <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
             <span class="n">arrows</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
-            <span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;&lt;|-|&gt;&quot;</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Intra-plane links&quot;</span><span class="p">,</span>
+            <span class="n">arrowstyle</span><span class="o">=</span><span class="s2">"&lt;|-|&gt;"</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">"Intra-plane links"</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">_add_legend_to_edges</span><span class="p">(</span><span class="n">h1</span><span class="p">,</span> <span class="s2">&quot;Intra-plane links&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+        <span class="n">_add_legend_to_edges</span><span class="p">(</span><span class="n">h1</span><span class="p">,</span> <span class="s2">"Intra-plane links"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 
         <span class="c1"># Draw inter-plane edges</span>
         <span class="n">h2</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span>
@@ -3947,14 +3949,14 @@
             <span class="n">pos</span><span class="p">,</span>
             <span class="n">edgelist</span><span class="o">=</span><span class="n">inter_plane_edges</span><span class="p">,</span>
             <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">edge_color</span><span class="o">=</span><span class="s2">&quot;tab:green&quot;</span><span class="p">,</span>
+            <span class="n">edge_color</span><span class="o">=</span><span class="s2">"tab:green"</span><span class="p">,</span>
             <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
             <span class="n">arrows</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
-            <span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;&lt;|-|&gt;&quot;</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Inter-plane links&quot;</span><span class="p">,</span>
+            <span class="n">arrowstyle</span><span class="o">=</span><span class="s2">"&lt;|-|&gt;"</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">"Inter-plane links"</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">_add_legend_to_edges</span><span class="p">(</span><span class="n">h2</span><span class="p">,</span> <span class="s2">&quot;Inter-plane links&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+        <span class="n">_add_legend_to_edges</span><span class="p">(</span><span class="n">h2</span><span class="p">,</span> <span class="s2">"Inter-plane links"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 
         <span class="c1"># Draw constellation-gateway edges</span>
         <span class="n">h3</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span>
@@ -3962,14 +3964,14 @@
             <span class="n">pos</span><span class="p">,</span>
             <span class="n">edgelist</span><span class="o">=</span><span class="n">constellation_gateway_edges</span><span class="p">,</span>
             <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">edge_color</span><span class="o">=</span><span class="s2">&quot;tab:brown&quot;</span><span class="p">,</span>
+            <span class="n">edge_color</span><span class="o">=</span><span class="s2">"tab:brown"</span><span class="p">,</span>
             <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
             <span class="n">arrows</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
-            <span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;&lt;|-|&gt;&quot;</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Feeder links&quot;</span><span class="p">,</span>
+            <span class="n">arrowstyle</span><span class="o">=</span><span class="s2">"&lt;|-|&gt;"</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">"Feeder links"</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">_add_legend_to_edges</span><span class="p">(</span><span class="n">h3</span><span class="p">,</span> <span class="s2">&quot;Feeder links&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+        <span class="n">_add_legend_to_edges</span><span class="p">(</span><span class="n">h3</span><span class="p">,</span> <span class="s2">"Feeder links"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 
         <span class="c1"># Draw constellation-usersatellite edges</span>
         <span class="n">h4</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span>
@@ -3977,14 +3979,14 @@
             <span class="n">pos</span><span class="p">,</span>
             <span class="n">edgelist</span><span class="o">=</span><span class="n">constellation_usersatellite_edges</span><span class="p">,</span>
             <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">edge_color</span><span class="o">=</span><span class="s2">&quot;tab:cyan&quot;</span><span class="p">,</span>
+            <span class="n">edge_color</span><span class="o">=</span><span class="s2">"tab:cyan"</span><span class="p">,</span>
             <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
             <span class="n">arrows</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
-            <span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;&lt;|-|&gt;&quot;</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Service links&quot;</span><span class="p">,</span>
+            <span class="n">arrowstyle</span><span class="o">=</span><span class="s2">"&lt;|-|&gt;"</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">"Service links"</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">_add_legend_to_edges</span><span class="p">(</span><span class="n">h4</span><span class="p">,</span> <span class="s2">&quot;Service links&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+        <span class="n">_add_legend_to_edges</span><span class="p">(</span><span class="n">h4</span><span class="p">,</span> <span class="s2">"Service links"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 
         <span class="c1"># Draw inter-gateways edges</span>
         <span class="n">h5</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span>
@@ -3992,14 +3994,14 @@
             <span class="n">pos</span><span class="p">,</span>
             <span class="n">edgelist</span><span class="o">=</span><span class="n">inter_gateways_edges</span><span class="p">,</span>
             <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">edge_color</span><span class="o">=</span><span class="s2">&quot;tab:olive&quot;</span><span class="p">,</span>
+            <span class="n">edge_color</span><span class="o">=</span><span class="s2">"tab:olive"</span><span class="p">,</span>
             <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
             <span class="n">arrows</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
-            <span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;&lt;|-|&gt;&quot;</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Gateway links&quot;</span><span class="p">,</span>
+            <span class="n">arrowstyle</span><span class="o">=</span><span class="s2">"&lt;|-|&gt;"</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">"Gateway links"</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">_add_legend_to_edges</span><span class="p">(</span><span class="n">h5</span><span class="p">,</span> <span class="s2">&quot;Gateway links&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+        <span class="n">_add_legend_to_edges</span><span class="p">(</span><span class="n">h5</span><span class="p">,</span> <span class="s2">"Gateway links"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 
         <span class="c1"># Draw other edges</span>
         <span class="n">h6</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span>
@@ -4007,14 +4009,14 @@
             <span class="n">pos</span><span class="p">,</span>
             <span class="n">edgelist</span><span class="o">=</span><span class="n">other_edges_to_draw</span><span class="p">,</span>
             <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">edge_color</span><span class="o">=</span><span class="s2">&quot;tab:gray&quot;</span><span class="p">,</span>
+            <span class="n">edge_color</span><span class="o">=</span><span class="s2">"tab:gray"</span><span class="p">,</span>
             <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
             <span class="n">arrows</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
-            <span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;&lt;|-|&gt;&quot;</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Other links&quot;</span><span class="p">,</span>
+            <span class="n">arrowstyle</span><span class="o">=</span><span class="s2">"&lt;|-|&gt;"</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">"Other links"</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">_add_legend_to_edges</span><span class="p">(</span><span class="n">h6</span><span class="p">,</span> <span class="s2">&quot;Other links&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+        <span class="n">_add_legend_to_edges</span><span class="p">(</span><span class="n">h6</span><span class="p">,</span> <span class="s2">"Other links"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">focus_edges_corrected</span><span class="p">,</span> <span class="n">focus_edges_label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
             <span class="n">focus_edges_corrected_list</span><span class="p">,</span>
@@ -4028,11 +4030,11 @@
                 <span class="n">pos</span><span class="p">,</span>
                 <span class="n">edgelist</span><span class="o">=</span><span class="n">focus_edges_corrected</span><span class="p">,</span>
                 <span class="n">width</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-                <span class="n">edge_color</span><span class="o">=</span><span class="s2">&quot;tab:red&quot;</span><span class="p">,</span>
+                <span class="n">edge_color</span><span class="o">=</span><span class="s2">"tab:red"</span><span class="p">,</span>
                 <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
                 <span class="n">arrows</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
-                <span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span>
+                <span class="n">arrowstyle</span><span class="o">=</span><span class="s2">"-"</span><span class="p">,</span>
                 <span class="n">label</span><span class="o">=</span><span class="n">focus_edges_label</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">_add_legend_to_edges</span><span class="p">(</span><span class="n">h7</span><span class="p">,</span> <span class="n">focus_edges_label</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
@@ -4127,14 +4129,14 @@
     <span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">,</span>
     <span class="n">interval_ms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FuncAnimation</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a snapshot of the network graph for a movie.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Draw a snapshot of the network graph for a movie."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">frame</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>  <span class="c1"># noqa: ANN202</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
         <span class="n">time_index</span> <span class="o">=</span> <span class="n">time_index_for_plot</span><span class="p">[</span><span class="n">frame</span><span class="p">]</span>
 
-        <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Time: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">datetime_as_string</span><span class="p">(</span><span class="n">time_array</span><span class="p">[</span><span class="n">time_index</span><span class="p">],</span><span class="w"> </span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;ms&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Time: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">datetime_as_string</span><span class="p">(</span><span class="n">time_array</span><span class="p">[</span><span class="n">time_index</span><span class="p">],</span><span class="w"> </span><span class="n">unit</span><span class="o">=</span><span class="s1">'ms'</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'T'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
 
         <span class="n">draw_lat_lon_grid</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
@@ -4146,7 +4148,7 @@
             <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
             <span class="n">with_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower left&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">"lower left"</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">time_index_for_plot</span><span class="p">),</span> <span class="n">interval</span><span class="o">=</span><span class="n">interval_ms</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -4175,8 +4177,8 @@
 <span class="normal">70</span>
 <span class="normal">71</span>
 <span class="normal">72</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">draw_urban_areas</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">,</span> <span class="n">zorder</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Axes</span><span class="p">:</span>
-    <span class="n">df_urban_areas</span> <span class="o">=</span> <span class="n">_load_shapefile_from_assets_dir</span><span class="p">(</span><span class="s2">&quot;ne_50m_urban_areas.shp&quot;</span><span class="p">)</span>
-    <span class="n">df_urban_areas</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">zorder</span><span class="p">)</span>
+    <span class="n">df_urban_areas</span> <span class="o">=</span> <span class="n">_load_shapefile_from_assets_dir</span><span class="p">(</span><span class="s2">"ne_50m_urban_areas.shp"</span><span class="p">)</span>
+    <span class="n">df_urban_areas</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">zorder</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ax</span>
 </code></pre></div></td></tr></table></div>
             </details>

@@ -188,8 +188,11 @@ jobs:
       - name: Install the project
         run: uv sync --no-dev --group docs
 
+      - name: Generate docs
+        run: uv run -- scripts/gen_ref_pages.py
+
       - name: Build docs
-        run: uv run -- mkdocs build
+        run: uv run -- zensical build --strict
 
   pip-licenses:
     runs-on: ubuntu-latest

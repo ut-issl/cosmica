@@ -11,9 +11,6 @@
   },
   "python.languageServer": "Pylance",
   "mypy-type-checker.importStrategy": "fromEnvironment",
-  "yaml.schemas": {
-    "https://squidfunk.github.io/mkdocs-material/schema.json": "mkdocs.yml"
-  },
   "yaml.customTags": [
     "!ENV scalar",
     "!ENV sequence",

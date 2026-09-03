@@ -44,7 +44,8 @@ COSMICA follows [Semantic Versioning](https://semver.org/). Determine the new ve
 
 ### Update the documentation
 
-1. Run `uv run -- mike deploy --push --update-aliases <version> latest`.
+1. Run `just generate-docs`.
+2. Run `uv run -- mike deploy --push --update-aliases <version> latest`.
 
 !!! tip
     The version in the `mike deploy` command is not prefixed with `v`.

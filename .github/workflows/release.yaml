@@ -200,6 +200,9 @@ jobs:
       - name: Install the project
         run: uv sync --no-dev --group docs
 
+      - name: Generate docs
+        run: uv run -- scripts/gen_ref_pages.py
+
       - name: Deploy docs
         run: uv run -- mike deploy --push --update-aliases "${NEEDS_CREATE_TAG_OUTPUTS_VERSION}" latest
         env:

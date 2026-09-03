@@ -26,3 +26,7 @@ This project uses [pre-commit](https://pre-commit.com) to run checks on every co
 ```bash
 uv run pre-commit install
 ```
+
+## Documentation
+
+Use `just serve-docs` to preview the documentation or `just build-docs` to build it. Both recipes generate the ignored home and API reference pages before running Zensical.

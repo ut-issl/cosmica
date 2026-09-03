@@ -1,0 +1,7 @@
+nav:
+  - Home: index.md
+  - API Reference: reference
+  - For Developers:
+      - Setting up development environment: developers/setup.md
+      - Development rules and tips: developers/tips.md
+      - Releasing COSMICA: developers/releasing.md

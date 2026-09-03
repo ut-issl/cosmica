@@ -37,10 +37,14 @@ test:
 
 docs-addr := "localhost:8000"
 
+# Generate documentation derived from repository sources
+generate-docs:
+    uv run -- scripts/gen_ref_pages.py
+
 # Serve the documentation
-serve-docs:
-    uv run -- mkdocs serve --dev-addr {{ docs-addr }}
+serve-docs: generate-docs
+    uv run -- zensical serve --dev-addr {{ docs-addr }}
 
 # Build the documentation
-build-docs:
-    uv run -- mkdocs build
+build-docs: generate-docs
+    uv run -- zensical build --strict

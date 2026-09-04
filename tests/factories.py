@@ -1,5 +1,6 @@
 import numpy as np
 
+from cosmica.dtos import CommunicationLinkEndpoint, DirectedCommunicationLink
 from cosmica.models import (
     CircularSatelliteOrbitModel,
     ConstellationSatellite,
@@ -58,4 +59,16 @@ def make_satellite(
         id=satellite_id,
         orbit=make_orbit(phase_at_epoch=phase_at_epoch),
         terminals=terminals,
+    )
+
+
+def make_link(
+    source: ConstellationSatellite[int],
+    source_terminal: OpticalCommunicationTerminal[int],
+    destination: ConstellationSatellite[int],
+    destination_terminal: OpticalCommunicationTerminal[int],
+) -> DirectedCommunicationLink:
+    return DirectedCommunicationLink(
+        source=CommunicationLinkEndpoint(node=source, terminal=source_terminal),
+        destination=CommunicationLinkEndpoint(node=destination, terminal=destination_terminal),
     )

@@ -13,7 +13,7 @@ __all__ = [
     "MaxConnectionTimeUS2CTopologyBuilder",
     "MaxVisibilityHandOverG2CTopologyBuilder",
     "UserSatelliteToConstellationTopologyBuilder",
-    "assign_communication_link",
+    "assign_communication_links",
     "build_elevation_based_g2c_topology",
     "build_hybrid_us2c_g2c_topology",
     "build_manhattan_time_series_topology",
@@ -25,7 +25,7 @@ __all__ = [
 ]
 from .communication_link import (
     COMMUNICATION_LINK_ATTRIBUTE,
-    assign_communication_link,
+    assign_communication_links,
     get_terminal_assigned_communication_links,
 )
 from .gateway_to_gateway import GatewayToGatewayTopologyBuilder

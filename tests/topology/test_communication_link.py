@@ -3,7 +3,7 @@ import pytest
 
 from cosmica.topology import (
     COMMUNICATION_LINK_ATTRIBUTE,
-    assign_communication_link,
+    assign_communication_links,
     get_terminal_assigned_communication_links,
 )
 from tests.factories import make_link, make_satellite, make_terminal
@@ -25,8 +25,7 @@ def test_terminal_assigned_link_round_trips_through_graph() -> None:
     graph = nx.DiGraph()
     link = make_link(source, source_terminal, destination, destination_terminal)
 
-    assign_communication_link(graph, link)
-    assign_communication_link(graph, link)
+    assign_communication_links(graph, (link, link))
 
     assert graph.number_of_edges(source, destination) == 1
     assert get_terminal_assigned_communication_links(graph) == [link]
@@ -40,8 +39,7 @@ def test_digraph_allows_reverse_link_for_the_same_terminal_pair() -> None:
     graph = nx.DiGraph()
     link = make_link(source, source_terminal, destination, destination_terminal)
 
-    assign_communication_link(graph, link)
-    assign_communication_link(graph, link.reversed())
+    assign_communication_links(graph, (link, link.reversed()))
 
     assert set(get_terminal_assigned_communication_links(graph)) == {link, link.reversed()}
 
@@ -55,9 +53,9 @@ def test_digraph_rejects_terminal_assignment_to_a_different_peer(direction: str)
     first_peer_node = make_satellite(2, terminals=(first_peer_terminal,))
     other_peer_node = make_satellite(3, terminals=(other_peer_terminal,))
     graph = nx.DiGraph()
-    assign_communication_link(
+    assign_communication_links(
         graph,
-        make_link(assigned_node, assigned_terminal, first_peer_node, first_peer_terminal),
+        (make_link(assigned_node, assigned_terminal, first_peer_node, first_peer_terminal),),
     )
     conflicting_link = (
         make_link(assigned_node, assigned_terminal, other_peer_node, other_peer_terminal)
@@ -66,7 +64,7 @@ def test_digraph_rejects_terminal_assignment_to_a_different_peer(direction: str)
     )
 
     with pytest.raises(ValueError, match="is already assigned to peer"):
-        assign_communication_link(graph, conflicting_link)
+        assign_communication_links(graph, (conflicting_link,))
 
     assert not graph.has_edge(*conflicting_link.node_pair)
 
@@ -94,13 +92,13 @@ def test_digraph_rejects_a_second_assignment_for_the_same_node_pair() -> None:
     source = make_satellite(1, terminals=source_terminals)
     destination = make_satellite(2, terminals=destination_terminals)
     graph = nx.DiGraph()
-    assign_communication_link(
+    assign_communication_links(
         graph,
-        make_link(source, source_terminals[0], destination, destination_terminals[0]),
+        (make_link(source, source_terminals[0], destination, destination_terminals[0]),),
     )
 
     with pytest.raises(ValueError, match="already has a different terminal assignment"):
-        assign_communication_link(
+        assign_communication_links(
             graph,
-            make_link(source, source_terminals[1], destination, destination_terminals[1]),
+            (make_link(source, source_terminals[1], destination, destination_terminals[1]),),
         )

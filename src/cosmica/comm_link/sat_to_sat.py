@@ -222,7 +222,7 @@ class SatToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, Satel
             # ───────────────────────────────────────────────────────
 
             for edge in edges_snapshot_set:
-                if comm_link[edge]["link_available"] is False:
+                if not comm_link[edge]["link_available"]:
                     link_acquisition_start_time[edge] = current_time
 
                 # --- link acquisition delay ------------ ★

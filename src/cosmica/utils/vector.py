@@ -105,7 +105,8 @@ def normalize(
     axis: int | None = None,
 ) -> npt.NDArray[np.floating]:
     norm = LA.norm(x, ord=ord, axis=axis, keepdims=True)
-    return np.where(norm == 0.0, x, x / norm)
+    normalized = np.array(x, dtype=np.result_type(x.dtype, norm.dtype), copy=True)
+    return np.divide(x, norm, out=normalized, where=norm != 0.0)
 
 
 def angle_between[NumberType1: (np.floating, np.integer), NumberType2: (np.floating, np.integer)](

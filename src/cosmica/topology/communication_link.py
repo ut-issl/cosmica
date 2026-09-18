@@ -1,6 +1,6 @@
 __all__ = [
     "COMMUNICATION_LINK_ATTRIBUTE",
-    "assign_communication_link",
+    "assign_communication_links",
     "get_terminal_assigned_communication_links",
 ]
 
@@ -32,16 +32,30 @@ def _validate_terminal_assignments(links: Iterable[DirectedCommunicationLink]) -
             peer_by_endpoint[endpoint] = peer
 
 
-def assign_communication_link(
+def assign_communication_links(
+    graph: nx.DiGraph,
+    links: Iterable[DirectedCommunicationLink],
+) -> None:
+    """Add terminal assignments to edges in a simple directed graph.
+
+    Assigning the same link repeatedly is idempotent, while assigning different
+    terminal pairs to the same directed node pair is rejected. Each terminal endpoint
+    may be paired with only one peer endpoint, independent of link direction.
+    """
+    links = list(links)
+    existing_assigned_links = get_terminal_assigned_communication_links(graph)
+
+    links_after_update = existing_assigned_links + links
+    _validate_terminal_assignments(links_after_update)
+
+    for link in links:
+        _assign_communication_link_without_validation(graph, link)
+
+
+def _assign_communication_link_without_validation(
     graph: nx.DiGraph,
     link: DirectedCommunicationLink,
 ) -> None:
-    """Add one terminal assignment to an edge in a simple directed graph.
-
-    Assigning the same link again is idempotent, while assigning a different terminal
-    pair to the same directed node pair is rejected. Each terminal endpoint may be
-    paired with only one peer endpoint, independent of link direction.
-    """
     source, destination = link.node_pair
     existing_data = graph.get_edge_data(source, destination)
     if existing_data is not None:
@@ -49,9 +63,6 @@ def assign_communication_link(
         if existing_link is not None and existing_link != link:
             msg = f"directed edge {link.node_pair!r} already has a different terminal assignment"
             raise ValueError(msg)
-
-    assigned_links = get_terminal_assigned_communication_links(graph)
-    _validate_terminal_assignments((*assigned_links, link))
 
     graph.add_edge(source, destination, **{COMMUNICATION_LINK_ATTRIBUTE: link})
 

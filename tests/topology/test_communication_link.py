@@ -102,3 +102,30 @@ def test_digraph_rejects_a_second_assignment_for_the_same_node_pair() -> None:
             graph,
             (make_link(source, source_terminals[1], destination, destination_terminals[1]),),
         )
+
+
+def test_digraph_rejects_bulk_assignments_before_modifying_graph() -> None:
+    source_terminals = (make_terminal(1), make_terminal(2))
+    destination_terminals = (make_terminal(3), make_terminal(4))
+    source = make_satellite(1, terminals=source_terminals)
+    destination = make_satellite(2, terminals=destination_terminals)
+    other_source_terminal = make_terminal(5)
+    other_destination_terminal = make_terminal(6)
+    other_source = make_satellite(3, terminals=(other_source_terminal,))
+    other_destination = make_satellite(4, terminals=(other_destination_terminal,))
+    graph = nx.DiGraph()
+    links = (
+        make_link(
+            other_source,
+            other_source_terminal,
+            other_destination,
+            other_destination_terminal,
+        ),
+        make_link(source, source_terminals[0], destination, destination_terminals[0]),
+        make_link(source, source_terminals[1], destination, destination_terminals[1]),
+    )
+
+    with pytest.raises(ValueError, match="already has a different terminal assignment"):
+        assign_communication_links(graph, links)
+
+    assert graph.number_of_edges() == 0

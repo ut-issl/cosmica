@@ -535,3 +535,48 @@ class TestEllipticalSatelliteOrbitPropagator:
         # Allow some tolerance due to SGP4 perturbations
         assert np.min(radii) < expected_perigee * 1.1
         assert np.max(radii) > expected_apogee * 0.9
+
+
+_ELLIPTICAL_EPOCH = np.datetime64("2026-01-01T00:00:00", "s")
+
+
+def _elliptical_propagator() -> EllipticalSatelliteOrbitPropagator:
+    return EllipticalSatelliteOrbitPropagator(
+        model=EllipticalSatelliteOrbitModel(
+            semi_major_axis=7000e3,
+            inclination=np.radians(51.6),
+            raan=np.radians(0),
+            phase_at_epoch=np.radians(0),
+            epoch=_ELLIPTICAL_EPOCH,
+            satnum=12345,
+            gravity_model=GravityModel.WGS84,
+            drag_coeff=0.0,
+            eccentricity=0.001,
+            argpo=np.radians(0),
+        ),
+    )
+
+
+@pytest.mark.parametrize("unit", ["D", "s", "ms", "us", "ns"])
+def test_elliptical_propagation_accepts_any_datetime64_unit(unit: str) -> None:
+    time_s = _datetime_range(_ELLIPTICAL_EPOCH, np.timedelta64(1, "D"), 3)
+    propagator = _elliptical_propagator()
+
+    states = propagator.propagate(time_s.astype(f"datetime64[{unit}]"))
+    expected = propagator.propagate(time_s)
+
+    np.testing.assert_array_equal(states.position_eci, expected.position_eci)
+    np.testing.assert_array_equal(states.velocity_eci, expected.velocity_eci)
+
+
+def test_elliptical_propagation_rounds_nanoseconds_down_to_microseconds() -> None:
+    step = np.timedelta64(60, "s")
+    time_us = _datetime_range(_ELLIPTICAL_EPOCH.astype("datetime64[us]"), step, 3)
+    time_ns = _datetime_range(_ELLIPTICAL_EPOCH.astype("datetime64[ns]") + np.timedelta64(999, "ns"), step, 3)
+    propagator = _elliptical_propagator()
+
+    states = propagator.propagate(time_ns)
+    expected = propagator.propagate(time_us)
+
+    np.testing.assert_array_equal(states.position_eci, expected.position_eci)
+    np.testing.assert_array_equal(states.velocity_eci, expected.velocity_eci)

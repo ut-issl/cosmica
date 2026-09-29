@@ -13,14 +13,19 @@ import numpy as np
 import numpy.typing as npt
 
 from cosmica.dtos import DynamicsData
-from cosmica.models import Gateway, Node, StationaryOnGroundUser
-from cosmica.models.satellite import UserSatellite
+from cosmica.models import Gateway, Node, StationaryOnGroundUser, UserSatellite
 from cosmica.utils.coordinates import ecef2aer
 
 logger = logging.getLogger(__name__)
 
 
 class GroundToUserSatelliteTopologyBuilder[TUserSatellite: UserSatellite, TNode: Node, TGraph: nx.Graph](ABC):
+    """Base class for builders linking ground nodes to user satellites.
+
+    These builders mirror the ground-to-constellation (G2C) builders, but connect ground nodes directly to user
+    satellites instead of constellation satellites.
+    """
+
     @abstractmethod
     def build(
         self,
@@ -34,6 +39,8 @@ class GroundToUserSatelliteTopologyBuilder[TUserSatellite: UserSatellite, TNode:
 class ElevationBasedG2USTopologyBuilder(
     GroundToUserSatelliteTopologyBuilder[UserSatellite, Gateway | StationaryOnGroundUser, nx.DiGraph],
 ):
+    """Link each ground node to every user satellite above its minimum elevation."""
+
     def build(
         self,
         *,
@@ -43,9 +50,10 @@ class ElevationBasedG2USTopologyBuilder(
     ) -> list[nx.DiGraph]:
         logger.info(f"Number of time steps: {len(dynamics_data.time)}")
         ground_nodes = list(ground_nodes)
+        user_satellites = list(user_satellites)
 
-        n_satellites = len(dynamics_data.satellite_position_eci)
-        visibility = np.zeros((len(ground_nodes), n_satellites, len(dynamics_data.time)), dtype=np.bool_)
+        # Size the satellite axis from the supplied user satellites; dynamics data may hold other satellites too.
+        visibility = np.zeros((len(ground_nodes), len(user_satellites), len(dynamics_data.time)), dtype=np.bool_)
         for (ground_node_idx, ground_node), (sat_idx, satellite) in product(
             enumerate(ground_nodes),
             enumerate(user_satellites),
@@ -82,6 +90,8 @@ class ElevationBasedG2USTopologyBuilder(
 class ManualG2USTopologyBuilder(
     GroundToUserSatelliteTopologyBuilder[UserSatellite, Gateway | StationaryOnGroundUser, nx.DiGraph],
 ):
+    """Link ground nodes to user satellites using fixed connections at every time step."""
+
     def __init__(self, custom_connections: dict[Gateway | StationaryOnGroundUser, UserSatellite]) -> None:
         self.custom_connections: dict[Gateway | StationaryOnGroundUser, UserSatellite] = custom_connections
 
@@ -106,5 +116,5 @@ class ManualG2USTopologyBuilder(
             # Each physical link is bidirectional: represent it as two directed edges
             return graph.to_directed()
 
-        # dynamics_data.time の長さに応じたグラフを返す
+        # Return one graph per time step in dynamics_data.time
         return [construct_graph() for _ in range(len(dynamics_data.time))]

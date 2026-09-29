@@ -22,42 +22,12 @@ from cosmica.comm_link import (
     SatToSatBinaryCommLinkCalculatorWithRateCalc,
 )
 from cosmica.comm_link.geometric import GeometricCommLinkCalculator
-from cosmica.dtos import DynamicsData
-from cosmica.models import (
-    CircularSatelliteOrbitModel,
-    ConstellationSatellite,
-    Gateway,
-    Satellite,
-    SatelliteTerminal,
-)
+from cosmica.dtos import CommunicationLinkEndpoint, DirectedCommunicationLink, DynamicsData
+from cosmica.models import ConstellationSatellite, Gateway, Satellite
 from cosmica.utils.constants import EARTH_RADIUS
+from tests.factories import make_satellite, make_terminal
 
 EPOCH = np.datetime64("2026-01-01T00:00:00")
-
-
-def _make_satellite(sat_id: int, phase_deg: float = 0.0) -> ConstellationSatellite[int]:
-    return ConstellationSatellite(
-        id=sat_id,
-        orbit=CircularSatelliteOrbitModel(
-            semi_major_axis=EARTH_RADIUS + 1000e3,
-            inclination=0.0,
-            raan=0.0,
-            phase_at_epoch=np.deg2rad(phase_deg),
-            epoch=EPOCH,
-        ),
-    )
-
-
-def _make_satellite_terminal(sat_id: int) -> SatelliteTerminal[int]:
-    return SatelliteTerminal(
-        id=sat_id,
-        terminal_id=sat_id,
-        azimuth_min=-np.pi,
-        azimuth_max=np.pi,
-        elevation_min=-np.pi / 2,
-        elevation_max=np.pi / 2,
-        angular_velocity_max=float("inf"),
-    )
 
 
 def _make_snapshot_dynamics_data(
@@ -82,7 +52,7 @@ def _make_snapshot_dynamics_data(
 
 @pytest.fixture
 def satellite() -> ConstellationSatellite[int]:
-    return _make_satellite(1)
+    return make_satellite(1)
 
 
 @pytest.fixture
@@ -189,7 +159,7 @@ class TestSatGatewayDirectionalCalculators:
 class TestSatToSatDirectionalDispatch:
     @pytest.fixture
     def sat_pair(self) -> tuple[ConstellationSatellite[int], ConstellationSatellite[int]]:
-        return _make_satellite(1), _make_satellite(2, phase_deg=10.0)
+        return make_satellite(1), make_satellite(2, phase_at_epoch=np.deg2rad(10.0))
 
     @pytest.fixture
     def dynamics_data(
@@ -325,8 +295,8 @@ def test_memoryless_calculators_enforce_finite_segment_clearance(
     *,
     expected_available: bool,
 ) -> None:
-    sat_a = _make_satellite(1)
-    sat_b = _make_satellite(2)
+    sat_a = make_satellite(1)
+    sat_b = make_satellite(2)
     dynamics_data = _make_snapshot_dynamics_data(
         position_eci={sat_a: positions_eci[0], sat_b: positions_eci[1]},
     )
@@ -349,8 +319,8 @@ def test_terminal_calculator_enforces_finite_segment_clearance(
     *,
     expected_available: bool,
 ) -> None:
-    sat_a = _make_satellite_terminal(1)
-    sat_b = _make_satellite_terminal(2)
+    terminal_a = make_terminal(1, angular_velocity_max=float("inf"))
+    terminal_b = make_terminal(2, angular_velocity_max=float("inf"))
     calculator = OTC2OTCBinaryCommLinkCalculator(
         link_capacity=10e9,
         lowest_altitude=lowest_altitude,
@@ -362,14 +332,54 @@ def test_terminal_calculator_enforces_finite_segment_clearance(
         positions_eci=positions_eci,
         velocities_eci=(zero, zero),
         attitude_angular_velocities_eci=(zero, zero),
+        attitude_dcms_eci2body=(np.eye(3), np.eye(3)),
         sun_direction_eci=np.array([0.0, 0.0, 1.0]),
-        terminals=(sat_a.terminal, sat_b.terminal),
-        previous_terminal_directions=[(0.0, 0.0), (0.0, 0.0)],
-        time_delta=1.0,
+        terminals=(terminal_a, terminal_b),
+        previous_terminal_observation=None,
     )
 
     assert performance["link_available"] is expected_available
     assert bool(performance["link_capacity"] > 0.0) is expected_available
+
+
+def test_terminal_calculator_skips_angular_velocity_check_for_first_observation() -> None:
+    terminal_a = make_terminal(1, angular_velocity_max=1.0)
+    terminal_b = make_terminal(2, angular_velocity_max=1.0)
+    satellite_a = make_satellite(1, terminals=(terminal_a,))
+    satellite_b = make_satellite(2, terminals=(terminal_b,))
+    link = DirectedCommunicationLink(
+        source=CommunicationLinkEndpoint(node=satellite_a, terminal=terminal_a),
+        destination=CommunicationLinkEndpoint(node=satellite_b, terminal=terminal_b),
+    )
+    radius = EARTH_RADIUS + 1000e3
+    source_positions = np.array([[radius, 0.0, 0.0], [radius, 0.0, 0.0]])
+    destination_positions = np.array([[radius, 1000.0, 0.0], [radius, 0.0, 1000.0]])
+    zero = np.zeros((2, 3))
+    sun_direction = np.array([[0.0, 0.0, 1.0], [0.0, 0.0, 1.0]])
+    dynamics_data = DynamicsData(
+        time=np.array([EPOCH, EPOCH + np.timedelta64(1, "s")]),
+        dcm_eci2ecef=np.repeat(np.eye(3)[None, :, :], 2, axis=0),
+        satellite_position_eci={satellite_a: source_positions, satellite_b: destination_positions},
+        satellite_velocity_eci={satellite_a: zero, satellite_b: zero},
+        satellite_position_ecef={satellite_a: source_positions, satellite_b: destination_positions},
+        satellite_attitude_angular_velocity_eci={satellite_a: zero, satellite_b: zero},
+        satellite_attitude_dcm_eci2body={
+            satellite_a: np.repeat(np.eye(3)[None, :, :], 2, axis=0),
+            satellite_b: np.repeat(np.eye(3)[None, :, :], 2, axis=0),
+        },
+        sun_direction_eci=sun_direction,
+        sun_direction_ecef=sun_direction,
+    )
+    calculator = OTC2OTCBinaryCommLinkCalculator(link_capacity=10e9)
+
+    performance = calculator.calc(
+        links_time_series=[(link,), (link,)],
+        dynamics_data=dynamics_data,
+        rng=np.random.default_rng(0),
+    )
+
+    assert performance[0][link]["link_available"] is True
+    assert performance[1][link]["link_available"] is False
 
 
 class TestSatToSatDirectionalSunExclusion:
@@ -377,7 +387,7 @@ class TestSatToSatDirectionalSunExclusion:
 
     @pytest.fixture
     def sat_pair(self) -> tuple[ConstellationSatellite[int], ConstellationSatellite[int]]:
-        return _make_satellite(1), _make_satellite(2, phase_deg=10.0)
+        return make_satellite(1), make_satellite(2, phase_at_epoch=np.deg2rad(10.0))
 
     @pytest.fixture(params=["binary", "rate_calc"])
     def make_calculator(
@@ -510,8 +520,8 @@ class TestGeometricCalculatorDirectedEdges:
         self,
         gateway: Gateway[int],
     ) -> None:
-        sat_a = _make_satellite(1)
-        sat_b = _make_satellite(2, phase_deg=10.0)
+        sat_a = make_satellite(1)
+        sat_b = make_satellite(2, phase_at_epoch=np.deg2rad(10.0))
         dynamics_data = _make_snapshot_dynamics_data(
             position_eci={
                 sat_a: np.array([EARTH_RADIUS + 1000e3, 0.0, 0.0]),

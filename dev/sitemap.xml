@@ -40,10 +40,16 @@
         <loc>https://www.space.t.u-tokyo.ac.jp/cosmica/dev/reference/cosmica/comm_link/sat_to_sat/</loc>
       </url>
       <url>
+        <loc>https://www.space.t.u-tokyo.ac.jp/cosmica/dev/reference/cosmica/comm_link/terminal_geometry/</loc>
+      </url>
+      <url>
         <loc>https://www.space.t.u-tokyo.ac.jp/cosmica/dev/reference/cosmica/comm_link/uncertainty/</loc>
       </url>
       <url>
         <loc>https://www.space.t.u-tokyo.ac.jp/cosmica/dev/reference/cosmica/dtos/</loc>
+      </url>
+      <url>
+        <loc>https://www.space.t.u-tokyo.ac.jp/cosmica/dev/reference/cosmica/dtos/communication_link/</loc>
       </url>
       <url>
         <loc>https://www.space.t.u-tokyo.ac.jp/cosmica/dev/reference/cosmica/dtos/dynamics_data/</loc>
@@ -104,6 +110,9 @@
       </url>
       <url>
         <loc>https://www.space.t.u-tokyo.ac.jp/cosmica/dev/reference/cosmica/topology/</loc>
+      </url>
+      <url>
+        <loc>https://www.space.t.u-tokyo.ac.jp/cosmica/dev/reference/cosmica/topology/communication_link/</loc>
       </url>
       <url>
         <loc>https://www.space.t.u-tokyo.ac.jp/cosmica/dev/reference/cosmica/topology/gateway_to_gateway/</loc>

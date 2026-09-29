@@ -719,6 +719,34 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#cosmica.comm_link.AssignedCommLinkCalculator" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;AssignedCommLinkCalculator
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AssignedCommLinkCalculator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.comm_link.AssignedCommLinkCalculator.calc" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;calc
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#cosmica.comm_link.AtmosphericScintillationModel" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -2330,6 +2358,33 @@
   
   
     <li class="md-nav__item">
+      <a href="./terminal_geometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Terminal geometry
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="./uncertainty/" class="md-nav__link">
         
   
@@ -2423,6 +2478,33 @@
     
   
   Index
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dtos/communication_link/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Communication link
 
     
   </span>
@@ -3195,6 +3277,33 @@
     
   
   Index
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../topology/communication_link/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Communication link
 
     
   </span>
@@ -4061,6 +4170,34 @@
     <span class="md-ellipsis">
       <span class="md-typeset">
         <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;sigma2_scintillation
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.comm_link.AssignedCommLinkCalculator" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;AssignedCommLinkCalculator
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AssignedCommLinkCalculator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cosmica.comm_link.AssignedCommLinkCalculator.calc" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;calc
       </span>
     </span>
   </a>
@@ -5466,6 +5603,7 @@
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">"ApertureAveragedLogNormalScintillationModel"</span><span class="p">,</span>
+    <span class="s2">"AssignedCommLinkCalculator"</span><span class="p">,</span>
     <span class="s2">"AtmosphericScintillationModel"</span><span class="p">,</span>
     <span class="s2">"BinaryCloudModel"</span><span class="p">,</span>
     <span class="s2">"CloudStates"</span><span class="p">,</span>
@@ -5785,6 +5923,111 @@
     <span class="n">num2</span> <span class="o">=</span> <span class="mf">0.51</span> <span class="o">*</span> <span class="n">variance</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.69</span> <span class="o">*</span> <span class="n">variance</span> <span class="o">**</span> <span class="p">(</span><span class="mi">6</span> <span class="o">/</span> <span class="mi">5</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)</span>
     <span class="n">den2</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">0.90</span> <span class="o">*</span> <span class="n">scaled_aperture</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mf">0.62</span> <span class="o">*</span> <span class="n">scaled_aperture</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">variance</span> <span class="o">**</span> <span class="p">(</span><span class="mi">6</span> <span class="o">/</span> <span class="mi">5</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">num1</span> <span class="o">/</span> <span class="n">den1</span> <span class="o">+</span> <span class="n">num2</span> <span class="o">/</span> <span class="n">den2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="cosmica.comm_link.AssignedCommLinkCalculator" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">AssignedCommLinkCalculator</span>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="abc.ABC">ABC</span></code></p>
+
+
+
+        <p>Calculate performance for topology links with explicit terminal assignments.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="cosmica.comm_link.AssignedCommLinkCalculator.calc" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">calc</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+</h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">calc</span><span class="p">(</span>
+    <span class="n">links_time_series</span><span class="p">:</span> <span class="n"><span title="collections.abc.Sequence">Sequence</span></span><span class="p">[</span><span class="n"><span title="collections.abc.Collection">Collection</span></span><span class="p">[</span><span class="n"><span title="cosmica.comm_link.base.AssignedCommLinkCalculator[L]">L</span></span><span class="p">]],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">dynamics_data</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;DynamicsData&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
+    <span class="n">rng</span><span class="p">:</span> <span class="n"><span title="numpy.random.Generator">Generator</span></span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="dict">dict</span></span><span class="p">[</span><span class="n"><span title="cosmica.comm_link.base.AssignedCommLinkCalculator[L]">L</span></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;CommLinkPerformance&lt;/span&gt;" href="base/#cosmica.comm_link.base.CommLinkPerformance">CommLinkPerformance</a></span><span class="p">]]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Calculate communication-link performance for each assigned directed link.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/cosmica/comm_link/base.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">links_time_series</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Collection</span><span class="p">[</span><span class="n">L</span><span class="p">]],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">DynamicsData</span><span class="p">,</span>
+    <span class="n">rng</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="n">L</span><span class="p">,</span> <span class="n">CommLinkPerformance</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""Calculate communication-link performance for each assigned directed link."""</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -6546,16 +6789,16 @@ edges, a calculator must be registered for BOTH orientations of each link type �
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/comm_link/base.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">edges_time_series</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Collection</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">U</span><span class="p">]]],</span>
@@ -8646,8 +8889,7 @@ for the satellite -&gt; gateway (downlink) direction.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/comm_link/base.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
-<span class="normal">27</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
@@ -8655,7 +8897,8 @@ for the satellite -&gt; gateway (downlink) direction.</p>
 <span class="normal">32</span>
 <span class="normal">33</span>
 <span class="normal">34</span>
-<span class="normal">35</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="normal">35</span>
+<span class="normal">36</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">edges</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">U</span><span class="p">]],</span>
@@ -8712,12 +8955,12 @@ for the satellite -&gt; gateway (downlink) direction.</p>
 
                   <details class="mkdocstrings-source">
                     <summary>Source code in <code>src/cosmica/comm_link/base.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">memoryless_calculator</span><span class="p">:</span> <span class="n">MemorylessCommLinkCalculator</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">U</span><span class="p">],</span>
     <span class="o">/</span><span class="p">,</span>
@@ -8789,20 +9032,20 @@ for the satellite -&gt; gateway (downlink) direction.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/comm_link/base.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">edges_time_series</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Collection</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">U</span><span class="p">]]],</span>
     <span class="o">*</span><span class="p">,</span>
@@ -8851,22 +9094,153 @@ for the satellite -&gt; gateway (downlink) direction.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;CommLinkCalculator&lt;/span&gt;" href="base/#cosmica.comm_link.base.CommLinkCalculator">CommLinkCalculator</a>[<a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SatelliteTerminal&lt;/span&gt;
+              Bases: <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;AssignedCommLinkCalculator&lt;/span&gt;" href="base/#cosmica.comm_link.base.AssignedCommLinkCalculator">AssignedCommLinkCalculator</a>[<a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-type_alias&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-type_alias-name&quot;&gt;OpticalSatelliteLink&lt;/span&gt;" href="sat_to_sat/#cosmica.comm_link.sat_to_sat.OpticalSatelliteLink">OpticalSatelliteLink</a>[<a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;Satellite&lt;/span&gt;
 
 
   &lt;span class=&quot;doc doc-labels&quot;&gt;
       &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
-  &lt;/span&gt;" href="../models/#cosmica.models.SatelliteTerminal">SatelliteTerminal</a>, <a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SatelliteTerminal&lt;/span&gt;
+  &lt;/span&gt;" href="../models/#cosmica.models.Satellite">Satellite</a>, <a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;OpticalCommunicationTerminal&lt;/span&gt;
 
 
   &lt;span class=&quot;doc doc-labels&quot;&gt;
       &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
-  &lt;/span&gt;" href="../models/#cosmica.models.SatelliteTerminal">SatelliteTerminal</a>]</code></p>
+  &lt;/span&gt;" href="../models/#cosmica.models.OpticalCommunicationTerminal">OpticalCommunicationTerminal</a>, <a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;Satellite&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../models/#cosmica.models.Satellite">Satellite</a>, <a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;OpticalCommunicationTerminal&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../models/#cosmica.models.OpticalCommunicationTerminal">OpticalCommunicationTerminal</a>]]</code></p>
 
 
 
-        <p>Calculate satellite-to-satellite communication link performance for each terminal in a network.</p>
-<p>The link performance is calculated as a binary value, i.e., 1 if the link is available and 0 otherwise.</p>
+        <p>Calculate performance for optical links with explicitly assigned satellite terminals.</p>
+<p>For each endpoint, the ECI line of sight is transformed first by the snapshot's
+ECI-to-body attitude from :class:<code>~cosmica.dtos.DynamicsData</code>, then by the
+terminal's fixed body-to-terminal mounting transform:
+<code>u_terminal = C_body2terminal @ C_eci2body @ u_eci</code>. The two endpoints use
+opposite ECI line-of-sight vectors and their own transforms. In terminal
+coordinates, <code>+x</code> has zero azimuth and elevation, azimuth rotates toward
+<code>+y</code>, and elevation rotates toward <code>+z</code>.</p>
+<p>A link is available only when its distance, Earth clearance, relative angular
+velocity, two-ended Sun exclusion, both terminals' fields of regard, and both
+terminals' axis slew rates satisfy their configured limits. Slew is estimated
+only across consecutive snapshots containing the same directed edge. Therefore,
+the first appearance after simulation start or an absence skips the slew-rate
+constraint while still applying every instantaneous constraint.</p>
+
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">PARAMETER</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>link_capacity</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Available-link capacity in bits per second.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="float">float</span></code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>max_inter_satellite_distance</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Exclusive maximum terminal separation in meters.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="float">float</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code><span title="float">float</span>(&#39;inf&#39;)</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>lowest_altitude</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Minimum line-of-sight altitude above Earth's surface in meters, inclusive.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="float">float</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>0.0</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>max_relative_angular_velocity</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Exclusive maximum line-of-sight angular velocity at either satellite in radians per second.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="float">float</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code><span title="float">float</span>(&#39;inf&#39;)</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>sun_exclusion_angle</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Minimum angle from either illuminated terminal's line of sight to the Sun, in radians.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="float">float</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>0.0</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
 
@@ -8877,27 +9251,51 @@ for the satellite -&gt; gateway (downlink) direction.</p>
 
                   <details class="mkdocstrings-source">
                     <summary>Source code in <code>src/cosmica/comm_link/sat_to_sat.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">255</span>
-<span class="normal">256</span>
-<span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
-<span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
-<span class="normal">263</span>
-<span class="normal">264</span>
-<span class="normal">265</span>
-<span class="normal">266</span>
-<span class="normal">267</span>
-<span class="normal">268</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">link_capacity</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">max_inter_satellite_distance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
-    <span class="n">lowest_altitude</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
-    <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">link_capacity</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">"Available-link capacity in bits per second."</span><span class="p">)],</span>
+    <span class="n">max_inter_satellite_distance</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span>
+        <span class="n">Doc</span><span class="p">(</span><span class="s2">"Exclusive maximum terminal separation in meters."</span><span class="p">),</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
+    <span class="n">lowest_altitude</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span>
+        <span class="n">Doc</span><span class="p">(</span><span class="s2">"Minimum line-of-sight altitude above Earth's surface in meters, inclusive."</span><span class="p">),</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span>
+        <span class="n">Doc</span><span class="p">(</span><span class="s2">"Exclusive maximum line-of-sight angular velocity at either satellite in radians per second."</span><span class="p">),</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
+    <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">float</span><span class="p">,</span>
+        <span class="n">Doc</span><span class="p">(</span><span class="s2">"Minimum angle from either illuminated terminal's line of sight to the Sun, in radians."</span><span class="p">),</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">link_capacity</span> <span class="o">=</span> <span class="n">link_capacity</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">max_inter_satellite_distance</span> <span class="o">=</span> <span class="n">max_inter_satellite_distance</span>
@@ -9041,19 +9439,14 @@ for the satellite -&gt; gateway (downlink) direction.</p>
 
 </h4>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">calc</span><span class="p">(</span>
-    <span class="n">edges_time_series</span><span class="p">:</span> <span class="n"><span title="collections.abc.Sequence">Sequence</span></span><span class="p">[</span>
+    <span class="n">links_time_series</span><span class="p">:</span> <span class="n"><span title="collections.abc.Sequence">Sequence</span></span><span class="p">[</span>
         <span class="n"><span title="collections.abc.Collection">Collection</span></span><span class="p">[</span>
-            <span class="n"><span title="tuple">tuple</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SatelliteTerminal&lt;/span&gt;
-
-
-  &lt;span class=&quot;doc doc-labels&quot;&gt;
-      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
-  &lt;/span&gt;" href="../models/#cosmica.models.SatelliteTerminal">SatelliteTerminal</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SatelliteTerminal&lt;/span&gt;
-
-
-  &lt;span class=&quot;doc doc-labels&quot;&gt;
-      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
-  &lt;/span&gt;" href="../models/#cosmica.models.SatelliteTerminal">SatelliteTerminal</a></span><span class="p">]</span>
+            <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-type_alias&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-type_alias-name&quot;&gt;OpticalSatelliteLink&lt;/span&gt;" href="sat_to_sat/#cosmica.comm_link.sat_to_sat.OpticalSatelliteLink">OpticalSatelliteLink</a></span><span class="p">[</span>
+                <span class="n"><span title="cosmica.comm_link.sat_to_sat.OTC2OTCBinaryCommLinkCalculator.calc[SourceSatellite]">SourceSatellite</span></span><span class="p">,</span>
+                <span class="n"><span title="cosmica.comm_link.sat_to_sat.OTC2OTCBinaryCommLinkCalculator.calc[SourceTerminal]">SourceTerminal</span></span><span class="p">,</span>
+                <span class="n"><span title="cosmica.comm_link.sat_to_sat.OTC2OTCBinaryCommLinkCalculator.calc[DestinationSatellite]">DestinationSatellite</span></span><span class="p">,</span>
+                <span class="n"><span title="cosmica.comm_link.sat_to_sat.OTC2OTCBinaryCommLinkCalculator.calc[DestinationTerminal]">DestinationTerminal</span></span><span class="p">,</span>
+            <span class="p">]</span>
         <span class="p">]</span>
     <span class="p">],</span>
     <span class="o">*</span><span class="p">,</span>
@@ -9066,17 +9459,12 @@ for the satellite -&gt; gateway (downlink) direction.</p>
     <span class="n">rng</span><span class="p">:</span> <span class="n"><span title="numpy.random.Generator">Generator</span></span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span>
     <span class="n"><span title="dict">dict</span></span><span class="p">[</span>
-        <span class="n"><span title="tuple">tuple</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SatelliteTerminal&lt;/span&gt;
-
-
-  &lt;span class=&quot;doc doc-labels&quot;&gt;
-      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
-  &lt;/span&gt;" href="../models/#cosmica.models.SatelliteTerminal">SatelliteTerminal</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SatelliteTerminal&lt;/span&gt;
-
-
-  &lt;span class=&quot;doc doc-labels&quot;&gt;
-      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
-  &lt;/span&gt;" href="../models/#cosmica.models.SatelliteTerminal">SatelliteTerminal</a></span><span class="p">],</span>
+        <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-type_alias&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-type_alias-name&quot;&gt;OpticalSatelliteLink&lt;/span&gt;" href="sat_to_sat/#cosmica.comm_link.sat_to_sat.OpticalSatelliteLink">OpticalSatelliteLink</a></span><span class="p">[</span>
+            <span class="n"><span title="cosmica.comm_link.sat_to_sat.OTC2OTCBinaryCommLinkCalculator.calc[SourceSatellite]">SourceSatellite</span></span><span class="p">,</span>
+            <span class="n"><span title="cosmica.comm_link.sat_to_sat.OTC2OTCBinaryCommLinkCalculator.calc[SourceTerminal]">SourceTerminal</span></span><span class="p">,</span>
+            <span class="n"><span title="cosmica.comm_link.sat_to_sat.OTC2OTCBinaryCommLinkCalculator.calc[DestinationSatellite]">DestinationSatellite</span></span><span class="p">,</span>
+            <span class="n"><span title="cosmica.comm_link.sat_to_sat.OTC2OTCBinaryCommLinkCalculator.calc[DestinationTerminal]">DestinationTerminal</span></span><span class="p">,</span>
+        <span class="p">],</span>
         <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;CommLinkPerformance&lt;/span&gt;" href="base/#cosmica.comm_link.base.CommLinkPerformance">CommLinkPerformance</a></span><span class="p">,</span>
     <span class="p">]</span>
 <span class="p">]</span>
@@ -9087,113 +9475,191 @@ for the satellite -&gt; gateway (downlink) direction.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/comm_link/sat_to_sat.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">270</span>
-<span class="normal">271</span>
-<span class="normal">272</span>
-<span class="normal">273</span>
-<span class="normal">274</span>
-<span class="normal">275</span>
-<span class="normal">276</span>
-<span class="normal">277</span>
-<span class="normal">278</span>
-<span class="normal">279</span>
-<span class="normal">280</span>
-<span class="normal">281</span>
-<span class="normal">282</span>
-<span class="normal">283</span>
-<span class="normal">284</span>
-<span class="normal">285</span>
-<span class="normal">286</span>
-<span class="normal">287</span>
-<span class="normal">288</span>
-<span class="normal">289</span>
-<span class="normal">290</span>
-<span class="normal">291</span>
-<span class="normal">292</span>
-<span class="normal">293</span>
-<span class="normal">294</span>
-<span class="normal">295</span>
-<span class="normal">296</span>
-<span class="normal">297</span>
-<span class="normal">298</span>
-<span class="normal">299</span>
-<span class="normal">300</span>
-<span class="normal">301</span>
-<span class="normal">302</span>
-<span class="normal">303</span>
-<span class="normal">304</span>
-<span class="normal">305</span>
-<span class="normal">306</span>
-<span class="normal">307</span>
-<span class="normal">308</span>
-<span class="normal">309</span>
-<span class="normal">310</span>
-<span class="normal">311</span>
-<span class="normal">312</span>
-<span class="normal">313</span>
-<span class="normal">314</span>
-<span class="normal">315</span>
-<span class="normal">316</span>
-<span class="normal">317</span>
-<span class="normal">318</span>
-<span class="normal">319</span>
-<span class="normal">320</span>
-<span class="normal">321</span>
-<span class="normal">322</span>
-<span class="normal">323</span>
-<span class="normal">324</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">[</span>
+    <span class="n">SourceSatellite</span><span class="p">:</span> <span class="n">Satellite</span><span class="p">,</span>
+    <span class="n">SourceTerminal</span><span class="p">:</span> <span class="n">OpticalCommunicationTerminal</span><span class="p">,</span>
+    <span class="n">DestinationSatellite</span><span class="p">:</span> <span class="n">Satellite</span><span class="p">,</span>
+    <span class="n">DestinationTerminal</span><span class="p">:</span> <span class="n">OpticalCommunicationTerminal</span><span class="p">,</span>
+<span class="p">](</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">edges_time_series</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Collection</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">SatelliteTerminal</span><span class="p">,</span> <span class="n">SatelliteTerminal</span><span class="p">]]],</span>
+    <span class="n">links_time_series</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span>
+        <span class="n">Collection</span><span class="p">[</span><span class="n">OpticalSatelliteLink</span><span class="p">[</span><span class="n">SourceSatellite</span><span class="p">,</span> <span class="n">SourceTerminal</span><span class="p">,</span> <span class="n">DestinationSatellite</span><span class="p">,</span> <span class="n">DestinationTerminal</span><span class="p">]]</span>
+    <span class="p">],</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">dynamics_data</span><span class="p">:</span> <span class="n">DynamicsData</span><span class="p">,</span>
     <span class="n">rng</span><span class="p">:</span> <span class="n">Generator</span><span class="p">,</span>  <span class="c1"># noqa: ARG002</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">SatelliteTerminal</span><span class="p">,</span> <span class="n">SatelliteTerminal</span><span class="p">],</span> <span class="n">CommLinkPerformance</span><span class="p">]]:</span>
-    <span class="n">terminal_memo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">SatelliteTerminal</span><span class="p">,</span> <span class="n">SatelliteTerminal</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span>
+    <span class="nb">dict</span><span class="p">[</span>
+        <span class="n">OpticalSatelliteLink</span><span class="p">[</span><span class="n">SourceSatellite</span><span class="p">,</span> <span class="n">SourceTerminal</span><span class="p">,</span> <span class="n">DestinationSatellite</span><span class="p">,</span> <span class="n">DestinationTerminal</span><span class="p">],</span>
+        <span class="n">CommLinkPerformance</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">]:</span>
+    <span class="n">previous_terminal_state_by_link</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span>
+        <span class="n">OpticalSatelliteLink</span><span class="p">[</span><span class="n">SourceSatellite</span><span class="p">,</span> <span class="n">SourceTerminal</span><span class="p">,</span> <span class="n">DestinationSatellite</span><span class="p">,</span> <span class="n">DestinationTerminal</span><span class="p">],</span>
+        <span class="n">_TerminalState</span><span class="p">,</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">comm_link_time_series</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">prev_time</span> <span class="o">=</span> <span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">snapshot</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">edges_time_series</span><span class="p">):</span>
-        <span class="n">edges_performance</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">current_time</span> <span class="o">=</span> <span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">time_delta</span> <span class="o">=</span> <span class="n">current_time</span> <span class="o">-</span> <span class="n">prev_time</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">time_delta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"time_delta must be non-zero"</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-        <span class="c1"># Note: the terminal angular velocity and pointing verifications in the first iteration will return</span>
-        <span class="c1"># meaningless results and should be disconsidered during analysis.</span>
+    <span class="k">for</span> <span class="n">links_snapshot</span><span class="p">,</span> <span class="n">dynamics_snapshot</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">links_time_series</span><span class="p">,</span> <span class="n">dynamics_data</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">links_performance_snapshot</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">current_terminal_state_by_link</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span>
+            <span class="n">OpticalSatelliteLink</span><span class="p">[</span><span class="n">SourceSatellite</span><span class="p">,</span> <span class="n">SourceTerminal</span><span class="p">,</span> <span class="n">DestinationSatellite</span><span class="p">,</span> <span class="n">DestinationTerminal</span><span class="p">],</span>
+            <span class="n">_TerminalState</span><span class="p">,</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">current_time</span> <span class="o">=</span> <span class="n">dynamics_snapshot</span><span class="o">.</span><span class="n">time</span>
 
-        <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">snapshot</span><span class="p">:</span>
-            <span class="c1"># TODO(): エッジがtupleとして定義されているので、順序を考慮して調べる必要がある</span>
-            <span class="n">previous_terminal_directions</span> <span class="o">=</span> <span class="n">terminal_memo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="p">[(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)])</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links_snapshot</span><span class="p">:</span>
+            <span class="n">source_satellite</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">node</span>
+            <span class="n">destination_satellite</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">node</span>
+            <span class="k">if</span> <span class="n">missing_attitudes</span> <span class="o">:=</span> <span class="nb">tuple</span><span class="p">(</span>
+                <span class="n">satellite</span>
+                <span class="k">for</span> <span class="n">satellite</span> <span class="ow">in</span> <span class="p">(</span><span class="n">source_satellite</span><span class="p">,</span> <span class="n">destination_satellite</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">satellite</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dynamics_snapshot</span><span class="o">.</span><span class="n">satellite_attitude_dcm_eci2body</span>
+            <span class="p">):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s2">"satellite_attitude_dcm_eci2body must contain an ECI-to-body "</span>
+                    <span class="sa">f</span><span class="s2">"attitude for every link endpoint; missing </span><span class="si">{</span><span class="n">missing_attitudes</span><span class="si">!r}</span><span class="s2">"</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-            <span class="c1"># TODO(): おそらく dynamics_data の中で各タイムステップの値を取ってくる必要がある</span>
-            <span class="n">comm_link_performance</span><span class="p">,</span> <span class="n">terminal_directions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_satellite_to_satellite</span><span class="p">(</span>
-                <span class="n">positions_eci</span><span class="o">=</span><span class="p">(</span>
-                    <span class="n">dynamics_data</span><span class="o">.</span><span class="n">satellite_position_eci</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
-                    <span class="n">dynamics_data</span><span class="o">.</span><span class="n">satellite_position_eci</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
-                <span class="p">),</span>
-                <span class="n">velocities_eci</span><span class="o">=</span><span class="p">(</span>
-                    <span class="n">dynamics_data</span><span class="o">.</span><span class="n">satellite_velocity_eci</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
-                    <span class="n">dynamics_data</span><span class="o">.</span><span class="n">satellite_velocity_eci</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
-                <span class="p">),</span>
-                <span class="n">attitude_angular_velocities_eci</span><span class="o">=</span><span class="p">(</span>
-                    <span class="n">dynamics_data</span><span class="o">.</span><span class="n">satellite_attitude_angular_velocity_eci</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
-                    <span class="n">dynamics_data</span><span class="o">.</span><span class="n">satellite_attitude_angular_velocity_eci</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
-                <span class="p">),</span>
-                <span class="n">sun_direction_eci</span><span class="o">=</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">sun_direction_eci</span><span class="p">,</span>
-                <span class="n">terminals</span><span class="o">=</span><span class="p">(</span>
-                    <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">terminal</span><span class="p">,</span>
-                    <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">terminal</span><span class="p">,</span>
-                <span class="p">),</span>
-                <span class="n">previous_terminal_directions</span><span class="o">=</span><span class="n">previous_terminal_directions</span><span class="p">,</span>
-                <span class="n">time_delta</span><span class="o">=</span><span class="n">time_delta</span><span class="p">,</span>
+            <span class="n">previous_terminal_state</span> <span class="o">=</span> <span class="n">previous_terminal_state_by_link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+            <span class="n">previous_terminal_observation</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">previous_terminal_state</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="n">_PreviousTerminalObservation</span><span class="p">(</span>
+                    <span class="n">pointings</span><span class="o">=</span><span class="n">previous_terminal_state</span><span class="o">.</span><span class="n">pointings</span><span class="p">,</span>
+                    <span class="n">elapsed_time_seconds</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span>
+                        <span class="p">(</span><span class="n">current_time</span> <span class="o">-</span> <span class="n">previous_terminal_state</span><span class="o">.</span><span class="n">observed_at</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"s"</span><span class="p">),</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
             <span class="p">)</span>
 
-            <span class="n">edges_performance</span><span class="p">[</span><span class="n">edge</span><span class="p">]</span> <span class="o">=</span> <span class="n">comm_link_performance</span>
-            <span class="n">terminal_memo</span><span class="p">[</span><span class="n">edge</span><span class="p">]</span> <span class="o">=</span> <span class="n">terminal_directions</span>
+            <span class="n">comm_link_performance</span><span class="p">,</span> <span class="n">terminal_pointings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_satellite_to_satellite</span><span class="p">(</span>
+                <span class="n">positions_eci</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">dynamics_snapshot</span><span class="o">.</span><span class="n">satellite_position_eci</span><span class="p">[</span><span class="n">source_satellite</span><span class="p">],</span>
+                    <span class="n">dynamics_snapshot</span><span class="o">.</span><span class="n">satellite_position_eci</span><span class="p">[</span><span class="n">destination_satellite</span><span class="p">],</span>
+                <span class="p">),</span>
+                <span class="n">velocities_eci</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">dynamics_snapshot</span><span class="o">.</span><span class="n">satellite_velocity_eci</span><span class="p">[</span><span class="n">source_satellite</span><span class="p">],</span>
+                    <span class="n">dynamics_snapshot</span><span class="o">.</span><span class="n">satellite_velocity_eci</span><span class="p">[</span><span class="n">destination_satellite</span><span class="p">],</span>
+                <span class="p">),</span>
+                <span class="n">attitude_angular_velocities_eci</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">dynamics_snapshot</span><span class="o">.</span><span class="n">satellite_attitude_angular_velocity_eci</span><span class="p">[</span><span class="n">source_satellite</span><span class="p">],</span>
+                    <span class="n">dynamics_snapshot</span><span class="o">.</span><span class="n">satellite_attitude_angular_velocity_eci</span><span class="p">[</span><span class="n">destination_satellite</span><span class="p">],</span>
+                <span class="p">),</span>
+                <span class="n">attitude_dcms_eci2body</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">dynamics_snapshot</span><span class="o">.</span><span class="n">satellite_attitude_dcm_eci2body</span><span class="p">[</span><span class="n">source_satellite</span><span class="p">],</span>
+                    <span class="n">dynamics_snapshot</span><span class="o">.</span><span class="n">satellite_attitude_dcm_eci2body</span><span class="p">[</span><span class="n">destination_satellite</span><span class="p">],</span>
+                <span class="p">),</span>
+                <span class="n">sun_direction_eci</span><span class="o">=</span><span class="n">dynamics_snapshot</span><span class="o">.</span><span class="n">sun_direction_eci</span><span class="p">,</span>
+                <span class="n">terminals</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">link</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">terminal</span><span class="p">,</span>
+                    <span class="n">link</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">terminal</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">previous_terminal_observation</span><span class="o">=</span><span class="n">previous_terminal_observation</span><span class="p">,</span>
+            <span class="p">)</span>
 
-        <span class="n">comm_link_time_series</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">edges_performance</span><span class="p">)</span>
-        <span class="n">prev_time</span> <span class="o">=</span> <span class="n">current_time</span>
+            <span class="n">links_performance_snapshot</span><span class="p">[</span><span class="n">link</span><span class="p">]</span> <span class="o">=</span> <span class="n">comm_link_performance</span>
+            <span class="n">current_terminal_state_by_link</span><span class="p">[</span><span class="n">link</span><span class="p">]</span> <span class="o">=</span> <span class="n">_TerminalState</span><span class="p">(</span>
+                <span class="n">observed_at</span><span class="o">=</span><span class="n">current_time</span><span class="p">,</span>
+                <span class="n">pointings</span><span class="o">=</span><span class="n">terminal_pointings</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">comm_link_time_series</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">links_performance_snapshot</span><span class="p">)</span>
+        <span class="n">previous_terminal_state_by_link</span> <span class="o">=</span> <span class="n">current_terminal_state_by_link</span>
 
     <span class="k">return</span> <span class="n">comm_link_time_series</span>
 </code></pre></div></td></tr></table></div>
@@ -10477,20 +10943,20 @@ orientation for heterogeneous types such as user satellite &lt;-&gt; constellati
 
                   <details class="mkdocstrings-source">
                     <summary>Source code in <code>src/cosmica/comm_link/sat_to_sat.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">link_capacity</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -10678,31 +11144,31 @@ orientation for heterogeneous types such as user satellite &lt;-&gt; constellati
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/comm_link/sat_to_sat.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">edges</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Satellite</span><span class="p">,</span> <span class="n">Satellite</span><span class="p">]],</span>
     <span class="o">*</span><span class="p">,</span>
@@ -11199,16 +11665,16 @@ acquisition states.</p>
 
                   <details class="mkdocstrings-source">
                     <summary>Source code in <code>src/cosmica/comm_link/sat_to_sat.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">memoryless_calculator</span><span class="p">:</span> <span class="n">MemorylessCommLinkCalculator</span><span class="p">[</span><span class="n">Satellite</span><span class="p">,</span> <span class="n">Satellite</span><span class="p">],</span>
@@ -11352,36 +11818,7 @@ acquisition states.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/comm_link/sat_to_sat.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">209</span>
 <span class="normal">210</span>
 <span class="normal">211</span>
 <span class="normal">212</span>
@@ -11418,7 +11855,36 @@ acquisition states.</p>
 <span class="normal">243</span>
 <span class="normal">244</span>
 <span class="normal">245</span>
-<span class="normal">246</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">edges_time_series</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Collection</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Satellite</span><span class="p">,</span> <span class="n">Satellite</span><span class="p">]]],</span>
     <span class="o">*</span><span class="p">,</span>

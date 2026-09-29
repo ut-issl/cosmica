@@ -14,7 +14,7 @@
         <link rel="prev" href="../scenario/population/">
       
       
-        <link rel="next" href="./gateway_to_gateway/">
+        <link rel="next" href="./communication_link/">
       
       
         
@@ -842,6 +842,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../comm_link/terminal_geometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Terminal geometry
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../comm_link/uncertainty/" class="md-nav__link">
         
   
@@ -935,6 +962,33 @@
     
   
   Index
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dtos/communication_link/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Communication link
 
     
   </span>
@@ -1768,6 +1822,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#cosmica.topology.COMMUNICATION_LINK_ATTRIBUTE" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;COMMUNICATION_LINK_ATTRIBUTE
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#cosmica.topology.__all__" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -2275,6 +2340,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#cosmica.topology.assign_communication_links" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;assign_communication_links
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#cosmica.topology.build_elevation_based_g2c_topology" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -2351,6 +2427,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#cosmica.topology.get_terminal_assigned_communication_links" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;get_terminal_assigned_communication_links
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2360,6 +2447,33 @@
   
 </nav>
       
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./communication_link/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Communication link
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -3126,6 +3240,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#cosmica.topology.COMMUNICATION_LINK_ATTRIBUTE" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;COMMUNICATION_LINK_ATTRIBUTE
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#cosmica.topology.__all__" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -3633,6 +3758,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#cosmica.topology.assign_communication_links" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;assign_communication_links
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#cosmica.topology.build_elevation_based_g2c_topology" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -3709,6 +3845,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#cosmica.topology.get_terminal_assigned_communication_links" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;get_terminal_assigned_communication_links
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3771,6 +3918,30 @@
 
 
 
+<h3 id="cosmica.topology.COMMUNICATION_LINK_ATTRIBUTE" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">COMMUNICATION_LINK_ATTRIBUTE</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">COMMUNICATION_LINK_ATTRIBUTE</span> <span class="o">=</span> <span class="s1">'communication_link'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>NetworkX edge attribute containing the assigned directed communication link.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
 <h3 id="cosmica.topology.__all__" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">__all__</span>
 
@@ -3781,6 +3952,7 @@
 
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"COMMUNICATION_LINK_ATTRIBUTE"</span><span class="p">,</span>
     <span class="s2">"ConstellationTimeSeriesTopologyBuilder"</span><span class="p">,</span>
     <span class="s2">"ConstellationTopologyBuilder"</span><span class="p">,</span>
     <span class="s2">"ElevationBasedG2CTopologyBuilder"</span><span class="p">,</span>
@@ -3794,6 +3966,7 @@
     <span class="s2">"MaxConnectionTimeUS2CTopologyBuilder"</span><span class="p">,</span>
     <span class="s2">"MaxVisibilityHandOverG2CTopologyBuilder"</span><span class="p">,</span>
     <span class="s2">"UserSatelliteToConstellationTopologyBuilder"</span><span class="p">,</span>
+    <span class="s2">"assign_communication_links"</span><span class="p">,</span>
     <span class="s2">"build_elevation_based_g2c_topology"</span><span class="p">,</span>
     <span class="s2">"build_hybrid_us2c_g2c_topology"</span><span class="p">,</span>
     <span class="s2">"build_manhattan_time_series_topology"</span><span class="p">,</span>
@@ -3801,6 +3974,7 @@
     <span class="s2">"build_manual_g2c_topology"</span><span class="p">,</span>
     <span class="s2">"build_max_connection_time_us2c_topology"</span><span class="p">,</span>
     <span class="s2">"build_max_visibility_handover_g2c_topology"</span><span class="p">,</span>
+    <span class="s2">"get_terminal_assigned_communication_links"</span><span class="p">,</span>
 <span class="p">]</span>
 </code></pre></div>
 
@@ -5707,6 +5881,81 @@ connections.</p>
 
 </div>
 
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cosmica.topology.assign_communication_links" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">assign_communication_links</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">assign_communication_links</span><span class="p">(</span>
+    <span class="n">graph</span><span class="p">:</span> <span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">,</span>
+    <span class="n">links</span><span class="p">:</span> <span class="n"><span title="collections.abc.Iterable">Iterable</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;DirectedCommunicationLink&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../dtos/#cosmica.dtos.DirectedCommunicationLink">DirectedCommunicationLink</a></span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Add terminal assignments to edges in a simple directed graph.</p>
+<p>Assigning the same link repeatedly is idempotent, while assigning different
+terminal pairs to the same directed node pair is rejected. Each terminal endpoint
+may be paired with only one peer endpoint, independent of link direction. All
+assignments are validated before the graph is modified.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/cosmica/topology/communication_link.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">assign_communication_links</span><span class="p">(</span>
+    <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span>
+    <span class="n">links</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">DirectedCommunicationLink</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Add terminal assignments to edges in a simple directed graph.</span>
+
+<span class="sd">    Assigning the same link repeatedly is idempotent, while assigning different</span>
+<span class="sd">    terminal pairs to the same directed node pair is rejected. Each terminal endpoint</span>
+<span class="sd">    may be paired with only one peer endpoint, independent of link direction. All</span>
+<span class="sd">    assignments are validated before the graph is modified.</span>
+<span class="sd">    """</span>
+    <span class="n">links</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">links</span><span class="p">)</span>
+    <span class="n">existing_assigned_links</span> <span class="o">=</span> <span class="n">get_terminal_assigned_communication_links</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+
+    <span class="n">links_after_update</span> <span class="o">=</span> <span class="n">existing_assigned_links</span> <span class="o">+</span> <span class="n">links</span>
+    <span class="n">_validate_terminal_assignments</span><span class="p">(</span><span class="n">links_after_update</span><span class="p">)</span>
+    <span class="n">_validate_node_pair_assignments</span><span class="p">(</span><span class="n">links_after_update</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="o">*</span><span class="n">link</span><span class="o">.</span><span class="n">node_pair</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">COMMUNICATION_LINK_ATTRIBUTE</span><span class="p">:</span> <span class="n">link</span><span class="p">})</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
 
 <div class="doc doc-object doc-function">
 
@@ -8265,6 +8514,89 @@ longer visible.</p>
         <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="p">[</span><span class="n">construct_graph</span><span class="p">(</span><span class="n">link_available</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">time_idx</span><span class="p">])</span> <span class="k">for</span> <span class="n">time_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">))]</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cosmica.topology.get_terminal_assigned_communication_links" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">get_terminal_assigned_communication_links</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">get_terminal_assigned_communication_links</span><span class="p">(</span>
+    <span class="n">graph</span><span class="p">:</span> <span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;DirectedCommunicationLink&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../dtos/#cosmica.dtos.DirectedCommunicationLink">DirectedCommunicationLink</a></span><span class="p">]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Recover terminal assignments from a simple directed topology graph.</p>
+<p>Ordinary node-only edges are ignored, preserving compatibility with existing
+topology builders and communication-link calculators. Conflicting peer assignments
+for the same terminal endpoint are rejected, independent of link direction.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/cosmica/topology/communication_link.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_terminal_assigned_communication_links</span><span class="p">(</span>
+    <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">DirectedCommunicationLink</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Recover terminal assignments from a simple directed topology graph.</span>
+
+<span class="sd">    Ordinary node-only edges are ignored, preserving compatibility with existing</span>
+<span class="sd">    topology builders and communication-link calculators. Conflicting peer assignments</span>
+<span class="sd">    for the same terminal endpoint are rejected, independent of link direction.</span>
+<span class="sd">    """</span>
+    <span class="n">links</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">COMMUNICATION_LINK_ATTRIBUTE</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">link</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">link</span><span class="p">,</span> <span class="n">DirectedCommunicationLink</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">COMMUNICATION_LINK_ATTRIBUTE</span><span class="si">!r}</span><span class="s2"> edge metadata must be a DirectedCommunicationLink"</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">node_pair</span> <span class="o">!=</span> <span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"communication-link endpoint nodes must match the topology edge"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+
+    <span class="n">_validate_terminal_assignments</span><span class="p">(</span><span class="n">links</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">links</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

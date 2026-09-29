@@ -42,6 +42,9 @@ def sample_demand_locations(
     """Sample on-ground demand locations based on global population distribution data.
 
     The probability of sampling a location is proportional to the population count at that location.
+
+    Locations are grid-cell centers. Cells are sampled with replacement, so a high-density cell can receive several
+    demands, and `n_samples` may exceed the number of cells.
     """
     rng = rng if rng is not None else np.random.default_rng()
 
@@ -53,6 +56,6 @@ def sample_demand_locations(
     probability = population.flatten() / np.nansum(population)
     assert np.isclose(np.nansum(probability), 1)
 
-    sample_indices = rng.choice(len(probability), size=n_samples, replace=False, p=probability)
+    sample_indices = rng.choice(len(probability), size=n_samples, replace=True, p=probability)
 
     return longitude.flatten()[sample_indices], latitude.flatten()[sample_indices]

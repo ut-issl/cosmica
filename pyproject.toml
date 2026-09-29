@@ -55,7 +55,7 @@ docs = [
   "griffe-typingdoc>=0.2.8",
   "mike",
   "mkdocstrings[python]>=0.30.0",
-  "zensical>=0.0.58",
+  "zensical>=0.0.66",
 ]
 examples = ["marimo>=0.15.0"]
 license = [

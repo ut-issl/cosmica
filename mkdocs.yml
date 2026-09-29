@@ -40,6 +40,9 @@ plugins:
   - search
   - awesome-nav
   - section-index
+  - api-autonav:
+      modules:
+        - src/cosmica
   - mkdocstrings:
       default_handler: python
       handlers:

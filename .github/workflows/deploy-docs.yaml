@@ -44,7 +44,7 @@ jobs:
         run: uv sync --no-dev --group docs
 
       - name: Generate docs
-        run: uv run -- scripts/gen_ref_pages.py
+        run: uv run -- scripts/gen_index_page.py
 
       - name: Update the docs
         run: uv run -- mike deploy --push dev

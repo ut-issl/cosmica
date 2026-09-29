@@ -1,4 +1,5 @@
 __all__ = [
+    "AssignedCommLinkCalculator",
     "CommLinkCalculator",
     "CommLinkPerformance",
     "MemorylessCommLinkCalculator",
@@ -10,7 +11,7 @@ from typing import TypedDict
 
 import numpy as np
 
-from cosmica.dtos import DynamicsData
+from cosmica.dtos import DirectedCommunicationLink, DynamicsData
 from cosmica.models import Node
 
 
@@ -32,6 +33,21 @@ class MemorylessCommLinkCalculator[T: Node, U: Node](ABC):
         rng: np.random.Generator,
     ) -> dict[tuple[T, U], CommLinkPerformance]:
         """Calculate communication link performance for each directed edge in a network."""
+        raise NotImplementedError
+
+
+class AssignedCommLinkCalculator[L: DirectedCommunicationLink](ABC):
+    """Calculate performance for topology links with explicit terminal assignments."""
+
+    @abstractmethod
+    def calc(
+        self,
+        links_time_series: Sequence[Collection[L]],
+        *,
+        dynamics_data: DynamicsData,
+        rng: np.random.Generator,
+    ) -> list[dict[L, CommLinkPerformance]]:
+        """Calculate communication-link performance for each assigned directed link."""
         raise NotImplementedError
 
 

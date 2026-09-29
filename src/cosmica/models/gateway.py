@@ -65,24 +65,15 @@ class Gateway[T: Hashable](Node[T]):
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class GatewayOGS[T: Hashable](Node[T]):
-    id: T
-    latitude: float = field(compare=False)
-    longitude: float = field(compare=False)
-    minimum_elevation: float = field(compare=False)
-    altitude: float = field(default=0.0, compare=False)
-    n_terminals: int = field(default=1, compare=False)
+class GatewayOGS[T: Hashable](Gateway[T]):
+    """Optical ground station: a gateway with optical receiver and turbulence parameters."""
+
     aperture_size: float = field(default=1.0, compare=False)
     rytov_variance: float = field(default=0.5, compare=False)
 
+    @override
     def __post_init__(self) -> None:
-        _validate_gateway_fields(
-            latitude=self.latitude,
-            longitude=self.longitude,
-            minimum_elevation=self.minimum_elevation,
-            altitude=self.altitude,
-            n_terminals=self.n_terminals,
-        )
+        super().__post_init__()
         _assert_finite(self.aperture_size, name="aperture_size")
         _assert_finite(self.rytov_variance, name="rytov_variance")
         assert self.aperture_size > 0.0, "aperture_size must be positive."

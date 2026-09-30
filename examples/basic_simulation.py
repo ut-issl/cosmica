@@ -18,6 +18,7 @@ import numpy as np
 
 from cosmica.comm_link import (
     CommLinkCalculationCoordinator,
+    GatewayToSatBinaryCommLinkCalculator,
     MemorylessCommLinkCalculatorWrapper,
     SatToGatewayBinaryCommLinkCalculator,
     SatToSatBinaryCommLinkCalculatorWithRateCalc,
@@ -128,6 +129,7 @@ def main() -> None:
     ]
 
     # Calculate communication performance for each active link.
+    # Topology graphs are directed, so each physical link needs a calculator for both directions.
     satellite_to_gateway_calculator = MemorylessCommLinkCalculatorWrapper(
         SatToGatewayBinaryCommLinkCalculator(link_capacity=1e9),
     )
@@ -139,8 +141,12 @@ def main() -> None:
     performance_time_series = CommLinkCalculationCoordinator(
         calculator_assignment={
             (ConstellationSatellite, Gateway): satellite_to_gateway_calculator,
+            (Gateway, ConstellationSatellite): MemorylessCommLinkCalculatorWrapper(
+                GatewayToSatBinaryCommLinkCalculator(link_capacity=1e9),
+            ),
             (ConstellationSatellite, ConstellationSatellite): satellite_to_satellite_calculator,
             (UserSatellite, ConstellationSatellite): satellite_to_satellite_calculator,
+            (ConstellationSatellite, UserSatellite): satellite_to_satellite_calculator,
         },
     ).calc(
         [set(snapshot.edges) for snapshot in network_snapshots],

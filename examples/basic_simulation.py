@@ -61,7 +61,7 @@ def main() -> None:
     constellation = build_walker_delta_constellation(
         semi_major_axis=EARTH_RADIUS + 1_200e3,
         inclination=np.deg2rad(55.0),
-        n_total_sats=6,
+        n_total_sats=18,
         n_geometry_planes=3,
         phasing_factor=1,
         epoch=epoch,
@@ -119,6 +119,7 @@ def main() -> None:
         constellation,
         user_satellites=[user_satellite],
         dynamics_data=dynamics_data,
+        max_distance=5_000e3,  # Keep the user link short enough not to pass through the Earth.
     )
     inter_satellite_links = build_manhattan_topology(constellation)
 

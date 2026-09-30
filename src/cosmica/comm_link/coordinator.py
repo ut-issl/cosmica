@@ -12,11 +12,16 @@ from tqdm import tqdm
 from cosmica.dtos import DynamicsData
 from cosmica.models import Node
 
-from .base import CommLinkCalculator, CommLinkPerformance
+from .base import CommLinkCalculator, CommLinkPerformance, sorted_edges
 
 type EdgeType = tuple[type[Node], type[Node]]
 
 logger = logging.getLogger(__name__)
+
+
+def _edge_type_sort_key(edge_type: EdgeType) -> tuple[str, str]:
+    src_type, dst_type = edge_type
+    return f"{src_type.__module__}.{src_type.__qualname__}", f"{dst_type.__module__}.{dst_type.__qualname__}"
 
 
 class CommLinkCalculationCoordinator:
@@ -27,6 +32,9 @@ class CommLinkCalculationCoordinator:
     direction. Since directed topology graphs represent every physical link as two directed
     edges, a calculator must be registered for BOTH orientations of each link type — e.g.
     (Satellite, Gateway) for the downlink and (Gateway, Satellite) for the uplink.
+
+    Calculators run in a stable order of edge types and receive edges sorted by the endpoints' global IDs,
+    so a seeded RNG gives the same per-edge results in every process.
     """
 
     def __init__(
@@ -57,12 +65,14 @@ class CommLinkCalculationCoordinator:
             )
             raise ValueError(msg)
 
-        edges_time_series_by_type_dd: defaultdict[EdgeType, list[set[tuple[Node, Node]]]] = defaultdict(list)
-        for edges, edge_type in product(edges_time_series, all_edge_types):
+        # Type hashes vary between processes, so fix the order in which calculators consume the shared RNG.
+        sorted_edge_types = sorted(all_edge_types, key=_edge_type_sort_key)
+        edges_time_series_by_type_dd: defaultdict[EdgeType, list[list[tuple[Node, Node]]]] = defaultdict(list)
+        for edges, edge_type in product(edges_time_series, sorted_edge_types):
             # Match on the exact node types (consistent with the registration check above) so that
             # each edge belongs to exactly one edge type even if both a class and its base class
             # are registered; isinstance matching would dispatch such an edge to both calculators.
-            edges_per_type = {(src, dst) for src, dst in edges if (type(src), type(dst)) == edge_type}
+            edges_per_type = sorted_edges((src, dst) for src, dst in edges if (type(src), type(dst)) == edge_type)
             edges_time_series_by_type_dd[edge_type].append(edges_per_type)
         edges_time_series_by_type = dict(edges_time_series_by_type_dd)
 

@@ -33,8 +33,10 @@ class CommLinkCalculationCoordinator:
     edges, a calculator must be registered for BOTH orientations of each link type — e.g.
     (Satellite, Gateway) for the downlink and (Gateway, Satellite) for the uplink.
 
-    Calculators run in a stable order of edge types and receive edges sorted by the endpoints' global IDs,
-    so a seeded RNG gives the same per-edge results in every process.
+    Calculators run in a stable order of edge types and receive edges sorted by the endpoints' global IDs.
+    Given the same inputs and RNG seed, each edge therefore gets the same performance in every Python process.
+    This does not cover the iteration order of the returned dictionaries, or bit-exact floating-point results
+    across platforms or library versions.
     """
 
     def __init__(

@@ -25,8 +25,9 @@ def get_ais_density_data() -> Annotated[
     npt.NDArray[np.floating],
     Doc(
         "AIS density data [seconds/m2] in Oct 2023 as a NumPy array with shape (180, 359)."
-        " The rows are latitude cells centered at +89.5 deg to -89.5 deg and the columns are longitude cells"
-        " centered at -179 deg to +179 deg, both in 1-deg steps.",
+        " The rows are 1-deg latitude cells covering +90 deg to -90 deg (centers +89.5 deg to -89.5 deg)."
+        " The columns are 1-deg longitude cells covering -179.5 deg to +179.5 deg (centers -179 deg to +179 deg),"
+        " so there is no data within 0.5 deg of the antimeridian.",
     ),
 ]:
     """Get AIS density data."""

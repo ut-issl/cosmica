@@ -279,9 +279,7 @@ def _calculate_ground_visibility(
         ground_pos_ecef = np.array([ground_x_ecef, ground_y_ecef, ground_z_ecef])
         relative_pos_ecef = dynamics_data.satellite_position_ecef[satellite] - ground_pos_ecef
 
-        sun_angles = np.array(
-            [angle_between(relative_pos_ecef[t], dynamics_data.sun_direction_ecef[t]) for t in range(n_time)],
-        )
+        sun_angles = angle_between(relative_pos_ecef, dynamics_data.sun_direction_ecef)
         sun_ok = sun_angles >= sun_exclusion_angle
 
         visibility[ground_idx, sat_idx, :] = elevation_ok & sun_ok

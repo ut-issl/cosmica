@@ -158,9 +158,7 @@ def build_max_connection_time_us2c_topology(  # noqa: C901, PLR0912, PLR0915
 
         relative_angular_velocities = np.array(relative_angular_velocities_list)
 
-        sun_angles = np.array(
-            [angle_between(relative_pos_eci[t], dynamics_data.sun_direction_eci[t]) for t in range(n_time)],
-        )
+        sun_angles = angle_between(relative_pos_eci, dynamics_data.sun_direction_eci)
 
         distance_ok = distances <= max_distance
         sun_ok = (sun_angles >= sun_exclusion_angle) & (sun_angles <= (np.pi - sun_exclusion_angle))

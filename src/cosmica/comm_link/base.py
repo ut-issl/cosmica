@@ -4,9 +4,10 @@ __all__ = [
     "CommLinkPerformance",
     "MemorylessCommLinkCalculator",
     "MemorylessCommLinkCalculatorWrapper",
+    "sorted_edges",
 ]
 from abc import ABC, abstractmethod
-from collections.abc import Collection, Sequence
+from collections.abc import Collection, Iterable, Sequence
 from typing import TypedDict
 
 import numpy as np
@@ -88,3 +89,12 @@ class MemorylessCommLinkCalculatorWrapper[T: Node, U: Node](CommLinkCalculator[T
             self.memoryless_calculator.calc(edges=edges, dynamics_data=dynamics_data[time_index], rng=rng)
             for time_index, edges in enumerate(edges_time_series)
         ]
+
+
+def sorted_edges[T: Node, U: Node](edges: Iterable[tuple[T, U]]) -> list[tuple[T, U]]:
+    """Return directed edges in a stable order based on the endpoints' global IDs.
+
+    Set iteration order depends on hashes, which vary between processes for string IDs. Sort edges with this
+    function before drawing random numbers per edge, so that a seeded RNG assigns the same draws to the same edges.
+    """
+    return sorted(edges, key=lambda edge: (edge[0].global_id, edge[1].global_id))

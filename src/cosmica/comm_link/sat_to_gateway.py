@@ -20,7 +20,7 @@ from cosmica.utils.coordinates import ecef2aer, geodetic2ecef
 from cosmica.utils.gauss_beam import calc_gauss_rx_power
 from cosmica.utils.vector import angle_between
 
-from .base import CommLinkCalculator, CommLinkPerformance, MemorylessCommLinkCalculator
+from .base import CommLinkCalculator, CommLinkPerformance, MemorylessCommLinkCalculator, sorted_edges
 from .uncertainty import ApertureAveragedLogNormalScintillationModel, AtmosphericScintillationModel
 
 
@@ -204,9 +204,10 @@ class SatToGatewayStochasticBinaryCommLinkCalculator(CommLinkCalculator[Satellit
     ) -> list[dict[tuple[Satellite, Gateway], CommLinkPerformance]]:
         assert len(edges_time_series) == len(dynamics_data.time)
         all_edges = {edge for edges_snapshot in edges_time_series for edge in edges_snapshot}
+        # Simulate in a stable edge order so that a seeded RNG assigns the same interruptions to the same edges.
         edge_interrupted = {
             edge: self.stochastic_model_factory(edge[0], edge[1]).simulate(time=dynamics_data.time, rng=rng)
-            for edge in all_edges
+            for edge in sorted_edges(all_edges)
         }
 
         comm_link_performance = []
@@ -271,7 +272,8 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
                 gateway=edge[1],
                 gateway_turbulence_map=gateway_turbulence_map,
             )
-            for edge in edges
+            # Sample scintillation in a stable edge order so that a seeded RNG gives reproducible per-edge results.
+            for edge in sorted_edges(edges)
         }
 
     def _map_turbulence2gateway(

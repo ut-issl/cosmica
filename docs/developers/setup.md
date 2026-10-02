@@ -29,4 +29,4 @@ uv run pre-commit install
 
 ## Documentation
 
-Use `just serve-docs` to preview the documentation or `just build-docs` to build it. Both recipes generate the ignored home and API reference pages before running Zensical.
+Use `just serve-docs` to preview the documentation or `just build-docs` to build it. Both recipes generate the ignored home page before running Zensical, which generates the API reference pages from `src/cosmica` with its `api-autonav` plugin.

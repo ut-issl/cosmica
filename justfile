@@ -39,7 +39,7 @@ docs-addr := "localhost:8000"
 
 # Generate documentation derived from repository sources
 generate-docs:
-    uv run -- scripts/gen_ref_pages.py
+    uv run -- scripts/gen_index_page.py
 
 # Serve the documentation
 serve-docs: generate-docs

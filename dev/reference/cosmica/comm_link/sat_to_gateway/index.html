@@ -3544,8 +3544,7 @@ for the gateway -&gt; satellite (uplink) direction.</p>
 
                   <details class="mkdocstrings-source">
                     <summary>Source code in <code>src/cosmica/comm_link/sat_to_gateway.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">233</span>
-<span class="normal">234</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">234</span>
 <span class="normal">235</span>
 <span class="normal">236</span>
 <span class="normal">237</span>
@@ -3566,7 +3565,8 @@ for the gateway -&gt; satellite (uplink) direction.</p>
 <span class="normal">252</span>
 <span class="normal">253</span>
 <span class="normal">254</span>
-<span class="normal">255</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">255</span>
+<span class="normal">256</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">satellite_to_gateway_link_capacity</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -3787,8 +3787,7 @@ for the gateway -&gt; satellite (uplink) direction.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/cosmica/comm_link/sat_to_gateway.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">257</span>
-<span class="normal">258</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">258</span>
 <span class="normal">259</span>
 <span class="normal">260</span>
 <span class="normal">261</span>
@@ -3805,7 +3804,9 @@ for the gateway -&gt; satellite (uplink) direction.</p>
 <span class="normal">272</span>
 <span class="normal">273</span>
 <span class="normal">274</span>
-<span class="normal">275</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">edges</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Satellite</span><span class="p">,</span> <span class="n">GatewayOGS</span><span class="p">]],</span>
     <span class="o">*</span><span class="p">,</span>
@@ -3822,7 +3823,8 @@ for the gateway -&gt; satellite (uplink) direction.</p>
             <span class="n">gateway</span><span class="o">=</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
             <span class="n">gateway_turbulence_map</span><span class="o">=</span><span class="n">gateway_turbulence_map</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span>
+        <span class="c1"># Sample scintillation in a stable edge order so that a seeded RNG gives reproducible per-edge results.</span>
+        <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">sorted_edges</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
     <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4416,7 +4418,8 @@ for the gateway -&gt; satellite (uplink) direction.</p>
 <span class="normal">221</span>
 <span class="normal">222</span>
 <span class="normal">223</span>
-<span class="normal">224</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
+<span class="normal">224</span>
+<span class="normal">225</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">edges_time_series</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Collection</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Satellite</span><span class="p">,</span> <span class="n">Gateway</span><span class="p">]]],</span>
     <span class="o">*</span><span class="p">,</span>
@@ -4425,9 +4428,10 @@ for the gateway -&gt; satellite (uplink) direction.</p>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Satellite</span><span class="p">,</span> <span class="n">Gateway</span><span class="p">],</span> <span class="n">CommLinkPerformance</span><span class="p">]]:</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">edges_time_series</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
     <span class="n">all_edges</span> <span class="o">=</span> <span class="p">{</span><span class="n">edge</span> <span class="k">for</span> <span class="n">edges_snapshot</span> <span class="ow">in</span> <span class="n">edges_time_series</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges_snapshot</span><span class="p">}</span>
+    <span class="c1"># Simulate in a stable edge order so that a seeded RNG assigns the same interruptions to the same edges.</span>
     <span class="n">edge_interrupted</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">edge</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">stochastic_model_factory</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">dynamics_data</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">all_edges</span>
+        <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">sorted_edges</span><span class="p">(</span><span class="n">all_edges</span><span class="p">)</span>
     <span class="p">}</span>
 
     <span class="n">comm_link_performance</span> <span class="o">=</span> <span class="p">[]</span>

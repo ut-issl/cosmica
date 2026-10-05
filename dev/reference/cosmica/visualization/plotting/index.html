@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="zensical-0.0.63">
+      <meta name="generator" content="zensical-0.0.67">
     
     
       
@@ -32,12 +32,12 @@
       
         
       
-      <link rel="stylesheet" href="../../../../assets/stylesheets/modern/main.10763589.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/modern/main.4ae390e2.min.css">
       
         
           
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/modern/palette.812a03bb.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/modern/palette.96d1a7e4.min.css">
       
       
 
@@ -2729,6 +2729,7 @@
               <article class="md-content__inner md-typeset">
                 
                   
+
   
   
 
@@ -2836,26 +2837,26 @@
 
 </h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">visualize_grouped_constellation</span><span class="p">(</span>
-    <span class="n">constellation</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;Constellation&lt;/span&gt;
+    <span class="n">constellation</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Constellation
 
 
-  &lt;span class=&quot;doc doc-labels&quot;&gt;
-      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
-  &lt;/span&gt;" href="../../models/#cosmica.models.Constellation">Constellation</a></span><span class="p">[</span>
-        <span class="n"><span title="tuple">tuple</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-type_alias&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-type_alias-name&quot;&gt;PlaneId&lt;/span&gt;" href="./#cosmica.visualization.plotting.PlaneId">PlaneId</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-type_alias&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-type_alias-name&quot;&gt;InPlaneIndex&lt;/span&gt;" href="./#cosmica.visualization.plotting.InPlaneIndex">InPlaneIndex</a></span><span class="p">]</span>
+  
+      dataclass
+   (cosmica.models.Constellation)" href="../../models/#cosmica.models.Constellation">Constellation</a></span><span class="p">[</span>
+        <span class="n"><span title="tuple">tuple</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            PlaneId (cosmica.visualization.plotting.PlaneId)" href="./#cosmica.visualization.plotting.PlaneId">PlaneId</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="            InPlaneIndex (cosmica.visualization.plotting.InPlaneIndex)" href="./#cosmica.visualization.plotting.InPlaneIndex">InPlaneIndex</a></span><span class="p">]</span>
     <span class="p">],</span>
     <span class="n">propagation_result</span><span class="p">:</span> <span class="n"><span title="collections.abc.Mapping">Mapping</span></span><span class="p">[</span>
-        <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ConstellationSatellite&lt;/span&gt;
+        <span class="n"><a class="autorefs autorefs-internal" title="            ConstellationSatellite
 
 
-  &lt;span class=&quot;doc doc-labels&quot;&gt;
-      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
-  &lt;/span&gt;" href="../../models/#cosmica.models.ConstellationSatellite">ConstellationSatellite</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SatelliteOrbitState&lt;/span&gt;
+  
+      dataclass
+   (cosmica.models.ConstellationSatellite)" href="../../models/#cosmica.models.ConstellationSatellite">ConstellationSatellite</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="            SatelliteOrbitState
 
 
-  &lt;span class=&quot;doc doc-labels&quot;&gt;
-      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
-  &lt;/span&gt;" href="../../dynamics/#cosmica.dynamics.SatelliteOrbitState">SatelliteOrbitState</a></span>
+  
+      dataclass
+   (cosmica.dynamics.SatelliteOrbitState)" href="../../dynamics/#cosmica.dynamics.SatelliteOrbitState">SatelliteOrbitState</a></span>
     <span class="p">],</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">time_index</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">0</span>
@@ -2891,12 +2892,12 @@ plane) and marks all satellite positions at the given <code>time_index</code>.</
               <p>
                   <span class="doc-param-annotation">
                     <b>TYPE:</b>
-                      <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;Constellation&lt;/span&gt;
+                      <code><a class="autorefs autorefs-internal" title="            Constellation
 
 
-  &lt;span class=&quot;doc doc-labels&quot;&gt;
-      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
-  &lt;/span&gt;" href="../../models/#cosmica.models.Constellation">Constellation</a>[<span title="tuple">tuple</span>[<a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-type_alias&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-type_alias-name&quot;&gt;PlaneId&lt;/span&gt;" href="./#cosmica.visualization.plotting.PlaneId">PlaneId</a>, <a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-type_alias&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-type_alias-name&quot;&gt;InPlaneIndex&lt;/span&gt;" href="./#cosmica.visualization.plotting.InPlaneIndex">InPlaneIndex</a>]]</code>
+  
+      dataclass
+   (cosmica.models.Constellation)" href="../../models/#cosmica.models.Constellation">Constellation</a>[<span title="tuple">tuple</span>[<a class="autorefs autorefs-internal" title="            PlaneId (cosmica.visualization.plotting.PlaneId)" href="./#cosmica.visualization.plotting.PlaneId">PlaneId</a>, <a class="autorefs autorefs-internal" title="            InPlaneIndex (cosmica.visualization.plotting.InPlaneIndex)" href="./#cosmica.visualization.plotting.InPlaneIndex">InPlaneIndex</a>]]</code>
                   </span>
               </p>
             </td>
@@ -2912,17 +2913,17 @@ plane) and marks all satellite positions at the given <code>time_index</code>.</
               <p>
                   <span class="doc-param-annotation">
                     <b>TYPE:</b>
-                      <code><span title="collections.abc.Mapping">Mapping</span>[<a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ConstellationSatellite&lt;/span&gt;
+                      <code><span title="collections.abc.Mapping">Mapping</span>[<a class="autorefs autorefs-internal" title="            ConstellationSatellite
 
 
-  &lt;span class=&quot;doc doc-labels&quot;&gt;
-      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
-  &lt;/span&gt;" href="../../models/#cosmica.models.ConstellationSatellite">ConstellationSatellite</a>, <a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SatelliteOrbitState&lt;/span&gt;
+  
+      dataclass
+   (cosmica.models.ConstellationSatellite)" href="../../models/#cosmica.models.ConstellationSatellite">ConstellationSatellite</a>, <a class="autorefs autorefs-internal" title="            SatelliteOrbitState
 
 
-  &lt;span class=&quot;doc doc-labels&quot;&gt;
-      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
-  &lt;/span&gt;" href="../../dynamics/#cosmica.dynamics.SatelliteOrbitState">SatelliteOrbitState</a>]</code>
+  
+      dataclass
+   (cosmica.dynamics.SatelliteOrbitState)" href="../../dynamics/#cosmica.dynamics.SatelliteOrbitState">SatelliteOrbitState</a>]</code>
                   </span>
               </p>
             </td>
@@ -3148,7 +3149,7 @@ plane) and marks all satellite positions at the given <code>time_index</code>.</
 </footer>
       
     </div>
-    <div class="md-dialog" data-md-component="dialog">
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
@@ -3160,10 +3161,10 @@ plane) and marks all satellite positions at the given <code>time_index</code>.</
       
         
         
-      <script id="__config" type="application/json">{"annotate":null,"base":"../../../..","features":["navigation.instant","navigation.tabs","navigation.tabs.sticky"],"redirect":null,"search":"../../../../assets/javascripts/workers/search.7d14d953.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":{"provider":"mike"}}</script>
+      <script id="__config" type="application/json">{"annotate":null,"base":"../../../..","features":["navigation.instant","navigation.tabs","navigation.tabs.sticky"],"redirect":null,"search":"../../../../assets/javascripts/workers/search.7d14d953.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":{"provider":"mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.8dcc8e9c.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.67a597eb.min.js"></script>
       
     
   </body>

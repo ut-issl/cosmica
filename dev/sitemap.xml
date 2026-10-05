@@ -4,6 +4,15 @@
         <loc>https://www.space.t.u-tokyo.ac.jp/cosmica/dev/</loc>
       </url>
       <url>
+        <loc>https://www.space.t.u-tokyo.ac.jp/cosmica/dev/developers/releasing/</loc>
+      </url>
+      <url>
+        <loc>https://www.space.t.u-tokyo.ac.jp/cosmica/dev/developers/setup/</loc>
+      </url>
+      <url>
+        <loc>https://www.space.t.u-tokyo.ac.jp/cosmica/dev/developers/tips/</loc>
+      </url>
+      <url>
         <loc>https://www.space.t.u-tokyo.ac.jp/cosmica/dev/reference/cosmica/</loc>
       </url>
       <url>
@@ -161,14 +170,5 @@
       </url>
       <url>
         <loc>https://www.space.t.u-tokyo.ac.jp/cosmica/dev/reference/cosmica/visualization/utils/</loc>
-      </url>
-      <url>
-        <loc>https://www.space.t.u-tokyo.ac.jp/cosmica/dev/developers/setup/</loc>
-      </url>
-      <url>
-        <loc>https://www.space.t.u-tokyo.ac.jp/cosmica/dev/developers/tips/</loc>
-      </url>
-      <url>
-        <loc>https://www.space.t.u-tokyo.ac.jp/cosmica/dev/developers/releasing/</loc>
       </url>
 </urlset>

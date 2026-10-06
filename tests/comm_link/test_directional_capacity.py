@@ -23,7 +23,7 @@ from cosmica.comm_link import (
 )
 from cosmica.comm_link.geometric import GeometricCommLinkCalculator
 from cosmica.dtos import CommunicationLinkEndpoint, DirectedCommunicationLink, DynamicsData
-from cosmica.models import ConstellationSatellite, Gateway, Satellite
+from cosmica.models import ConstellationSatellite, Gateway, GatewayOGS, Satellite
 from cosmica.utils.constants import EARTH_RADIUS
 from tests.factories import make_satellite, make_terminal
 
@@ -641,3 +641,42 @@ class TestCoordinatorDirectionalDispatch:
                 dynamics_data=dynamics_data,
                 rng=np.random.default_rng(0),
             )
+
+
+def test_coordinator_dispatches_gateway_ogs_separately_from_gateway(
+    satellite: ConstellationSatellite[int],
+    gateway: Gateway[int],
+) -> None:
+    ogs = GatewayOGS(id=gateway.id, latitude=0.0, longitude=0.0, minimum_elevation=0.0)
+    position = np.array([[EARTH_RADIUS + 1000e3, 0.0, 0.0]])
+    zero = np.zeros((1, 3))
+    dynamics_data = DynamicsData(
+        time=np.array([EPOCH]),
+        dcm_eci2ecef=np.eye(3)[None, :, :],
+        satellite_position_eci={satellite: position},
+        satellite_velocity_eci={satellite: zero},
+        satellite_position_ecef={satellite: position},
+        satellite_attitude_angular_velocity_eci={satellite: zero},
+        sun_direction_eci=np.array([[0.0, 0.0, 1.0]]),
+        sun_direction_ecef=np.array([[0.0, 0.0, 1.0]]),
+    )
+    coordinator = CommLinkCalculationCoordinator(
+        calculator_assignment={
+            (ConstellationSatellite, Gateway): MemorylessCommLinkCalculatorWrapper(
+                SatToGatewayBinaryCommLinkCalculator(link_capacity=10e9),
+            ),
+            # GatewayOGS subclasses Gateway, but dispatch still uses the exact node type.
+            (ConstellationSatellite, GatewayOGS): MemorylessCommLinkCalculatorWrapper(
+                SatToGatewayBinaryCommLinkCalculator(link_capacity=3e9),
+            ),
+        },
+    )
+
+    performance_time_series = coordinator.calc(
+        edges_time_series=[{(satellite, gateway), (satellite, ogs)}],
+        dynamics_data=dynamics_data,
+        rng=np.random.default_rng(0),
+    )
+
+    assert performance_time_series[0][(satellite, gateway)]["link_capacity"] == 10e9
+    assert performance_time_series[0][(satellite, ogs)]["link_capacity"] == 3e9

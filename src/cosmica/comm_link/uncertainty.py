@@ -75,12 +75,25 @@ class EdgeFailureModel[T: np.number | np.bool_](ABC):
 _SECOND = np.timedelta64(1, "s")
 
 
+def _validate_time_grid(time: npt.NDArray[np.datetime64]) -> None:
+    if time.ndim != 1 or time.shape[0] == 0:
+        msg = f"time must be a non-empty 1-D array, got shape {time.shape}."
+        raise ValueError(msg)
+    if np.any(np.diff(time) <= np.timedelta64(0, "s")):
+        msg = "time must be strictly increasing."
+        raise ValueError(msg)
+
+
 @dataclass(frozen=True, kw_only=True, slots=True)
 class ExpEdgeModel(EdgeFailureModel[np.bool_]):
     """Exponential Edge Model.
 
     Generate the state of an edge following an exponential distribution by calling the 'simulate' method.
     An edge can be thought as the link between two nodes (e.g. terminals, satellites)
+
+    Failures occur after exponentially distributed operating times (whole seconds), and each failure lasts
+    exactly `recovery_time`. A failure at elapsed time `t_f` marks the samples in `(t_f, t_f + recovery_time]`
+    as failed, so a failure that starts and ends between two samples is not observed.
     """
 
     # Exponential distribution with mean = reliability
@@ -95,32 +108,35 @@ class ExpEdgeModel(EdgeFailureModel[np.bool_]):
         default_factory=lambda: np.timedelta64(1800, "s"),
     )
 
+    def _draw_operating_time(self, rng: np.random.Generator) -> np.timedelta64:
+        return rng.exponential(self.reliability / _SECOND) * _SECOND
+
     def simulate(
         self,
         time: Annotated[
             npt.NDArray[np.datetime64],
-            Doc("time_array as a np.ndarray with elements in the np.datetime64 format"),
+            Doc("Non-empty, strictly increasing 1-D array of np.datetime64 sample times; spacing may be irregular."),
         ],
         rng: Annotated[np.random.Generator, Doc("NumPy random number generator")],
     ) -> Annotated[
         npt.NDArray[np.bool_],
         Doc("time series of edge states on given time frame (True = Failure, False= No-failure)"),
     ]:
-        state_changed = np.zeros(time.shape, dtype=np.bool_)
-        time_step = time[1] - time[0]
-        total_time = time[-1] - time[0]
+        _validate_time_grid(time)
+        elapsed = time - time[0]
+        total_time = elapsed[-1]
+        failed = np.zeros(time.shape, dtype=np.bool_)
 
-        failure_time: np.timedelta64 = rng.exponential(self.reliability / _SECOND) * _SECOND
+        failure_time = self._draw_operating_time(rng)
         while failure_time <= total_time:
-            failure_idx: int = np.where(time > (time[0] + failure_time))[0][0]
-            state_changed[failure_idx] = True
-            recovery_idx = failure_idx + int(self.recovery_time / time_step)
-            if recovery_idx < state_changed.shape[0]:  # type: ignore[misc] # Possibly a typing bug in NumPy
-                state_changed[recovery_idx] = True
-            else:
-                return np.logical_xor.accumulate(state_changed)
-            failure_time += self.recovery_time + rng.exponential(self.reliability / _SECOND) * _SECOND
-        return np.logical_xor.accumulate(state_changed)
+            recovered_time = failure_time + self.recovery_time
+            start = np.searchsorted(elapsed, failure_time, side="right")
+            stop = np.searchsorted(elapsed, recovered_time, side="right")
+            failed[start:stop] = True
+            if recovered_time >= total_time:
+                break
+            failure_time = recovered_time + self._draw_operating_time(rng)
+        return failed
 
 
 class AtmosphericScintillationModel[T: np.number | np.bool_](ABC):

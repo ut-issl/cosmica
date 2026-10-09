@@ -81,6 +81,8 @@ class ExpEdgeModel(EdgeFailureModel[np.bool_]):
 
     Generate the state of an edge following an exponential distribution by calling the 'simulate' method.
     An edge can be thought as the link between two nodes (e.g. terminals, satellites)
+
+    The simulation time grid must contain at least two strictly increasing, regularly spaced samples.
     """
 
     # Exponential distribution with mean = reliability
@@ -106,21 +108,37 @@ class ExpEdgeModel(EdgeFailureModel[np.bool_]):
         npt.NDArray[np.bool_],
         Doc("time series of edge states on given time frame (True = Failure, False= No-failure)"),
     ]:
-        state_changed = np.zeros(time.shape, dtype=np.bool_)
-        time_step = time[1] - time[0]
+        if time.shape[0] < 2:
+            msg = "The time grid must contain at least two samples."
+            raise ValueError(msg)
+
+        time_steps = np.diff(time)
+        if np.any(time_steps <= np.timedelta64(0, "s")):
+            msg = "The time grid must be strictly increasing."
+            raise ValueError(msg)
+        if np.any(time_steps != time_steps[0]):
+            msg = "The time grid must be regular."
+            raise ValueError(msg)
+
+        transition_counts = np.zeros(time.shape, dtype=np.uint64)
         total_time = time[-1] - time[0]
 
         failure_time: np.timedelta64 = rng.exponential(self.reliability / _SECOND) * _SECOND
         while failure_time <= total_time:
-            failure_idx: int = np.where(time > (time[0] + failure_time))[0][0]
-            state_changed[failure_idx] = True
-            recovery_idx = failure_idx + int(self.recovery_time / time_step)
-            if recovery_idx < state_changed.shape[0]:  # type: ignore[misc] # Possibly a typing bug in NumPy
-                state_changed[recovery_idx] = True
-            else:
-                return np.logical_xor.accumulate(state_changed)
+            failure_idx = int(np.searchsorted(time, time[0] + failure_time, side="right"))
+            if failure_idx >= transition_counts.shape[0]:
+                break
+            transition_counts[failure_idx] += 1
+
+            recovery_idx = int(
+                np.searchsorted(time, time[0] + failure_time + self.recovery_time, side="right"),
+            )
+            if recovery_idx >= transition_counts.shape[0]:
+                break
+            transition_counts[recovery_idx] += 1
+
             failure_time += self.recovery_time + rng.exponential(self.reliability / _SECOND) * _SECOND
-        return np.logical_xor.accumulate(state_changed)
+        return (np.cumsum(transition_counts) % 2).astype(np.bool_)
 
 
 class AtmosphericScintillationModel[T: np.number | np.bool_](ABC):

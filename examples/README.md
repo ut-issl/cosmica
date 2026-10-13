@@ -12,8 +12,6 @@ uv run examples/basic_simulation.py
 
 ## Marimo orbit propagation notebook
 
-Marimo is an opt-in dependency in the `examples` group and is not installed by the default development or typing groups. Its Loro dependency currently does not support Python 3.15, so use Python 3.14 for this notebook. The notebook is excluded from default type checking; Ruff still checks it.
-
 To run `orbit_propagation.py`, clone this repository, [install uv](https://docs.astral.sh/uv/getting-started/installation/), and run:
 
 ```bash

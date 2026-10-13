@@ -2,7 +2,8 @@ default:
     just --list
 
 ruff:
-    uv run -- ruff check
+    uv sync --quiet --frozen --only-group ruff
+    uv run --no-sync -- ruff check
 
 typecheck:
     uv sync --quiet --frozen --no-dev --group typing
@@ -15,19 +16,14 @@ lint-imports:
     uv run --no-sync -- lint-imports
 
 deptry:
-    uv sync --quiet --frozen
+    uv sync --quiet --frozen --dev
     uv run --no-sync -- deptry .
 
 license:
     uv sync --quiet --frozen --no-dev --group license
     uv run --quiet --no-sync -- pip-licenses
 
-lint:
-    just --justfile {{ justfile() }} ruff
-    just --justfile {{ justfile() }} typecheck
-    just --justfile {{ justfile() }} lint-imports
-    just --justfile {{ justfile() }} deptry
-    just --justfile {{ justfile() }} license
+lint: ruff typecheck lint-imports deptry license
 
 test:
     uv sync --quiet --frozen --no-dev --group test
@@ -39,12 +35,13 @@ docs-addr := "localhost:8000"
 
 # Generate documentation derived from repository sources
 generate-docs:
-    uv run -- scripts/gen_ref_pages.py
+    uv sync --quiet --frozen --no-dev --group docs
+    uv run --no-sync -- scripts/gen_ref_pages.py
 
 # Serve the documentation
 serve-docs: generate-docs
-    uv run -- zensical serve --dev-addr {{ docs-addr }}
+    uv run --no-sync -- zensical serve --dev-addr {{ docs-addr }}
 
 # Build the documentation
 build-docs: generate-docs
-    uv run -- zensical build --strict
+    uv run --no-sync -- zensical build --strict

@@ -52,11 +52,11 @@ dev = [
   { include-group = "typing" },
 ]
 docs = [
-  "black>=25.1.0",
   "griffe-typingdoc>=0.2.8",
   "mike",
   "mkdocstrings[python]>=0.30.0",
   "zensical>=0.0.58",
+  { include-group = "ruff" },
 ]
 examples = ["marimo>=0.15.0"]
 license = [

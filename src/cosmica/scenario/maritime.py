@@ -25,7 +25,9 @@ def get_ais_density_data() -> Annotated[
     npt.NDArray[np.floating],
     Doc(
         "AIS density data [seconds/m2] in Oct 2023 as a NumPy array with shape (180, 359)."
-        " The rows are latitude (+90 deg to -90 deg) and the columns are longitude (-179.5 deg to +179.5 deg).",
+        " The rows are 1-deg latitude cells covering +90 deg to -90 deg (centers +89.5 deg to -89.5 deg)."
+        " The columns are 1-deg longitude cells covering -179.5 deg to +179.5 deg (centers -179 deg to +179 deg),"
+        " so there is no data within 0.5 deg of the antimeridian.",
     ),
 ]:
     """Get AIS density data."""
@@ -45,6 +47,9 @@ def sample_demand_locations(
 
     The probability of sampling a location is proportional to the AIS density at that location,
     with the correction for the area difference between the lower and higher latitudes.
+
+    Locations are grid-cell centers. Cells are sampled with replacement, so a high-density cell can receive several
+    demands, and `n_samples` may exceed the number of cells.
     """
     rng = rng if rng is not None else np.random.default_rng()
 
@@ -64,6 +69,6 @@ def sample_demand_locations(
     probability = volume[is_valid].flatten() / np.nansum(volume)
     assert np.isclose(np.nansum(probability), 1)
 
-    sample_indices = rng.choice(np.sum(is_valid), size=n_samples, replace=False, p=probability)
+    sample_indices = rng.choice(np.sum(is_valid), size=n_samples, replace=True, p=probability)
 
     return longitude[is_valid].flatten()[sample_indices], latitude[is_valid].flatten()[sample_indices]

@@ -124,7 +124,12 @@ class EllipticalSatelliteOrbitPropagator(SatelliteOrbitPropagator):
         return np.sqrt(EARTH_MU / self._model.semi_major_axis**3)
 
     def datetime64_utc_to_skytime(self, t_datetime64: npt.NDArray[np.datetime64]) -> Time:
-        t_datetimes = [time.astype(datetime).replace(tzinfo=utc) for time in t_datetime64]
+        """Convert UTC `datetime64` values of any unit to a Skyfield `Time`.
+
+        Values pass through `datetime64[us]`, the finest unit Python `datetime` supports.
+        Sub-microsecond precision (e.g., from `datetime64[ns]`) is rounded down to the microsecond.
+        """
+        t_datetimes = [time.replace(tzinfo=utc) for time in t_datetime64.astype("datetime64[us]").astype(datetime)]
         return self.ts.from_datetimes(t_datetimes)
 
     @cached_property

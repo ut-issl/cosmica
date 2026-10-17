@@ -18,6 +18,7 @@ classifiers = [
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
   "Topic :: Scientific/Engineering",
   "Typing :: Typed",
 ]
@@ -44,7 +45,6 @@ dev = [
   "pre-commit>=4.3.0",
   "pydeps>=3.0.1",
   { include-group = "docs" },
-  { include-group = "examples" },
   { include-group = "license" },
   { include-group = "lint" },
   { include-group = "test" },
@@ -72,7 +72,6 @@ typing = [
   "pytest",
   "ty>=0.0.7",
   "types-tqdm>=4.67.0.20250809",
-  { include-group = "examples" },
   { include-group = "test" },
 ]
 
@@ -115,7 +114,9 @@ layers = [
   "cosmica.utils",
 ]
 
+# Marimo notebooks require the opt-in examples group (currently incompatible with Python 3.15).
 [tool.mypy]
+exclude = ['^examples/orbit_propagation\.py$']
 [[tool.mypy.overrides]]
 module = [
   "networkx",
@@ -150,7 +151,11 @@ allow-only = """\
   MPL-2.0 AND MIT;\
 """
 
+[tool.ty.src]
+exclude = ["examples/orbit_propagation.py"]
+
 [tool.pyrefly]
+project-excludes = ["examples/orbit_propagation.py"]
 preset = "legacy"
 search-path = ["."]
 ignore-missing-imports = [

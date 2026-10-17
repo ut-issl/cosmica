@@ -15,5 +15,5 @@ uv run examples/basic_simulation.py
 To run `orbit_propagation.py`, clone this repository, [install uv](https://docs.astral.sh/uv/getting-started/installation/), and run:
 
 ```bash
-uv run marimo edit examples/orbit_propagation.py
+uv run --group examples --python 3.14 marimo edit examples/orbit_propagation.py
 ```

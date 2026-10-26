@@ -152,7 +152,7 @@ jobs:
           python-version-file: .python-version
 
       - name: Install the project
-        run: uv sync --no-dev --group test
+        run: uv sync --no-dev --group test --group examples
 
       - name: Run pytest
         run: uv run -- coverage run -m pytest --import-mode importlib

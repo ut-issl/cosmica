@@ -3255,7 +3255,7 @@
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">SatToGatewayBinaryCommLinkCalculator</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">link_capacity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
-    <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -3420,7 +3420,7 @@ for the gateway -&gt; satellite (uplink) direction.</p>
   
       dataclass
    (cosmica.dtos.DynamicsData)" href="../../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
-    <span class="n">rng</span><span class="p">:</span> <span class="n"><span title="numpy.random.Generator">Generator</span></span>
+    <span class="n">rng</span><span class="p">:</span> <span class="n"><span title="numpy.random.Generator">Generator</span></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="dict">dict</span></span><span class="p">[</span><span class="n"><span title="tuple">tuple</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            Satellite
 
 
@@ -3505,16 +3505,18 @@ for the gateway -&gt; satellite (uplink) direction.</p>
   
       dataclass
    (cosmica.models.GatewayOGS)" href="../../models/#cosmica.models.GatewayOGS">GatewayOGS</a></span><span class="p">],</span> <span class="n"><a class="autorefs autorefs-internal" title="            AtmosphericScintillationModel (cosmica.comm_link.uncertainty.AtmosphericScintillationModel)" href="../uncertainty/#cosmica.comm_link.uncertainty.AtmosphericScintillationModel">AtmosphericScintillationModel</a></span>
-    <span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">gateway</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            ApertureAveragedLogNormalScintillationModel
+    <span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">gateway</span><span class="p">:</span> <span class="p">(</span>
+        <span class="n"><a class="autorefs autorefs-internal" title="            ApertureAveragedLogNormalScintillationModel
 
 
   
       dataclass
    (cosmica.comm_link.uncertainty.ApertureAveragedLogNormalScintillationModel)" href="../uncertainty/#cosmica.comm_link.uncertainty.ApertureAveragedLogNormalScintillationModel">ApertureAveragedLogNormalScintillationModel</a></span><span class="p">(</span>
-        <span class="n"><span title="cosmica.comm_link.uncertainty.ApertureAveragedLogNormalScintillationModel(default_rytov_variance)">default_rytov_variance</span></span><span class="o">=</span><span class="n"><span title="gateway.rytov_variance">rytov_variance</span></span><span class="p">,</span>
-        <span class="n"><span title="cosmica.comm_link.uncertainty.ApertureAveragedLogNormalScintillationModel(wavelength)">wavelength</span></span><span class="o">=</span><span class="mi">1550</span> <span class="o">*</span> <span class="mf">1e-09</span><span class="p">,</span>
-        <span class="n"><span title="cosmica.comm_link.uncertainty.ApertureAveragedLogNormalScintillationModel(aperture_diameter)">aperture_diameter</span></span><span class="o">=</span><span class="n"><span title="gateway.aperture_size">aperture_size</span></span><span class="p">,</span>
-    <span class="p">)</span>
+            <span class="n"><span title="cosmica.comm_link.uncertainty.ApertureAveragedLogNormalScintillationModel(default_rytov_variance)">default_rytov_variance</span></span><span class="o">=</span><span class="n"><span title="gateway.rytov_variance">rytov_variance</span></span><span class="p">,</span>
+            <span class="n"><span title="cosmica.comm_link.uncertainty.ApertureAveragedLogNormalScintillationModel(wavelength)">wavelength</span></span><span class="o">=</span><span class="mi">1550</span> <span class="o">*</span> <span class="mf">1e-09</span><span class="p">,</span>
+            <span class="n"><span title="cosmica.comm_link.uncertainty.ApertureAveragedLogNormalScintillationModel(aperture_diameter)">aperture_diameter</span></span><span class="o">=</span><span class="n"><span title="gateway.aperture_size">aperture_size</span></span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -3768,7 +3770,7 @@ for the gateway -&gt; satellite (uplink) direction.</p>
   
       dataclass
    (cosmica.dtos.DynamicsData)" href="../../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
-    <span class="n">rng</span><span class="p">:</span> <span class="n"><span title="numpy.random.Generator">Generator</span></span>
+    <span class="n">rng</span><span class="p">:</span> <span class="n"><span title="numpy.random.Generator">Generator</span></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="dict">dict</span></span><span class="p">[</span>
     <span class="n"><span title="tuple">tuple</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            Satellite
 
@@ -3867,7 +3869,7 @@ for the gateway -&gt; satellite (uplink) direction.</p>
    (cosmica.models.Gateway)" href="../../models/#cosmica.models.Gateway">Gateway</a></span>
     <span class="p">],</span>
     <span class="n">link_acquisition_time</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">60.0</span><span class="p">,</span>
-    <span class="n">skip_link_acquisition_at_simulation_start</span><span class="p">:</span> <span class="n"><span title="bool">bool</span></span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">skip_link_acquisition_at_simulation_start</span><span class="p">:</span> <span class="n"><span title="bool">bool</span></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -4036,7 +4038,7 @@ for the gateway -&gt; satellite (uplink) direction.</p>
   
       dataclass
    (cosmica.dtos.DynamicsData)" href="../../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
-    <span class="n">rng</span><span class="p">:</span> <span class="n"><span title="numpy.random.Generator">Generator</span></span>
+    <span class="n">rng</span><span class="p">:</span> <span class="n"><span title="numpy.random.Generator">Generator</span></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span>
     <span class="n"><span title="dict">dict</span></span><span class="p">[</span><span class="n"><span title="tuple">tuple</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            Satellite
 
@@ -4240,7 +4242,7 @@ for the gateway -&gt; satellite (uplink) direction.</p>
   
       dataclass
    (cosmica.models.Node)" href="../../models/#cosmica.models.Node">Node</a></span><span class="p">],</span> <span class="n"><a class="autorefs autorefs-internal" title="            CloudStates (cosmica.comm_link.uncertainty.CloudStates)" href="../uncertainty/#cosmica.comm_link.uncertainty.CloudStates">CloudStates</a></span><span class="p">[</span><span class="n"><span title="numpy.bool_">bool_</span></span><span class="p">]</span>
-    <span class="p">]</span>
+    <span class="p">],</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -4373,7 +4375,7 @@ for the gateway -&gt; satellite (uplink) direction.</p>
   
       dataclass
    (cosmica.dtos.DynamicsData)" href="../../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
-    <span class="n">rng</span><span class="p">:</span> <span class="n"><span title="numpy.random.Generator">Generator</span></span>
+    <span class="n">rng</span><span class="p">:</span> <span class="n"><span title="numpy.random.Generator">Generator</span></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span>
     <span class="n"><span title="dict">dict</span></span><span class="p">[</span><span class="n"><span title="tuple">tuple</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            Satellite
 

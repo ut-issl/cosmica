@@ -4046,7 +4046,7 @@
 
   
       dataclass
-   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span>
+   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="cosmica.topology.intra_constellation.ConstellationTimeSeriesTopologyBuilder[TGraph]">TGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
@@ -4252,7 +4252,7 @@
 
   
       dataclass
-   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span>
+   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
@@ -4564,7 +4564,7 @@
 
   
       dataclass
-   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span>
+   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="cosmica.topology.ground_to_constellation.GroundToConstellationTopologyBuilder[TGraph]">TGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
@@ -4779,7 +4779,7 @@ For ground stations, constraints include elevation angle and sun exclusion angle
 
   
       dataclass
-   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span>
+   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
@@ -4852,7 +4852,7 @@ For ground stations, constraints include elevation angle and sun exclusion angle
     <span class="o">*</span><span class="p">,</span>
     <span class="n">inter_plane_offset</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">last_to_first_plane_offset</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">max_latitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="numpy.deg2rad">deg2rad</span></span><span class="p">(</span><span class="mf">90.0</span><span class="p">)</span>
+    <span class="n">max_latitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="numpy.deg2rad">deg2rad</span></span><span class="p">(</span><span class="mf">90.0</span><span class="p">),</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -5000,7 +5000,7 @@ For ground stations, constraints include elevation angle and sun exclusion angle
 
   
       dataclass
-   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span>
+   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
@@ -5060,7 +5060,7 @@ For ground stations, constraints include elevation angle and sun exclusion angle
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">ManhattanTopologyBuilder</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">inter_plane_offset</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">last_to_first_plane_offset</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">last_to_first_plane_offset</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -5176,7 +5176,7 @@ For ground stations, constraints include elevation angle and sun exclusion angle
       dataclass
    (cosmica.models.Constellation)" href="../models/#cosmica.models.Constellation">Constellation</a></span><span class="p">[</span>
         <span class="n"><span title="tuple">tuple</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            PlaneId (cosmica.topology.intra_constellation.PlaneId)" href="intra_constellation/#cosmica.topology.intra_constellation.PlaneId">PlaneId</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="            InPlaneIndex (cosmica.topology.intra_constellation.InPlaneIndex)" href="intra_constellation/#cosmica.topology.intra_constellation.InPlaneIndex">InPlaneIndex</a></span><span class="p">]</span>
-    <span class="p">]</span>
+    <span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="networkx.DiGraph">DiGraph</span></span>
 </code></pre></div>
 
@@ -5372,7 +5372,7 @@ For ground stations, constraints include elevation angle and sun exclusion angle
 
   
       dataclass
-   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span>
+   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
@@ -5595,7 +5595,7 @@ connections.</p>
 
   
       dataclass
-   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span>
+   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
@@ -5734,7 +5734,7 @@ connections.</p>
 
   
       dataclass
-   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span>
+   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
@@ -5839,7 +5839,7 @@ connections.</p>
 
   
       dataclass
-   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span>
+   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="cosmica.topology.usersatellite_to_constellation.UserSatelliteToConstellationTopologyBuilder[TGraph]">TGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
@@ -5993,7 +5993,7 @@ assignments are validated before the graph is modified.</p>
 
   
       dataclass
-   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span>
+   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
@@ -6297,7 +6297,7 @@ with any <code>SatelliteId</code> type.</p>
    (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
     <span class="n">max_distance</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
     <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
-    <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
@@ -6699,7 +6699,7 @@ with any <code>SatelliteId</code> type.</p>
    (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
     <span class="n">inter_plane_offset</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">last_to_first_plane_offset</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">max_latitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="numpy.deg2rad">deg2rad</span></span><span class="p">(</span><span class="mf">90.0</span><span class="p">)</span>
+    <span class="n">max_latitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="numpy.deg2rad">deg2rad</span></span><span class="p">(</span><span class="mf">90.0</span><span class="p">),</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
@@ -7043,7 +7043,7 @@ links are disabled.</p>
     <span class="p">],</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">inter_plane_offset</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">last_to_first_plane_offset</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">last_to_first_plane_offset</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="networkx.DiGraph">DiGraph</span></span>
 </code></pre></div>
 
@@ -7359,7 +7359,7 @@ connection from the last plane back to the first.</p>
   
       dataclass
    (cosmica.models.ConstellationSatellite)" href="../models/#cosmica.models.ConstellationSatellite">ConstellationSatellite</a></span><span class="p">,</span>
-    <span class="p">]</span>
+    <span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
@@ -7632,7 +7632,7 @@ connection from the last plane back to the first.</p>
    (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
     <span class="n">max_distance</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
     <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
-    <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 
@@ -8157,7 +8157,7 @@ with any <code>SatelliteId</code> type.</p>
 
   
       dataclass
-   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span>
+   (cosmica.dtos.DynamicsData)" href="../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span><span class="n"><span title="networkx.DiGraph">DiGraph</span></span><span class="p">]</span>
 </code></pre></div>
 

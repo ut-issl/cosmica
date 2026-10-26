@@ -3294,7 +3294,7 @@
     <span class="n">max_inter_satellite_distance</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
     <span class="n">lowest_altitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
     <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
-    <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -3662,7 +3662,7 @@ constraint while still applying every instantaneous constraint.</p>
   
       dataclass
    (cosmica.dtos.DynamicsData)" href="../../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
-    <span class="n">rng</span><span class="p">:</span> <span class="n"><span title="numpy.random.Generator">Generator</span></span>
+    <span class="n">rng</span><span class="p">:</span> <span class="n"><span title="numpy.random.Generator">Generator</span></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span>
     <span class="n"><span title="dict">dict</span></span><span class="p">[</span>
         <span class="n"><a class="autorefs autorefs-internal" title="            OpticalSatelliteLink (cosmica.comm_link.sat_to_sat.OpticalSatelliteLink)" href="./#cosmica.comm_link.sat_to_sat.OpticalSatelliteLink">OpticalSatelliteLink</a></span><span class="p">[</span>
@@ -3897,7 +3897,7 @@ constraint while still applying every instantaneous constraint.</p>
     <span class="n">max_inter_satellite_distance</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
     <span class="n">lowest_altitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
     <span class="n">max_relative_angular_velocity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="float">float</span></span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span>
-    <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">sun_exclusion_angle</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -4115,7 +4115,7 @@ orientation for heterogeneous types such as user satellite &lt;-&gt; constellati
   
       dataclass
    (cosmica.dtos.DynamicsData)" href="../../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
-    <span class="n">rng</span><span class="p">:</span> <span class="n"><span title="numpy.random.Generator">Generator</span></span>
+    <span class="n">rng</span><span class="p">:</span> <span class="n"><span title="numpy.random.Generator">Generator</span></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="dict">dict</span></span><span class="p">[</span><span class="n"><span title="tuple">tuple</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            Satellite
 
 
@@ -4222,7 +4222,7 @@ orientation for heterogeneous types such as user satellite &lt;-&gt; constellati
    (cosmica.models.Satellite)" href="../../models/#cosmica.models.Satellite">Satellite</a></span>
     <span class="p">],</span>
     <span class="n">link_acquisition_time</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">60.0</span><span class="p">,</span>
-    <span class="n">skip_link_acquisition_at_simulation_start</span><span class="p">:</span> <span class="n"><span title="bool">bool</span></span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">skip_link_acquisition_at_simulation_start</span><span class="p">:</span> <span class="n"><span title="bool">bool</span></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -4391,7 +4391,7 @@ acquisition states.</p>
   
       dataclass
    (cosmica.dtos.DynamicsData)" href="../../dtos/#cosmica.dtos.DynamicsData">DynamicsData</a></span><span class="p">,</span>
-    <span class="n">rng</span><span class="p">:</span> <span class="n"><span title="numpy.random.Generator">Generator</span></span>
+    <span class="n">rng</span><span class="p">:</span> <span class="n"><span title="numpy.random.Generator">Generator</span></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="list">list</span></span><span class="p">[</span>
     <span class="n"><span title="dict">dict</span></span><span class="p">[</span><span class="n"><span title="tuple">tuple</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            Satellite
 

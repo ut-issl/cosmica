@@ -3328,7 +3328,7 @@
     <span class="n">r2</span><span class="p">:</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.floating">floating</span></span><span class="p">],</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">extend_at_r1</span><span class="p">:</span> <span class="n"><span title="bool">bool</span></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">extend_at_r2</span><span class="p">:</span> <span class="n"><span title="bool">bool</span></span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">extend_at_r2</span><span class="p">:</span> <span class="n"><span title="bool">bool</span></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.floating">floating</span></span><span class="p">]</span>
 </code></pre></div>
 
@@ -3642,7 +3642,7 @@
     <span class="n">r1</span><span class="p">:</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.floating">floating</span></span><span class="p">],</span>
     <span class="n">r2</span><span class="p">:</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.floating">floating</span></span><span class="p">],</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">lowest_altitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">lowest_altitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="bool">bool</span></span>
 </code></pre></div>
 
@@ -4155,20 +4155,20 @@ from Earth's center is considered clear.</p>
     <span class="n">x1</span><span class="p">:</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="FloatType">FloatType</span></span><span class="p">],</span>
     <span class="n">x2</span><span class="p">:</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="FloatType">FloatType</span></span><span class="p">],</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">keepdims</span><span class="p">:</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">keepdims</span><span class="p">:</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="FloatType">FloatType</span></span><span class="p">]</span>
 </code></pre></div><div class="doc-signature highlight"><pre><span></span><code><span class="nf">rowwise_innerdot</span><span class="p">(</span>
     <span class="n">x1</span><span class="p">:</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.number">number</span></span><span class="p">],</span>
     <span class="n">x2</span><span class="p">:</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.number">number</span></span><span class="p">],</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">keepdims</span><span class="p">:</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">keepdims</span><span class="p">:</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.number">number</span></span><span class="p">]</span>
 </code></pre></div>          </div>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">rowwise_innerdot</span><span class="p">(</span>
     <span class="n">x1</span><span class="p">:</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.number">number</span></span><span class="p">],</span>
     <span class="n">x2</span><span class="p">:</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.number">number</span></span><span class="p">],</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">keepdims</span><span class="p">:</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">keepdims</span><span class="p">:</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="numpy.typing.NDArray">NDArray</span></span><span class="p">[</span><span class="n"><span title="numpy.number">number</span></span><span class="p">]</span>
 </code></pre></div>
 

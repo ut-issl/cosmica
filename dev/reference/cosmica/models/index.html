@@ -6536,7 +6536,7 @@
     <span class="n">inclination</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">raan</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">phase_at_epoch</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
-    <span class="n">epoch</span><span class="p">:</span> <span class="n"><span title="numpy.datetime64">datetime64</span></span>
+    <span class="n">epoch</span><span class="p">:</span> <span class="n"><span title="numpy.datetime64">datetime64</span></span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -6884,7 +6884,7 @@
       module-attribute
    (cosmica.models.node.NodeGID)" href="node/#cosmica.models.node.NodeGID">NodeGID</a></span><span class="p">,</span>
     <span class="n">distribution</span><span class="p">:</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="s2">"uniform"</span><span class="p">,</span> <span class="s2">"poisson"</span><span class="p">],</span>
-    <span class="n">transmission_rate</span><span class="p">:</span> <span class="n"><span title="float">float</span></span>
+    <span class="n">transmission_rate</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -7075,7 +7075,7 @@
    (cosmica.models.satellite.ConstellationSatellite)" href="satellite/#cosmica.models.satellite.ConstellationSatellite">ConstellationSatellite</a></span><span class="p">[</span>
             <span class="n"><span title="cosmica.models.constellation.Constellation[SatelliteNodeId]">SatelliteNodeId</span></span><span class="p">,</span> <span class="n"><span title="cosmica.models.constellation.Constellation[SatelliteOrbitType]">SatelliteOrbitType</span></span>
         <span class="p">],</span>
-    <span class="p">]</span>
+    <span class="p">],</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -7175,7 +7175,7 @@ e.g., <code>Constellation[tuple[int, int]]</code>.</p>
   
       dataclass
    (cosmica.models.terminal.CommunicationTerminal)" href="terminal/#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a></span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n"><span title="tuple">tuple</span></span><span class="p">(),</span>
-    <span class="n">orbit</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.ConstellationSatellite[O]">O</span></span>
+    <span class="n">orbit</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.ConstellationSatellite[O]">O</span></span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -7517,7 +7517,7 @@ e.g., <code>Constellation[tuple[int, int]]</code>.</p>
    (cosmica.models.orbit.GravityModel.WGS84)" href="orbit/#cosmica.models.orbit.GravityModel.WGS84">WGS84</a></span><span class="p">,</span>
     <span class="n">drag_coeff</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">eccentricity</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
-    <span class="n">argpo</span><span class="p">:</span> <span class="n"><span title="float">float</span></span>
+    <span class="n">argpo</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -7808,7 +7808,7 @@ e.g., <code>Constellation[tuple[int, int]]</code>.</p>
     <span class="n">longitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">minimum_elevation</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">altitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="n">n_terminals</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">n_terminals</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -8135,7 +8135,7 @@ e.g., <code>Constellation[tuple[int, int]]</code>.</p>
     <span class="n">altitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
     <span class="n">n_terminals</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="n">aperture_size</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
-    <span class="n">rytov_variance</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">rytov_variance</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -8994,7 +8994,7 @@ e.g., <code>Constellation[tuple[int, int]]</code>.</p>
    (cosmica.models.node.NodeGID)" href="node/#cosmica.models.node.NodeGID">NodeGID</a></span><span class="p">,</span>
     <span class="n">data_size</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">generation_time</span><span class="p">:</span> <span class="n"><span title="numpy.datetime64">datetime64</span></span><span class="p">,</span>
-    <span class="n">deadline</span><span class="p">:</span> <span class="n"><span title="numpy.datetime64">datetime64</span></span>
+    <span class="n">deadline</span><span class="p">:</span> <span class="n"><span title="numpy.datetime64">datetime64</span></span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -9207,7 +9207,7 @@ data transfer should be completed is also given.</p>
     <span class="n">elevation_min</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">elevation_max</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">angular_velocity_max</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
-    <span class="n">dcm_body2terminal</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            DirectionCosineMatrix (cosmica.models.terminal.DirectionCosineMatrix)" href="terminal/#cosmica.models.terminal.DirectionCosineMatrix">DirectionCosineMatrix</a></span> <span class="o">=</span> <span class="n"><span title="cosmica.models.terminal._IDENTITY_DCM">_IDENTITY_DCM</span></span>
+    <span class="n">dcm_body2terminal</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            DirectionCosineMatrix (cosmica.models.terminal.DirectionCosineMatrix)" href="terminal/#cosmica.models.terminal.DirectionCosineMatrix">DirectionCosineMatrix</a></span> <span class="o">=</span> <span class="n"><span title="cosmica.models.terminal._IDENTITY_DCM">_IDENTITY_DCM</span></span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -9732,7 +9732,7 @@ data transfer should be completed is also given.</p>
 
   
       dataclass
-   (cosmica.models.terminal.CommunicationTerminal)" href="terminal/#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a></span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n"><span title="tuple">tuple</span></span><span class="p">()</span>
+   (cosmica.models.terminal.CommunicationTerminal)" href="terminal/#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a></span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n"><span title="tuple">tuple</span></span><span class="p">(),</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -9996,7 +9996,7 @@ data transfer should be completed is also given.</p>
 
   
       dataclass
-   (cosmica.models.demand.Demand)" href="demand/#cosmica.models.demand.Demand">Demand</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><span title="list">list</span></span><span class="p">()</span>
+   (cosmica.models.demand.Demand)" href="demand/#cosmica.models.demand.Demand">Demand</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><span title="list">list</span></span><span class="p">(),</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -10222,7 +10222,7 @@ data transfer should be completed is also given.</p>
     <span class="n">latitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">longitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">altitude</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="n">minimum_elevation</span><span class="p">:</span> <span class="n"><span title="float">float</span></span>
+    <span class="n">minimum_elevation</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -10607,7 +10607,7 @@ data transfer should be completed is also given.</p>
   
       dataclass
    (cosmica.models.terminal.CommunicationTerminal)" href="terminal/#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a></span><span class="p">[</span><span class="n"><span title="collections.abc.Hashable">Hashable</span></span><span class="p">]</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="n"><span title="list">list</span></span><span class="p">()</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n"><span title="list">list</span></span><span class="p">(),</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -10822,7 +10822,7 @@ data transfer should be completed is also given.</p>
     <span class="n">elevation_min</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">elevation_max</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
     <span class="n">angular_velocity_max</span><span class="p">:</span> <span class="n"><span title="float">float</span></span><span class="p">,</span>
-    <span class="n">dcm_body2terminal</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            DirectionCosineMatrix (cosmica.models.terminal.DirectionCosineMatrix)" href="terminal/#cosmica.models.terminal.DirectionCosineMatrix">DirectionCosineMatrix</a></span> <span class="o">=</span> <span class="n"><span title="cosmica.models.terminal._IDENTITY_DCM">_IDENTITY_DCM</span></span>
+    <span class="n">dcm_body2terminal</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            DirectionCosineMatrix (cosmica.models.terminal.DirectionCosineMatrix)" href="terminal/#cosmica.models.terminal.DirectionCosineMatrix">DirectionCosineMatrix</a></span> <span class="o">=</span> <span class="n"><span title="cosmica.models.terminal._IDENTITY_DCM">_IDENTITY_DCM</span></span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -11181,7 +11181,7 @@ data transfer should be completed is also given.</p>
   
       dataclass
    (cosmica.models.terminal.CommunicationTerminal)" href="terminal/#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a></span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n"><span title="tuple">tuple</span></span><span class="p">(),</span>
-    <span class="n">orbit</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.UserSatellite[O]">O</span></span>
+    <span class="n">orbit</span><span class="p">:</span> <span class="n"><span title="cosmica.models.satellite.UserSatellite[O]">O</span></span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -11434,7 +11434,7 @@ data transfer should be completed is also given.</p>
     <span class="n">n_total_sats</span><span class="p">:</span> <span class="n"><span title="int">int</span></span><span class="p">,</span>
     <span class="n">n_geometry_planes</span><span class="p">:</span> <span class="n"><span title="int">int</span></span><span class="p">,</span>
     <span class="n">phasing_factor</span><span class="p">:</span> <span class="n"><span title="int">int</span></span><span class="p">,</span>
-    <span class="n">epoch</span><span class="p">:</span> <span class="n"><span title="numpy.datetime64">datetime64</span></span>
+    <span class="n">epoch</span><span class="p">:</span> <span class="n"><span title="numpy.datetime64">datetime64</span></span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            Constellation
 
 

@@ -31,6 +31,14 @@ test:
     uv run --no-sync -- coverage report -m
     uv run --no-sync -- coverage xml -o ./coverage.xml
 
+lowest-venv := ".venv-lowest"
+
+# Run tests on the minimum supported Python with the lowest declared direct dependencies
+test-lowest:
+    uv venv --quiet --clear --python 3.13 {{ lowest-venv }}
+    VIRTUAL_ENV={{ lowest-venv }} uv pip install --quiet --resolution lowest-direct . --group test --group examples
+    {{ lowest-venv }}/bin/python -m pytest --import-mode importlib
+
 docs-addr := "localhost:8000"
 
 # Generate documentation derived from repository sources

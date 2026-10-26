@@ -12,10 +12,14 @@ from .terminal import CommunicationTerminal
 
 @dataclass(frozen=True, kw_only=True, slots=True)
 class User[T: Hashable](Node[T], ABC):
-    """Base model for a user."""
+    """Base model for a user.
+
+    Identity (equality and hash) depends only on the type and `id`; `terminals` is excluded
+    so that users stay hashable and usable as graph nodes and dictionary keys.
+    """
 
     id: T
-    terminals: list[CommunicationTerminal[Hashable]] = field(default_factory=list)
+    terminals: list[CommunicationTerminal[Hashable]] = field(default_factory=list, compare=False)
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
@@ -27,4 +31,3 @@ class StationaryOnGroundUser[T: Hashable](User[T]):
     longitude: float = field(compare=False)
     altitude: float = field(default=0.0, compare=False)
     minimum_elevation: float = field(compare=False)
-    terminals: list[CommunicationTerminal[Hashable]] = field(default_factory=list, compare=False)

@@ -40,6 +40,9 @@ plugins:
   - search
   - awesome-nav
   - section-index
+  - api-autonav:
+      modules:
+        - src/cosmica
   - mkdocstrings:
       default_handler: python
       handlers:
@@ -64,6 +67,11 @@ repo_url: https://github.com/ut-issl/cosmica
 repo_name: ut-issl/cosmica
 markdown_extensions:
   - def_list
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.superfences
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.quotes:

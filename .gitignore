@@ -146,7 +146,6 @@ venv.bak/
 # Zensical documentation
 /site
 /docs/index.md
-/docs/reference/
 
 # mypy
 .mypy_cache/

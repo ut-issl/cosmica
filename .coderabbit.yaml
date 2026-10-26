@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# CodeRabbit configuration. Reference: https://docs.coderabbit.ai/reference/configuration
+# CodeRabbit also reads CLAUDE.md / AGENTS.md as coding guidelines.
+language: "en-US"
+
+reviews:
+  # Lockfiles, generated output, snapshots, and binary map assets are not worth
+  # reviewing and count against the per-review file limit.
+  path_filters:
+    - "!uv.lock"
+    - "!site/**"
+    - "!dist/**"
+    - "!**/__snapshots__/**"
+    - "!src/cosmica/visualization/assets/**"
+
+  path_instructions:
+    - path: "src/cosmica/**/*.py"
+      instructions: >-
+        Numerical code must use NumPy arrays and SI units; flag non-SI units
+        (degrees, km, hours, dB) unless the conversion is explicit and the
+        name says so. Flag missing or imprecise type annotations on public
+        APIs. Do not repeat issues that ruff, mypy, ty, pyrefly, or
+        import-linter already report.
+    - path: "tests/**/*.py"
+      instructions: >-
+        Tests must be function-style (no test classes) and should use
+        pytest.mark.parametrize for input variations. Flag tests that only
+        exercise trivial code paths or assert nothing meaningful.
+
+  auto_review:
+    auto_incremental_review: false
+    # Dependency-update PRs would quickly exhaust the review rate limit.
+    ignore_usernames:
+      - "renovate[bot]"
+
+  # Already enforced in CI or pre-commit (ruff, actionlint, zizmor). Markdown
+  # follows rumdl (.rumdl.toml), whose rules differ from markdownlint's.
+  tools:
+    ruff:
+      enabled: false
+    actionlint:
+      enabled: false
+    zizmor:
+      enabled: false
+    markdownlint:
+      enabled: false

@@ -130,6 +130,7 @@ celerybeat.pid
 # Environments
 .env
 .venv
+.venv-lowest
 env/
 venv/
 ENV/

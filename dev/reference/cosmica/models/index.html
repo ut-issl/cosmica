@@ -10588,6 +10588,8 @@ data transfer should be completed is also given.</p>
 
 
         <p>Base model for a user.</p>
+<p>Identity (equality and hash) depends only on the type and <code>id</code>; <code>terminals</code> is excluded
+so that users stay hashable and usable as graph nodes and dictionary keys.</p>
 
 
 
@@ -10678,7 +10680,7 @@ data transfer should be completed is also given.</p>
   
       dataclass
    (cosmica.models.terminal.CommunicationTerminal)" href="terminal/#cosmica.models.terminal.CommunicationTerminal">CommunicationTerminal</a></span><span class="p">[</span><span class="n"><span title="collections.abc.Hashable">Hashable</span></span><span class="p">]]</span> <span class="o">=</span> <span class="n"><span title="dataclasses.field">field</span></span><span class="p">(</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n"><span title="dataclasses.field(default_factory)">default_factory</span></span><span class="o">=</span><span class="n"><span title="list">list</span></span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n"><span title="dataclasses.field(default_factory)">default_factory</span></span><span class="o">=</span><span class="n"><span title="list">list</span></span><span class="p">,</span> <span class="n"><span title="dataclasses.field(compare)">compare</span></span><span class="o">=</span><span class="kc">False</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span>
 </span></code></pre></div>
 

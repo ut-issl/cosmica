@@ -117,6 +117,9 @@ layers = [
 ]
 
 [tool.mypy]
+# Check against the minimum supported Python instead of the interpreter running mypy.
+python_version = "3.13"
+
 [[tool.mypy.overrides]]
 module = [
   "networkx",
@@ -153,6 +156,8 @@ allow-only = """\
 
 [tool.pyrefly]
 preset = "legacy"
+# Check against the minimum supported Python instead of the queried interpreter.
+python-version = "3.13"
 search-path = ["."]
 ignore-missing-imports = [
   "networkx",

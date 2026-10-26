@@ -73,7 +73,8 @@ class GatewayOGS[T: Hashable](Gateway[T]):
 
     @override
     def __post_init__(self) -> None:
-        super().__post_init__()
+        # Explicit form: zero-argument super() fails in slotted dataclasses before Python 3.13.14.
+        super(GatewayOGS, self).__post_init__()
         _assert_finite(self.aperture_size, name="aperture_size")
         _assert_finite(self.rytov_variance, name="rytov_variance")
         assert self.aperture_size > 0.0, "aperture_size must be positive."

@@ -79,6 +79,9 @@ def _validate_time_grid(time: npt.NDArray[np.datetime64]) -> None:
     if time.ndim != 1 or time.shape[0] == 0:
         msg = f"time must be a non-empty 1-D array, got shape {time.shape}."
         raise ValueError(msg)
+    if np.any(np.isnat(time)):
+        msg = "time must be free of NaT."
+        raise ValueError(msg)
     if np.any(np.diff(time) <= np.timedelta64(0, "s")):
         msg = "time must be strictly increasing."
         raise ValueError(msg)

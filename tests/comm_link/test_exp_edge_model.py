@@ -39,6 +39,8 @@ def _simulate(
         pytest.param(np.full((2, 2), _START), id="two-dimensional"),
         pytest.param(_START + np.array([0, 60, 60]).astype("timedelta64[s]"), id="repeated"),
         pytest.param(_START + np.array([0, 120, 60]).astype("timedelta64[s]"), id="decreasing"),
+        pytest.param(_START + np.array([0, 60, "NaT"], dtype="timedelta64[s]"), id="trailing-nat"),
+        pytest.param(_START + np.array(["NaT", 0, 60], dtype="timedelta64[s]"), id="leading-nat"),
     ],
 )
 def test_exp_edge_model_rejects_unsupported_time_grids(time: npt.NDArray[np.datetime64]) -> None:

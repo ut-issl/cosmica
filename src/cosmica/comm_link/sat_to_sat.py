@@ -213,6 +213,7 @@ class SatToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, Satel
         dynamics_data: DynamicsData,
         rng: np.random.Generator,
     ) -> list[dict[tuple[Satellite, Satellite], CommLinkPerformance]]:
+        """Track directed-link acquisition, resetting its timer whenever the link becomes unavailable."""
         assert len(edges_time_series) == len(dynamics_data.time)
 
         comm_link_time_series: list[dict[tuple[Satellite, Satellite], CommLinkPerformance]] = []

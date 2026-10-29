@@ -55,3 +55,26 @@ def test_scintillation_sample_honors_rytov_variance_override(rytov_variance: flo
     expected = _make_model(default_rytov_variance=rytov_variance).sample(np.random.default_rng(0), _LINK_DISTANCE)
 
     assert overridden == pytest.approx(expected)
+
+
+@pytest.mark.parametrize("rytov_variance", [0.0, 0.1, 2.0])
+def test_scintillation_sample_uses_log_normal_parameters(rytov_variance: float) -> None:
+    model = _make_model()
+    log_variance = np.log1p(model.sigma2_scintillation(_LINK_DISTANCE, rytov_variance))
+    expected = np.random.default_rng(42).lognormal(-log_variance / 2, np.sqrt(log_variance))
+
+    actual = model.sample(np.random.default_rng(42), _LINK_DISTANCE, rytov_variance)
+
+    assert actual == pytest.approx(expected)
+
+
+@pytest.mark.parametrize("rytov_variance", [0.1, 2.0])
+def test_scintillation_samples_have_unit_mean_and_expected_variance(rytov_variance: float) -> None:
+    model = _make_model()
+    rng = np.random.default_rng(42)
+    samples = np.array([model.sample(rng, _LINK_DISTANCE, rytov_variance) for _ in range(200_000)])
+    expected_variance = model.sigma2_scintillation(_LINK_DISTANCE, rytov_variance)
+
+    # Fixed seed and generous tolerances avoid sensitivity to sampling noise.
+    assert np.mean(samples) == pytest.approx(1.0, abs=0.01)
+    assert np.var(samples) == pytest.approx(expected_variance, rel=0.05)

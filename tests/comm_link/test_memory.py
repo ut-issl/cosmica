@@ -28,6 +28,7 @@ def test_unavailable_link_restarts_acquisition(
     calculator_type: Any,
     boolean_type: type[bool] | type[np.bool_],
 ):
+    """An outage must restart acquisition for Python and NumPy availability scalars."""
     satellite = make_satellite(1)
     gateway = Gateway(id=1, latitude=0.0, longitude=0.0, minimum_elevation=0.0)
     edge: tuple[Node, Node]

@@ -21,6 +21,7 @@ def test_normalize(
     axis: int | None,
     expected: list,
 ):
+    """Preserve zero vectors, floating precision, and inputs across supported axes."""
     vector = np.array(values, dtype=dtype)
     original = vector.copy()
 
@@ -32,3 +33,16 @@ def test_normalize(
     assert np.issubdtype(result.dtype, np.floating)
     if np.issubdtype(vector.dtype, np.floating):
         assert result.dtype == vector.dtype
+
+
+@pytest.mark.parametrize("order", [-1.0, -2.0])
+@pytest.mark.parametrize("values", [[0.0, 0.0, 0.0], [0.0, 3.0, 4.0], [2.0, 3.0, 4.0]])
+def test_normalize_negative_norms(order: float, values: list[float]):
+    """Negative norms of vectors containing zero are zero, without division warnings."""
+    vector = np.array(values)
+    expected = vector if 0.0 in values else vector / np.linalg.norm(vector, ord=order)
+
+    with np.errstate(divide="raise", invalid="raise"):
+        result = normalize(vector, ord=order)
+
+    np.testing.assert_allclose(result, expected)

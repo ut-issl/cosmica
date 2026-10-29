@@ -105,7 +105,9 @@ def normalize(
     axis: int | None = None,
 ) -> npt.NDArray[np.floating]:
     """Normalize vectors, leaving zero-norm vectors unchanged without division warnings."""
-    norm = LA.norm(x, ord=ord, axis=axis, keepdims=True)
+    # Negative norms raise zero entries to negative powers; the resulting infinite sum yields a zero norm.
+    with np.errstate(divide="ignore"):
+        norm = LA.norm(x, ord=ord, axis=axis, keepdims=True)
     result = x.astype(np.result_type(x.dtype, norm.dtype), copy=True)
     return np.divide(x, norm, out=result, where=norm != 0.0)
 

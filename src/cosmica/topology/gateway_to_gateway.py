@@ -15,6 +15,7 @@ class GatewayToGatewayTopologyBuilder:
         *,
         gateways: Collection[Gateway[Hashable]],
     ) -> nx.DiGraph:
+        """Connect every pair of gateways with a directed edge in each direction."""
         graph = nx.Graph()
         gateway_list = list(gateways)
         graph.add_nodes_from(gateway_list)

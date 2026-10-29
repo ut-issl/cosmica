@@ -158,6 +158,7 @@ class EllipticalSatelliteOrbitPropagator(SatelliteOrbitPropagator):
 
     @override
     def propagate(self, time: npt.NDArray[np.datetime64]) -> SatelliteOrbitState:
+        """Propagate UTC samples in the selected reference frame, returning SI position and velocity."""
         time_from_epoch = self.datetime64_utc_to_skytime(time)
         if self.reference_frame in {"j2000", "gcrs"}:
             geoc = self.satellite.at(time_from_epoch)  # Geocentric position in GCRS/ICRF axes

@@ -141,6 +141,7 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
     focus_edges_list: list[set[tuple[Node, Node]]] | None = None,
     focus_edges_label_list: list[str] | None = None,
 ) -> Axes:
+    """Draw node positions and categorized links, with one optional label per focus-edge group."""
     # Set defaults for omitted arguments.
     if focus_edges_list is None:
         focus_edges_list = []

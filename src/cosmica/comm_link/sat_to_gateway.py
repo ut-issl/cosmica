@@ -2,6 +2,7 @@ __all__ = [
     "SatToGatewayBinaryCommLinkCalculator",
     "SatToGatewayBinaryCommLinkCalculatorWithScintillation",
     "SatToGatewayBinaryMemoryCommLinkCalculator",
+    "SatToGatewayEdgeFailureCommLinkCalculator",
     "SatToGatewayStochasticBinaryCommLinkCalculator",
 ]
 
@@ -12,16 +13,20 @@ import numpy as np
 import numpy.typing as npt
 from typing_extensions import Doc
 
-from cosmica.comm_link.uncertainty import CloudStates
 from cosmica.dtos import DynamicsData
-from cosmica.models import Gateway, GatewayOGS, Node, Satellite
+from cosmica.models import Gateway, GatewayOGS, Satellite
 from cosmica.utils.constants import BOLTZ_CONST, SPEED_OF_LIGHT
 from cosmica.utils.coordinates import ecef2aer, geodetic2ecef
 from cosmica.utils.gauss_beam import calc_gauss_rx_power
 from cosmica.utils.vector import angle_between
 
 from .base import CommLinkCalculator, CommLinkPerformance, MemorylessCommLinkCalculator, sorted_edges
-from .uncertainty import ApertureAveragedLogNormalScintillationModel, AtmosphericScintillationModel
+from .uncertainty import (
+    ApertureAveragedLogNormalScintillationModel,
+    AtmosphericScintillationModel,
+    EdgeFailureModel,
+    GatewayCloudSeries,
+)
 
 
 class SatToGatewayBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Satellite, Gateway]):
@@ -186,14 +191,69 @@ class SatToGatewayBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, G
 
 
 class SatToGatewayStochasticBinaryCommLinkCalculator(CommLinkCalculator[Satellite, Gateway]):
+    """Calculate satellite-to-gateway (downlink) communication link performance with gateway-site cloud outages.
+
+    Clouds are a site-level condition: while a gateway is cloudy in `gateway_cloud`, every downlink into it is
+    unavailable, whichever satellite transmits. Different gateways keep independent cloud states. Pass the same
+    `GatewayCloudSeries` to `GatewayToSatStochasticBinaryCommLinkCalculator` so that the uplinks at a site share
+    these cloud states.
+
+    Use `SatToGatewayEdgeFailureCommLinkCalculator` for failures that are independent per edge.
+    """
+
     def __init__(
         self,
         *,
         memoryless_calculator: MemorylessCommLinkCalculator[Satellite, Gateway],
-        stochastic_model_factory: Callable[[Node, Node], CloudStates[np.bool_]],
+        gateway_cloud: Annotated[
+            GatewayCloudSeries,
+            Doc("Cloud state series of every gateway, sampled on the same time array as the dynamics data."),
+        ],
     ) -> None:
         self.memoryless_calculator = memoryless_calculator
-        self.stochastic_model_factory = stochastic_model_factory
+        self.gateway_cloud = gateway_cloud
+
+    def calc(
+        self,
+        edges_time_series: Sequence[Collection[tuple[Satellite, Gateway]]],
+        *,
+        dynamics_data: DynamicsData,
+        rng: np.random.Generator,
+    ) -> list[dict[tuple[Satellite, Gateway], CommLinkPerformance]]:
+        assert len(edges_time_series) == len(dynamics_data.time)
+        self.gateway_cloud.check_time(dynamics_data.time)
+
+        comm_link_performance = []
+        for time_index, edges_snapshot in enumerate(edges_time_series):
+            comm_link = self.memoryless_calculator.calc(
+                edges=edges_snapshot,
+                dynamics_data=dynamics_data[time_index],
+                rng=rng,
+            )
+            for edge in comm_link:
+                if self.gateway_cloud.is_cloudy(edge[1], time_index):
+                    comm_link[edge] = CommLinkPerformance(link_capacity=0.0, delay=0.0, link_available=False)
+            comm_link_performance.append(comm_link)
+
+        return comm_link_performance
+
+
+class SatToGatewayEdgeFailureCommLinkCalculator(CommLinkCalculator[Satellite, Gateway]):
+    """Calculate satellite-to-gateway (downlink) communication link performance with independent per-edge failures.
+
+    Each directed edge (satellite, gateway) gets its own failure series from `edge_failure_model_factory`, so failures
+    of different edges are independent even when they share a gateway. This models equipment or link failures; use
+    `SatToGatewayStochasticBinaryCommLinkCalculator` for site-level weather such as clouds.
+    """
+
+    def __init__(
+        self,
+        *,
+        memoryless_calculator: MemorylessCommLinkCalculator[Satellite, Gateway],
+        edge_failure_model_factory: Callable[[Satellite, Gateway], EdgeFailureModel[np.bool_]],
+    ) -> None:
+        self.memoryless_calculator = memoryless_calculator
+        self.edge_failure_model_factory = edge_failure_model_factory
 
     def calc(
         self,
@@ -204,9 +264,9 @@ class SatToGatewayStochasticBinaryCommLinkCalculator(CommLinkCalculator[Satellit
     ) -> list[dict[tuple[Satellite, Gateway], CommLinkPerformance]]:
         assert len(edges_time_series) == len(dynamics_data.time)
         all_edges = {edge for edges_snapshot in edges_time_series for edge in edges_snapshot}
-        # Simulate in a stable edge order so that a seeded RNG assigns the same interruptions to the same edges.
-        edge_interrupted = {
-            edge: self.stochastic_model_factory(edge[0], edge[1]).simulate(time=dynamics_data.time, rng=rng)
+        # Simulate in a stable edge order so that a seeded RNG assigns the same failures to the same edges.
+        edge_failed = {
+            edge: self.edge_failure_model_factory(edge[0], edge[1]).simulate(time=dynamics_data.time, rng=rng)
             for edge in sorted_edges(all_edges)
         }
 
@@ -218,7 +278,7 @@ class SatToGatewayStochasticBinaryCommLinkCalculator(CommLinkCalculator[Satellit
                 rng=rng,
             )
             for edge in comm_link:
-                if edge_interrupted[edge][time_index]:
+                if edge_failed[edge][time_index]:
                     comm_link[edge] = CommLinkPerformance(link_capacity=0.0, delay=0.0, link_available=False)
             comm_link_performance.append(comm_link)
 

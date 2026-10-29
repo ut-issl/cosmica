@@ -7,15 +7,19 @@ __all__ = [
     "CloudStates",
     "EdgeFailureModel",
     "ExpEdgeModel",
+    "GatewayCloudSeries",
 ]
 from abc import ABC, abstractmethod
+from collections.abc import Callable, Iterable, Mapping
 from dataclasses import dataclass, field
 from functools import cached_property
-from typing import Annotated
+from typing import Annotated, Self
 
 import numpy as np
 import numpy.typing as npt
 from typing_extensions import Doc
+
+from cosmica.models import Gateway
 
 
 class CloudStates[T: np.number | np.bool_](ABC):
@@ -65,6 +69,66 @@ class BinaryCloudModel(CloudStates[np.bool_]):
             next_state = rng.choice(np.array([0, 1]), size=1, p=self._state_tm[int(current_state)])[0]
             current_state = next_state
         return sampled
+
+
+@dataclass(frozen=True, kw_only=True, slots=True)
+class GatewayCloudSeries:
+    """Cloud state time series of each gateway site.
+
+    Cloud cover is a site-level condition: at a given time, every optical link at a gateway shares that gateway's
+    cloud state, whichever satellite it connects to and in either direction. Different gateways have independent
+    series. Pass the same instance to `SatToGatewayStochasticBinaryCommLinkCalculator` and
+    `GatewayToSatStochasticBinaryCommLinkCalculator` so that downlinks and uplinks at a site see the same clouds.
+    """
+
+    time: Annotated[npt.NDArray[np.datetime64], Doc("Time array that the series are sampled on.")]
+    cloudy: Annotated[
+        Mapping[Gateway, npt.NDArray[np.bool_]],
+        Doc("Cloud state series of each gateway, aligned with `time` (True = cloudy, False = free-of-clouds)."),
+    ]
+
+    def __post_init__(self) -> None:
+        for gateway, series in self.cloudy.items():
+            if series.shape != self.time.shape:
+                msg = (
+                    f"Cloud series of gateway {gateway.global_id} has shape {series.shape}, expected {self.time.shape}"
+                )
+                raise ValueError(msg)
+
+    @classmethod
+    def simulate(
+        cls,
+        gateways: Iterable[Gateway],
+        *,
+        time: npt.NDArray[np.datetime64],
+        cloud_model_factory: Callable[[Gateway], CloudStates[np.bool_]],
+        rng: np.random.Generator,
+    ) -> Self:
+        """Simulate one cloud series per gateway."""
+        # Simulate in a stable gateway order so that a seeded RNG assigns the same series to the same gateways.
+        unique_gateways = sorted(set(gateways), key=lambda gateway: gateway.global_id)
+        return cls(
+            time=time,
+            cloudy={
+                gateway: cloud_model_factory(gateway).simulate(time=time, rng=rng).astype(np.bool_)
+                for gateway in unique_gateways
+            },
+        )
+
+    def check_time(self, time: npt.NDArray[np.datetime64]) -> None:
+        """Raise `ValueError` unless `time` matches the time array that the series are sampled on."""
+        if not np.array_equal(time, self.time):
+            msg = "Time array does not match the one the gateway cloud series were sampled on"
+            raise ValueError(msg)
+
+    def is_cloudy(self, gateway: Gateway, time_index: int) -> bool:
+        """Return whether `gateway` is cloudy at `time_index`."""
+        try:
+            series = self.cloudy[gateway]
+        except KeyError:
+            msg = f"No cloud series for gateway {gateway.global_id}"
+            raise ValueError(msg) from None
+        return bool(series[time_index])
 
 
 class EdgeFailureModel[T: np.number | np.bool_](ABC):

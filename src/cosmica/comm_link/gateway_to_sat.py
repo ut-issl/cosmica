@@ -1,6 +1,7 @@
 __all__ = [
     "GatewayToSatBinaryCommLinkCalculator",
     "GatewayToSatBinaryMemoryCommLinkCalculator",
+    "GatewayToSatStochasticBinaryCommLinkCalculator",
 ]
 
 from collections.abc import Collection, Sequence
@@ -17,6 +18,7 @@ from cosmica.utils.coordinates import ecef2aer, geodetic2ecef
 from cosmica.utils.vector import angle_between
 
 from .base import CommLinkCalculator, CommLinkPerformance, MemorylessCommLinkCalculator
+from .uncertainty import GatewayCloudSeries
 
 
 class GatewayToSatBinaryCommLinkCalculator(MemorylessCommLinkCalculator[Gateway, Satellite]):
@@ -178,3 +180,49 @@ class GatewayToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Gateway, Sat
             comm_link_time_series.append(comm_link)
 
         return comm_link_time_series
+
+
+class GatewayToSatStochasticBinaryCommLinkCalculator(CommLinkCalculator[Gateway, Satellite]):
+    """Calculate gateway-to-satellite (uplink) communication link performance with gateway-site cloud outages.
+
+    Clouds are a site-level condition: while a gateway is cloudy in `gateway_cloud`, every uplink from it is
+    unavailable, whichever satellite receives. Different gateways keep independent cloud states. Pass the same
+    `GatewayCloudSeries` to `SatToGatewayStochasticBinaryCommLinkCalculator` so that the downlinks at a site share
+    these cloud states.
+    """
+
+    def __init__(
+        self,
+        *,
+        memoryless_calculator: MemorylessCommLinkCalculator[Gateway, Satellite],
+        gateway_cloud: Annotated[
+            GatewayCloudSeries,
+            Doc("Cloud state series of every gateway, sampled on the same time array as the dynamics data."),
+        ],
+    ) -> None:
+        self.memoryless_calculator = memoryless_calculator
+        self.gateway_cloud = gateway_cloud
+
+    def calc(
+        self,
+        edges_time_series: Sequence[Collection[tuple[Gateway, Satellite]]],
+        *,
+        dynamics_data: DynamicsData,
+        rng: np.random.Generator,
+    ) -> list[dict[tuple[Gateway, Satellite], CommLinkPerformance]]:
+        assert len(edges_time_series) == len(dynamics_data.time)
+        self.gateway_cloud.check_time(dynamics_data.time)
+
+        comm_link_performance = []
+        for time_index, edges_snapshot in enumerate(edges_time_series):
+            comm_link = self.memoryless_calculator.calc(
+                edges=edges_snapshot,
+                dynamics_data=dynamics_data[time_index],
+                rng=rng,
+            )
+            for edge in comm_link:
+                if self.gateway_cloud.is_cloudy(edge[0], time_index):
+                    comm_link[edge] = CommLinkPerformance(link_capacity=0.0, delay=0.0, link_available=False)
+            comm_link_performance.append(comm_link)
+
+        return comm_link_performance

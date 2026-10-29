@@ -104,8 +104,12 @@ def normalize(
     ord: float | Literal["fro", "nuc"] | None = None,  # noqa: A002
     axis: int | None = None,
 ) -> npt.NDArray[np.floating]:
-    norm = LA.norm(x, ord=ord, axis=axis, keepdims=True)
-    return np.where(norm == 0.0, x, x / norm)
+    """Normalize vectors, leaving zero-norm vectors unchanged without division warnings."""
+    # Negative norms raise zero entries to negative powers; the resulting infinite sum yields a zero norm.
+    with np.errstate(divide="ignore"):
+        norm = LA.norm(x, ord=ord, axis=axis, keepdims=True)
+    result = x.astype(np.result_type(x.dtype, norm.dtype), copy=True)
+    return np.divide(x, norm, out=result, where=norm != 0.0)
 
 
 def angle_between[NumberType1: (np.floating, np.integer), NumberType2: (np.floating, np.integer)](

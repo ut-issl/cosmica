@@ -123,6 +123,7 @@ class SatToGatewayBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, G
         dynamics_data: DynamicsData,
         rng: np.random.Generator,
     ) -> list[dict[tuple[Satellite, Gateway], CommLinkPerformance]]:
+        """Track directed-link acquisition, resetting its timer whenever the link becomes unavailable."""
         assert len(edges_time_series) == len(dynamics_data.time)
 
         comm_link_time_series: list[dict[tuple[Satellite, Gateway], CommLinkPerformance]] = []
@@ -161,7 +162,7 @@ class SatToGatewayBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, G
             # ───────────────────────────────────────────────────────
 
             for edge in edges_snapshot_set:
-                if comm_link[edge]["link_available"] is False:
+                if not comm_link[edge]["link_available"]:
                     link_acquisition_start_time[edge] = current_time
 
                 # --- link acquisition delay ------------ ★

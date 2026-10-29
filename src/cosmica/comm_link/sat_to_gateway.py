@@ -255,6 +255,7 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
             aperture_diameter=gateway.aperture_size,
         ),
     ) -> None:
+        """Configure downlink capacity and a finite Sun-exclusion angle in radians."""
         if not np.isfinite(sun_exclusion_angle) or not 0.0 <= sun_exclusion_angle <= np.pi:
             msg = "sun_exclusion_angle must be finite and in [0, pi] radians"
             raise ValueError(msg)
@@ -273,6 +274,7 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
         dynamics_data: DynamicsData,
         rng: np.random.Generator,
     ) -> dict[tuple[Satellite, GatewayOGS], CommLinkPerformance]:
+        """Evaluate directed downlinks with receiver-side Sun exclusion and seeded scintillation."""
         gateway_turbulence_map = self._map_turbulence2gateway(edges)
         return {
             edge: self._calc_satellite_to_gateway(

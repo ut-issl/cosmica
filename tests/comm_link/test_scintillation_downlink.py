@@ -38,6 +38,7 @@ def test_scintillation_downlink_sun_exclusion_matches_plain_downlink(
     *,
     expected_available: bool,
 ):
+    """Match plain-downlink Sun-angle boundaries while retaining propagation delay."""
     satellite = make_satellite(1)
     gateway = GatewayOGS(id=1, latitude=0.0, longitude=0.0, minimum_elevation=0.0, rytov_variance=0.0)
     edge = (satellite, gateway)

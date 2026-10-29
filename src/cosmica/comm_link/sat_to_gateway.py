@@ -239,6 +239,13 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
         noise_figure: float,
         lna_gain: float,
         lct_p0: float,
+        sun_exclusion_angle: Annotated[
+            float,
+            Doc(
+                "Minimum angular separation in radians between the Sun and the satellite as seen from the gateway. "
+                "Must be finite and in [0, pi]. Equality is allowed; zero disables Sun exclusion.",
+            ),
+        ] = 0.0,
         turbulence_model_factory: Callable[
             [GatewayOGS],
             AtmosphericScintillationModel,
@@ -248,6 +255,11 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
             aperture_diameter=gateway.aperture_size,
         ),
     ) -> None:
+        """Configure downlink capacity and a finite Sun-exclusion angle in radians."""
+        if not np.isfinite(sun_exclusion_angle) or not 0.0 <= sun_exclusion_angle <= np.pi:
+            msg = "sun_exclusion_angle must be finite and in [0, pi] radians"
+            raise ValueError(msg)
+        self.sun_exclusion_angle = sun_exclusion_angle
         self.satellite_to_gateway_link_capacity = satellite_to_gateway_link_capacity
         self.link_capacity = link_capacity
         self.noise_figure = noise_figure
@@ -262,12 +274,13 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
         dynamics_data: DynamicsData,
         rng: np.random.Generator,
     ) -> dict[tuple[Satellite, GatewayOGS], CommLinkPerformance]:
+        """Evaluate directed downlinks with receiver-side Sun exclusion and seeded scintillation."""
         gateway_turbulence_map = self._map_turbulence2gateway(edges)
         return {
             edge: self._calc_satellite_to_gateway(
                 satellite_position_ecef=dynamics_data.satellite_position_ecef[edge[0]],
                 sun_direction_ecef=dynamics_data.sun_direction_ecef,
-                sun_exclusion_angle=0.0,
+                sun_exclusion_angle=self.sun_exclusion_angle,
                 rng=rng,
                 gateway=edge[1],
                 gateway_turbulence_map=gateway_turbulence_map,

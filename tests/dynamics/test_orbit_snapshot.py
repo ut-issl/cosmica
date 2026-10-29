@@ -341,7 +341,10 @@ def test_elliptical_iss_like_orbit_snapshot(snapshot: SnapshotAssertion) -> None
 
 
 def test_elliptical_teme_reference_frame_snapshot(snapshot: SnapshotAssertion) -> None:
-    """Snapshot test for TEME reference frame."""
+    """Guard Skyfield private TEME API compatibility, axis layout, and conversion to SI units.
+
+    Review failures during Skyfield upgrades before updating this baseline (issue #227).
+    """
     epoch = np.datetime64("2026-01-01T00:00:00")
     time_array = _datetime_range(epoch, np.timedelta64(60, "s"), 10)
 

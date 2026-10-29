@@ -85,6 +85,7 @@ class CircularSatelliteOrbitPropagator(SatelliteOrbitPropagator):
             dtype=np.float64,
         )
 
+    @override
     def propagate(self, time: npt.NDArray[np.datetime64]) -> SatelliteOrbitState:
         time_from_epoch = time - self._model.epoch
         return self.propagate_from_epoch(time_from_epoch)
@@ -137,7 +138,7 @@ class EllipticalSatelliteOrbitPropagator(SatelliteOrbitPropagator):
         satrec = Satrec()
         sgp4_ref_epoch = np.datetime64("1949-12-31T00:00:00")
         epoch = (self._model.epoch - sgp4_ref_epoch) / np.timedelta64(1, "D")
-        rad_per_min = 60
+        seconds_per_minute = 60
         satrec.sgp4init(
             self._model.gravity_model.value,
             "i",
@@ -150,7 +151,7 @@ class EllipticalSatelliteOrbitPropagator(SatelliteOrbitPropagator):
             self._model.argpo,
             self._model.inclination,
             self._model.phase_at_epoch,
-            self.mean_motion * rad_per_min,
+            self.mean_motion * seconds_per_minute,
             self._model.raan,
         )
         return EarthSatellite.from_satrec(satrec, self.ts)
@@ -164,5 +165,8 @@ class EllipticalSatelliteOrbitPropagator(SatelliteOrbitPropagator):
             velocity_eci_km_s = geoc.velocity.km_per_s
             return SatelliteOrbitState(position_eci=position_eci_km.T * 1e3, velocity_eci=velocity_eci_km_s.T * 1e3)
         else:  # TEME
+            # Private Skyfield compatibility dependency: returns (3, N) arrays in km and km/s.
+            # Keep the TEME snapshot test in tests/dynamics/test_orbit_snapshot.py passing when upgrading Skyfield;
+            # review API or numerical changes rather than blindly updating the snapshot (see issue #227).
             [position_eci, velocity_eci, _] = self.satellite._position_and_velocity_TEME_km(time_from_epoch)  # noqa: SLF001
             return SatelliteOrbitState(position_eci=position_eci.T * 1e3, velocity_eci=velocity_eci.T * 1e3)

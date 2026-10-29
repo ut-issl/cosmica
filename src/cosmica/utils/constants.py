@@ -10,7 +10,7 @@ from typing import Final
 # Earth gravitational constant from GRS80 model: 3.986005e14 m3/s2.
 EARTH_MU: Final[float] = 3.986005e14  # [m3/s2]
 
-# Earth equatorial radius as defined by IAU 2015 resolution B3: 6.3781e6 (m).
+# WGS84 Earth equatorial radius (semi-major axis): 6378137 m.
 EARTH_RADIUS: Final[float] = 6.378137e6  # [m]
 
 # Earth rotation rate

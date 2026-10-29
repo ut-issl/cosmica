@@ -39,6 +39,6 @@ class EllipticalSatelliteOrbitModel(SatelliteOrbitModel):
     epoch: np.datetime64
     satnum: int  # Satellite number
     gravity_model: GravityModel = GravityModel.WGS84
-    drag_coeff: float  # B star drag coeffient given in [1/earth radii]
+    drag_coeff: float  # B star drag coefficient given in [1/earth radii]
     eccentricity: float
     argpo: float  # Argument of Perigee

@@ -70,6 +70,7 @@ def test_scintillation_sample_uses_log_normal_parameters(rytov_variance: float) 
 
 @pytest.mark.parametrize("rytov_variance", [0.1, 2.0])
 def test_scintillation_samples_have_unit_mean_and_expected_variance(rytov_variance: float) -> None:
+    """Check unit mean and scintillation-index variance over a reproducible sample population."""
     model = _make_model()
     rng = np.random.default_rng(42)
     samples = np.array([model.sample(rng, _LINK_DISTANCE, rytov_variance) for _ in range(200_000)])

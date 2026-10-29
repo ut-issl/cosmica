@@ -28,7 +28,7 @@ reviews:
         exercise trivial code paths or assert nothing meaningful.
 
   auto_review:
-    auto_incremental_review: false
+    auto_incremental_review: true
     # Dependency-update PRs would quickly exhaust the review rate limit.
     ignore_usernames:
       - "renovate[bot]"

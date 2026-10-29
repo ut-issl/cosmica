@@ -191,5 +191,12 @@ class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel[
         link_distance: float,
         rytov_variance: float | None = None,
     ) -> float:
+        """Sample a unit-mean intensity multiplier with the aperture-averaged scintillation index.
+
+        For a unit-mean log-normal variable, the scintillation index is
+        exp(log_variance) - 1. NumPy expects the underlying normal distribution's
+        standard deviation, not its variance.
+        """
         sigma2_scintillation = self.sigma2_scintillation(link_distance, rytov_variance)
-        return rng.lognormal(-sigma2_scintillation / 2, sigma2_scintillation)
+        log_variance = np.log1p(sigma2_scintillation)
+        return rng.lognormal(-log_variance / 2, np.sqrt(log_variance))

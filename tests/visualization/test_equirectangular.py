@@ -1,6 +1,9 @@
+from unittest.mock import Mock
+
 import networkx as nx
 import numpy as np
 import numpy.typing as npt
+import pytest
 from matplotlib.collections import PathCollection
 from matplotlib.figure import Figure
 from matplotlib.patches import FancyArrowPatch
@@ -46,3 +49,18 @@ def test_draw_snapshot_draws_gateway_ogs_and_its_links_as_gateway() -> None:
     np.testing.assert_allclose(np.asarray(gateway_markers[0].get_offsets(), dtype=np.float64), np.array([[20.0, 10.0]]))
     assert len([patch for patch in ax.patches if isinstance(patch, FancyArrowPatch)]) == 1
     assert "Feeder links" in [line.get_label() for line in ax.lines]
+
+
+def test_draw_snapshot_rejects_mismatched_focus_labels() -> None:
+    with pytest.raises(
+        ValueError,
+        match="focus_edges_list and focus_edges_label_list must have the same number of elements",
+    ):
+        draw_snapshot(
+            graph=nx.DiGraph(),
+            constellation=Mock(spec=Constellation),
+            dynamics_data=Mock(spec=DynamicsData),
+            ax=Figure().add_subplot(),
+            focus_edges_list=[set()],
+            focus_edges_label_list=[],
+        )

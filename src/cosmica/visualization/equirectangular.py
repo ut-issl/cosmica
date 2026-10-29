@@ -141,15 +141,16 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
     focus_edges_list: list[set[tuple[Node, Node]]] | None = None,
     focus_edges_label_list: list[str] | None = None,
 ) -> Axes:
-    # None のときのデフォルト値設定
+    """Draw node positions and categorized links, with one optional label per focus-edge group."""
+    # Set defaults for omitted arguments.
     if focus_edges_list is None:
         focus_edges_list = []
     if focus_edges_label_list is None:
-        # focus_edges と同じ数だけデフォルトのラベルを作成する
+        # Create one default label per focus-edge group.
         focus_edges_label_list = [f"Focus edges {i}" for i in range(len(focus_edges_list))]
 
     if len(focus_edges_list) != len(focus_edges_label_list):
-        msg = "focus_edges と focus_edges_label の要素数が一致していません。"
+        msg = "focus_edges_list and focus_edges_label_list must have the same number of elements."
         raise ValueError(msg)
 
     constellation_satellites_to_draw = {node for node in graph.nodes if isinstance(node, ConstellationSatellite)}
@@ -458,7 +459,7 @@ def draw_snapshot(  # noqa: C901, PLR0915 PLR0912
             strict=False,
         ):
             if not focus_edges_corrected:
-                continue  # 空集合ならスキップ
+                continue  # Skip empty edge sets.
             h7 = nx.draw_networkx_edges(
                 graph_pos_corrected,
                 pos,

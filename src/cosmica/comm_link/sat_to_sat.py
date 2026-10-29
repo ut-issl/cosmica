@@ -213,6 +213,7 @@ class SatToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, Satel
         dynamics_data: DynamicsData,
         rng: np.random.Generator,
     ) -> list[dict[tuple[Satellite, Satellite], CommLinkPerformance]]:
+        """Track directed-link acquisition, resetting its timer whenever the link becomes unavailable."""
         assert len(edges_time_series) == len(dynamics_data.time)
 
         comm_link_time_series: list[dict[tuple[Satellite, Satellite], CommLinkPerformance]] = []
@@ -245,7 +246,7 @@ class SatToSatBinaryMemoryCommLinkCalculator(CommLinkCalculator[Satellite, Satel
                     link_acquisition_start_time[edge] = current_time
 
             disappeared_edges = prev_edges - edges_snapshot_set
-            for edge in disappeared_edges:  # フェードアウトしたら状態を消去
+            for edge in disappeared_edges:  # Remove state when an edge disappears.
                 link_acquisition_start_time.pop(edge, None)
             prev_edges = edges_snapshot_set
             # ───────────────────────────────────────────────────────

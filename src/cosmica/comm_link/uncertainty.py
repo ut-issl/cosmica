@@ -227,9 +227,10 @@ class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel[
         ground_cn2: Annotated[float | None, Doc("Override of ground_cn2, e.g. for a change in weather.")] = None,
         rms_wind_speed: Annotated[float | None, Doc("Override of rms_wind_speed.")] = None,
     ) -> Annotated[float, Doc("Aperture-averaged irradiance flux variance sigma_I^2(D) (Eq. 12.39).")]:
-        if (rytov_variance := self.rytov_variance(zenith_angle, ground_cn2, rms_wind_speed)) >= 1.0:
+        # A constant message lets the default warning filter show it once instead of at every time step.
+        if self.rytov_variance(zenith_angle, ground_cn2, rms_wind_speed) >= 1.0:
             warnings.warn(
-                f"Rytov variance {rytov_variance:.2f} is outside the weak-fluctuation range (< 1) of Eq. 12.39, "
+                "Rytov variance reached 1, outside the weak-fluctuation range of Eq. 12.39, "
                 "so the scintillation index is unreliable.",
                 RuntimeWarning,
                 stacklevel=2,

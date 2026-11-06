@@ -247,14 +247,11 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
                 "Must be finite and in [0, pi]. Equality is allowed; zero disables Sun exclusion.",
             ),
         ] = 0.0,
-        turbulence_model_factory: Callable[
-            [GatewayOGS],
-            AtmosphericScintillationModel,
-        ] = lambda gateway: ApertureAveragedLogNormalScintillationModel(
-            default_rytov_variance=gateway.rytov_variance,
-            wavelength=1550 * 1e-9,
-            aperture_diameter=gateway.aperture_size,
-        ),
+        wavelength: Annotated[float, Doc("Optical wavelength in meters.")] = 1550e-9,
+        turbulence_model_factory: Annotated[
+            Callable[[GatewayOGS], AtmosphericScintillationModel] | None,
+            Doc("Builds each gateway's scintillation model. Defaults to the gateway's Hufnagel-Valley profile."),
+        ] = None,
     ) -> None:
         """Configure downlink capacity and a finite Sun-exclusion angle in radians."""
         if not np.isfinite(sun_exclusion_angle) or not 0.0 <= sun_exclusion_angle <= np.pi:
@@ -266,7 +263,15 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
         self.noise_figure = noise_figure
         self.lna_gain = lna_gain
         self.lct_p0 = lct_p0
-        self.turbulence_model_factory = turbulence_model_factory
+        self.wavelength = wavelength
+        self.turbulence_model_factory = turbulence_model_factory or (
+            lambda gateway: ApertureAveragedLogNormalScintillationModel(
+                wavelength=wavelength,
+                aperture_diameter=gateway.aperture_size,
+                ground_cn2=gateway.ground_cn2,
+                rms_wind_speed=gateway.rms_wind_speed,
+            )
+        )
 
     def calc(
         self,
@@ -315,18 +320,11 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
             Doc("Dictionary mapping each OGS to its respective turbulence model."),
         ],
         rng: np.random.Generator,
-        rytov_variance: Annotated[
-            float | None,
-            Doc("Rytov variance value"),
-        ] = None,
+        zenith_angle: Annotated[float, Doc("Zenith angle of the link at the gateway in radians.")],
     ) -> float:
-        scintillation_factor = turbulence_map[gateway].sample(
-            rng=rng,
-            link_distance=distance,
-            rytov_variance=rytov_variance,
-        )
+        scintillation_factor = turbulence_map[gateway].sample(rng=rng, zenith_angle=zenith_angle)
         # Downlink Capacity Calculation
-        power = calc_gauss_rx_power(self.lct_p0, gateway.aperture_size, distance)
+        power = calc_gauss_rx_power(self.lct_p0, gateway.aperture_size, distance, wavelength=self.wavelength)
         t_sys = 300  # K
         noise_factor = 10 ** (self.noise_figure / 10)
         noise = t_sys * self.link_capacity * BOLTZ_CONST * noise_factor
@@ -372,6 +370,7 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
                 gateway=gateway,
                 turbulence_map=gateway_turbulence_map,
                 rng=rng,
+                zenith_angle=float(np.pi / 2 - elevation),
             )
             if link_available
             else 0.0,

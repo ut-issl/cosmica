@@ -69,16 +69,21 @@ class GatewayOGS[T: Hashable](Gateway[T]):
     """Optical ground station: a gateway with optical receiver and turbulence parameters."""
 
     aperture_size: float = field(default=1.0, compare=False)
-    rytov_variance: float = field(default=0.5, compare=False)
+    # Hufnagel-Valley turbulence profile above the station: ground-level Cn2(0) in m^-2/3 and rms wind speed in m/s.
+    # The defaults are the H-V5/7 model of Andrews and Phillips, Section 12.2.1.
+    ground_cn2: float = field(default=1.7e-14, compare=False)
+    rms_wind_speed: float = field(default=21.0, compare=False)
 
     @override
     def __post_init__(self) -> None:
         # Explicit form: zero-argument super() fails in slotted dataclasses before Python 3.13.14.
         super(GatewayOGS, self).__post_init__()
         _assert_finite(self.aperture_size, name="aperture_size")
-        _assert_finite(self.rytov_variance, name="rytov_variance")
+        _assert_finite(self.ground_cn2, name="ground_cn2")
+        _assert_finite(self.rms_wind_speed, name="rms_wind_speed")
         assert self.aperture_size > 0.0, "aperture_size must be positive."
-        assert self.rytov_variance >= 0.0, "rytov_variance must be non-negative."
+        assert self.ground_cn2 >= 0.0, "ground_cn2 must be non-negative."
+        assert self.rms_wind_speed >= 0.0, "rms_wind_speed must be non-negative."
 
     @classmethod
     @override

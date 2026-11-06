@@ -1,7 +1,11 @@
+from dataclasses import dataclass, field
+
 import numpy as np
 import pytest
+from pymap3d import aer2ecef
 
 from cosmica.comm_link import (
+    AtmosphericScintillationModel,
     SatToGatewayBinaryCommLinkCalculator,
     SatToGatewayBinaryCommLinkCalculatorWithScintillation,
 )
@@ -40,7 +44,7 @@ def test_scintillation_downlink_sun_exclusion_matches_plain_downlink(
 ):
     """Match plain-downlink Sun-angle boundaries while retaining propagation delay."""
     satellite = make_satellite(1)
-    gateway = GatewayOGS(id=1, latitude=0.0, longitude=0.0, minimum_elevation=0.0, rytov_variance=0.0)
+    gateway = GatewayOGS(id=1, latitude=0.0, longitude=0.0, minimum_elevation=0.0, ground_cn2=0.0, rms_wind_speed=0.0)
     edge = (satellite, gateway)
     position = {satellite: np.array([EARTH_RADIUS + 1e6, 0.0, 0.0])}
     sun = np.array(sun_direction)
@@ -89,3 +93,43 @@ def test_scintillation_downlink_defaults_to_no_sun_exclusion():
         lct_p0=1.0,
     )
     assert calculator.sun_exclusion_angle == 0.0
+
+
+@dataclass
+class _RecordingScintillationModel(AtmosphericScintillationModel):
+    zenith_angles: list[float] = field(default_factory=list)
+
+    def sample(self, rng: np.random.Generator, zenith_angle: float) -> float:  # noqa: ARG002
+        self.zenith_angles.append(zenith_angle)
+        return 1.0
+
+
+@pytest.mark.parametrize("elevation_deg", [30.0, 90.0])
+def test_scintillation_downlink_passes_link_zenith_angle_to_model(elevation_deg: float):
+    model = _RecordingScintillationModel()
+    calculator = SatToGatewayBinaryCommLinkCalculatorWithScintillation(
+        satellite_to_gateway_link_capacity=10e9,
+        link_capacity=1e9,
+        noise_figure=3.0,
+        lna_gain=30.0,
+        lct_p0=1.0,
+        turbulence_model_factory=lambda _: model,
+    )
+    satellite = make_satellite(1)
+    gateway = GatewayOGS(id=1, latitude=0.0, longitude=0.0, minimum_elevation=0.0)
+    position = {satellite: np.array(aer2ecef(0.0, elevation_deg, 1e6, 0.0, 0.0, 0.0, deg=True))}
+    sun = np.array([0.0, 0.0, 1.0])
+    dynamics = DynamicsData(
+        time=np.array(np.datetime64("2026-01-01")),
+        dcm_eci2ecef=np.eye(3),
+        satellite_position_eci=position,
+        satellite_velocity_eci={satellite: np.zeros(3)},
+        satellite_position_ecef=position,
+        satellite_attitude_angular_velocity_eci={satellite: np.zeros(3)},
+        sun_direction_eci=sun,
+        sun_direction_ecef=sun,
+    )
+
+    calculator.calc([(satellite, gateway)], dynamics_data=dynamics, rng=np.random.default_rng(0))
+
+    assert model.zenith_angles == [pytest.approx(np.deg2rad(90.0 - elevation_deg), abs=1e-9)]

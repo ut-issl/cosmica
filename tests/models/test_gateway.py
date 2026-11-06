@@ -32,7 +32,8 @@ def _gateway_ogs(
     latitude: float = np.deg2rad(10.0),
     minimum_elevation: float = np.deg2rad(10.0),
     aperture_size: float = 1.0,
-    rytov_variance: float = 0.5,
+    ground_cn2: float = 1.7e-14,
+    rms_wind_speed: float = 21.0,
 ) -> GatewayOGS[int]:
     return GatewayOGS(
         id=0,
@@ -40,15 +41,16 @@ def _gateway_ogs(
         longitude=np.deg2rad(0.0),
         minimum_elevation=minimum_elevation,
         aperture_size=aperture_size,
-        rytov_variance=rytov_variance,
+        ground_cn2=ground_cn2,
+        rms_wind_speed=rms_wind_speed,
     )
 
 
 def test_gateway_ogs_is_a_gateway() -> None:
-    ogs = _gateway_ogs(aperture_size=0.4, rytov_variance=0.2)
+    ogs = _gateway_ogs(aperture_size=0.4, ground_cn2=3e-13, rms_wind_speed=10.0)
 
     assert isinstance(ogs, Gateway)
-    assert (ogs.aperture_size, ogs.rytov_variance) == (0.4, 0.2)
+    assert (ogs.aperture_size, ogs.ground_cn2, ogs.rms_wind_speed) == (0.4, 3e-13, 10.0)
 
 
 def test_gateway_ogs_keeps_its_own_global_id() -> None:
@@ -61,7 +63,8 @@ def test_gateway_ogs_keeps_its_own_global_id() -> None:
         pytest.param({"latitude": np.deg2rad(120.0)}, id="gateway-latitude"),
         pytest.param({"minimum_elevation": np.deg2rad(-1.0)}, id="gateway-minimum-elevation"),
         pytest.param({"aperture_size": 0.0}, id="aperture-size"),
-        pytest.param({"rytov_variance": -0.1}, id="rytov-variance"),
+        pytest.param({"ground_cn2": -1e-14}, id="ground-cn2"),
+        pytest.param({"rms_wind_speed": -1.0}, id="rms-wind-speed"),
     ],
 )
 def test_gateway_ogs_validation_rejects_invalid_fields(kwargs: dict[str, float]) -> None:

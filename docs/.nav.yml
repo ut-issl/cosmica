@@ -1,5 +1,7 @@
 nav:
   - Home: index.md
+  - Models:
+      - Atmospheric scintillation: models/atmospheric-scintillation.md
   - API Reference: reference
   - For Developers:
       - Setting up development environment: developers/setup.md

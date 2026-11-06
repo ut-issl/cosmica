@@ -363,7 +363,10 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
         gateway_to_satellite_ecef = satellite_position_ecef - gateway_ecef
         distance = np.linalg.norm(gateway_to_satellite_ecef)
         edge_sun_angle = angle_between(gateway_to_satellite_ecef, sun_direction_ecef)
-        link_available = bool(elevation >= gateway.minimum_elevation and edge_sun_angle >= sun_exclusion_angle)
+        # The scintillation model needs a zenith angle below pi/2, so a link exactly on the horizon is unavailable.
+        link_available = bool(
+            elevation >= gateway.minimum_elevation and elevation > 0.0 and edge_sun_angle >= sun_exclusion_angle,
+        )
         return CommLinkPerformance(
             link_capacity=self._calc_capacity(
                 distance=float(distance),

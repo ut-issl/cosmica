@@ -133,3 +133,30 @@ def test_scintillation_downlink_passes_link_zenith_angle_to_model(elevation_deg:
     calculator.calc([(satellite, gateway)], dynamics_data=dynamics, rng=np.random.default_rng(0))
 
     assert model.zenith_angles == [pytest.approx(np.deg2rad(90.0 - elevation_deg), abs=1e-9)]
+
+
+def test_scintillation_downlink_marks_horizon_link_unavailable():
+    """A satellite exactly on the horizon has zenith angle pi/2, outside the scintillation model's range."""
+    satellite = make_satellite(1)
+    gateway = GatewayOGS(id=1, latitude=0.0, longitude=0.0, minimum_elevation=0.0)
+    position = {satellite: np.array(aer2ecef(0.0, 0.0, 1e6, 0.0, 0.0, 0.0, deg=True))}
+    sun = np.array([0.0, 0.0, 1.0])
+    dynamics = DynamicsData(
+        time=np.array(np.datetime64("2026-01-01")),
+        dcm_eci2ecef=np.eye(3),
+        satellite_position_eci=position,
+        satellite_velocity_eci={satellite: np.zeros(3)},
+        satellite_position_ecef=position,
+        satellite_attitude_angular_velocity_eci={satellite: np.zeros(3)},
+        sun_direction_eci=sun,
+        sun_direction_ecef=sun,
+    )
+
+    result = _make_calculator(sun_exclusion_angle=0.0).calc(
+        [(satellite, gateway)],
+        dynamics_data=dynamics,
+        rng=np.random.default_rng(0),
+    )[(satellite, gateway)]
+
+    assert result["link_available"] is False
+    assert result["link_capacity"] == 0.0

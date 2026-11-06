@@ -1,4 +1,4 @@
-"""Tests for the downlink scintillation model, see docs/models/atmospheric-scintillation.md.
+"""Tests for the downlink scintillation model (issue #354).
 
 Reference values are read by eye from Andrews and Phillips, Laser Beam Propagation through Random Media,
 2nd ed. (2005), Figures 12.6 and 12.7, which use the H-V5/7 profile (ground Cn2 1.7e-14 m^-2/3, rms wind 21 m/s).

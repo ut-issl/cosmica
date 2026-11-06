@@ -77,11 +77,6 @@ markdown_extensions:
   - pymdownx.quotes:
       callouts: true
   - admonition
-  - pymdownx.arithmatex:
-      generic: true
-extra_javascript:
-  - javascripts/mathjax.js
-  - https://unpkg.com/mathjax@3.2.2/es5/tex-mml-chtml.js
 watch:
   - src/cosmica
 extra:

@@ -160,11 +160,11 @@ _ALTITUDE_GRID = np.concatenate([[0.0], np.geomspace(1e-2, 50e3, 1000)])
 
 @dataclass(frozen=True, kw_only=True, slots=True)
 class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel[np.bool_]):
-    """Aperture-averaged scintillation of a satellite-to-ground downlink with a log-normal irradiance.
+    """Aperture-averaged log-normal scintillation of a satellite-to-ground downlink.
 
-    Uses the Hufnagel-Valley turbulence profile and the weak-fluctuation plane-wave downlink results of
-    Andrews and Phillips, Laser Beam Propagation through Random Media, 2nd ed., Section 12.5.2.
-    See docs/models/atmospheric-scintillation.md.
+    Plane-wave downlink model with a Hufnagel-Valley turbulence profile, as described by Larry C. Andrews and
+    Ronald L. Phillips in the book "Laser Beam Propagation through Random Media", 2nd ed., Section 12.5.2.
+    Weak-fluctuation theory: valid while the Rytov variance is below 1. Derivation and validation in issue #354.
     """
 
     wavelength: Annotated[float, Doc("Optical wavelength in meters.")]

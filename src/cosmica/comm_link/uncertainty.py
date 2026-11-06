@@ -168,16 +168,15 @@ class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel[
     """
 
     wavelength: Annotated[float, Doc("Optical wavelength in meters.")]
-    aperture_diameter: Annotated[float, Doc("Receiver aperture diameter in meters.")]
+    aperture_diameter: Annotated[float, Doc("Receiver aperture diameter in meters. Zero is a point receiver.")]
     ground_cn2: Annotated[float, Doc("Hufnagel-Valley ground-level structure parameter Cn2(0) in m^-2/3.")] = 1.7e-14
     rms_wind_speed: Annotated[float, Doc("Hufnagel-Valley rms (pseudo) wind speed in m/s.")] = 21.0
 
     def __post_init__(self) -> None:
-        for name in ("wavelength", "aperture_diameter"):
-            if not np.isfinite(value := getattr(self, name)) or value <= 0.0:
-                msg = f"{name} must be finite and positive, got {value}."
-                raise ValueError(msg)
-        for name in ("ground_cn2", "rms_wind_speed"):
+        if not np.isfinite(self.wavelength) or self.wavelength <= 0.0:
+            msg = f"wavelength must be finite and positive, got {self.wavelength}."
+            raise ValueError(msg)
+        for name in ("aperture_diameter", "ground_cn2", "rms_wind_speed"):
             if not np.isfinite(value := getattr(self, name)) or value < 0.0:
                 msg = f"{name} must be finite and non-negative, got {value}."
                 raise ValueError(msg)

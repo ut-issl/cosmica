@@ -65,8 +65,8 @@ The earlier model used Eq. 10.69, which describes a horizontal path with constan
 | Claim | Test | Reference | Tolerance |
 |---|---|---|---|
 | Rytov variance of the H-V profile matches the book | `test_rytov_variance_matches_andrews_figures` | Fig. 12.6 at $D = 0$ (1.55 µm), Fig. 12.7 weak-fluctuation curves (1.06 µm) | half a minor tick: 0.005 (Fig. 12.6), 0.01 (Fig. 12.7) |
-| Aperture-averaged index matches the book | `test_aperture_averaged_scintillation_matches_andrews_figure_12_6` | Fig. 12.6, $\zeta$ = 45° and 60°, $D$ = 0.1 to 0.5 m | 0.005, half a minor tick |
-| Eq. 12.39 quadrature reduces to the closed-form Eq. 12.38 | `test_aperture_averaged_scintillation_tends_to_rytov_variance_for_point_receiver` | analytic limit $D \to 0$ | 0.2 %, from the 0.08 % prefactor difference |
+| Aperture-averaged index matches the book | `test_aperture_averaged_scintillation_matches_andrews_figure_12_6` | Fig. 12.6, $\zeta$ = 45° and 60°, $D$ = 0 to 0.5 m | 0.005, half a minor tick |
+| Eq. 12.39 quadrature reduces to the closed-form Eq. 12.38 | `test_aperture_averaged_scintillation_reduces_to_rytov_variance_for_point_receiver` | analytic limit $D = 0$ | 0.2 %, from the 0.08 % prefactor difference |
 | Index falls with aperture and rises with zenith angle | `test_aperture_averaged_scintillation_decreases_with_aperture_and_increases_with_zenith` | property of Eq. 12.39 | strict ordering |
 | Samples have unit mean and variance $\sigma_I^2$ | `test_scintillation_samples_have_unit_mean_and_expected_variance` | Eq. 9.12 | about three standard errors |
 | The calculator passes each link's zenith angle | `test_scintillation_downlink_passes_link_zenith_angle_to_model` | link geometry: $\zeta = 90° - $ elevation | $10^{-9}$ rad |

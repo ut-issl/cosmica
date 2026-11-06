@@ -53,10 +53,12 @@ def test_rytov_variance_matches_andrews_figures(
 @pytest.mark.parametrize(
     ("zenith_deg", "aperture_diameter", "expected"),
     [
+        (45.0, 0.0, 0.117),
         (45.0, 0.1, 0.056),
         (45.0, 0.2, 0.025),
         (45.0, 0.3, 0.013),
         (45.0, 0.5, 0.004),
+        (60.0, 0.0, 0.225),
         (60.0, 0.1, 0.114),
         (60.0, 0.2, 0.061),
         (60.0, 0.3, 0.034),
@@ -73,15 +75,15 @@ def test_aperture_averaged_scintillation_matches_andrews_figure_12_6(
     assert model.sigma2_scintillation(np.deg2rad(zenith_deg)) == pytest.approx(expected, abs=0.005)
 
 
-@pytest.mark.parametrize("zenith_deg", [0.0, 45.0, 70.0])
-def test_aperture_averaged_scintillation_tends_to_rytov_variance_for_point_receiver(zenith_deg: float) -> None:
-    """Eq. 12.39 reduces to Eq. 12.38 as D -> 0.
+@pytest.mark.parametrize("zenith_deg", [0.0, 45.0, 60.0, 70.0])
+def test_aperture_averaged_scintillation_reduces_to_rytov_variance_for_point_receiver(zenith_deg: float) -> None:
+    """Eq. 12.39 reduces to Eq. 12.38 at D = 0.
 
     The quadrature of Eq. 12.39 is checked against the closed-form Rytov variance. The prefactors differ by
     8.70 cos(5 pi / 12) / 2.25 - 1 = 0.08 %, so the tolerance is 0.2 %.
     """
     zenith = np.deg2rad(zenith_deg)
-    model = _make_model(aperture_diameter=1e-6)
+    model = _make_model(aperture_diameter=0.0)
 
     assert model.sigma2_scintillation(zenith) == pytest.approx(model.rytov_variance(zenith), rel=2e-3)
 

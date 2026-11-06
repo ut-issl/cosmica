@@ -191,3 +191,19 @@ def test_scintillation_rejects_invalid_overrides(overrides: dict[str, float]) ->
     with pytest.raises(ValueError, match=next(iter(overrides))):
         _make_model().sigma2_scintillation(0.3, **overrides)
 
+
+def test_scintillation_warns_outside_weak_fluctuation_range() -> None:
+    """H-V5/7 at 1550 nm has a Rytov variance of 1.56 at zenith 80 deg, past the validity limit of 1."""
+    model = _make_model()
+
+    with pytest.warns(RuntimeWarning, match="weak-fluctuation"):
+        model.sigma2_scintillation(np.deg2rad(80.0))
+
+
+def test_scintillation_warns_when_an_override_leaves_the_weak_fluctuation_range() -> None:
+    """A stronger ground turbulence pushes the Rytov variance past 1 at an angle that is valid by default."""
+    model = _make_model()
+
+    model.sigma2_scintillation(np.deg2rad(60.0))
+    with pytest.warns(RuntimeWarning, match="weak-fluctuation"):
+        model.sigma2_scintillation(np.deg2rad(60.0), ground_cn2=1e-12)

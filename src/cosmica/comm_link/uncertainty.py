@@ -9,6 +9,7 @@ __all__ = [
     "ExpEdgeModel",
 ]
 import math
+import warnings
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from functools import cached_property
@@ -226,7 +227,13 @@ class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel[
         ground_cn2: Annotated[float | None, Doc("Override of ground_cn2, e.g. for a change in weather.")] = None,
         rms_wind_speed: Annotated[float | None, Doc("Override of rms_wind_speed.")] = None,
     ) -> Annotated[float, Doc("Aperture-averaged irradiance flux variance sigma_I^2(D) (Eq. 12.39).")]:
-        _validate_zenith_angle(zenith_angle)
+        if (rytov_variance := self.rytov_variance(zenith_angle, ground_cn2, rms_wind_speed)) >= 1.0:
+            warnings.warn(
+                f"Rytov variance {rytov_variance:.2f} is outside the weak-fluctuation range (< 1) of Eq. 12.39, "
+                "so the scintillation index is unreliable.",
+                RuntimeWarning,
+                stacklevel=2,
+            )
         k = 2 * np.pi / self.wavelength
         # Eq. 12.39 with L = (H - h0) sec(zenith) and the (H - h0)^(5/6) factor moved inside the bracket.
         fresnel_term = k * self.aperture_diameter**2 * np.cos(zenith_angle) / 16

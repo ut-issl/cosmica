@@ -322,6 +322,7 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
         rng: np.random.Generator,
         zenith_angle: Annotated[float, Doc("Zenith angle of the link at the gateway in radians.")],
     ) -> float:
+        """Compute the Shannon capacity of a downlink with a sampled scintillation factor."""
         scintillation_factor = turbulence_map[gateway].sample(rng=rng, zenith_angle=zenith_angle)
         # Downlink Capacity Calculation
         power = calc_gauss_rx_power(self.lct_p0, gateway.aperture_size, distance, wavelength=self.wavelength)
@@ -342,6 +343,7 @@ class SatToGatewayBinaryCommLinkCalculatorWithScintillation(MemorylessCommLinkCa
         rng: np.random.Generator,
         sun_exclusion_angle: float = 0.0,
     ) -> CommLinkPerformance:
+        """Evaluate one downlink: availability from elevation and Sun angle, capacity with sampled scintillation."""
         assert satellite_position_ecef.shape == (3,)
         assert sun_direction_ecef.shape == (3,)
         _, elevation, srange = ecef2aer(

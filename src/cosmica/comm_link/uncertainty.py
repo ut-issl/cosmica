@@ -174,6 +174,7 @@ class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel[
     rms_wind_speed: Annotated[float, Doc("Hufnagel-Valley rms (pseudo) wind speed in m/s.")] = 21.0
 
     def __post_init__(self) -> None:
+        """Reject non-physical wavelength, aperture and turbulence parameters."""
         if not np.isfinite(self.wavelength) or self.wavelength <= 0.0:
             msg = f"wavelength must be finite and positive, got {self.wavelength}."
             raise ValueError(msg)
@@ -197,6 +198,7 @@ class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel[
         )
 
     def _conditions(self, ground_cn2: float | None, rms_wind_speed: float | None) -> tuple[float, float]:
+        """Return the turbulence conditions for one call: the overrides if given, else the model's own."""
         ground_cn2 = self.ground_cn2 if ground_cn2 is None else ground_cn2
         rms_wind_speed = self.rms_wind_speed if rms_wind_speed is None else rms_wind_speed
         for name, value in (("ground_cn2", ground_cn2), ("rms_wind_speed", rms_wind_speed)):
@@ -211,6 +213,7 @@ class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel[
         ground_cn2: Annotated[float | None, Doc("Override of ground_cn2, e.g. for a change in weather.")] = None,
         rms_wind_speed: Annotated[float | None, Doc("Override of rms_wind_speed.")] = None,
     ) -> Annotated[float, Doc("Plane-wave Rytov variance, the point-receiver scintillation index (Eq. 12.38).")]:
+        """Compute the downlink Rytov variance in closed form from the Hufnagel-Valley profile."""
         _validate_zenith_angle(zenith_angle)
         ground_cn2, rms_wind_speed = self._conditions(ground_cn2, rms_wind_speed)
         k = 2 * np.pi / self.wavelength
@@ -227,6 +230,7 @@ class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel[
         ground_cn2: Annotated[float | None, Doc("Override of ground_cn2, e.g. for a change in weather.")] = None,
         rms_wind_speed: Annotated[float | None, Doc("Override of rms_wind_speed.")] = None,
     ) -> Annotated[float, Doc("Aperture-averaged irradiance flux variance sigma_I^2(D) (Eq. 12.39).")]:
+        """Compute the aperture-averaged scintillation index, warning outside the weak-fluctuation range."""
         # A constant message lets the default warning filter show it once instead of at every time step.
         if self.rytov_variance(zenith_angle, ground_cn2, rms_wind_speed) >= 1.0:
             warnings.warn(
@@ -261,6 +265,7 @@ class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel[
 
 
 def _validate_zenith_angle(zenith_angle: float) -> None:
+    """Reject zenith angles outside [0, pi/2), where the plane-parallel path model breaks down."""
     if not 0.0 <= zenith_angle < np.pi / 2:
         msg = f"zenith_angle must be in [0, pi/2) radians, got {zenith_angle}."
         raise ValueError(msg)

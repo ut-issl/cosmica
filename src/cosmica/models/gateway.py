@@ -76,6 +76,7 @@ class GatewayOGS[T: Hashable](Gateway[T]):
 
     @override
     def __post_init__(self) -> None:
+        """Validate the optical receiver and turbulence parameters."""
         # Explicit form: zero-argument super() fails in slotted dataclasses before Python 3.13.14.
         super(GatewayOGS, self).__post_init__()
         _assert_finite(self.aperture_size, name="aperture_size")

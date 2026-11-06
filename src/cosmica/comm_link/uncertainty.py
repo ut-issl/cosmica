@@ -181,30 +181,50 @@ class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel[
                 msg = f"{name} must be finite and non-negative, got {value}."
                 raise ValueError(msg)
 
-    def cn2(self, altitude: npt.NDArray[np.floating]) -> npt.NDArray[np.floating]:
+    def cn2(
+        self,
+        altitude: npt.NDArray[np.floating],
+        ground_cn2: Annotated[float | None, Doc("Override of ground_cn2, e.g. for a change in weather.")] = None,
+        rms_wind_speed: Annotated[float | None, Doc("Override of rms_wind_speed.")] = None,
+    ) -> npt.NDArray[np.floating]:
         """Hufnagel-Valley profile Cn2(h) in m^-2/3 at altitude h in meters above the receiver (Eq. 12.1)."""
+        ground_cn2, rms_wind_speed = self._conditions(ground_cn2, rms_wind_speed)
         return (
-            0.00594 * (self.rms_wind_speed / 27) ** 2 * (1e-5 * altitude) ** 10 * np.exp(-altitude / 1000)
+            0.00594 * (rms_wind_speed / 27) ** 2 * (1e-5 * altitude) ** 10 * np.exp(-altitude / 1000)
             + 2.7e-16 * np.exp(-altitude / 1500)
-            + self.ground_cn2 * np.exp(-altitude / 100)
+            + ground_cn2 * np.exp(-altitude / 100)
         )
+
+    def _conditions(self, ground_cn2: float | None, rms_wind_speed: float | None) -> tuple[float, float]:
+        ground_cn2 = self.ground_cn2 if ground_cn2 is None else ground_cn2
+        rms_wind_speed = self.rms_wind_speed if rms_wind_speed is None else rms_wind_speed
+        for name, value in (("ground_cn2", ground_cn2), ("rms_wind_speed", rms_wind_speed)):
+            if not np.isfinite(value) or value < 0.0:
+                msg = f"{name} must be finite and non-negative, got {value}."
+                raise ValueError(msg)
+        return ground_cn2, rms_wind_speed
 
     def rytov_variance(
         self,
         zenith_angle: Annotated[float, Doc("Zenith angle of the link at the ground station in radians.")],
+        ground_cn2: Annotated[float | None, Doc("Override of ground_cn2, e.g. for a change in weather.")] = None,
+        rms_wind_speed: Annotated[float | None, Doc("Override of rms_wind_speed.")] = None,
     ) -> Annotated[float, Doc("Plane-wave Rytov variance, the point-receiver scintillation index (Eq. 12.38).")]:
         _validate_zenith_angle(zenith_angle)
+        ground_cn2, rms_wind_speed = self._conditions(ground_cn2, rms_wind_speed)
         k = 2 * np.pi / self.wavelength
         # Integral of Cn2(h) h^(5/6) from 0 to infinity, term by term: int h^p exp(-h/s) dh = s^(p+1) Gamma(p+1).
-        tropopause = 0.00594 * (self.rms_wind_speed / 27) ** 2 * 1e-50 * 1000 ** (71 / 6) * math.gamma(71 / 6)
+        tropopause = 0.00594 * (rms_wind_speed / 27) ** 2 * 1e-50 * 1000 ** (71 / 6) * math.gamma(71 / 6)
         background = 2.7e-16 * 1500 ** (11 / 6) * math.gamma(11 / 6)
-        ground = self.ground_cn2 * 100 ** (11 / 6) * math.gamma(11 / 6)
+        ground = ground_cn2 * 100 ** (11 / 6) * math.gamma(11 / 6)
         integral = tropopause + background + ground
         return 2.25 * k ** (7 / 6) * np.cos(zenith_angle) ** (-11 / 6) * integral
 
     def sigma2_scintillation(
         self,
         zenith_angle: Annotated[float, Doc("Zenith angle of the link at the ground station in radians.")],
+        ground_cn2: Annotated[float | None, Doc("Override of ground_cn2, e.g. for a change in weather.")] = None,
+        rms_wind_speed: Annotated[float | None, Doc("Override of rms_wind_speed.")] = None,
     ) -> Annotated[float, Doc("Aperture-averaged irradiance flux variance sigma_I^2(D) (Eq. 12.39).")]:
         _validate_zenith_angle(zenith_angle)
         k = 2 * np.pi / self.wavelength
@@ -212,13 +232,15 @@ class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel[
         fresnel_term = k * self.aperture_diameter**2 * np.cos(zenith_angle) / 16
         h = _ALTITUDE_GRID
         bracket = np.real((fresnel_term + 1j * h) ** (5 / 6)) - fresnel_term ** (5 / 6)
-        integral = np.trapezoid(self.cn2(h) * bracket, h)
+        integral = np.trapezoid(self.cn2(h, ground_cn2, rms_wind_speed) * bracket, h)
         return float(8.70 * k ** (7 / 6) * np.cos(zenith_angle) ** (-11 / 6) * integral)
 
     def sample(
         self,
         rng: np.random.Generator,
         zenith_angle: Annotated[float, Doc("Zenith angle of the link at the ground station in radians.")],
+        ground_cn2: Annotated[float | None, Doc("Override of ground_cn2, e.g. for a change in weather.")] = None,
+        rms_wind_speed: Annotated[float | None, Doc("Override of rms_wind_speed.")] = None,
     ) -> float:
         """Sample a unit-mean intensity multiplier with the aperture-averaged scintillation index.
 
@@ -226,7 +248,7 @@ class ApertureAveragedLogNormalScintillationModel(AtmosphericScintillationModel[
         exp(log_variance) - 1 (Eq. 9.12). NumPy expects the underlying normal distribution's
         standard deviation, not its variance.
         """
-        log_variance = np.log1p(self.sigma2_scintillation(zenith_angle))
+        log_variance = np.log1p(self.sigma2_scintillation(zenith_angle, ground_cn2, rms_wind_speed))
         return rng.lognormal(-log_variance / 2, np.sqrt(log_variance))
 
 

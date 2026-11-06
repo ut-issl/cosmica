@@ -145,3 +145,49 @@ def test_scintillation_samples_have_unit_mean_and_expected_variance() -> None:
 
     assert np.mean(samples) == pytest.approx(1.0, abs=0.01)
     assert np.var(samples) == pytest.approx(model.sigma2_scintillation(zenith), rel=0.05)
+
+
+_OVERRIDES = [
+    pytest.param({"ground_cn2": 3e-13}, id="ground-cn2"),
+    pytest.param({"ground_cn2": 0.0}, id="zero-ground-cn2"),
+    pytest.param({"rms_wind_speed": 30.0}, id="rms-wind-speed"),
+    pytest.param({"ground_cn2": 1e-13, "rms_wind_speed": 10.0}, id="both"),
+]
+
+
+@pytest.mark.parametrize("overrides", _OVERRIDES)
+def test_scintillation_overrides_match_a_model_with_those_conditions(overrides: dict[str, float]) -> None:
+    """A per-call override, as for a sudden weather change, gives the same result as a model built with it."""
+    zenith = np.deg2rad(50.0)
+    model = _make_model()
+    changed = ApertureAveragedLogNormalScintillationModel(
+        wavelength=model.wavelength,
+        aperture_diameter=model.aperture_diameter,
+        ground_cn2=overrides.get("ground_cn2", model.ground_cn2),
+        rms_wind_speed=overrides.get("rms_wind_speed", model.rms_wind_speed),
+    )
+
+    assert model.rytov_variance(zenith, **overrides) == pytest.approx(changed.rytov_variance(zenith))
+    assert model.rytov_variance(zenith, **overrides) != pytest.approx(model.rytov_variance(zenith))
+    assert model.sigma2_scintillation(zenith, **overrides) == pytest.approx(changed.sigma2_scintillation(zenith))
+    assert model.sample(np.random.default_rng(7), zenith, **overrides) == pytest.approx(
+        changed.sample(np.random.default_rng(7), zenith),
+    )
+
+
+def test_scintillation_uses_model_conditions_without_override() -> None:
+    zenith = np.deg2rad(50.0)
+    model = _make_model()
+
+    assert model.sigma2_scintillation(zenith) == model.sigma2_scintillation(
+        zenith,
+        ground_cn2=model.ground_cn2,
+        rms_wind_speed=model.rms_wind_speed,
+    )
+
+
+@pytest.mark.parametrize("overrides", [{"ground_cn2": -1e-14}, {"rms_wind_speed": np.nan}])
+def test_scintillation_rejects_invalid_overrides(overrides: dict[str, float]) -> None:
+    with pytest.raises(ValueError, match=next(iter(overrides))):
+        _make_model().sigma2_scintillation(0.3, **overrides)
+

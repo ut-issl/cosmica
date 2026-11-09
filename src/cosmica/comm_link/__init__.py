@@ -9,10 +9,12 @@ __all__ = [
     "CommLinkPerformance",
     "EdgeFailureModel",
     "ExpEdgeModel",
+    "GatewayCloudSeries",
     "GatewayToGatewayCommLinkCalculator",
     "GatewayToInternetCommLinkCalculator",
     "GatewayToSatBinaryCommLinkCalculator",
     "GatewayToSatBinaryMemoryCommLinkCalculator",
+    "GatewayToSatStochasticBinaryCommLinkCalculator",
     "GeometricCommLinkCalculator",
     "InternetToGatewayCommLinkCalculator",
     "MemorylessCommLinkCalculator",
@@ -21,6 +23,7 @@ __all__ = [
     "SatToGatewayBinaryCommLinkCalculator",
     "SatToGatewayBinaryCommLinkCalculatorWithScintillation",
     "SatToGatewayBinaryMemoryCommLinkCalculator",
+    "SatToGatewayEdgeFailureCommLinkCalculator",
     "SatToGatewayStochasticBinaryCommLinkCalculator",
     "SatToSatBinaryCommLinkCalculator",
     "SatToSatBinaryCommLinkCalculatorWithRateCalc",
@@ -39,6 +42,7 @@ from .gateway_to_internet import GatewayToInternetCommLinkCalculator
 from .gateway_to_sat import (
     GatewayToSatBinaryCommLinkCalculator,
     GatewayToSatBinaryMemoryCommLinkCalculator,
+    GatewayToSatStochasticBinaryCommLinkCalculator,
 )
 from .geometric import GeometricCommLinkCalculator
 from .internet_to_gateway import InternetToGatewayCommLinkCalculator
@@ -47,6 +51,7 @@ from .sat_to_gateway import (
     SatToGatewayBinaryCommLinkCalculator,
     SatToGatewayBinaryCommLinkCalculatorWithScintillation,
     SatToGatewayBinaryMemoryCommLinkCalculator,
+    SatToGatewayEdgeFailureCommLinkCalculator,
     SatToGatewayStochasticBinaryCommLinkCalculator,
 )
 from .sat_to_sat import (
@@ -61,4 +66,5 @@ from .uncertainty import (
     CloudStates,
     EdgeFailureModel,
     ExpEdgeModel,
+    GatewayCloudSeries,
 )

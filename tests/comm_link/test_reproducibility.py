@@ -17,6 +17,7 @@ _SIMULATION = textwrap.dedent(
     from cosmica.comm_link import (
         BinaryCloudModel,
         CommLinkCalculationCoordinator,
+        GatewayCloudSeries,
         MemorylessCommLinkCalculatorWrapper,
         SatToGatewayBinaryCommLinkCalculator,
         SatToGatewayBinaryCommLinkCalculatorWithScintillation,
@@ -49,9 +50,15 @@ _SIMULATION = textwrap.dedent(
         sun_direction_ecef=np.tile([0.0, 0.0, 1.0], (n_time, 1)),
     )
 
+    gateway_cloud = GatewayCloudSeries.simulate(
+        set(gateways),
+        time=time,
+        cloud_model_factory=lambda gateway: BinaryCloudModel(),
+        rng=np.random.default_rng(1),
+    )
     cloud_calculator = SatToGatewayStochasticBinaryCommLinkCalculator(
         memoryless_calculator=SatToGatewayBinaryCommLinkCalculator(link_capacity=10e9),
-        stochastic_model_factory=lambda src, dst: BinaryCloudModel(),
+        gateway_cloud=gateway_cloud,
     )
     scintillation_calculator = MemorylessCommLinkCalculatorWrapper(
         SatToGatewayBinaryCommLinkCalculatorWithScintillation(
